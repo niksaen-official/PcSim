@@ -1,0 +1,140 @@
+<resources>
+    <!-- текст кнопок -->
+    <string name="app_name">PcSim</string>
+    <string name="button_save_file_text">Сохранить</string>
+    <string name="_1">Слот 1</string>
+    <string name="_2">Слот 2</string>
+    <string name="_3">Слот 3</string>
+    <string name="_4">Слот 4</string>
+    <string name="_5">Слот 5</string>
+    <string name="_6">Слот 6</string>
+    <string name="button_shop">Магазин</string>
+    <string name="pc_assembly">Сборка ПК</string>
+    <string name="switch_pc">ВЫКЛ</string>
+
+    <!--заголовки программ-->
+    <string name="title_for_save_file">Сохранение файла</string>
+    <string name="title_for_open_file">Открытие файла</string>
+    <string name="button_save_open_text">Открыть</string>
+    <string name="video_player_title">Видеоплеер</string>
+    <string name="benchmark">Benchmark</string>
+    <string name="start">Start</string>
+    <string name="cpu_tweaker">CPU Tweaker</string>
+    <string name="save">Применить</string>
+    <string name="warning">Предупреждение</string>
+    <string name="cancel">Отмена</string>
+    <string name="ram_overclocking">RAM Overclocking</string>
+    <string name="ram_1">RAM 1</string>
+    <string name="ram_2">RAM 2</string>
+    <string name="ram_3">RAM 3</string>
+    <string name="ram_4">RAM 4</string>
+    <string name="gpu_1">GPU 1</string>
+    <string name="gpu_2">GPU 2</string>
+
+    <!--стили кнопок
+    int[] closeButtonDrawable = {
+        R.drawable.button_1_color1,
+        R.drawable.button_1_color2,
+        R.drawable.button_1_color3,
+        R.drawable.button_1_color4,
+        R.drawable.button_1_color5,
+        R.drawable.button_1_color6,
+        R.drawable.button_1_color7,
+        R.drawable.button_1_color8,
+        R.drawable.button_1_color9,
+        R.drawable.button_1_color10,
+        R.drawable.button_1_color11,
+        R.drawable.button_1_color12,
+        R.drawable.button_1_color13,
+        R.drawable.button_1_color14,
+        R.drawable.button_1_color15,
+        R.drawable.button_1_color16,
+        R.drawable.button_1_color17,
+        R.drawable.button_1_color18,
+        R.drawable.button_1_color19,
+        R.drawable.button_1_color20
+    };
+    int[] fullscreen1ButtonDrawable = {
+        R.drawable.button_2_1_color1,
+        R.drawable.button_2_1_color2,
+        R.drawable.button_2_1_color3,
+        R.drawable.button_2_1_color4,
+        R.drawable.button_2_1_color5,
+        R.drawable.button_2_1_color6,
+        R.drawable.button_2_1_color7,
+        R.drawable.button_2_1_color8,
+        R.drawable.button_2_1_color9,
+        R.drawable.button_2_1_color10,
+        R.drawable.button_2_1_color11,
+        R.drawable.button_2_1_color12,
+        R.drawable.button_2_1_color13,
+        R.drawable.button_2_1_color14,
+        R.drawable.button_2_1_color15,
+        R.drawable.button_2_1_color16,
+        R.drawable.button_2_1_color17,
+        R.drawable.button_2_1_color18,
+        R.drawable.button_2_1_color19,
+        R.drawable.button_2_1_color20
+    };
+    int[] fullscreen2ButtonDrawable = {
+        R.drawable.button_2_2_color1,
+        R.drawable.button_2_2_color2,
+        R.drawable.button_2_2_color3,
+        R.drawable.button_2_2_color4,
+        R.drawable.button_2_2_color5,
+        R.drawable.button_2_2_color6,
+        R.drawable.button_2_2_color7,
+        R.drawable.button_2_2_color8,
+        R.drawable.button_2_2_color9,
+        R.drawable.button_2_2_color10,
+        R.drawable.button_2_2_color11,
+        R.drawable.button_2_2_color12,
+        R.drawable.button_2_2_color13,
+        R.drawable.button_2_2_color14,
+        R.drawable.button_2_2_color15,
+        R.drawable.button_2_2_color16,
+        R.drawable.button_2_2_color17,
+        R.drawable.button_2_2_color18,
+        R.drawable.button_2_2_color19,
+        R.drawable.button_2_2_color20,
+    };
+    int[] rollUpButtonDrawable = {
+        R.drawable.button_3_color1,
+        R.drawable.button_3_color2,
+        R.drawable.button_3_color3,
+        R.drawable.button_3_color4,
+        R.drawable.button_3_color5,
+        R.drawable.button_3_color6,
+        R.drawable.button_3_color7,
+        R.drawable.button_3_color8,
+        R.drawable.button_3_color9,
+        R.drawable.button_3_color10,
+        R.drawable.button_3_color11,
+        R.drawable.button_3_color12,
+        R.drawable.button_3_color13,
+        R.drawable.button_3_color14,
+        R.drawable.button_3_color15,
+        R.drawable.button_3_color16,
+        R.drawable.button_3_color17,
+        R.drawable.button_3_color18,
+        R.drawable.button_3_color19,
+        R.drawable.button_3_color20,
+    };
+    -->
+    <!--список приложений-->
+    <string-array name="appList">
+        <item>Приложения</item>
+        <item>Браузер</item>
+        <item>Benchmark</item>
+        <item>Диспетчер устройств</item>
+        <item>Разгон процессора</item>
+        <item>Разгон видеокарты</item>
+        <item>Разгон оперативки</item>
+        <item>Файловый менеджер</item>
+        <item>Paint</item>
+        <item>Блокнот</item>
+        <item>Видео плеер</item>
+        <item>Аудио плеер</item>
+        <item>Персонализация</item>
+    </string-array>
+</resources>

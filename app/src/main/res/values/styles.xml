@@ -1,0 +1,19 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="buttonStyle1">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">27sp</item>
+    </style>
+    <style name="SeekBarMusic" parent="Widget.AppCompat.SeekBar">
+        <item name="colorPrimary">#0D47A1</item>
+        <item name="colorPrimaryDark">#0D47A1</item>
+        <item name="colorAccent">#1A237E</item>
+    </style>
+</resources>

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/main_view"
+    android:background="@color/window">
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:text="Персонализация"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/roll_up"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/button_3_color17" />
+
+        <Button
+            android:id="@+id/fullscreenMode"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/button_2_2_color17" />
+
+        <Button
+            android:id="@+id/close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/button_1_color17" />
+    </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="6dp"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
+
+        <ExpandableListView
+            android:id="@+id/menu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#dcdcdc"
+            android:dividerHeight="-5px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:padding="6dp"
+            android:visibility="gone"
+            android:id="@+id/secondTitle"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/testBackground"
+            android:layout_width="240dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:background="#006064"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/secondTitle">
+
+            <TextView
+                android:id="@+id/testGreeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="15dp"
+                android:background="#838383"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/launch"
+                android:layout_width="70dp"
+                android:layout_height="100dp"
+                android:background="#D6D6D6"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/toolbar"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <android.support.constraint.ConstraintLayout
+                android:visibility="gone"
+                android:id="@+id/windowTest"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/color6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/testTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="Заголовок"
+                    android:textColor="#ffffff"
+                    app:layout_constraintEnd_toStartOf="@+id/testButton3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/testButton1"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="@drawable/button_1_color17"
+                    app:layout_constraintBottom_toBottomOf="@+id/testTitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/testTitle" />
+
+                <Button
+                    android:id="@+id/testButton2"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="@drawable/button_2_1_color17"
+                    app:layout_constraintBottom_toBottomOf="@+id/testTitle"
+                    app:layout_constraintEnd_toStartOf="@+id/testButton1"
+                    app:layout_constraintTop_toTopOf="@+id/testTitle" />
+
+                <Button
+                    android:id="@+id/testButton3"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="@drawable/button_3_color17"
+                    app:layout_constraintBottom_toBottomOf="@+id/testTitle"
+                    app:layout_constraintEnd_toStartOf="@+id/testButton2"
+                    app:layout_constraintTop_toTopOf="@+id/testTitle" />
+
+                <LinearLayout
+                    android:id="@+id/testContent"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/testTitle">
+
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/testText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="3dp"
+                        android:text="Пример текста"
+                        android:textColor="#000000"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:visibility="gone"
+                        android:id="@+id/testButton"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:layout_margin="4dp"
+                        android:padding="6dp"
+                        android:text="Кнопка"
+                        android:textSize="11sp" />
+
+                    <SeekBar
+                        android:id="@+id/testSeekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:visibility="gone" />
+
+                    <ProgressBar
+                        android:visibility="gone"
+                        android:padding="4dp"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:id="@+id/testProgressBar"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:max="100"
+                        android:progress="70" />
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/secondMenu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:columnCount="7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/testBackground" />
+
+        <Button
+            android:layout_marginTop="6dp"
+            android:id="@+id/save"
+            android:padding="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@+id/testBackground"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

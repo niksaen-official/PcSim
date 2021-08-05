@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/caseImage"
+    android:layout_width="280dp"
+    android:layout_height="280dp"
+    app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.91"
+    app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+    app:layout_constraintTop_toTopOf="parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/moboImage"
+        android:layout_width="160dp"
+        android:layout_height="190dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"/>
+
+        <ImageView
+            android:id="@+id/cpuImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="48dp" />
+
+        <ImageView
+            android:id="@+id/coolerImage"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="57dp"
+            android:layout_marginTop="39dp" />
+
+        <ImageView
+            android:id="@+id/ramImage1"
+            android:layout_width="7dp"
+            android:layout_height="105dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="10dp" />
+
+        <ImageView
+            android:id="@+id/ramImage2"
+            android:layout_width="7dp"
+            android:layout_height="105dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="135dp"
+            android:layout_marginTop="10dp" />
+        <ImageView
+            android:id="@+id/ramImage3"
+            android:layout_width="7dp"
+            android:layout_height="105dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="145dp"
+            android:layout_marginTop="10dp" />
+
+        <ImageView
+            android:id="@+id/ramImage4"
+            android:layout_width="7dp"
+            android:layout_height="105dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="155dp"
+            android:layout_marginTop="10dp" />
+
+        <ImageView
+            android:id="@+id/gpu1View"
+            android:layout_width="120dp"
+            android:layout_height="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="129dp" />
+        <ImageView
+            android:id="@+id/gpu2View"
+            android:layout_width="120dp"
+            android:layout_height="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="159dp" />
+
+    <ImageView
+        android:id="@+id/psuView"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="3dp" />
+
+    <ImageView
+        android:id="@+id/data1View"
+        android:layout_width="80dp"
+        android:layout_height="15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp" />
+
+    <ImageView
+        android:id="@+id/data2View"
+        android:layout_width="80dp"
+        android:layout_height="15dp"
+        android:layout_above="@+id/data1View"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp" />
+    <ImageView
+        android:id="@+id/data3View"
+        android:layout_width="80dp"
+        android:layout_height="15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/data2View"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp" />
+
+    <ImageView
+        android:id="@+id/data4View"
+        android:layout_width="80dp"
+        android:layout_height="15dp"
+        android:layout_above="@+id/data3View"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp" />
+    <ImageView
+        android:id="@+id/data5View"
+        android:layout_width="80dp"
+        android:layout_height="15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/data4View"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp" />
+
+    <ImageView
+        android:id="@+id/data6View"
+        android:layout_width="80dp"
+        android:layout_height="15dp"
+        android:layout_above="@+id/data5View"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp" />
+</RelativeLayout>

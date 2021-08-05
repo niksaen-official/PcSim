@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorAccent">#FFFFFF</color>
+
+    <color name="background1">#121212</color>
+    <color name="background2">#1C1C1C</color>
+    <color name="black_overlay">#222222</color>
+    <color name="buttonColor">#393939</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="window">#0D47A1</color>
+
+    <color name = "color1">#B71C1C</color>
+    <color name = "color2">#880E4F</color>
+    <color name = "color3">#4A148C</color>
+    <color name = "color4">#311B92</color>
+    <color name = "color5">#1A237E</color>
+    <color name = "color6">#0D47A1</color>
+    <color name = "color7">#01579B</color>
+    <color name = "color8">#006064</color>
+    <color name = "color9">#004D40</color>
+    <color name = "color10">#1B5E20</color>
+    <color name = "color11">#33691E</color>
+    <color name = "color12">#827717</color>
+    <color name = "color13">#F57F17</color>
+    <color name = "color14">#FF6F00</color>
+    <color name = "color15">#E65100</color>
+    <color name = "color16">#BF360C</color>
+
+    <color name = "color17">#FFFFFF</color>
+    <color name = "color18">#dddddd</color>
+    <color name = "color19">#cccccc</color>
+
+    <color name = "color20">#bbbbbb</color>
+    <color name = "color21">#aaaaaa</color>
+    <color name = "color22">#999999</color>
+
+    <color name = "color23">#888888</color>
+    <color name = "color24">#777777</color>
+    <color name = "color25">#666666</color>
+
+    <color name = "color26">#555555</color>
+    <color name = "color27">#444444</color>
+    <color name = "color28">#333333</color>
+
+    <color name = "color29">#222222</color>
+    <color name = "color30">#111111</color>
+    <color name = "color31">#000000</color>
+</resources>
