@@ -48,7 +48,7 @@
             android:background="@drawable/button_1_color17" />
     </LinearLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -88,7 +88,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/testBackground"
             android:layout_width="240dp"
             android:layout_height="140dp"
@@ -131,7 +131,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/toolbar"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:visibility="gone"
                 android:id="@+id/windowTest"
                 android:layout_width="150dp"
@@ -236,10 +236,10 @@
                         android:max="100"
                         android:progress="70" />
                 </LinearLayout>
-            </android.support.constraint.ConstraintLayout>
-        </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/secondMenu"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -263,5 +263,5 @@
             app:layout_constraintStart_toEndOf="@+id/testBackground"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -100,5 +100,7 @@
   "Transparency": "Прозрачность",
   "Thickness": "Толщина",
   "Music Player": "Музыкальный проигрыватель",
-  "Video Player": "Видео проигрыватель"
+  "Video Player": "Видео проигрыватель",
+  "Temperature Viewer": "Просмотр температуры",
+  "View Power Supply Load": "Просмотр нагрузки на блок питания"
 }

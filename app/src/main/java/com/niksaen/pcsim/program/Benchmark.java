@@ -3,15 +3,19 @@ package com.niksaen.pcsim.program;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
 
@@ -50,8 +54,17 @@ public class Benchmark {
         mainWindow = inflater.inflate(R.layout.program_benchmark,null);
         styleSave = new StyleSave(context);
         mainWindow.setBackgroundColor(styleSave.ColorWindow);
+        getLanguage();
         style();
     }
+
+    // get language
+    private HashMap<String,String> words;
+    private void getLanguage(){
+        TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
+        words = new Gson().fromJson(new AssetFile(context).getText("language/"+ Language.getLanguage(context)+".json"),typeToken.getType());
+    }
+
     public void openProgram(){
 
         int[] buttonClicks = {0};
@@ -269,5 +282,6 @@ public class Benchmark {
         button.setBackgroundResource(button_3);
         button2.setBackgroundResource(button_2_2);
         button3.setBackgroundResource(button_1);
+        start_bench.setText(words.get("Start"));
     }
 }

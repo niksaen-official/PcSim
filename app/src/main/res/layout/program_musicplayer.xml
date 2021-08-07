@@ -45,7 +45,7 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/button_1_color17" />
     </LinearLayout>
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:background="#FFFFFF"
         android:id="@+id/main"
         android:layout_marginHorizontal="8dp"
@@ -126,5 +126,5 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

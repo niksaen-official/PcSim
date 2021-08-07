@@ -230,58 +230,70 @@ public class PcParametersSave {
         preferences.edit().putString("Psu",Psu).apply();
         preferences.edit().putString("PSU",new Gson().toJson(PSU)).apply();
     }
-
-    public boolean psuEnoughPower(){
-        if(MOBO!=null) {
-            moboPower = Double.parseDouble(MOBO.get("Мощность"));
-            if(CPU!=null && COOLER!=null) {
-                cpuPower = (Integer.parseInt(CPU.get("Частота"))*0.025);
-                coolerPower = Double.parseDouble(COOLER.get("Мощность"));
-            }
-            if(RAM1!=null) {
-                ram1Power = ramPower(RAM1);
-            }
-            if(RAM2!=null) {
-                ram2Power = ramPower(RAM2);
-            }
-            if(RAM3!=null) {
-                ram3Power = ramPower(RAM3);
-            }
-            if(RAM4!=null) {
-                ram4Power = ramPower(RAM4);
-            }
-            if(GPU1!=null) {
-                gpuPower(GPU1,1);
-            }
-            if(GPU2!=null) {
-                gpuPower(GPU2,2);
-            }
-        }
-        if(DATA1 != null) {
-            data1Power = Double.parseDouble(DATA1.get("Мощность"));
-        }
-        if(DATA2 != null) {
-            data2Power = Double.parseDouble(DATA2.get("Мощность"));
-        }
-        if(DATA3 != null) {
-            data3Power = Double.parseDouble(DATA3.get("Мощность"));
-        }
-        if(DATA4 != null) {
-            data4Power = Double.parseDouble(DATA4.get("Мощность"));
-        }
-        if(DATA5 != null) {
-            data5Power = Double.parseDouble(DATA5.get("Мощность"));
-        }
-        if(DATA6 != null) {
-            data6Power = Double.parseDouble(DATA6.get("Мощность"));
-        }
-        if(PSU != null && !Psu.contains("[Сломано]")) {
-            psuPower = Double.parseDouble(PSU.get("Мощность"));
-        }
-        AllPcPower = moboPower+cpuPower+coolerPower+ram1Power+ram2Power+ram3Power+ram4Power+gpu1Power+gpu2Power+data1Power+data2Power+data3Power+data4Power+data5Power+data6Power;
-        return !(AllPcPower > psuPower);
-    }
     public int maxRamFrequency, minRamFrequency;
+
+
+    // получение типа главного диска
+    public String getMainDiskType(){
+        String type = null;
+        HashMap<String,String>[] mainDiskId = new HashMap[]{DATA1, DATA2, DATA3, DATA4, DATA5, DATA6};
+        if(DATA1!=null){DATA1.put("MainDisk","true");}
+        else if(DATA2!=null){DATA2.put("MainDisk","true");}
+        else if(DATA3!=null){DATA3.put("MainDisk","true");}
+        else if(DATA4!=null){DATA4.put("MainDisk","true");}
+        else if(DATA5!=null){DATA5.put("MainDisk","true");}
+        else if(DATA6!=null){DATA6.put("MainDisk","true");}
+
+        for(HashMap<String,String> hashMap:mainDiskId){
+            if(hashMap.get("MainDisk").equals("true")){
+                type = hashMap.get("Тип");
+                break;
+            }
+        }
+        return type;
+    }
+
+    // установка главного диска
+    public void setMainDisk(int diskId){
+        switch (diskId){
+            case 1:{
+                if(DATA1 != null){
+                    DATA1.put("MainDisk","true");
+                }
+                break;
+            }
+            case 2:{
+                if(DATA2 != null){
+                    DATA2.put("MainDisk","true");
+                }
+                break;
+            }
+            case 3:{
+                if(DATA3 != null){
+                    DATA3.put("MainDisk","true");
+                }
+                break;
+            }
+            case 4:{
+                if(DATA4 != null){
+                    DATA4.put("MainDisk","true");
+                }
+                break;
+            }
+            case 5:{
+                if(DATA5 != null){
+                    DATA5.put("MainDisk","true");
+                }
+                break;
+            }
+            case 6:{
+                if(DATA6 != null){
+                    DATA6.put("MainDisk","true");
+                }
+                break;
+            }
+        }
+    }
 
     /**
      * Проверка пк на правильность сборки
@@ -326,6 +338,7 @@ public class PcParametersSave {
         return work;
     }
 
+    // валидация оперативки
     public boolean ramValid(HashMap<String,String> RAM) {
         if (RAM != null) {
             boolean res = Integer.parseInt(Objects.requireNonNull(RAM.get("Частота"))) >= minRamFrequency &&
@@ -401,77 +414,67 @@ public class PcParametersSave {
         }
         return res;
     }
+
+    //проверка блока питания на мощность
+    public boolean psuEnoughPower(){
+        if(MOBO!=null) {
+            moboPower = Double.parseDouble(MOBO.get("Мощность"));
+            if(CPU!=null && COOLER!=null) {
+                cpuPower = (Integer.parseInt(CPU.get("Частота"))*0.025);
+                coolerPower = Double.parseDouble(COOLER.get("Мощность"));
+            }
+            if(RAM1!=null) {
+                ram1Power = ramPower(RAM1);
+            }
+            if(RAM2!=null) {
+                ram2Power = ramPower(RAM2);
+            }
+            if(RAM3!=null) {
+                ram3Power = ramPower(RAM3);
+            }
+            if(RAM4!=null) {
+                ram4Power = ramPower(RAM4);
+            }
+            if(GPU1!=null) {
+                gpuPower(GPU1,1);
+            }
+            if(GPU2!=null) {
+                gpuPower(GPU2,2);
+            }
+        }
+        if(DATA1 != null) {
+            data1Power = Double.parseDouble(DATA1.get("Мощность"));
+        }
+        if(DATA2 != null) {
+            data2Power = Double.parseDouble(DATA2.get("Мощность"));
+        }
+        if(DATA3 != null) {
+            data3Power = Double.parseDouble(DATA3.get("Мощность"));
+        }
+        if(DATA4 != null) {
+            data4Power = Double.parseDouble(DATA4.get("Мощность"));
+        }
+        if(DATA5 != null) {
+            data5Power = Double.parseDouble(DATA5.get("Мощность"));
+        }
+        if(DATA6 != null) {
+            data6Power = Double.parseDouble(DATA6.get("Мощность"));
+        }
+        if(PSU != null && !Psu.contains("[Сломано]")) {
+            psuPower = Double.parseDouble(PSU.get("Мощность"));
+        }
+        else{
+            psuPower = 0;
+        }
+        AllPcPower = moboPower+cpuPower+coolerPower+ram1Power+ram2Power+ram3Power+ram4Power+gpu1Power+gpu2Power+data1Power+data2Power+data3Power+data4Power+data5Power+data6Power;
+        return AllPcPower < psuPower;
+    }
+
+    //энерго потребление различного железа
     public double ramPower(HashMap<String,String> RAM){
         int frequency = Integer.parseInt(RAM.get("Частота"));
         double k = frequency/Double.parseDouble(RAM.get("Пропускная способность"));
         return frequency*(k/100);
-    }
-
-    public String getMainDiskType(){
-        String type = null;
-        HashMap<String,String>[] mainDiskId = new HashMap[]{DATA1, DATA2, DATA3, DATA4, DATA5, DATA6};
-        if(DATA1!=null){DATA1.put("MainDisk","true");}
-        else if(DATA2!=null){DATA2.put("MainDisk","true");}
-        else if(DATA3!=null){DATA3.put("MainDisk","true");}
-        else if(DATA4!=null){DATA4.put("MainDisk","true");}
-        else if(DATA5!=null){DATA5.put("MainDisk","true");}
-        else if(DATA6!=null){DATA6.put("MainDisk","true");}
-
-        for(HashMap<String,String> hashMap:mainDiskId){
-            if(hashMap.get("MainDisk").equals("true")){
-                type = hashMap.get("Тип");
-                break;
-            }
-        }
-        return type;
-    }
-
-    public void setMainDisk(int diskId){
-        switch (diskId){
-            case 1:{
-               if(DATA1 != null){
-                   DATA1.put("MainDisk","true");
-               }
-               break;
-            }
-            case 2:{
-                if(DATA2 != null){
-                    DATA2.put("MainDisk","true");
-                }
-                break;
-            }
-            case 3:{
-                if(DATA3 != null){
-                    DATA3.put("MainDisk","true");
-                }
-                break;
-            }
-            case 4:{
-                if(DATA4 != null){
-                    DATA4.put("MainDisk","true");
-                }
-                break;
-            }
-            case 5:{
-                if(DATA5 != null){
-                    DATA5.put("MainDisk","true");
-                }
-                break;
-            }
-            case 6:{
-                if(DATA6 != null){
-                    DATA6.put("MainDisk","true");
-                }
-                break;
-            }
-        }
-    }
-
-    public double currentCpuTemperature(){
-        return Integer.parseInt(CPU.get("Частота")) * 0.016f - (Double.parseDouble(COOLER.get("TDP")) - Integer.parseInt(CPU.get("TDP"))) / 8;
-    }
-    public double maxCpuTemperature(){
-        return Integer.parseInt(CPU.get("TDP"))*1.5-20;
     }
     public void gpuPower(HashMap<String,String> GPU,int slot){
         double main = 0;
@@ -496,6 +499,75 @@ public class PcParametersSave {
         switch (slot){
             case 1:{gpu1Power = power;break;}
             case 2:{gpu2Power = power;break;}
+        }
+    }
+
+    // температура железа
+    public double currentCpuTemperature(){ return Integer.parseInt(CPU.get("Частота")) * 0.016f - (Double.parseDouble(COOLER.get("TDP")) - Integer.parseInt(CPU.get("TDP"))) / 8; }
+    public double maxCpuTemperature(){
+        return Integer.parseInt(CPU.get("TDP"))*1.5-20;
+    }
+    public  float currentRamTemperature( HashMap<String,String> RAM){
+        if(RAM != null) {
+            float frequency = Integer.parseInt(RAM.get("Частота"));
+            float throughput = Integer.parseInt(RAM.get("Пропускная способность"));
+            float k = frequency / throughput;
+            return (float) (frequency * (k * 0.25));
+        }else {
+            return 0;
+        }
+    }
+    public double currentGpuTemperature(HashMap<String,String> GPU){
+        if(GPU != null) {
+            float main = 0;
+            int frequency = Integer.parseInt(GPU.get("Частота"));
+            float power_coefficient = 0,temperature_coefficient = 0;
+            float temperature;
+
+            switch (GPU.get("Тип памяти")) {
+                case "GDDR": {
+                    power_coefficient = 1.4f * 1.4f;
+                    break;
+                }
+                case "GDDR2": {
+                    power_coefficient = 1.5f * 1.4f;
+                    break;
+                }
+                case "GDDR3": {
+                    power_coefficient = 1.6f * 1.4f;
+                    break;
+                }
+                case "GDDR4": {
+                    power_coefficient = 1.7f * 1.4f;
+                    break;
+                }
+                case "GDDR5": {
+                    power_coefficient = 1.8f * 1.4f;
+                    break;
+                }
+                default:
+                    throw new IllegalStateException("Unexpected value: " + GPU.get("Тип памяти"));
+            }
+
+            switch (GPU.get("Тип охлаждения")) {
+                case "Радиатор": {
+                    temperature_coefficient = 1.4f;
+                    break;
+                }
+                case "Кулер": {
+                    temperature_coefficient = 1.15f;
+                    break;
+                }
+                default:
+                    throw new IllegalStateException("Unexpected value: " + GPU.get("Тип охлаждения"));
+            }
+
+            main = (frequency /power_coefficient)/5;
+            temperature = (float) main*temperature_coefficient/1.75f;
+            return  temperature;
+        }
+        else{
+            return 0;
         }
     }
 }

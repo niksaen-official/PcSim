@@ -2,7 +2,7 @@ package com.niksaen.pcsim.program;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -132,7 +132,7 @@ public class CPU_Tweaker {
         frequency.setText(words.get("Frequency")+": "+ current_frequency+"MHz");
         temperature.setText(
                 words.get("CPU temperature")+": " + (int) current_temperature + "C\n" +
-                        words.get("Maximum CPU temperature")+": " + (int) max_temperature + "C\n" +
+                        words.get("Maximum cpu temperature")+": " + (int) max_temperature + "C\n" +
                         words.get("Energy consumption")+": " + (int) power + "W");
 
         setFrequency.setProgress(current_frequency);

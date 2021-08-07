@@ -3,7 +3,7 @@ package com.niksaen.pcsim.program;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -205,7 +205,7 @@ public class RAM_Overclocking {
         throughput = Integer.parseInt(RAM.get("Пропускная способность"));
         k = frequency/throughput;
         power = frequency*(k/100);
-        temperature = frequency*(k*0.3);
+        temperature = frequency*(k*0.25);
         seekBar.setProgress(frequency);
         parameters.setText(
                 words.get("Frequency")+": "+frequency + "MHz\n" +
@@ -221,7 +221,7 @@ public class RAM_Overclocking {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 frequency = progress;
                 power = frequency*(k/100);
-                temperature = frequency*(k*0.3);
+                temperature = frequency*(k*0.25);
                 throughput = frequency/k;
                 parameters.setText(
                         words.get("Frequency")+": "+frequency + "MHz\n" +
@@ -240,7 +240,7 @@ public class RAM_Overclocking {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 power = frequency*(k/100);
-                temperature = frequency*(k*0.3);
+                temperature = frequency*(k*0.25);
                 throughput = frequency/k;
                 parameters.setText(
                         words.get("Frequency")+": "+frequency + "MHz\n" +

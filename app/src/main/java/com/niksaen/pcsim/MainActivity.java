@@ -5,9 +5,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,6 +20,8 @@ import android.widget.TextView;
 import com.niksaen.pcsim.program.Benchmark;
 import com.niksaen.pcsim.program.Browser;
 import com.niksaen.pcsim.program.CPU_Tweaker;
+import com.niksaen.pcsim.program.TemperatureViewer;
+import com.niksaen.pcsim.program.ViewPowerSupplyLoad;
 import com.niksaen.pcsim.program.checkIron.CheckIron;
 import com.niksaen.pcsim.program.fileManager.FileManager;
 import com.niksaen.pcsim.program.GPU_Overclocking;
@@ -110,6 +112,7 @@ public class MainActivity extends AppCompatActivity{
                             button2.setText("ВЫКЛ");
                             button2.setTextColor(Color.RED);
                             layout.setBackgroundColor(Color.BLACK);
+                            toolbar.setVisibility(View.GONE);
                             button2Click[0] = 0;
                         });
                     }
@@ -152,6 +155,7 @@ public class MainActivity extends AppCompatActivity{
                     greeting.setVisibility(View.GONE);
                     layout.setBackgroundResource(styleSave.BackgroundResource);
                     toolbar.setBackgroundColor(styleSave.ToolbarColor);
+                    toolbar.setVisibility(View.VISIBLE);
                     test();
                 });
             }
@@ -216,6 +220,14 @@ public class MainActivity extends AppCompatActivity{
                     }
                     case 12:{
                         new StyleSettings(getBaseContext(),new View[]{layout,toolbar},pcParametersSave).openProgram();
+                        break;
+                    }
+                    case 13:{
+                        new TemperatureViewer(getBaseContext(), pcParametersSave, layout).openProgram();
+                        break;
+                    }
+                    case 14:{
+                        new ViewPowerSupplyLoad(getBaseContext(), pcParametersSave, layout).openProgram();
                         break;
                     }
                 }

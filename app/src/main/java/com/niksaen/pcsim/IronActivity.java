@@ -2,7 +2,6 @@ package com.niksaen.pcsim;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -10,6 +9,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -154,7 +155,7 @@ public class IronActivity extends AppCompatActivity {
                 if(position>0) {
                     removeAll();
                     caseParameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/CASE/" + caseList.get(position) + ".json"),typeToken.getType());
-                    caseView.setBackground(assetFile.getImage("pc_component/parameters/images/CASE/" + caseList.get(position) + ".png"));
+                    caseView.setBackground(assetFile.getImage("pc_component/images/CASE/" + caseList.get(position) + ".png"));
                     caseList.add(parametersSave.Case);
                     parametersSave.setCase(caseList.get(position),caseParameters);
                     caseList.remove(position);
@@ -171,7 +172,7 @@ public class IronActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (caseInstall && position>0) {
                     removeMobo();
-                    moboView.setImageDrawable(assetFile.getImage("pc_component/parameters/images/MOBO/" + moboList.get(position) + ".png"));
+                    moboView.setImageDrawable(assetFile.getImage("pc_component/images/MOBO/" + moboList.get(position) + ".png"));
                     MotherBoardView motherBoardView = new MotherBoardView(moboList.get(position), caseView, getBaseContext());
                     moboParameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/MOBO/" + moboList.get(position) + ".json"), typeToken.getType());
                     moboList.add(parametersSave.Mobo);
@@ -197,7 +198,7 @@ public class IronActivity extends AppCompatActivity {
                 if(moboInstall && position>0) {
                     cpuParameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/CPU/" + cpuList.get(position) + ".json"), typeToken.getType());
                     if (cpuParameters.get("Сокет").equals(moboParameters.get("Сокет"))) {
-                        cpuView.setImageDrawable(assetFile.getImage("pc_component/parameters/images/CPU/" + cpuList.get(position) + ".png"));
+                        cpuView.setImageDrawable(assetFile.getImage("pc_component/images/CPU/" + cpuList.get(position) + ".png"));
                         cpuList.add(parametersSave.Cpu);
                         cpuInstall = true;
                         if(cpuParameters.get("Графическое ядро").equals("+")){
@@ -223,7 +224,7 @@ public class IronActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position>0){
                     coolerParameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/COOLER/" +coolerList.get(position)+".json"),typeToken.getType());
-                    coolerView.setImageDrawable(assetFile.getImage("pc_component/parameters/images/COOLER/" +coolerList.get(position)+".png"));
+                    coolerView.setImageDrawable(assetFile.getImage("pc_component/images/COOLER/" +coolerList.get(position)+".png"));
                     coolerList.add(parametersSave.Cooler);
                     parametersSave.setCooler(coolerList.get(position),coolerParameters);
                     coolerList.remove(position);
@@ -260,7 +261,7 @@ public class IronActivity extends AppCompatActivity {
                         nameForInstall = gpuList.get(position);
                     }
                     else{
-                        gpu1View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/GPU/" +gpuList.get(position)+"_horizontal.png"));
+                        gpu1View.setImageDrawable(assetFile.getImage("pc_component/images/GPU/" +gpuList.get(position)+"_horizontal.png"));
                         gpu1Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/GPU/" +gpuList.get(position)+".json"),typeToken.getType());
                         gpuList.add(parametersSave.Gpu1);
                         parametersSave.setGpu1(gpuList.get(position),gpu1Parameters);
@@ -294,7 +295,7 @@ public class IronActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position>0){
                     psuParameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/PSU/" +psuList.get(position)+".json"),typeToken.getType());
-                    psuView.setImageDrawable(assetFile.getImage("pc_component/parameters/images/PSU/" +psuList.get(position)+".png"));
+                    psuView.setImageDrawable(assetFile.getImage("pc_component/images/PSU/" +psuList.get(position)+".png"));
                     psuList.add(parametersSave.Psu);
                     parametersSave.setPsu(psuList.get(position),psuParameters);
                     psuList.remove(position);
@@ -313,7 +314,7 @@ public class IronActivity extends AppCompatActivity {
             public void onClick(View v){
                 if (typeForInstall != null) {
                     if (typeForInstall.equals("RAM") && moboInstall) {
-                        ram1View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/RAM/" + nameForInstall + "_top.png"));
+                        ram1View.setImageDrawable(assetFile.getImage("pc_component/images/RAM/" + nameForInstall + "_top.png"));
                         ramList.add(parametersSave.Ram1);
                         ram1Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/RAM/" + nameForInstall + ".json"), typeToken.getType());
                         if(moboParameters.get("Тип памяти").equals(ram1Parameters.get("Тип памяти"))) {
@@ -325,7 +326,7 @@ public class IronActivity extends AppCompatActivity {
                         ramList.remove(nameForInstall);
                     }
                     if (typeForInstall.equals("GPU") && moboInstall) {
-                        gpu1View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/GPU/" + nameForInstall + "_horizontal.png"));
+                        gpu1View.setImageDrawable(assetFile.getImage("pc_component/images/GPU/" + nameForInstall + "_horizontal.png"));
                         gpu1Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/GPU/" + nameForInstall + ".json"), typeToken.getType());
                         gpuList.add(parametersSave.Gpu1);
                         parametersSave.setGpu1(nameForInstall, gpu1Parameters);
@@ -333,7 +334,7 @@ public class IronActivity extends AppCompatActivity {
                         gpuInstall = true;
                     }
                     if (typeForInstall.equals("DATA") && caseInstall) {
-                        data1View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" + nameForInstall + "_h.png"));
+                        data1View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" + nameForInstall + "_h.png"));
                         data1Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/DATA/" + nameForInstall + ".json"), typeToken.getType());
                         dataList.add(parametersSave.Data1);
                         parametersSave.setData1(nameForInstall, data1Parameters);
@@ -348,7 +349,7 @@ public class IronActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (typeForInstall != null) {
                     if (typeForInstall.equals("RAM") && moboInstall) {
-                        ram2View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/RAM/" + nameForInstall + "_top.png"));
+                        ram2View.setImageDrawable(assetFile.getImage("pc_component/images/RAM/" + nameForInstall + "_top.png"));
                         ramList.add(parametersSave.Ram2);
                         ram2Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/RAM/" + nameForInstall + ".json"), typeToken.getType());
                         if(moboParameters.get("Тип памяти").equals(ram2Parameters.get("Тип памяти"))) {
@@ -360,14 +361,14 @@ public class IronActivity extends AppCompatActivity {
                         ramList.remove(nameForInstall);
                     }
                     if (typeForInstall.equals("GPU") && moboInstall) {
-                        gpu2View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/GPU/" + nameForInstall + "_horizontal.png"));
+                        gpu2View.setImageDrawable(assetFile.getImage("pc_component/images/GPU/" + nameForInstall + "_horizontal.png"));
                         gpu2Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/GPU/" + nameForInstall + ".json"), typeToken.getType());
                         gpuList.add(parametersSave.Gpu2);
                         parametersSave.setGpu2(nameForInstall, gpu2Parameters);
                         gpuList.remove(nameForInstall);
                     }
                     if (typeForInstall.equals("DATA") && caseInstall) {
-                        data2View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" + nameForInstall + "_h.png"));
+                        data2View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" + nameForInstall + "_h.png"));
                         data2Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/DATA/" + nameForInstall + ".json"), typeToken.getType());
                         dataList.add(parametersSave.Data2);
                         parametersSave.setData2(nameForInstall, data2Parameters);
@@ -383,7 +384,7 @@ public class IronActivity extends AppCompatActivity {
                 if (typeForInstall != null) {
                     if (typeForInstall.equals("RAM") && moboInstall) {
                         if (ramSlotCount >= 3) {
-                            ram3View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/RAM/" + nameForInstall + "_top.png"));
+                            ram3View.setImageDrawable(assetFile.getImage("pc_component/images/RAM/" + nameForInstall + "_top.png"));
                             ramList.add(parametersSave.Ram3);
                             ram3Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/RAM/" + nameForInstall + ".json"), typeToken.getType());
                             if(moboParameters.get("Тип памяти").equals(ram3Parameters.get("Тип памяти"))) {
@@ -396,7 +397,7 @@ public class IronActivity extends AppCompatActivity {
                         }
                     }
                     if (typeForInstall.equals("DATA") && caseInstall) {
-                        data3View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" + nameForInstall + "_h.png"));
+                        data3View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" + nameForInstall + "_h.png"));
                         data3Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/DATA/" + nameForInstall + ".json"), typeToken.getType());
                         dataList.add(parametersSave.Data3);
                         parametersSave.setData3(nameForInstall, data3Parameters);
@@ -412,7 +413,7 @@ public class IronActivity extends AppCompatActivity {
                 if (typeForInstall != null) {
                     if (typeForInstall.equals("RAM") && moboInstall) {
                         if (ramSlotCount >= 4) {
-                            ram4View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/RAM/" + nameForInstall + "_top.png"));
+                            ram4View.setImageDrawable(assetFile.getImage("pc_component/images/RAM/" + nameForInstall + "_top.png"));
                             ramList.add(parametersSave.Ram4);
                             ram4Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/RAM/" + nameForInstall + ".json"), typeToken.getType());
                             if(moboParameters.get("Тип памяти").equals(ram4Parameters.get("Тип памяти"))) {
@@ -425,7 +426,7 @@ public class IronActivity extends AppCompatActivity {
                         }
                     }
                     if (typeForInstall.equals("DATA") && caseInstall) {
-                        data4View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" + nameForInstall + "_h.png"));
+                        data4View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" + nameForInstall + "_h.png"));
                         data4Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/DATA/" + nameForInstall + ".json"), typeToken.getType());
                         dataList.add(parametersSave.Data4);
                         parametersSave.setData4(nameForInstall, data4Parameters);
@@ -440,7 +441,7 @@ public class IronActivity extends AppCompatActivity {
             public void onClick(View v){
                 if (typeForInstall != null) {
                     if (typeForInstall.equals("DATA") && caseInstall) {
-                        data5View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" + nameForInstall + "_h.png"));
+                        data5View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" + nameForInstall + "_h.png"));
                         data5Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/DATA/" + nameForInstall + ".json"), typeToken.getType());
                         dataList.add(parametersSave.Data5);
                         parametersSave.setData5(nameForInstall, data5Parameters);
@@ -455,7 +456,7 @@ public class IronActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (typeForInstall != null) {
                     if (typeForInstall.equals("DATA") && caseInstall) {
-                        data6View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" + nameForInstall + "_h.png"));
+                        data6View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" + nameForInstall + "_h.png"));
                         data6Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/DATA/" + nameForInstall + ".json"), typeToken.getType());
                         dataList.add(parametersSave.Data6);
                         parametersSave.setData6(nameForInstall, data6Parameters);
@@ -472,26 +473,26 @@ public class IronActivity extends AppCompatActivity {
         moboParameters = parametersSave.MOBO;
         if(moboParameters != null) {
             ramSlotCount = Integer.parseInt(moboParameters.get("Кол-во слотов"));
-            caseView.setBackground(assetFile.getImage("pc_component/parameters/images/CASE/" + parametersSave.Case + ".png"));
+            caseView.setBackground(assetFile.getImage("pc_component/images/CASE/" + parametersSave.Case + ".png"));
             caseInstall = parametersSave.Case != null;
             moboInstall = parametersSave.Mobo != null;
-            moboView.setImageDrawable(assetFile.getImage("pc_component/parameters/images/MOBO/" + parametersSave.Mobo + ".png"));
-            cpuView.setImageDrawable(assetFile.getImage("pc_component/parameters/images/CPU/" + parametersSave.Cpu + ".png"));
-            coolerView.setImageDrawable(assetFile.getImage("pc_component/parameters/images/COOLER/" + parametersSave.Cooler + ".png"));
-            ram1View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/RAM/" + parametersSave.Ram1 + "_top.png"));
-            ram2View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/RAM/" + parametersSave.Ram2 + "_top.png"));
-            ram3View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/RAM/" + parametersSave.Ram3 + "_top.png"));
-            ram4View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/RAM/" + parametersSave.Ram4 + "_top.png"));
-            gpu1View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/GPU/" + parametersSave.Gpu1 + "_horizontal.png"));
-            gpu2View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/GPU/" + parametersSave.Gpu2 + "_horizontal.png"));
+            moboView.setImageDrawable(assetFile.getImage("pc_component/images/MOBO/" + parametersSave.Mobo + ".png"));
+            cpuView.setImageDrawable(assetFile.getImage("pc_component/images/CPU/" + parametersSave.Cpu + ".png"));
+            coolerView.setImageDrawable(assetFile.getImage("pc_component/images/COOLER/" + parametersSave.Cooler + ".png"));
+            ram1View.setImageDrawable(assetFile.getImage("pc_component/images/RAM/" + parametersSave.Ram1 + "_top.png"));
+            ram2View.setImageDrawable(assetFile.getImage("pc_component/images/RAM/" + parametersSave.Ram2 + "_top.png"));
+            ram3View.setImageDrawable(assetFile.getImage("pc_component/images/RAM/" + parametersSave.Ram3 + "_top.png"));
+            ram4View.setImageDrawable(assetFile.getImage("pc_component/images/RAM/" + parametersSave.Ram4 + "_top.png"));
+            gpu1View.setImageDrawable(assetFile.getImage("pc_component/images/GPU/" + parametersSave.Gpu1 + "_horizontal.png"));
+            gpu2View.setImageDrawable(assetFile.getImage("pc_component/images/GPU/" + parametersSave.Gpu2 + "_horizontal.png"));
         }
-        data1View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" +parametersSave.Data1+"_h.png"));
-        data2View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" +parametersSave.Data2+"_h.png"));
-        data3View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" +parametersSave.Data3+"_h.png"));
-        data4View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" +parametersSave.Data4+"_h.png"));
-        data5View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" +parametersSave.Data5+"_h.png"));
-        data6View.setImageDrawable(assetFile.getImage("pc_component/parameters/images/DATA/" +parametersSave.Data6+"_h.png"));
-        psuView.setImageDrawable(assetFile.getImage("pc_component/parameters/images/PSU/" +parametersSave.Psu+".png"));
+        data1View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" +parametersSave.Data1+"_h.png"));
+        data2View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" +parametersSave.Data2+"_h.png"));
+        data3View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" +parametersSave.Data3+"_h.png"));
+        data4View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" +parametersSave.Data4+"_h.png"));
+        data5View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" +parametersSave.Data5+"_h.png"));
+        data6View.setImageDrawable(assetFile.getImage("pc_component/images/DATA/" +parametersSave.Data6+"_h.png"));
+        psuView.setImageDrawable(assetFile.getImage("pc_component/images/PSU/" +parametersSave.Psu+".png"));
     }
 
     //снятие комплектующих с материнки

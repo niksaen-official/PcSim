@@ -49,7 +49,7 @@ public class Custom {
                 View v = layoutInflater.inflate(R.layout.for_spinner_pc,null);
                 ImageView imageView = v.findViewById(R.id.image);
                 if(position>0) {
-                    imageView.setImageDrawable(assetFile.getImage("pc_component/parameters/images/" + text + "/" + array.get(position) + ".png"));
+                    imageView.setImageDrawable(assetFile.getImage("pc_component/images/" + text + "/" + array.get(position) + ".png"));
                 }
                 else{
                     imageView.setVisibility(View.GONE);
@@ -57,27 +57,6 @@ public class Custom {
                 TextView textView = v.findViewById(R.id.text);
                 textView.setTypeface(font, Typeface.BOLD);
                 textView.setText(array.get(position));
-                return v;
-            }
-        };
-        spinner.setAdapter(adapter);
-    }
-
-    public void CustomSpinnerPc(Spinner spinner,
-                                final String[] array, final String text) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.for_spinner, array) {
-            final Typeface font = Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf");
-
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
-                ((TextView) v).setText(text);
-                ((TextView) v).setTypeface(font, Typeface.BOLD);
-                return v;
-            }
-
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                View v = super.getDropDownView(position, convertView, parent);
-                ((TextView) v).setTypeface(font, Typeface.BOLD);
                 return v;
             }
         };

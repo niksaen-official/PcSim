@@ -13,12 +13,6 @@
     <string name="switch_pc">ВЫКЛ</string>
 
     <!--заголовки программ-->
-    <string name="title_for_save_file">Сохранение файла</string>
-    <string name="title_for_open_file">Открытие файла</string>
-    <string name="button_save_open_text">Открыть</string>
-    <string name="video_player_title">Видеоплеер</string>
-    <string name="benchmark">Benchmark</string>
-    <string name="start">Start</string>
     <string name="cpu_tweaker">CPU Tweaker</string>
     <string name="save">Применить</string>
     <string name="warning">Предупреждение</string>
@@ -136,5 +130,7 @@
         <item>Видео плеер</item>
         <item>Аудио плеер</item>
         <item>Персонализация</item>
+        <item>Просмотр температуры</item>
+        <item>Просмотр нагрузки на блок питания</item>
     </string-array>
 </resources>

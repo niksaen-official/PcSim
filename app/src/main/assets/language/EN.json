@@ -78,7 +78,7 @@
   "Protection": "Protection",
   "Power": "Power",
   "CPU temperature": "CPU temperature",
-  "Maximum cpu temperature": "Maximum cpu temperature",
+  "Maximum cpu temperature": "Maximum CPU temperature",
   "Energy consumption": "Energy consumption",
   "Temperature": "Temperature",
   "Maximum temperature": "Maximum temperature",
@@ -99,5 +99,7 @@
   "Transparency": "Transparency",
   "Thickness": "Thickness",
   "Music Player": "Music Player",
-  "Video Player": "Video Player"
+  "Video Player": "Video Player",
+  "Temperature Viewer": "Temperature Viewer",
+  "View Power Supply Load": "View Power Suply Load"
 }
