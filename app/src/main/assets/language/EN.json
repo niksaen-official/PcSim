@@ -101,5 +101,9 @@
   "Music Player": "Music Player",
   "Video Player": "Video Player",
   "Temperature Viewer": "Temperature Viewer",
-  "View Power Supply Load": "View Power Suply Load"
+  "View Power Supply Load": "View Power Suply Load",
+  "Benchmark": "Benchmark",
+  "CPU Overclocking": "CPU Overclocking",
+  "RAM Overclocking": "RAM Overclocking",
+  "GPU Overclocking": "GPU Overclocking"
 }

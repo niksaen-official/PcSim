@@ -8,9 +8,12 @@ import android.graphics.Typeface;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import com.niksaen.pcsim.program.Benchmark;
 import com.niksaen.pcsim.program.Browser;
 import com.niksaen.pcsim.program.CPU_Tweaker;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.TemperatureViewer;
 import com.niksaen.pcsim.program.ViewPowerSupplyLoad;
 import com.niksaen.pcsim.program.checkIron.CheckIron;
@@ -35,6 +39,7 @@ import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity{
     Button button1,button2;
     LinearLayout toolbar;
     TextView greeting;
+    RecyclerView desktop;
 
     PcParametersSave pcParametersSave;
     StyleSave styleSave;
@@ -109,10 +115,7 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void run() {
                         runOnUiThread(() -> {
-                            button2.setText("ВЫКЛ");
-                            button2.setTextColor(Color.RED);
-                            layout.setBackgroundColor(Color.BLACK);
-                            toolbar.setVisibility(View.GONE);
+                            pcWorkOff();
                             button2Click[0] = 0;
                         });
                     }
@@ -133,6 +136,11 @@ public class MainActivity extends AppCompatActivity{
         layout = findViewById(R.id.monitor);
         toolbar =findViewById(R.id.toolbar);
         greeting = findViewById(R.id.greeting);
+        desktop = findViewById(R.id.desktop);
+    }
+
+    private void updateDesktop(){
+
     }
 
     void viewStyle(){
@@ -142,7 +150,6 @@ public class MainActivity extends AppCompatActivity{
         greeting.setTypeface(font,style);
     }
 
-    Activity activity = this;
     void pcWorkOn(){
         greeting.setVisibility(View.VISIBLE);
         greeting.setTextColor(styleSave.GreetingColor);
@@ -154,6 +161,7 @@ public class MainActivity extends AppCompatActivity{
                 runOnUiThread(() -> {
                     greeting.setVisibility(View.GONE);
                     layout.setBackgroundResource(styleSave.BackgroundResource);
+                    desktop.setVisibility(View.VISIBLE);
                     toolbar.setBackgroundColor(styleSave.ToolbarColor);
                     toolbar.setVisibility(View.VISIBLE);
                     test();
@@ -167,6 +175,23 @@ public class MainActivity extends AppCompatActivity{
             timer.schedule(timerTask,900);
         }
     }
+
+    ArrayList<Program> programArrayList = new ArrayList<>();
+    public void pcWorkOff(){
+        button2.setText("ВЫКЛ");
+        button2.setTextColor(Color.RED);
+        layout.setBackgroundColor(Color.BLACK);
+        toolbar.setVisibility(View.GONE);
+        desktop.setVisibility(View.GONE);
+
+        for(Program program:programArrayList){
+            if(program.status != -1) {
+                program.closeProgram();
+            }
+        }
+        programArrayList.clear();
+    }
+
     private void test(){
         Spinner spinner = findViewById(R.id.apps);
         spinner.setVisibility(View.VISIBLE);
@@ -175,59 +200,87 @@ public class MainActivity extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 1:{
-                        new Browser(getBaseContext(),pcParametersSave,layout).openProgram();
+                        Browser program = new Browser(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram();
                         break;
                     }
                     case 2:{
-                        new Benchmark(getBaseContext(),pcParametersSave,layout,activity).openProgram();
+                        Benchmark benchmark = new Benchmark(getBaseContext(),pcParametersSave,layout,MainActivity.this);
+                        programArrayList.add(benchmark);
+                        benchmark.openProgram();
                         break;
                     }
                     case 3:{
-                        new CheckIron(getBaseContext(),pcParametersSave,layout).openProgram();
+                        CheckIron program = new CheckIron(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram();
                         break;
                     }
                     case 4:{
-                        new CPU_Tweaker(getBaseContext(),pcParametersSave,layout).openProgram();
+                        CPU_Tweaker program = new CPU_Tweaker(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram();
                         break;
                     }
                     case 5:{
-                        new GPU_Overclocking(getBaseContext(),pcParametersSave,layout).openProgram();
+                        GPU_Overclocking program = new GPU_Overclocking(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram();
                         break;
                     }
                     case 6:{
-                        new RAM_Overclocking(getBaseContext(),pcParametersSave,layout).openProgram();
+                        RAM_Overclocking program = new RAM_Overclocking(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram();
                         break;
                     }
                     case 7:{
-                        new FileManager(getBaseContext(),pcParametersSave,layout).openProgram();
+                        FileManager program = new FileManager(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram();
                         break;
                     }
                     case 8:{
-                        new Paint(getBaseContext(),layout).openProgram(null);
+                        Paint program = new Paint(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram(null);
                         break;
                     }
                     case 9:{
-                        new Notepad(getBaseContext(),pcParametersSave,layout).openProgram("");
+                        Notepad program = new Notepad(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram("");
                         break;
                     }
                     case 10:{
-                        new VideoPlayer(getBaseContext(),pcParametersSave,layout).openProgram(null);
+                        VideoPlayer program = new VideoPlayer(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram(null);
                         break;
                     }
                     case 11:{
-                        new MusicPlayer(getBaseContext(), pcParametersSave, layout).openProgram(null,null);
+                        MusicPlayer program = new MusicPlayer(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram(null,null);
                         break;
                     }
                     case 12:{
-                        new StyleSettings(getBaseContext(),new View[]{layout,toolbar},pcParametersSave).openProgram();
+                        StyleSettings program = new StyleSettings(getBaseContext(),new View[]{layout,toolbar},pcParametersSave);
+                        programArrayList.add(program);
+                        program.openProgram();
                         break;
                     }
                     case 13:{
-                        new TemperatureViewer(getBaseContext(), pcParametersSave, layout).openProgram();
+                        TemperatureViewer program = new TemperatureViewer(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram();
                         break;
                     }
                     case 14:{
-                        new ViewPowerSupplyLoad(getBaseContext(), pcParametersSave, layout).openProgram();
+                        ViewPowerSupplyLoad program = new ViewPowerSupplyLoad(getBaseContext(),pcParametersSave,layout);
+                        programArrayList.add(program);
+                        program.openProgram();
                         break;
                     }
                 }

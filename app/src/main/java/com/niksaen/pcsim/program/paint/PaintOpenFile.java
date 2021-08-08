@@ -19,6 +19,7 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.fileManager.FileManagerListViewAdapter;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.StyleSave;
@@ -29,7 +30,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PaintOpenFile {
+public class PaintOpenFile extends Program {
 
     Context context;
     Typeface font;

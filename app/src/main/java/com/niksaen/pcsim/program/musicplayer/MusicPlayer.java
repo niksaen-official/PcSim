@@ -21,6 +21,7 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.notepad.NotepadSpinnerAdapter;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
@@ -29,7 +30,7 @@ import com.niksaen.pcsim.save.StyleSave;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MusicPlayer{
+public class MusicPlayer extends Program {
 
     View mainWindow;
     PcParametersSave pcParametersSave;
@@ -57,6 +58,7 @@ public class MusicPlayer{
     ConstraintLayout mainContent;
     LinearLayout taskbar;
     TextView timeText;
+    MusicPlayerOpenFile musicPlayerOpenFile;
 
     NotepadSpinnerAdapter spinnerAdapter;
 
@@ -129,7 +131,7 @@ public class MusicPlayer{
     int CurrentPosition = 0;
     String CurrentMusic;
     public void openProgram(String pathMusic,String pathFolder){
-
+        this.status = 0;
         initView();style();
         if(pathFolder != null){
             CurrentMusic = pathMusic;
@@ -281,8 +283,9 @@ public class MusicPlayer{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 1){
-                    layout.addView(
-                            new MusicPlayerOpenFile(context,new MusicPlayer(context,pcParametersSave,layout)).openFile(),
+
+                    musicPlayerOpenFile = new MusicPlayerOpenFile(context,MusicPlayer.this);
+                    layout.addView(musicPlayerOpenFile.openFile(),
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.MATCH_PARENT);
                     closeProgram();
@@ -328,7 +331,9 @@ public class MusicPlayer{
             mediaPlayer = null;
             runnable = null;
             handler = null;
+            musicPlayerOpenFile.closeProgram();
         }
+        this.status = -1;
     }
     private String convertTime(int milliSeconds){
         int second = milliSeconds/1000;

@@ -102,5 +102,9 @@
   "Music Player": "Музыкальный проигрыватель",
   "Video Player": "Видео проигрыватель",
   "Temperature Viewer": "Просмотр температуры",
-  "View Power Supply Load": "Просмотр нагрузки на блок питания"
+  "View Power Supply Load": "Просмотр нагрузки на блок питания",
+  "Benchmark": "Benchmark",
+  "CPU Overclocking": "CPU Overclocking",
+  "RAM Overclocking": "RAM Overclocking",
+  "GPU Overclocking": "GPU Overclocking"
 }

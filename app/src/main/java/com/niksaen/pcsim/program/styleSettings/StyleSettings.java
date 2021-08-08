@@ -21,13 +21,14 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
 
-public class StyleSettings {
+public class StyleSettings extends Program {
     View[] testView;
     ConstraintLayout layout;
     View toolbar,launch;
@@ -208,6 +209,7 @@ public class StyleSettings {
 
     int i = 0;
     public void openProgram(){
+        this.status = 0;
         initView();initAdapters();style();
 
         mainMenu.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
@@ -468,5 +470,6 @@ public class StyleSettings {
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
         mainWindow = null;
+        this.status = -1;
     }
 }

@@ -21,7 +21,7 @@ import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
 
-public class RAM_Overclocking {
+public class RAM_Overclocking extends Program {
 
     PcParametersSave pcParametersSave;
     ConstraintLayout layout;
@@ -106,12 +106,14 @@ public class RAM_Overclocking {
         fullscreen.setBackgroundResource(button_2_2);
         seekBar.setThumb(context.getDrawable(styleSave.SeekBarThumbResource));
         seekBar.setProgressDrawable(context.getDrawable(styleSave.SeekBarProgressResource));
+        title.setText(words.get("GPU Overclocking"));
     }
 
     private int frequency;
     private double k,power,temperature,throughput;
 
     public void openProgram(){
+        this.status = 0;
         initView();style();
 
         int[] buttonClicks = {0};
@@ -282,5 +284,10 @@ public class RAM_Overclocking {
                 }
             }
         });
+    }
+    @Override
+    public void closeProgram() {
+        mainWindow.setVisibility(View.GONE);
+        this.status = -1;
     }
 }

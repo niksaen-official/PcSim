@@ -24,7 +24,7 @@ import com.niksaen.pcsim.save.StyleSave;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ViewPowerSupplyLoad {
+public class ViewPowerSupplyLoad extends Program {
 
     Context context;
     PcParametersSave pcParametersSave;
@@ -141,6 +141,7 @@ public class ViewPowerSupplyLoad {
     }
 
     public void openProgram(){
+        this.status = 0;
         initAdapter();initView();styleView();
 
         close.setOnClickListener(v -> closeProgram());
@@ -165,7 +166,9 @@ public class ViewPowerSupplyLoad {
 
         layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     }
+    @Override
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
+        this.status = -1;
     }
 }

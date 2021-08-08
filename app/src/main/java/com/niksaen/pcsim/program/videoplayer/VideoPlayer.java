@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.notepad.NotepadSpinnerAdapter;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
@@ -31,7 +32,7 @@ import com.niksaen.pcsim.save.StyleSave;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class VideoPlayer implements SurfaceHolder.Callback {
+public class VideoPlayer extends Program implements SurfaceHolder.Callback {
 
     Context context;
     PcParametersSave pcParametersSave;
@@ -122,6 +123,7 @@ public class VideoPlayer implements SurfaceHolder.Callback {
     Handler handler;
     int CurrentPos = 0;
     public void openProgram(final String PathOpen){
+        this.status = 0;
         mainWindow = layoutInflater.inflate(R.layout.program_videoplayer,null);
         initView();style();
 
@@ -145,7 +147,7 @@ public class VideoPlayer implements SurfaceHolder.Callback {
             }
         });
         close.setOnClickListener(v -> {
-            close();
+            closeProgram();
         });
 
         if(PathOpen != null){
@@ -218,10 +220,10 @@ public class VideoPlayer implements SurfaceHolder.Callback {
                 if(position == 1){
                     mainWindow.setVisibility(View.GONE);
                     mainWindow = null;
-                    new VideoOpenFile(new VideoPlayer(context,pcParametersSave,layout)).openFile();
+                    new VideoOpenFile(VideoPlayer.this).openFile();
                 }
                 else if(position == 2){
-                    close();
+                    closeProgram();
                 }
             }
 
@@ -234,7 +236,7 @@ public class VideoPlayer implements SurfaceHolder.Callback {
         layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
     }
 
-    public void close(){
+    public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
         mainWindow=null;
         if(fileOpenWindow != null){

@@ -20,7 +20,7 @@ import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
 
-public class GPU_Overclocking {
+public class GPU_Overclocking extends Program {
 
     ConstraintLayout layout;
     Context context;
@@ -79,7 +79,7 @@ public class GPU_Overclocking {
 
         seekBar.setMax(2000);
         title.setTextColor(styleSave.TitleColor);
-        title.setText("GPU Overclocking");
+        title.setText(words.get("GPU Overclocking"));
         mainWindow.setBackgroundColor(styleSave.ColorWindow);
         gpu_model.setTextColor(styleSave.TextColor);
         parameters.setTextColor(styleSave.TextColor);
@@ -101,6 +101,7 @@ public class GPU_Overclocking {
     }
 
     public void openProgram(){
+        this.status = 0;
         getLanguage();
         initView();style();
 
@@ -245,5 +246,11 @@ public class GPU_Overclocking {
                 }
             }
         });
+    }
+
+    @Override
+    public void closeProgram() {
+        mainWindow.setVisibility(View.GONE);
+        this.status = -1;
     }
 }

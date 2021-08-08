@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Benchmark {
+public class Benchmark extends Program{
 
     LayoutInflater inflater;
     Typeface font;
@@ -66,7 +66,7 @@ public class Benchmark {
     }
 
     public void openProgram(){
-
+        this.status = 0;
         int[] buttonClicks = {0};
 
         button3.setOnClickListener(v -> {
@@ -98,6 +98,8 @@ public class Benchmark {
 
         layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
     }
+
+    @Override
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
         if(timer != null) {
@@ -105,6 +107,7 @@ public class Benchmark {
             timer = null;
         }
         mainWindow = null;
+        this.status = -1;
     }
 
     private int getCpuBench(){
@@ -192,7 +195,7 @@ public class Benchmark {
             if(data[i] != null){
                 int speed;
                 if(data[i].get("Тип").equals("SSD")){
-                    speed = 14;
+                    speed = 19;
                 }
                 else{
                     speed = 6;
@@ -283,5 +286,6 @@ public class Benchmark {
         button2.setBackgroundResource(button_2_2);
         button3.setBackgroundResource(button_1);
         start_bench.setText(words.get("Start"));
+        title.setText(words.get("Benchmark"));
     }
 }

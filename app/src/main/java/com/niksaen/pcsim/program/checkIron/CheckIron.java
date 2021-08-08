@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class CheckIron {
+public class CheckIron extends Program {
     Context context;
     PcParametersSave pcParametersSave;
     ConstraintLayout layout;
@@ -344,6 +345,7 @@ public class CheckIron {
     }
 
     public void openProgram(){
+        this.status = 0;
         mainWindow = inflater.inflate(R.layout.program_checkiron,null);
         getLanguage();
         initView();
@@ -383,8 +385,10 @@ public class CheckIron {
         }
         return result;
     }
+    @Override
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
         mainWindow = null;
+        this.status = -1;
     }
 }

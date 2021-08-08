@@ -20,17 +20,20 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.notepad.NotepadSpinnerAdapter;
 import com.niksaen.pcsim.save.Language;
+import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class Paint {
+public class Paint extends Program {
 
     Context context;
     ConstraintLayout layout;
+    PcParametersSave pcParametersSave;
 
     private LayoutInflater layoutInflater;
     private Typeface font;
@@ -39,8 +42,9 @@ public class Paint {
 
     private View mainWindow;
 
-    public Paint(Context context, ConstraintLayout layout){
+    public Paint(Context context, PcParametersSave pcParametersSave, ConstraintLayout layout) {
         this.context = context;
+        this.pcParametersSave = pcParametersSave;
         this.layout = layout;
         styleSave = new StyleSave(context);
         layoutInflater = LayoutInflater.from(context);
@@ -143,12 +147,12 @@ public class Paint {
                     paintCanvas.reset();
                 }
                 else if(position == 2){
-                    layout.addView(new PaintSaveFile(new Paint(context,layout)).saveFile(paintCanvas), LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+                    layout.addView(new PaintSaveFile(new Paint(context,pcParametersSave,layout)).saveFile(paintCanvas), LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
                 }
                 else if(position == 3){
                     mainWindow.setVisibility(View.GONE);
                     mainWindow = null;
-                    layout.addView(new PaintOpenFile(new Paint(context,layout)).openFile(), LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+                    layout.addView(new PaintOpenFile(new Paint(context,pcParametersSave,layout)).openFile(), LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
                 }
                 else if(position == 4){
                     closeProgram();

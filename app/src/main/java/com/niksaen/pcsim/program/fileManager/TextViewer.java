@@ -15,12 +15,13 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
 
-public class TextViewer  {
+public class TextViewer  extends Program {
 
     Context context;
 

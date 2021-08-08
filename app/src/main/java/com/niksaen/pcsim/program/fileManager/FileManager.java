@@ -18,6 +18,7 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
@@ -25,7 +26,7 @@ import com.niksaen.pcsim.save.StyleSave;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FileManager {
+public class FileManager extends Program {
     private View mainWindow;
     private ConstraintLayout monitor;
 
@@ -97,8 +98,11 @@ public class FileManager {
         listViewFiles.setAdapter(fileManagerListViewAdapter);
     }
 
-    public void openProgram(){
 
+    TextViewer  textViewer;
+    ImageViewer imageViewer;
+    public void openProgram(){
+        this.status = 0;
         initView();initAdapter();style();
 
         listViewFiles.setOnItemClickListener((parent, view, position, id) -> {
@@ -109,10 +113,12 @@ public class FileManager {
                 ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
             }
             else if(files.get(position).endsWith(".txt")){
-                new TextViewer(context,monitor).openProgram(FileUtil.readFile(files.get(position)));
+                textViewer = new TextViewer(context,monitor);
+                textViewer.openProgram(FileUtil.readFile(files.get(position)));
             }
             else if(files.get(position).endsWith(".png") || files.get(position).endsWith(".jpg")){
-                new ImageViewer(context,monitor).openProgram(files.get(position));
+                imageViewer = new ImageViewer(context,monitor);
+                imageViewer.openProgram(files.get(position));
             }
         });
 
@@ -127,12 +133,7 @@ public class FileManager {
         });
 
         //нажатие кнопок
-        buttonClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeProgram();
-            }
-        });
+        buttonClose.setOnClickListener(v -> closeProgram());
         final int[] button2ClickCount = {0};
         buttonFullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,9 +162,15 @@ public class FileManager {
         monitor.addView(mainWindow,ConstraintLayout.LayoutParams.MATCH_PARENT,ConstraintLayout.LayoutParams.MATCH_PARENT);
     }
 
+    @Override
     public void closeProgram(){
-        if(mainWindow!=null) {
-            mainWindow.setVisibility(View.GONE);
+        mainWindow.setVisibility(View.GONE);
+        if(textViewer != null){
+            textViewer.closeProgram();
         }
+        if(imageViewer != null){
+            imageViewer.closeProgram();
+        }
+        this.status = -1;
     }
 }

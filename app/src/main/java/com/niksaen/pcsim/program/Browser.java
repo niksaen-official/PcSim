@@ -24,7 +24,7 @@ import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
 
-public class Browser {
+public class Browser extends Program {
     View mainWindow;
     PcParametersSave pcParametersSave;
     StyleSave styleSave;
@@ -46,6 +46,7 @@ public class Browser {
     }
     int i=0;
     public void openProgram(){
+        this.status = 0;
         WebView webView = mainWindow.findViewById(R.id.web);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("https://google.com/");
@@ -110,9 +111,11 @@ public class Browser {
 
         rollUp.setBackgroundResource(styleSave.RollUpButtonImageRes);
     }
+    @Override
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
         mainWindow = null;
+        this.status = -1;
     }
 
     private void languageSettings(){

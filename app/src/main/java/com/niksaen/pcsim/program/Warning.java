@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.PortableView;
 
-public class Warning {
+public class Warning extends Program {
 
     private ConstraintLayout layout;
     private LayoutInflater layoutInflater;
@@ -26,6 +26,7 @@ public class Warning {
         font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
     }
     public void warn(String text){
+        this.status = 0;
         result = false;
         mainWindow = layoutInflater.inflate(R.layout.program_warning,null);
 
@@ -58,5 +59,10 @@ public class Warning {
             mainWindow = null;
         });
         layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+    }
+    @Override
+    public void closeProgram() {
+        mainWindow.setVisibility(View.GONE);
+        this.status = -1;
     }
 }

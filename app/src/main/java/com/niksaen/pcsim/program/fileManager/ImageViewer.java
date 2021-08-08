@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.StyleSave;
 
@@ -25,7 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
-public class ImageViewer {
+public class ImageViewer extends Program {
 
     Context context;
 
@@ -106,6 +107,7 @@ public class ImageViewer {
         layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     }
 
+    @Override
     public void closeProgram() {
         mainWindow.setVisibility(View.GONE);
         mainWindow = null;

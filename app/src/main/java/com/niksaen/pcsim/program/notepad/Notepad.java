@@ -18,13 +18,14 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
 
-public class Notepad  {
+public class Notepad extends Program {
 
     Context context;
     PcParametersSave pcParametersSave;
@@ -92,7 +93,10 @@ public class Notepad  {
         spinner.setAdapter(notepadSpinnerAdapter);
     }
 
+    NotepadFileOpen notepadFileOpen;
+    NotepadFileSave notepadFileSave;
     public void openProgram(String text){
+        this.status = 0;
         initView();style();
         if(text != null){
             editText.setText(text);
@@ -104,14 +108,20 @@ public class Notepad  {
                     editText.setText("");
                 }
                 else if(position == 2){
-                    layout.addView(new NotepadFileSave(context).saveFile(editText.getText().toString()), LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    notepadFileSave = new NotepadFileSave(context);
+                    layout.addView(
+                            notepadFileSave.saveFile(editText.getText().toString()),
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT);
                 }
                 else if(position == 3) {
                     mainWindow.setVisibility(View.GONE);
                     mainWindow = null;
+                    notepadFileOpen = new NotepadFileOpen(context,Notepad.this);
                     layout.addView(
-                            new NotepadFileOpen(context,new Notepad(context,pcParametersSave,layout)).openFile(),
-                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                            notepadFileOpen.openFile(),
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT);
                 }
                 else if(position == 4){
                     closeProgram();
@@ -158,6 +168,9 @@ public class Notepad  {
         if(mainWindow != null){
             mainWindow.setVisibility(View.GONE);
             mainWindow = null;
+            if(notepadFileOpen != null) notepadFileOpen.closeProgram();
+            if(notepadFileSave != null) notepadFileSave.closeProgram();
+            this.status = -1;
         }
     }
 }

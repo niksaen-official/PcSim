@@ -18,6 +18,7 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.fileManager.FileManagerListViewAdapter;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.StyleSave;
@@ -25,7 +26,7 @@ import com.niksaen.pcsim.save.StyleSave;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class VideoOpenFile {
+public class VideoOpenFile extends Program {
 
     View mainWindow;
     Context context;
@@ -155,5 +156,12 @@ public class VideoOpenFile {
             mainWindow = null;
         });
         layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    public void closeProgram() {
+        mainWindow.setVisibility(View.GONE);
+        mainWindow = null;
+        this.status = -1;
     }
 }

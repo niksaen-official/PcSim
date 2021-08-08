@@ -21,7 +21,7 @@ import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
 
-public class CPU_Tweaker {
+public class CPU_Tweaker extends Program {
 
     PcParametersSave pcParametersSave;
     ConstraintLayout layout;
@@ -92,10 +92,11 @@ public class CPU_Tweaker {
         temperature.setTypeface(typeface,Typeface.BOLD);
         frequency.setTypeface(typeface,Typeface.BOLD);
         save.setTypeface(typeface,Typeface.BOLD);
+        title.setText(words.get("CPU Overclocking"));
     }
 
     public void openProgram(){
-
+        this.status = 0;
         getLanguage();initView();style();
 
         int[] buttonClicks = {0};
@@ -188,8 +189,10 @@ public class CPU_Tweaker {
         });
         layout.addView(mainWindow,ConstraintLayout.LayoutParams.MATCH_PARENT,ConstraintLayout.LayoutParams.MATCH_PARENT);
     }
+    @Override
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
         mainWindow = null;
+        this.status = -1;
     }
 }

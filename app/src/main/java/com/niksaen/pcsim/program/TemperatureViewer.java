@@ -30,7 +30,7 @@ import com.niksaen.pcsim.save.StyleSave;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class TemperatureViewer {
+public class TemperatureViewer extends Program {
     Context context;
     PcParametersSave pcParametersSave;
     ConstraintLayout layout;
@@ -119,6 +119,7 @@ public class TemperatureViewer {
     }
 
     public void openProgram(){
+        this.status = 0;
         initAdapter();initView();styleView();
 
         close.setOnClickListener(v -> closeProgram());
@@ -143,8 +144,10 @@ public class TemperatureViewer {
 
         layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     }
+    @Override
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
+        this.status = -1;
     }
 }
 
