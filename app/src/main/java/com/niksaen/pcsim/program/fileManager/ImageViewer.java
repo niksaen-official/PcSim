@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
@@ -33,12 +34,15 @@ public class ImageViewer extends Program {
     View mainWindow;
     ConstraintLayout layout;
     StyleSave styleSave;
+    MainActivity mainActivity;
 
     Typeface font;
 
-    public ImageViewer(Context context, ConstraintLayout layout) {
-        this.context = context;
-        this.layout = layout;
+    public ImageViewer(MainActivity activity) {
+        mainActivity = activity;
+        this.context = activity.getBaseContext();
+        this.layout = activity.layout;
+
         font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
         mainWindow = LayoutInflater.from(context).inflate(R.layout.program_filemanager_imageviewer, null);
         styleSave = new StyleSave(context);
@@ -104,13 +108,18 @@ public class ImageViewer extends Program {
             }
         });
         close.setOnClickListener(v -> closeProgram());
-        layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
 
     @Override
     public void closeProgram() {
         mainWindow.setVisibility(View.GONE);
-        mainWindow = null;
+        this.status = -1;
     }
 
     private Drawable getImage(String path) {

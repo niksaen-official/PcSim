@@ -1,4 +1,4 @@
-package com.niksaen.pcsim.classes.desktop;
+package com.niksaen.pcsim.classes;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,17 +10,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.program.Program;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
 
 public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHolder> {
 
     Context context;
     String[] apps;
-    public DesktopAdapter(Context context,String[] apps){
-        this.context = context;
+    MainActivity activity;
+    HashMap<String,Program> programHashMap;
+    public DesktopAdapter(MainActivity activity, String[] apps){
+        this.context = activity.getBaseContext();
         this.apps = apps;
+        this.activity = activity;
+        Program programForGetHashmap = new Program();
+        programForGetHashmap.initHashMap(activity);
+        programHashMap = programForGetHashmap.programHashMap;
     }
 
 
@@ -34,6 +44,13 @@ public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull DesktopAdapter.ViewHolder holder, int position) {
+        holder.app_icon.setImageResource(Program.programIcon.get(apps[position]));
+        holder.app_name.setText(apps[position]);
+        holder.itemView.setOnClickListener(v -> {
+            Program program = programHashMap.get(apps[position]);
+            program.openProgram();
+        }
+        );
 
     }
 

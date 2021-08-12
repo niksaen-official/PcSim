@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
@@ -34,13 +35,16 @@ public class NotepadFileOpen extends Program {
     Typeface font;
     StyleSave styleSave;
     Notepad notepad;
+    MainActivity mainActivity;
 
-    public NotepadFileOpen(Context context,Notepad notepad){
-        this.context = context;
+    public NotepadFileOpen(MainActivity activity){
+        this.context = activity.getBaseContext();
+        mainActivity = activity;
+
         fileOpenWindow = LayoutInflater.from(context).inflate(R.layout.program_for_open_file,null);
         font = Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf");
         styleSave = new StyleSave(context);
-        this.notepad = notepad;
+        notepad = new Notepad(activity);
     }
 
     Button close,fullscreen;
@@ -89,7 +93,8 @@ public class NotepadFileOpen extends Program {
 
     String buffPathOpen = "",buffPath2;
     View buff;
-    public View openFile(){
+    public void openProgram(){
+        this.status = 0;
         initView();style();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -163,14 +168,18 @@ public class NotepadFileOpen extends Program {
                 }
             }
         });
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fileOpenWindow.setVisibility(View.GONE);
-                fileOpenWindow = null;
-            }
-        });
-        return fileOpenWindow;
+        close.setOnClickListener(v -> closeProgram());
+        if(fileOpenWindow.getParent() == null) {
+            mainActivity.layout.addView(fileOpenWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            fileOpenWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
 
+    @Override
+    public void closeProgram() {
+        fileOpenWindow.setVisibility(View.GONE);
+        this.status = -1;
+    }
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 
 import com.niksaen.pcsim.classes.AssetFile;
@@ -28,20 +29,23 @@ import java.util.HashMap;
 
 public class FileManager extends Program {
     private View mainWindow;
-    private ConstraintLayout monitor;
+    private final ConstraintLayout layout;
+    MainActivity mainActivity;
 
-    private LayoutInflater layoutInflater;
-    private Typeface font;
-    private Context context;
+    private final LayoutInflater layoutInflater;
+    private final Typeface font;
+    private final Context context;
 
-    private PcParametersSave pcParametersSave;
+    private final PcParametersSave pcParametersSave;
 
-    public FileManager(Context context, PcParametersSave pcParametersSave, ConstraintLayout monitor){
-        layoutInflater=LayoutInflater.from(context);
-        this.context = context;
-        this.monitor = monitor;
+    public FileManager(MainActivity activity){
+        mainActivity = activity;
+        this.context = activity.getBaseContext();
+        this.layout = activity.layout;
+        this.pcParametersSave = activity.pcParametersSave;
+
+        layoutInflater=LayoutInflater.from(activity.getBaseContext());
         font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
-        this.pcParametersSave = pcParametersSave;
     }
 
     private String path = "",path2 = "";
@@ -113,11 +117,11 @@ public class FileManager extends Program {
                 ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
             }
             else if(files.get(position).endsWith(".txt")){
-                textViewer = new TextViewer(context,monitor);
+                textViewer = new TextViewer(mainActivity);
                 textViewer.openProgram(FileUtil.readFile(files.get(position)));
             }
             else if(files.get(position).endsWith(".png") || files.get(position).endsWith(".jpg")){
-                imageViewer = new ImageViewer(context,monitor);
+                imageViewer = new ImageViewer(mainActivity);
                 imageViewer.openProgram(files.get(position));
             }
         });
@@ -158,8 +162,12 @@ public class FileManager extends Program {
                 }
             }
         });
-
-        monitor.addView(mainWindow,ConstraintLayout.LayoutParams.MATCH_PARENT,ConstraintLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
 
     @Override

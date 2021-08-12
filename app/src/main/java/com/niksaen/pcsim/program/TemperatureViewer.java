@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.CustomListViewAdapter;
@@ -34,15 +35,17 @@ public class TemperatureViewer extends Program {
     Context context;
     PcParametersSave pcParametersSave;
     ConstraintLayout layout;
+    MainActivity mainActivity;
 
     Typeface font;
     View mainWindow;
     StyleSave styleSave;
 
-    public TemperatureViewer(Context context, PcParametersSave pcParametersSave, ConstraintLayout layout){
-        this.context = context;
-        this.pcParametersSave = pcParametersSave;
-        this.layout = layout;
+    public TemperatureViewer(MainActivity activity){
+        this.context = activity.getBaseContext();
+        this.pcParametersSave = activity.pcParametersSave;
+        this.layout = activity.layout;
+        mainActivity = activity;
 
         font = Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf");
         mainWindow = LayoutInflater.from(context).inflate(R.layout.program_temperature_viewer,null);
@@ -120,6 +123,7 @@ public class TemperatureViewer extends Program {
 
     public void openProgram(){
         this.status = 0;
+        getLanguage();
         initAdapter();initView();styleView();
 
         close.setOnClickListener(v -> closeProgram());
@@ -141,8 +145,12 @@ public class TemperatureViewer extends Program {
                 buttonClicks[0]=0;
             }
         });
-
-        layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
     @Override
     public void closeProgram(){

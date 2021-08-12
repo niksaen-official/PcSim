@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
@@ -33,7 +34,7 @@ public class Benchmark extends Program{
     Context context;
     ConstraintLayout layout;
     PcParametersSave pcParametersSave;
-    Activity activity;
+    MainActivity activity;
 
     TextView title,cpu_bench,ram_bench,gpu_bench,data_bench,all_bench;
     ConstraintLayout content;
@@ -44,13 +45,13 @@ public class Benchmark extends Program{
 
     StyleSave styleSave;
 
-    public Benchmark(Context context, PcParametersSave pcParametersSave, ConstraintLayout layout, Activity activity){
-        inflater = LayoutInflater.from(context);
-        font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
-        this.context = context;
-        this.layout = layout;
+    public Benchmark(MainActivity activity){
+        this.context = activity.getBaseContext();
+        this.layout = activity.layout;
         this.activity = activity;
-        this.pcParametersSave = pcParametersSave;
+        this.pcParametersSave = activity.pcParametersSave;
+        inflater = LayoutInflater.from(activity.getBaseContext());
+        font = Typeface.createFromAsset(activity.getBaseContext().getAssets(), "fonts/pixelFont.ttf");
         mainWindow = inflater.inflate(R.layout.program_benchmark,null);
         styleSave = new StyleSave(context);
         mainWindow.setBackgroundColor(styleSave.ColorWindow);
@@ -95,8 +96,12 @@ public class Benchmark extends Program{
             v.setVisibility(View.GONE);
             bench();
         });
-
-        layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        activity.programArrayList.add(this);
     }
 
     @Override
@@ -106,7 +111,6 @@ public class Benchmark extends Program{
             timer.cancel();
             timer = null;
         }
-        mainWindow = null;
         this.status = -1;
     }
 

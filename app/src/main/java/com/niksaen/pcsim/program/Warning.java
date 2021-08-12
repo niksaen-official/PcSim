@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.PortableView;
 
@@ -18,12 +19,14 @@ public class Warning extends Program {
     private LayoutInflater layoutInflater;
     private Typeface font;
     private View mainWindow;
+    MainActivity activity;
     private boolean result;
 
-    public Warning(Context context, ConstraintLayout layout){
-        this.layout = layout;
-        layoutInflater =LayoutInflater.from(context);
-        font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
+    public Warning(MainActivity activity){
+        this.activity = activity;
+        this.layout = activity.layout;
+        layoutInflater =LayoutInflater.from(activity.getBaseContext());
+        font = Typeface.createFromAsset(activity.getBaseContext().getAssets(), "fonts/pixelFont.ttf");
     }
     public void warn(String text){
         this.status = 0;
@@ -55,10 +58,14 @@ public class Warning extends Program {
             mainWindow = null;
         });
         mainWindow.findViewById(R.id.close).setOnClickListener(v -> {
-            mainWindow.setVisibility(View.GONE);
-            mainWindow = null;
+            closeProgram();
         });
-        layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else {
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        activity.programArrayList.add(this);
     }
     @Override
     public void closeProgram() {

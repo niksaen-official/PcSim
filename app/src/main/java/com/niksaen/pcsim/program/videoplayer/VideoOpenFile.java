@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
@@ -34,11 +35,14 @@ public class VideoOpenFile extends Program {
     VideoPlayer videoPlayer;
     StyleSave styleSave;
     Typeface font;
+    MainActivity mainActivity;
 
-    public VideoOpenFile(VideoPlayer videoPlayer){
-        context = videoPlayer.context;
-        layout = videoPlayer.layout;
-        this.videoPlayer = videoPlayer;
+    public VideoOpenFile(MainActivity activity){
+        context = activity.getBaseContext();
+        layout = activity.layout;
+        this.mainActivity = activity;
+
+        videoPlayer = new VideoPlayer(activity);
         mainWindow = LayoutInflater.from(context).inflate(R.layout.program_for_open_file,null);
         styleSave = new StyleSave(context);
         font = Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf");
@@ -91,36 +95,31 @@ public class VideoOpenFile extends Program {
 
     String buffPathOpen = "",buffPath2 = "";
     View buffView;
-    public void openFile(){
+    public void openProgram(){
+        this.status = 0;
         initView();style();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(FileUtil.isDirectory(folders.get(position))) {
-                    buffPathOpen = folders.get(position);
-                    FileUtil.listDir(folders.get(position), folders);
-                    ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-                    if(buffView != null){
-                        buffView.setBackgroundColor(styleSave.ThemeColor1);
-                    }
-                }
-                else if(folders.get(position).endsWith(".mp4")){
-                    view.setBackgroundColor(styleSave.ThemeColor2);
-                    buffView = view;
-                    buffPathOpen = folders.get(position);
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            if(FileUtil.isDirectory(folders.get(position))) {
+                buffPathOpen = folders.get(position);
+                FileUtil.listDir(folders.get(position), folders);
+                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+                if(buffView != null){
+                    buffView.setBackgroundColor(styleSave.ThemeColor1);
                 }
             }
+            else if(folders.get(position).endsWith(".mp4")){
+                view.setBackgroundColor(styleSave.ThemeColor2);
+                buffView = view;
+                buffPathOpen = folders.get(position);
+            }
         });
-        pageDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(buffPathOpen.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/"){
-                    v.setVisibility(View.VISIBLE);
-                    buffPathOpen = buffPathOpen.substring(0, buffPathOpen.lastIndexOf("/"));
-                    FileUtil.listDir(buffPathOpen, folders);
-                    ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-                }
+        pageDown.setOnClickListener(v -> {
+            if(buffPathOpen.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/"){
+                v.setVisibility(View.VISIBLE);
+                buffPathOpen = buffPathOpen.substring(0, buffPathOpen.lastIndexOf("/"));
+                FileUtil.listDir(buffPathOpen, folders);
+                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
             }
         });
 
@@ -151,17 +150,18 @@ public class VideoOpenFile extends Program {
                 buttonClickCount[0]=0;
             }
         });
-        close.setOnClickListener(v -> {
-            mainWindow.setVisibility(View.GONE);
-            mainWindow = null;
-        });
-        layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+        close.setOnClickListener(v -> closeProgram());
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
 
     @Override
     public void closeProgram() {
         mainWindow.setVisibility(View.GONE);
-        mainWindow = null;
         this.status = -1;
     }
 }

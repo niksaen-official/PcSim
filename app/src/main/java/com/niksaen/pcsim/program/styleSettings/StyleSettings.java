@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
@@ -39,14 +40,16 @@ public class StyleSettings extends Program {
     Context context;
     String SettingsGroup = "",BackgroundType="";
 
-    public StyleSettings(Context context,View[] testView,PcParametersSave pcParametersSave){
-        this.testView = testView;
+    MainActivity mainActivity;
+
+    public StyleSettings(MainActivity activity){
+        this.testView = new View[]{activity.layout,activity.toolbar};
+        this.pcParametersSave = activity.pcParametersSave;
+        this.context = activity.getBaseContext();
+        mainActivity = activity;
 
         layout = (ConstraintLayout) testView[0];
         toolbar = testView[1];
-
-        this.pcParametersSave = pcParametersSave;
-        this.context = context;
         styleSave = new StyleSave(context);
         mainWindow = LayoutInflater.from(context).inflate(R.layout.program_style_settings,null);
         font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
@@ -376,6 +379,7 @@ public class StyleSettings extends Program {
             return true;
         });
         saveButton.setOnClickListener(v -> {
+            // background settings save
             if (SettingsGroup.equals("Background")) {
                 switch (BackgroundType) {
                     case "Color": {
@@ -445,31 +449,33 @@ public class StyleSettings extends Program {
             style();
         });
         closeButton.setOnClickListener(v -> closeProgram());
-        fullscreenModeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(i==0){
-                    mainWindow.setScaleY(0.65f);
-                    mainWindow.setScaleX(0.65f);
-                    PortableView portableView = new PortableView(mainWindow);
-                    fullscreenModeButton.setBackgroundResource(fullscreenMode1ImageRes);
-                    i++;
-                }
-                else {
-                    mainWindow.setY(0);
-                    mainWindow.setX(0);
-                    mainWindow.setScaleX(1);
-                    mainWindow.setScaleY(1);
-                    mainWindow.setOnTouchListener(null);
-                    i=0;                }
+        fullscreenModeButton.setOnClickListener(v -> {
+            if(i==0){
+                mainWindow.setScaleY(0.65f);
+                mainWindow.setScaleX(0.65f);
+                PortableView portableView = new PortableView(mainWindow);
+                fullscreenModeButton.setBackgroundResource(fullscreenMode1ImageRes);
+                i++;
+            }
+            else {
+                mainWindow.setY(0);
+                mainWindow.setX(0);
+                mainWindow.setScaleX(1);
+                mainWindow.setScaleY(1);
+                mainWindow.setOnTouchListener(null);
+                fullscreenModeButton.setBackgroundResource(fullscreenMode2ImageRes);
+                i=0;
             }
         });
-
-        layout.addView(mainWindow,LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
-        mainWindow = null;
         this.status = -1;
     }
 }

@@ -1,4 +1,4 @@
-package com.niksaen.pcsim.program.checkIron;
+package com.niksaen.pcsim.program.deviceManager;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
@@ -24,11 +25,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class CheckIron extends Program {
+public class DeviceManager extends Program {
     Context context;
     PcParametersSave pcParametersSave;
     ConstraintLayout layout;
     StyleSave styleSave;
+    MainActivity mainActivity;
 
     Typeface font;
     LayoutInflater inflater;
@@ -43,13 +45,14 @@ public class CheckIron extends Program {
 
     String[] motherboardParameters,cpuParameters,psuParameters;
     ArrayList<String> ramParameters,dataParameters,gpuParameters;
-    CheckIronSpinnerAdapter motherboardAdapter,cpuAdapter,psuAdapter,ramAdapter,dataAdapter,gpuAdapter;
+    SpinnerAdapter motherboardAdapter,cpuAdapter,psuAdapter,ramAdapter,dataAdapter,gpuAdapter;
 
     HashMap<String,String> language;
-    public CheckIron(Context context, PcParametersSave pcParametersSave, ConstraintLayout monitor){
-        this.context = context;
-        this.pcParametersSave = pcParametersSave;
-        this.layout = monitor;
+    public DeviceManager(MainActivity mainActivity){
+        this.context = mainActivity.getBaseContext();
+        this.pcParametersSave = mainActivity.pcParametersSave;
+        this.layout = mainActivity.layout;
+        this.mainActivity = mainActivity;
 
         styleSave = new StyleSave(context);
         font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
@@ -305,12 +308,12 @@ public class CheckIron extends Program {
         fullscreenMode2 = styleSave.FullScreenMode2ImageRes;
         fullscreenMode.setBackgroundResource(fullscreenMode2);
 
-        motherboardAdapter = new CheckIronSpinnerAdapter(context,0,motherboardParameters,language.get("Motherboard"),"MOBO");
-        cpuAdapter = new CheckIronSpinnerAdapter(context,0,cpuParameters,language.get("CPU"),"CPU");
-        ramAdapter = new CheckIronSpinnerAdapter(context,0,ramParameters,language.get("RAM"),"RAM");
-        psuAdapter = new CheckIronSpinnerAdapter(context,0,psuParameters,language.get("Power supply"),"PSU");
-        dataAdapter = new CheckIronSpinnerAdapter(context,0,dataParameters,language.get("Storage device"),"DATA");
-        gpuAdapter = new CheckIronSpinnerAdapter(context,0,gpuParameters,language.get("Graphics card"),"GPU");
+        motherboardAdapter = new SpinnerAdapter(context,0,motherboardParameters,language.get("Motherboard"),"MOBO");
+        cpuAdapter = new SpinnerAdapter(context,0,cpuParameters,language.get("CPU"),"CPU");
+        ramAdapter = new SpinnerAdapter(context,0,ramParameters,language.get("RAM"),"RAM");
+        psuAdapter = new SpinnerAdapter(context,0,psuParameters,language.get("Power supply"),"PSU");
+        dataAdapter = new SpinnerAdapter(context,0,dataParameters,language.get("Storage device"),"DATA");
+        gpuAdapter = new SpinnerAdapter(context,0,gpuParameters,language.get("Graphics card"),"GPU");
 
         motherboardAdapter.BackgroundColor_DropDownView = styleSave.ThemeColor2;
         motherboardAdapter.TextColor_DropDownView = styleSave.TextColor;
@@ -354,8 +357,7 @@ public class CheckIron extends Program {
 
         int[] buttonClicks = {0};
         close.setOnClickListener(v -> {
-            mainWindow.setVisibility(View.GONE);
-            mainWindow = null;
+            closeProgram();
         });
         fullscreenMode.setOnClickListener(v->{
             if(buttonClicks[0] == 0){
@@ -374,8 +376,12 @@ public class CheckIron extends Program {
                 buttonClicks[0]=0;
             }
         });
-
-        layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
 
     private ArrayList<String> concat(String[][] arrays){
@@ -388,7 +394,6 @@ public class CheckIron extends Program {
     @Override
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
-        mainWindow = null;
         this.status = -1;
     }
 }

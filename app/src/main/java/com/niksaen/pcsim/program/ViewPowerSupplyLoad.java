@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.CustomListViewAdapter;
@@ -29,15 +30,17 @@ public class ViewPowerSupplyLoad extends Program {
     Context context;
     PcParametersSave pcParametersSave;
     ConstraintLayout layout;
+    MainActivity mainActivity;
 
     Typeface font;
     View mainWindow;
     StyleSave styleSave;
 
-    public ViewPowerSupplyLoad(Context context, PcParametersSave pcParametersSave, ConstraintLayout layout){
-        this.context = context;
-        this.pcParametersSave = pcParametersSave;
-        this.layout = layout;
+    public ViewPowerSupplyLoad(MainActivity activity){
+        this.context = activity.getBaseContext();
+        this.pcParametersSave = activity.pcParametersSave;
+        this.layout = activity.layout;
+        mainActivity = activity;
 
         font = Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf");
         mainWindow = LayoutInflater.from(context).inflate(R.layout.program_temperature_viewer,null);
@@ -163,8 +166,12 @@ public class ViewPowerSupplyLoad extends Program {
                 buttonClicks[0]=0;
             }
         });
-
-        layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else {
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
     @Override
     public void closeProgram(){

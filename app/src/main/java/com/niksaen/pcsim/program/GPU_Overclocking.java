@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
@@ -25,6 +26,7 @@ public class GPU_Overclocking extends Program {
     ConstraintLayout layout;
     Context context;
     PcParametersSave pcParametersSave;
+    MainActivity mainActivity;
 
     View mainWindow;
     Typeface typeface;
@@ -33,10 +35,11 @@ public class GPU_Overclocking extends Program {
     StyleSave styleSave;
     HashMap<String,String> words;
 
-    public GPU_Overclocking(Context context, PcParametersSave pcParametersSave, ConstraintLayout layout){
-        this.context = context;
-        this.layout = layout;
-        this.pcParametersSave = pcParametersSave;
+    public GPU_Overclocking(MainActivity activity){
+        this.context = activity.getBaseContext();
+        this.layout = activity.layout;
+        this.pcParametersSave = activity.pcParametersSave;
+        mainActivity = activity;
         typeface = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
         styleSave = new StyleSave(context);
 
@@ -107,8 +110,7 @@ public class GPU_Overclocking extends Program {
 
         int[] buttonClicks = {0};
         close.setOnClickListener(v -> {
-            mainWindow.setVisibility(View.GONE);
-            mainWindow = null;
+            closeProgram();
         });
         fullscreen.setOnClickListener(v->{
             if(buttonClicks[0] == 0){
@@ -153,8 +155,12 @@ public class GPU_Overclocking extends Program {
                 });
             }
         }
-
-        layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
     float throughput,k,temperature,temperature_coefficient,power,power_coefficient,power_fan,main;
     private void overclocking(HashMap<String,String> GPU,int slot){

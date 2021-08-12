@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
@@ -38,7 +39,8 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
     PcParametersSave pcParametersSave;
     ConstraintLayout layout;
 
-    View mainWindow,fileOpenWindow;
+    View mainWindow;
+    MainActivity mainActivity;
 
     private SurfaceHolder surfaceHolder;
     private SurfaceView videoView;
@@ -50,13 +52,14 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
 
     String VIDEO_PATH;
 
-    public VideoPlayer(Context context, PcParametersSave pcParametersSave, ConstraintLayout layout){
+    public VideoPlayer(MainActivity activity){
+        mainActivity = activity;
+        this.context = activity.getBaseContext();
+        this.pcParametersSave = activity.pcParametersSave;
+        this.layout = activity.layout;
+
         layoutInflater = LayoutInflater.from(context);
         font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
-
-        this.context = context;
-        this.pcParametersSave = pcParametersSave;
-        this.layout = layout;
         styleSave = new StyleSave(context);
     }
 
@@ -161,10 +164,8 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
         videoView.setOnClickListener(v -> {
             taskBar.setVisibility(View.VISIBLE);
             menu.setVisibility(View.VISIBLE);
-            if(mediaPlayer != null) {
-                seekBarTime.setProgress(mediaPlayer.getCurrentPosition());
-                timeText.setText(convertTime(mediaPlayer.getCurrentPosition()));
-            }
+            seekBarTime.setProgress(mediaPlayer.getCurrentPosition());
+            timeText.setText(convertTime(mediaPlayer.getCurrentPosition()));
             new Handler().postDelayed(() -> {taskBar.setVisibility(View.GONE);menu.setVisibility(View.GONE);},1500);
         });
 
@@ -179,8 +180,7 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                if(mediaPlayer != null)
-                    mediaPlayer.pause();
+                mediaPlayer.pause();
             }
 
             @Override
@@ -196,18 +196,14 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
         //пауза
         play_pause.setOnClickListener(v -> {
             if(buttonClickCount[1] == 0){
-                if(mediaPlayer != null){
-                    mediaPlayer.seekTo(CurrentPos);
-                    mediaPlayer.start();
-                }
+                mediaPlayer.seekTo(CurrentPos);
+                mediaPlayer.start();
                 v.setBackgroundResource(styleSave.PauseButtonRes);
                 buttonClickCount[1] = 1;
             }
             else{
-                if(mediaPlayer != null){
-                    CurrentPos = mediaPlayer.getCurrentPosition();
-                    mediaPlayer.pause();
-                }
+                CurrentPos = mediaPlayer.getCurrentPosition();
+                mediaPlayer.pause();
                 v.setBackgroundResource(styleSave.PlayButtonImage);
                 buttonClickCount[1] = 0;
             }
@@ -218,9 +214,8 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 1){
-                    mainWindow.setVisibility(View.GONE);
-                    mainWindow = null;
-                    new VideoOpenFile(VideoPlayer.this).openFile();
+                    closeProgram();
+                    new VideoOpenFile(mainActivity).openProgram();
                 }
                 else if(position == 2){
                     closeProgram();
@@ -232,22 +227,118 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
 
             }
         });
-
-        layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
+    public void openProgram(){
+        this.status = 0;
+        mainWindow = layoutInflater.inflate(R.layout.program_videoplayer,null);
+        initView();style();
+
+        final int[] buttonClickCount = {0,1};
+        fullScreen.setOnClickListener(v -> {
+            if(buttonClickCount[0]==0){
+                fullScreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                mainWindow.setScaleX(0.7f);
+                mainWindow.setScaleY(0.7f);
+                PortableView portableView1 = new PortableView(mainWindow);
+                buttonClickCount[0]++;
+            }
+            else{
+                fullScreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                mainWindow.setScaleX(1);
+                mainWindow.setScaleY(1);
+                mainWindow.setX(0);
+                mainWindow.setY(0);
+                mainWindow.setOnTouchListener(null);
+                buttonClickCount[0]=0;
+            }
+        });
+        close.setOnClickListener(v -> {
+            closeProgram();
+        });
+
+        //показываем таскбар при нажатии на видео
+        videoView.setOnClickListener(v -> {
+            taskBar.setVisibility(View.VISIBLE);
+            menu.setVisibility(View.VISIBLE);
+        });
+
+        // если пользователь перематывает видео то таск бар не убирается
+        seekBarTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                taskBar.setVisibility(View.VISIBLE);
+                menu.setVisibility(View.VISIBLE);
+                CurrentPos = progress;
+                new Handler().postDelayed(() -> {taskBar.setVisibility(View.GONE);menu.setVisibility(View.GONE);},1500);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if(mediaPlayer != null) {
+                    mediaPlayer.seekTo(CurrentPos);
+                    mediaPlayer.start();
+                }
+                new Handler().postDelayed(() -> {taskBar.setVisibility(View.GONE);menu.setVisibility(View.GONE);},1500);
+            }
+        });
+
+        //пауза
+        play_pause.setOnClickListener(v -> {
+            if(buttonClickCount[1] == 0){
+                v.setBackgroundResource(styleSave.PauseButtonRes);
+                buttonClickCount[1] = 1;
+            }
+            else{
+                v.setBackgroundResource(styleSave.PlayButtonImage);
+                buttonClickCount[1] = 0;
+            }
+            new Handler().postDelayed(() -> {taskBar.setVisibility(View.GONE);menu.setVisibility(View.GONE);},1500);
+        });
+
+        menu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 1){
+                    closeProgram();
+                    new VideoOpenFile(mainActivity).openProgram();
+                }
+                else if(position == 2){
+                    closeProgram();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
+    }
+
 
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
-        mainWindow=null;
-        if(fileOpenWindow != null){
-            fileOpenWindow.setVisibility(View.GONE);
-            fileOpenWindow=null;
-        }
         if(mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        this.status = -1;
     }
 
     private String convertTime(int milliSeconds){

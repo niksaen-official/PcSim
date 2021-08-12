@@ -1,4 +1,4 @@
-package com.niksaen.pcsim.program.checkIron;
+package com.niksaen.pcsim.program.deviceManager;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,7 +17,7 @@ import com.niksaen.pcsim.classes.AssetFile;
 
 import java.util.ArrayList;
 
-public class CheckIronSpinnerAdapter extends ArrayAdapter<String> {
+public class SpinnerAdapter extends ArrayAdapter<String> {
     Context context;
     String[] objects;
     LayoutInflater layoutInflater;
@@ -25,7 +25,7 @@ public class CheckIronSpinnerAdapter extends ArrayAdapter<String> {
     String str;
     String type;
 
-    public CheckIronSpinnerAdapter(@NonNull Context context, int resource, @NonNull String[] objects,String text,String type) {
+    public SpinnerAdapter(@NonNull Context context, int resource, @NonNull String[] objects, String text, String type) {
         super(context, resource, objects);
         this.context = context;
         this.objects = objects;
@@ -41,7 +41,7 @@ public class CheckIronSpinnerAdapter extends ArrayAdapter<String> {
     public int BackgroundColor_View = Color.TRANSPARENT;
     public int BackgroundColor_DropDownView = Color.TRANSPARENT;
 
-    public CheckIronSpinnerAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> objects,String text,String type) {
+    public SpinnerAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> objects, String text, String type) {
         super(context, resource, objects);
         this.context = context;
         this.objects = objects.toArray(new String[0]);

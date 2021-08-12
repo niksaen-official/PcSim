@@ -13,11 +13,13 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
@@ -40,14 +42,17 @@ public class PaintSaveFile extends Program {
     ConstraintLayout layout;
     Paint paint;
     StyleSave styleSave;
+    MainActivity activity;
 
-    public PaintSaveFile(Paint paint){
-        context = paint.context;
-        layout = paint.layout;
-        this.paint = paint;
+    public PaintSaveFile(MainActivity activity){
+        context = activity.getBaseContext();
+        layout = activity.layout;
+        this.activity = activity;
+
         fileSaveWindow = LayoutInflater.from(context).inflate(R.layout.program_for_save_file,null);
         font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
         styleSave = new StyleSave(context);
+        paint = new Paint(activity);
     }
 
 
@@ -104,8 +109,8 @@ public class PaintSaveFile extends Program {
     }
 
     View buff;
-    public View saveFile(final View view){
-
+    public void openProgram(final View view){
+        status = 0;
         initView();style();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -195,19 +200,22 @@ public class PaintSaveFile extends Program {
                 }
             }
         });
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fileSaveWindow.setVisibility(View.GONE);
-                fileSaveWindow = null;
-            }
-        });
-
-        return fileSaveWindow;
+        close.setOnClickListener(v -> closeProgram());
+        if(fileSaveWindow.getParent() == null){
+            activity.layout.addView(fileSaveWindow, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+        }else {
+            fileSaveWindow.setVisibility(View.VISIBLE);
+        }
+        activity.programArrayList.add(this);
     }
 
+    @Override
+    public void closeProgram() {
+        fileSaveWindow.setVisibility(View.GONE);
+        status = -1;
+    }
 
-    void saveImage(String path,View view){
+    void saveImage(String path, View view){
         FileUtil.writeFile(path,"");
         Bitmap createBitmap = Bitmap.createBitmap(view.getWidth(),view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(createBitmap);

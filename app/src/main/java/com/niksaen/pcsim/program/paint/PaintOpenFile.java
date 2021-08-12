@@ -10,11 +10,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
@@ -32,26 +34,29 @@ import java.util.HashMap;
 
 public class PaintOpenFile extends Program {
 
-    Context context;
-    Typeface font;
-    View fileOpenWindow;
-    ConstraintLayout layout;
-    Paint paint;
-    StyleSave styleSave;
+    private Context context;
+    private Typeface font;
+    private View fileOpenWindow;
+    private ConstraintLayout layout;
+    private Paint paint;
+    private StyleSave styleSave;
+    private MainActivity mainActivity;
 
-    public PaintOpenFile(Paint paint){
-        context = paint.context;
-        layout = paint.layout;
-        this.paint = paint;
+    public PaintOpenFile(MainActivity activity){
+        context = activity.getBaseContext();
+        layout = activity.layout;
+        mainActivity = activity;
+
         fileOpenWindow = LayoutInflater.from(context).inflate(R.layout.program_for_open_file,null);
         font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
         styleSave = new StyleSave(context);
+        paint = new Paint(activity);
     }
 
-    Button close,fullscreen;
-    TextView title;
-    Button openButton,pageDown;
-    ListView listView;
+    private Button close,fullscreen;
+    private TextView title;
+    private Button openButton,pageDown;
+    private  ListView listView;
 
     private void initView(){
         close = fileOpenWindow.findViewById(R.id.close);
@@ -62,9 +67,9 @@ public class PaintOpenFile extends Program {
         pageDown = fileOpenWindow.findViewById(R.id.pageDown);
     }
 
-    ArrayList<String> folders;
-    FileManagerListViewAdapter listViewAdapter;
-    HashMap<String,String> words;
+    private ArrayList<String> folders;
+    private FileManagerListViewAdapter listViewAdapter;
+    private HashMap<String,String> words;
     private void style(){
         title.setTypeface(font,Typeface.BOLD);
         openButton.setTypeface(font,Typeface.BOLD);
@@ -92,9 +97,10 @@ public class PaintOpenFile extends Program {
         title.setText(words.get("Opening file"));
     }
 
-    String buffPathOpen = "",buffPath2;
-    View buff;
-    public View openFile(){
+    private String buffPathOpen = "",buffPath2;
+    private View buff;
+    public void openProgram(){
+        this.status = 0;
         initView();style();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -168,15 +174,21 @@ public class PaintOpenFile extends Program {
                 }
             }
         });
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fileOpenWindow.setVisibility(View.GONE);
-                fileOpenWindow = null;
-            }
-        });
-        return fileOpenWindow;
+        close.setOnClickListener(v -> closeProgram());
+        if(fileOpenWindow.getParent() == null) {
+            mainActivity.layout.addView(fileOpenWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else {
+            fileOpenWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
+
+    @Override
+    public void closeProgram() {
+        fileOpenWindow.setVisibility(View.GONE);
+        status = -1;
+    }
+
     Drawable getImage(String path){
         try {
             // получаем входной поток

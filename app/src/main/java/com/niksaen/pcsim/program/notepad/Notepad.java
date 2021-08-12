@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
@@ -31,18 +32,21 @@ public class Notepad extends Program {
     PcParametersSave pcParametersSave;
     LayoutInflater layoutInflater;
     StyleSave styleSave;
+    MainActivity mainActivity;
 
     View mainWindow;
     ConstraintLayout layout;
 
     Typeface font;
-    public Notepad(Context context, PcParametersSave pcParametersSave, ConstraintLayout layout){
-        this.context=context;
-        this.pcParametersSave=pcParametersSave;
-        this.layout = layout;
+    public Notepad(MainActivity activity){
+        this.context=activity.getBaseContext();
+        this.pcParametersSave=activity.pcParametersSave;
+        this.layout = activity.layout;
+
         font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
         layoutInflater = LayoutInflater.from(context);
         styleSave = new StyleSave(context);
+        mainActivity = activity;
     }
 
     TextView title;
@@ -93,8 +97,6 @@ public class Notepad extends Program {
         spinner.setAdapter(notepadSpinnerAdapter);
     }
 
-    NotepadFileOpen notepadFileOpen;
-    NotepadFileSave notepadFileSave;
     public void openProgram(String text){
         this.status = 0;
         initView();style();
@@ -108,20 +110,11 @@ public class Notepad extends Program {
                     editText.setText("");
                 }
                 else if(position == 2){
-                    notepadFileSave = new NotepadFileSave(context);
-                    layout.addView(
-                            notepadFileSave.saveFile(editText.getText().toString()),
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT);
+                    new NotepadFileSave(mainActivity).openProgram(editText.getText().toString());
                 }
                 else if(position == 3) {
-                    mainWindow.setVisibility(View.GONE);
-                    mainWindow = null;
-                    notepadFileOpen = new NotepadFileOpen(context,Notepad.this);
-                    layout.addView(
-                            notepadFileOpen.openFile(),
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT);
+                    closeProgram();
+                    new NotepadFileOpen(mainActivity).openProgram();
                 }
                 else if(position == 4){
                     closeProgram();
@@ -162,15 +155,79 @@ public class Notepad extends Program {
             }
         });
         close.setOnClickListener(v -> closeProgram());
-        layout.addView(mainWindow,LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
-    }
-    public void closeProgram(){
-        if(mainWindow != null){
-            mainWindow.setVisibility(View.GONE);
-            mainWindow = null;
-            if(notepadFileOpen != null) notepadFileOpen.closeProgram();
-            if(notepadFileSave != null) notepadFileSave.closeProgram();
-            this.status = -1;
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
         }
+        mainActivity.programArrayList.add(this);
+    }
+
+    public void openProgram(){
+        this.status = 0;
+        initView();style();
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 1){
+                    editText.setText("");
+                }
+                else if(position == 2){
+                    new NotepadFileSave(mainActivity).openProgram(editText.getText().toString());
+                }
+                else if(position == 3) {
+                    closeProgram();
+                    new NotepadFileOpen(mainActivity).openProgram();
+                }
+                else if(position == 4){
+                    closeProgram();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        final int[] button2ClickCount = {0};
+        fullscreen.setOnClickListener(v -> {
+            if(button2ClickCount[0]==0){
+                fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                mainWindow.setScaleX(0.7f);
+                mainWindow.setScaleY(0.7f);
+                mainWindow.setX(0f);
+                mainWindow.setY(0f);
+                PortableView portableView1 = new PortableView(mainWindow);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mainWindow.setZ(0f);
+                }
+                button2ClickCount[0]++;
+            }
+            else{
+                fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                mainWindow.setScaleX(1);
+                mainWindow.setScaleY(1);
+                mainWindow.setX(0);
+                mainWindow.setY(0);
+                mainWindow.setOnTouchListener(null);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mainWindow.setZ(10f);
+                }
+                button2ClickCount[0]=0;
+            }
+        });
+        close.setOnClickListener(v -> closeProgram());
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
+    }
+
+    public void closeProgram(){
+        mainWindow.setVisibility(View.GONE);
+        this.status = -1;
     }
 }

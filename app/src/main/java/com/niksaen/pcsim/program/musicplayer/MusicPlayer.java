@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
@@ -36,15 +37,18 @@ public class MusicPlayer extends Program {
     PcParametersSave pcParametersSave;
     StyleSave styleSave;
     Context context;
+    MainActivity mainActivity;
 
     ConstraintLayout layout;
 
     Typeface font;
 
-    public MusicPlayer(Context context, PcParametersSave pcParametersSave, ConstraintLayout layout){
-        this.context = context;
-        this.layout = layout;
-        this.pcParametersSave = pcParametersSave;
+    public MusicPlayer(MainActivity activity){
+        this.context = activity.getBaseContext();
+        this.layout = activity.layout;
+        this.pcParametersSave = activity.pcParametersSave;
+        mainActivity = activity;
+
         styleSave = new StyleSave(context);
         mainWindow = LayoutInflater.from(context).inflate(R.layout.program_musicplayer,null);
         font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
@@ -283,11 +287,8 @@ public class MusicPlayer extends Program {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 1){
-
-                    musicPlayerOpenFile = new MusicPlayerOpenFile(context,MusicPlayer.this);
-                    layout.addView(musicPlayerOpenFile.openFile(),
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT);
+                    musicPlayerOpenFile = new MusicPlayerOpenFile(mainActivity);
+                    musicPlayerOpenFile.openProgram();
                     closeProgram();
                 }
             }
@@ -299,7 +300,6 @@ public class MusicPlayer extends Program {
         });
 
         close.setOnClickListener(v -> closeProgram());
-
         final int[] buttonClick = {0};
         fullscreen.setOnClickListener(v -> {
             if(buttonClick[0] == 0){
@@ -320,18 +320,70 @@ public class MusicPlayer extends Program {
             }
         });
 
-        layout.addView(mainWindow,LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
+    }
+    public void openProgram(){
+        this.status = 0;
+        initView();style();
+
+        //меню
+        menuSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 1){
+                    musicPlayerOpenFile = new MusicPlayerOpenFile(mainActivity);
+                    musicPlayerOpenFile.openProgram();
+                    closeProgram();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        close.setOnClickListener(v -> closeProgram());
+        final int[] buttonClick = {0};
+        fullscreen.setOnClickListener(v -> {
+            if(buttonClick[0] == 0){
+                mainWindow.setScaleX(0.65f);
+                mainWindow.setScaleY(0.65f);
+                PortableView portableView = new PortableView(mainWindow);
+                v.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                buttonClick[0] = 1;
+            }
+            else{
+                mainWindow.setScaleX(1);
+                mainWindow.setScaleY(1);
+                mainWindow.setX(0);
+                mainWindow.setY(0);
+                mainWindow.setOnTouchListener(null);
+                v.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                buttonClick[0] = 0;
+            }
+        });
+
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
-        mainWindow = null;
         if(mediaPlayer != null){
             mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer = null;
-            runnable = null;
-            handler = null;
-            musicPlayerOpenFile.closeProgram();
+            CurrentPosition = 0;
+            mediaPlayer.seekTo(CurrentPosition);
+            seekBarTime.setProgress(0);
+            timeText.setText("00:00");
         }
         this.status = -1;
     }

@@ -13,8 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
@@ -35,13 +38,18 @@ public class MusicPlayerOpenFile extends Program {
     Typeface font;
     StyleSave styleSave;
     MusicPlayer musicPlayer;
+    MainActivity mainActivity;
+    ConstraintLayout layout;
 
-    public MusicPlayerOpenFile(Context context, MusicPlayer musicPlayer){
-        this.context = context;
+    public MusicPlayerOpenFile(MainActivity activity){
+        this.context = activity.getBaseContext();
+        this.musicPlayer = new MusicPlayer(activity);
+        this.layout = activity.layout;
+        mainActivity = activity;
+
         fileOpenWindow = LayoutInflater.from(context).inflate(R.layout.program_for_open_file,null);
         font = Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf");
         styleSave = new StyleSave(context);
-        this.musicPlayer = musicPlayer;
     }
 
     Button close,fullscreen;
@@ -91,7 +99,8 @@ public class MusicPlayerOpenFile extends Program {
     String buffPathOpen = "",buffPath2;
     String pathFolder;
     View buff;
-    public View openFile(){
+    public void openProgram(){
+        this.status = 0;
         initView();style();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -130,8 +139,7 @@ public class MusicPlayerOpenFile extends Program {
             public void onClick(View v) {
                 if(buffPathOpen.endsWith(".mp3")) {
                     musicPlayer.openProgram(buffPathOpen,buffPathOpen.substring(0, buffPathOpen.lastIndexOf("/")));
-                    fileOpenWindow.setVisibility(View.GONE);
-                    fileOpenWindow = null;
+                    closeProgram();
                 }
             }
         });
@@ -169,11 +177,20 @@ public class MusicPlayerOpenFile extends Program {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fileOpenWindow.setVisibility(View.GONE);
-                fileOpenWindow = null;
+               closeProgram();
             }
         });
-        return fileOpenWindow;
+        if(fileOpenWindow.getParent() == null){
+            layout.addView(fileOpenWindow,LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            fileOpenWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
 
+    @Override
+    public void closeProgram() {
+        fileOpenWindow.setVisibility(View.GONE);
+        this.status = -1;
+    }
 }

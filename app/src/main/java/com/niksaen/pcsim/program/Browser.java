@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
@@ -29,25 +30,26 @@ public class Browser extends Program {
     PcParametersSave pcParametersSave;
     StyleSave styleSave;
     Context context;
+    MainActivity mainActivity;
 
     ConstraintLayout layout;
 
     Typeface font;
     String titleText;
 
-    public Browser(Context context, PcParametersSave pcParametersSave,ConstraintLayout layout){
-        this.context = context;
-        this.layout = layout;
-        this.pcParametersSave = pcParametersSave;
+    public Browser(MainActivity activity){
+        this.context = activity.getBaseContext();
+        mainActivity = activity;
+        this.layout = activity.layout;
+        this.pcParametersSave = activity.pcParametersSave;
         styleSave = new StyleSave(context);
-        mainWindow = LayoutInflater.from(context).inflate(R.layout.program_browser,null);
         font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
-        style();
+        mainWindow = LayoutInflater.from(context).inflate(R.layout.program_browser,null);
     }
     int i=0;
     public void openProgram(){
         this.status = 0;
-        WebView webView = mainWindow.findViewById(R.id.web);
+        style();
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("https://google.com/");
         webView.getSettings().setSupportZoom(true);
@@ -84,14 +86,21 @@ public class Browser extends Program {
                 i=0;
             }
         });
-        layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else {
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
 
     TextView title;
     Button close,fullscreenMode,rollUp;
+    WebView webView;
     int fullscreenMode1,fullscreenMode2;
     private void style(){
         languageSettings();
+        webView  = mainWindow.findViewById(R.id.web);
         title=mainWindow.findViewById(R.id.title);
         close = mainWindow.findViewById(R.id.close);
         fullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
@@ -114,7 +123,6 @@ public class Browser extends Program {
     @Override
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
-        mainWindow = null;
         this.status = -1;
     }
 

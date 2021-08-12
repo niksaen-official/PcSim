@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
@@ -27,15 +28,17 @@ public class CPU_Tweaker extends Program {
     ConstraintLayout layout;
     Context context;
     StyleSave styleSave;
+    MainActivity mainActivity;
 
     View mainWindow;
     Typeface typeface;
     int button_2_1, button_2_2;
 
-    public CPU_Tweaker(Context context, PcParametersSave pcParametersSave, ConstraintLayout layout){
-        this.pcParametersSave = pcParametersSave;
-        this.layout = layout;
-        this.context = context;
+    public CPU_Tweaker(MainActivity activity){
+        this.pcParametersSave = activity.pcParametersSave;
+        this.layout = activity.layout;
+        this.context = activity.getBaseContext();
+        mainActivity = activity;
         styleSave = new StyleSave(context);
         typeface = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
 
@@ -101,8 +104,7 @@ public class CPU_Tweaker extends Program {
 
         int[] buttonClicks = {0};
         close.setOnClickListener(v -> {
-            mainWindow.setVisibility(View.GONE);
-            mainWindow = null;
+            closeProgram();
         });
         fullScreen.setOnClickListener(v->{
             if(buttonClicks[0] == 0){
@@ -187,12 +189,16 @@ public class CPU_Tweaker extends Program {
                 }
             }
         });
-        layout.addView(mainWindow,ConstraintLayout.LayoutParams.MATCH_PARENT,ConstraintLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null) {
+            layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
     @Override
     public void closeProgram(){
         mainWindow.setVisibility(View.GONE);
-        mainWindow = null;
         this.status = -1;
     }
 }

@@ -10,11 +10,13 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
@@ -33,9 +35,12 @@ public class NotepadFileSave extends Program {
     View fileSaveWindow;
     Typeface font;
     StyleSave styleSave;
+    MainActivity mainActivity;
 
-    public NotepadFileSave(Context context){
-        this.context = context;
+    public NotepadFileSave(MainActivity activity){
+        this.context = activity.getBaseContext();
+        mainActivity = activity;
+
         fileSaveWindow = LayoutInflater.from(context).inflate(R.layout.program_for_save_file,null);
         font = Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf");
         styleSave = new StyleSave(context);
@@ -94,8 +99,8 @@ public class NotepadFileSave extends Program {
     }
 
     View buff;
-    public View saveFile(final String textFile){
-
+    public void openProgram(final String textFile){
+        this.status = 0;
         initView();style();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -190,12 +195,20 @@ public class NotepadFileSave extends Program {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fileSaveWindow.setVisibility(View.GONE);
-                fileSaveWindow = null;
+                closeProgram();
             }
         });
-
-        return fileSaveWindow;
+        if(fileSaveWindow.getParent() == null) {
+            mainActivity.layout.addView(fileSaveWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            fileSaveWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
 
+    @Override
+    public void closeProgram() {
+        fileSaveWindow.setVisibility(View.GONE);
+        this.status = -1;
+    }
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
@@ -26,6 +27,7 @@ public class RAM_Overclocking extends Program {
     PcParametersSave pcParametersSave;
     ConstraintLayout layout;
     Context context;
+    MainActivity mainActivity;
 
     View mainWindow;
     Typeface typeface;
@@ -33,14 +35,14 @@ public class RAM_Overclocking extends Program {
             button_2_2=R.drawable.button_2_2_color17;
     StyleSave styleSave;
 
-    public RAM_Overclocking(Context context, PcParametersSave pcParametersSave, ConstraintLayout layout){
-        this.pcParametersSave = pcParametersSave;
-        this.layout = layout;
-        this.context = context;
+    public RAM_Overclocking(MainActivity activity){
+        this.pcParametersSave = activity.pcParametersSave;
+        this.layout = activity.layout;
+        this.context = activity.getBaseContext();
+        mainActivity = activity;
         styleSave = new StyleSave(context);
         typeface = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
         mainWindow=LayoutInflater.from(context).inflate(R.layout.program_ram_overclocking,null);
-        getLanguage();
     }
 
     private TextView parameters,title,ram_model;
@@ -114,12 +116,12 @@ public class RAM_Overclocking extends Program {
 
     public void openProgram(){
         this.status = 0;
+        getLanguage();
         initView();style();
 
         int[] buttonClicks = {0};
         close.setOnClickListener(v -> {
-            mainWindow.setVisibility(View.GONE);
-            mainWindow = null;
+            closeProgram();
         });
         fullscreen.setOnClickListener(v->{
             if(buttonClicks[0] == 0){
@@ -183,8 +185,12 @@ public class RAM_Overclocking extends Program {
                 ram_overclocking(pcParametersSave.RAM4,4);
             });
         }
-
-        layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        if(mainWindow.getParent() == null){
+            layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        }else{
+            mainWindow.setVisibility(View.VISIBLE);
+        }
+        mainActivity.programArrayList.add(this);
     }
 
     @SuppressLint("SetTextI18n")
@@ -268,10 +274,10 @@ public class RAM_Overclocking extends Program {
                 }
                 else{
                     if(frequency>pcParametersSave.maxRamFrequency){
-                        new Warning(context,layout).warn(words.get("The frequency of the RAM is too high"));
+                        new Warning(mainActivity).warn(words.get("The frequency of the RAM is too high"));
                     }
                     else if(frequency<pcParametersSave.minRamFrequency){
-                        new Warning(context,layout).warn(words.get("RAM frequency is too low"));
+                        new Warning(mainActivity).warn(words.get("RAM frequency is too low"));
                     }
                 }
             }
