@@ -1,6 +1,7 @@
 package com.niksaen.pcsim.classes;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHol
     public void onBindViewHolder(@NonNull @NotNull DesktopAdapter.ViewHolder holder, int position) {
         holder.app_icon.setImageResource(Program.programIcon.get(apps[position]));
         holder.app_name.setText(apps[position]);
+        holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
         holder.itemView.setOnClickListener(v -> {
             Program program = programHashMap.get(apps[position]);
             program.openProgram();

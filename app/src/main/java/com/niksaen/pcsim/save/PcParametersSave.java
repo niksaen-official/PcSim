@@ -224,13 +224,12 @@ public class PcParametersSave {
         preferences.edit().putString("DATA6",new Gson().toJson(DATA6)).apply();
     }
 
-    public void setPsu(String Psu,HashMap<String,String> PSU){
+    public void setPsu(String Psu,HashMap<String,String> PSU) {
         this.Psu = Psu;
         this.PSU = PSU;
-        preferences.edit().putString("Psu",Psu).apply();
-        preferences.edit().putString("PSU",new Gson().toJson(PSU)).apply();
+        preferences.edit().putString("Psu", Psu).apply();
+        preferences.edit().putString("PSU", new Gson().toJson(PSU)).apply();
     }
-    public int maxRamFrequency, minRamFrequency;
 
 
     // получение типа главного диска
@@ -298,6 +297,7 @@ public class PcParametersSave {
     /**
      * Проверка пк на правильность сборки
      * */
+    public int maxRamFrequency, minRamFrequency;
     public boolean getPcWork(){
         boolean work = false;
         if(CASE != null){
@@ -504,9 +504,7 @@ public class PcParametersSave {
 
     // температура железа
     public double currentCpuTemperature(){ return Integer.parseInt(CPU.get("Частота")) * 0.016f - (Double.parseDouble(COOLER.get("TDP")) - Integer.parseInt(CPU.get("TDP"))) / 8; }
-    public double maxCpuTemperature(){
-        return Integer.parseInt(CPU.get("TDP"))*1.5-20;
-    }
+    public double maxCpuTemperature(){ return Integer.parseInt(CPU.get("TDP"))*1.5-10; }
     public  float currentRamTemperature( HashMap<String,String> RAM){
         if(RAM != null) {
             float frequency = Integer.parseInt(RAM.get("Частота"));

@@ -149,7 +149,7 @@ public class CPU_Tweaker extends Program {
                     current_temperature = progress * 0.016f - (Double.parseDouble(pcParametersSave.COOLER.get("TDP")) - Integer.parseInt(pcParametersSave.CPU.get("TDP"))) / 8;
                     temperature.setText(
                             words.get("CPU temperature")+": " + (int) current_temperature + "C\n" +
-                                    words.get("Maximum CPU temperature")+": " + (int) max_temperature + "C\n" +
+                                    words.get("Maximum cpu temperature")+": " + (int) max_temperature + "C\n" +
                                     words.get("Energy consumption")+": " + (int) power + "W");
                 }
             }
@@ -170,7 +170,7 @@ public class CPU_Tweaker extends Program {
                         current_temperature = 1000 * 0.016f - (Double.parseDouble(pcParametersSave.COOLER.get("TDP")) - Integer.parseInt(pcParametersSave.CPU.get("TDP"))) / 8;
                         temperature.setText(
                                 words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
-                                        words.get("Maximum CPU temperature") + ": " + (int) max_temperature + "C\n" +
+                                        words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
                                         words.get("Energy consumption") + ": " + (int) power + "W");
                     }
                 }
@@ -178,15 +178,20 @@ public class CPU_Tweaker extends Program {
         });
 
         save.setOnClickListener(v -> {
-            if(pcParametersSave.CPU != null) {
-                pcParametersSave.CPU.put("Частота", String.valueOf(current_frequency));
-                pcParametersSave.setCpu(pcParametersSave.Cpu, pcParametersSave.CPU);
-                if (current_temperature > max_temperature && !pcParametersSave.psuEnoughPower()) {
-                    pcParametersSave.setCpu(null,null);
-                    pcParametersSave.setPsu(null,null);
-                } else if (current_temperature > max_temperature) {
-                    pcParametersSave.setCpu(null,null);
-                }
+            pcParametersSave.CPU.put("Частота", String.valueOf(current_frequency));
+            pcParametersSave.setCpu(pcParametersSave.Cpu, pcParametersSave.CPU);
+            if (current_temperature > max_temperature && !pcParametersSave.psuEnoughPower()) {
+                pcParametersSave.setCpu(pcParametersSave.Cpu + "[Сломано]", null);
+                pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]", null);
+                mainActivity.blackDeadScreen(new String[]{"0xAA0001","0xBB0004"});
+            } else if (current_temperature > max_temperature) {
+                pcParametersSave.setCpu(pcParametersSave.Cpu + "[Сломано]",null);
+                mainActivity.blackDeadScreen(new String[]{"0xAA0001"});
+            }
+            else if(current_temperature > max_temperature+20){
+                pcParametersSave.setCpu(pcParametersSave.Cpu + "[Сломано]",null);
+                pcParametersSave.setCooler(pcParametersSave.Cooler + "[Сломано]", null);
+                mainActivity.blackDeadScreen(new String[]{"0xAA0001","0xBB0004"});
             }
         });
         if(mainWindow.getParent() == null) {

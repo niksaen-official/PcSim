@@ -274,20 +274,21 @@ public class RAM_Overclocking extends Program {
                 }
                 else{
                     if(frequency>pcParametersSave.maxRamFrequency){
-                        new Warning(mainActivity).warn(words.get("The frequency of the RAM is too high"));
+                        mainActivity.blackDeadScreen(new String[]{"0xAA0004"});
                     }
                     else if(frequency<pcParametersSave.minRamFrequency){
-                        new Warning(mainActivity).warn(words.get("RAM frequency is too low"));
+                        mainActivity.blackDeadScreen(new String[]{"0xAA0005"});
                     }
                 }
             }
             else{
                 switch (slot){
-                    case 1:{pcParametersSave.setRam1(null,null);break;}
-                    case 2:{pcParametersSave.setRam2(null,null);break;}
-                    case 3:{pcParametersSave.setRam3(null,null);break;}
-                    case 4:{pcParametersSave.setRam4(null,null);break;}
+                    case 1:{pcParametersSave.setRam1(pcParametersSave.Ram1 +"[Сломано]",null);break;}
+                    case 2:{pcParametersSave.setRam2(pcParametersSave.Ram2 +"[Сломано]",null);break;}
+                    case 3:{pcParametersSave.setRam3(pcParametersSave.Ram3 +"[Сломано]",null);break;}
+                    case 4:{pcParametersSave.setRam4(pcParametersSave.Ram4 +"[Сломано]",null);break;}
                 }
+                mainActivity.blackDeadScreen(new String[]{"0xAA0003"});
             }
         });
     }

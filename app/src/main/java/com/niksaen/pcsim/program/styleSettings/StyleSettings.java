@@ -23,6 +23,7 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.Warning;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
@@ -383,17 +384,14 @@ public class StyleSettings extends Program {
             if (SettingsGroup.equals("Background")) {
                 switch (BackgroundType) {
                     case "Color": {
-                        layout.setBackgroundResource(backgroundResourceColorAdapter.currentColorId);
                         styleSave.BackgroundResource = backgroundResourceColorAdapter.currentColorId;
                         break;
                     }
                     case "Gradient": {
-                        layout.setBackgroundResource(backgroundResourceGradientAdapter.currentGradientId);
                         styleSave.BackgroundResource = backgroundResourceGradientAdapter.currentGradientId;
                         break;
                     }
                     case "Image": {
-                        layout.setBackgroundResource(backgroundResourceImageAdapter.currentImageId);
                         styleSave.BackgroundResource = backgroundResourceImageAdapter.currentImageId;
                         break;
                     }
@@ -446,7 +444,7 @@ public class StyleSettings extends Program {
             testGreeting.setVisibility(View.GONE);
 
             styleSave.setStyle();
-            style();
+            new Warning(mainActivity).warn(words.get("For some changes to take effect, restart your computer."));
         });
         closeButton.setOnClickListener(v -> closeProgram());
         fullscreenModeButton.setOnClickListener(v -> {

@@ -1,6 +1,7 @@
 package com.niksaen.pcsim.program;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
@@ -47,19 +48,12 @@ public class Warning extends Program {
         title.setTypeface(font,Typeface.BOLD);
         message.setTypeface(font,Typeface.BOLD);
         message.setText(text);
-
-        cancel.setOnClickListener(v -> {
-            mainWindow.setVisibility(View.GONE);
-            mainWindow = null;
-        });
-        save.setOnClickListener(v -> {
-            result = true;
-            mainWindow.setVisibility(View.GONE);
-            mainWindow = null;
-        });
         mainWindow.findViewById(R.id.close).setOnClickListener(v -> {
             closeProgram();
         });
+
+        cancel.setOnClickListener(v -> closeProgram());
+
         if(mainWindow.getParent() == null) {
             layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         }else {
@@ -67,6 +61,7 @@ public class Warning extends Program {
         }
         activity.programArrayList.add(this);
     }
+
     @Override
     public void closeProgram() {
         mainWindow.setVisibility(View.GONE);

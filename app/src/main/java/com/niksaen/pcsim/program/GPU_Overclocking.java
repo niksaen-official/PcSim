@@ -212,6 +212,7 @@ public class GPU_Overclocking extends Program {
                             words.get("Frequency")+": "+500+"MHz"+"\n" +
                                     words.get("Throughput")+": "+throughput+"Gb/s"+"\n" +
                                     words.get("Temperature")+": "+temperature+"C\n" +
+                                    words.get("Maximum temperature")+": "+"85C\n" +
                                     words.get("Energy consumption")+": "+power+"W");
                 }
             }
@@ -224,6 +225,7 @@ public class GPU_Overclocking extends Program {
                 words.get("Frequency")+": "+frequency+"MHz"+"\n" +
                         words.get("Throughput")+": "+throughput+"Gb/s"+"\n" +
                         words.get("Temperature")+": "+temperature+"C\n" +
+                        words.get("Maximum temperature")+": "+"85C\n" +
                         words.get("Energy consumption")+": "+power+"W");
 
         save.setOnClickListener(v -> {
@@ -232,11 +234,13 @@ public class GPU_Overclocking extends Program {
                 GPU.put("Пропускная способность", String.valueOf(throughput));
                 pcParametersSave.setGpu1(pcParametersSave.Gpu1, GPU);
                 if(temperature>85 && !pcParametersSave.psuEnoughPower()){
-                    pcParametersSave.setGpu1(null,null);
-                    pcParametersSave.setPsu(null,null);
+                    pcParametersSave.setGpu1(pcParametersSave.Gpu1 + "[Сломано]", null);
+                    pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]", null);
+                    mainActivity.blackDeadScreen(new String[]{"0xAA0002","0xBB0004"});
                 }
                 else if(!pcParametersSave.psuEnoughPower()){
-                    pcParametersSave.setPsu(null,null);
+                    pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]",null);
+                    mainActivity.blackDeadScreen(new String[]{"0xAA0002"});
                 }
             }
             if (slot == 2) {
@@ -244,11 +248,13 @@ public class GPU_Overclocking extends Program {
                 GPU.put("Пропускная способность", String.valueOf(throughput));
                 pcParametersSave.setGpu2(pcParametersSave.Gpu2, GPU);
                 if(temperature>85 && !pcParametersSave.psuEnoughPower()){
-                    pcParametersSave.setGpu2(null,null);
-                    pcParametersSave.setPsu(null,null);
+                    pcParametersSave.setGpu2(pcParametersSave.Gpu2 + "[Сломано]",null);
+                    pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]",null);
+                    mainActivity.blackDeadScreen(new String[]{"0xAA0002","0xBB0004"});
                 }
                 else if(!pcParametersSave.psuEnoughPower()){
-                    pcParametersSave.setPsu(null,null);
+                    pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]",null);
+                    mainActivity.blackDeadScreen(new String[]{"0xAA0002"});
                 }
             }
         });

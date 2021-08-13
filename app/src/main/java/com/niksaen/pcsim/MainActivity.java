@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.niksaen.pcsim.classes.BlackDeadScreen;
 import com.niksaen.pcsim.classes.DesktopAdapter;
 import com.niksaen.pcsim.program.Benchmark;
 import com.niksaen.pcsim.program.Browser;
@@ -80,49 +82,7 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
             finish();
         });
-
-        final int[] button2Click = {0};
-        button2.setOnClickListener(v -> {
-            if(button2Click[0] == 0) {
-                if (pcParametersSave.getPcWork()) {
-                    if (pcParametersSave.currentCpuTemperature() <= pcParametersSave.maxCpuTemperature()) {
-                        if (pcParametersSave.psuEnoughPower()) {
-                            button2.setText("ВКЛ");
-                            button2.setTextColor(Color.GREEN);
-                            pcWorkOn();
-                        } else {
-                            if(pcParametersSave.PSU != null) {
-                                if (pcParametersSave.PSU.get("Защита").equals("нет")) {
-                                    pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]", null);
-                                } else {
-                                    button2.setTextColor(Color.BLUE);
-                                }
-                            }
-                            button2.setTextColor(Color.RED);
-                        }
-                    }
-                    else{
-                        pcParametersSave.setCpu(pcParametersSave.Cpu+"[Сломано]",null);
-                        button2.setTextColor(Color.CYAN);
-                        button2.setTextColor(Color.RED);
-                    }
-                }
-                button2Click[0] = 1;
-            }
-            else{
-                Timer timer = new Timer();
-                TimerTask timerTask = new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(() -> {
-                            pcWorkOff();
-                            button2Click[0] = 0;
-                        });
-                    }
-                };
-                timer.schedule(timerTask,450);
-            }
-        });
+        buttonPC();
 
         if(Language.getLanguage(this).equals("")){
             Language.ChangeLanguage(this);
@@ -152,7 +112,80 @@ public class MainActivity extends AppCompatActivity{
         greeting.setTypeface(font,style);
     }
 
-    void pcWorkOn(){
+    //список запущеных програм
+    public ArrayList<Program> programArrayList = new ArrayList<>();
+
+    //кнопка питания пк
+    private void buttonPC(){
+        final int[] button2Click = {0};
+        button2.setOnClickListener(v -> {
+            if(button2Click[0] == 0) {
+                if (pcParametersSave.getPcWork()) {
+                    if (pcParametersSave.currentCpuTemperature() <= pcParametersSave.maxCpuTemperature()) {
+                        if (pcParametersSave.psuEnoughPower()) {
+                            button2.setText("ВКЛ");
+                            button2.setTextColor(Color.GREEN);
+                            pcWorkOn();
+                        } else {
+                            if(pcParametersSave.PSU != null) {
+                                if (pcParametersSave.PSU.get("Защита").equals("нет")) {
+                                    pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]", null);
+                                    blackDeadScreen(new String[]{"0xBB0004"});
+                                } else {
+                                    button2.setTextColor(Color.BLUE);
+                                }
+                            }
+                            button2.setTextColor(Color.RED);
+                        }
+                    }
+                    else{
+                        pcParametersSave.setCpu(pcParametersSave.Cpu+"[Сломано]",null);
+                        blackDeadScreen(new String[]{"0xBB0002"});
+                        button2.setTextColor(Color.RED);
+                    }
+                }
+                else{
+                    if(pcParametersSave.Cooler == null){
+                        blackDeadScreen(new String[]{"0xBB0003"});
+                    }
+                    if(pcParametersSave.Cooler != null && pcParametersSave.Cooler.contains("[Сломано]")){
+                        blackDeadScreen(new String[]{"0xBB0004"});
+                    }
+                }
+                button2Click[0] = 1;
+            }
+            else{
+                Timer timer = new Timer();
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(() -> {
+                            pcWorkOff();
+                            button2Click[0] = 0;
+                        });
+                    }
+                };
+                timer.schedule(timerTask,450);
+            }
+        });
+    }
+    // выключение пк
+    public void pcWorkOff(){
+        button2.setText("ВЫКЛ");
+        button2.setTextColor(Color.RED);
+        layout.setBackgroundColor(Color.BLACK);
+        toolbar.setVisibility(View.GONE);
+        desktop.setVisibility(View.GONE);
+
+        for(Program program:programArrayList){
+            if(program.status != -1) {
+                program.closeProgram();
+            }
+        }
+        programArrayList.clear();
+    }
+    // включение пк
+    public void pcWorkOn(){
         greeting.setVisibility(View.VISIBLE);
         greeting.setTextColor(styleSave.GreetingColor);
         greeting.setText(styleSave.Greeting);
@@ -178,19 +211,34 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public ArrayList<Program> programArrayList = new ArrayList<>();
-    public void pcWorkOff(){
-        button2.setText("ВЫКЛ");
-        button2.setTextColor(Color.RED);
-        layout.setBackgroundColor(Color.BLACK);
-        toolbar.setVisibility(View.GONE);
-        desktop.setVisibility(View.GONE);
+    // экран смерти
+    public void blackDeadScreen(String[] errorCode){
+        pcWorkOff();
+        int count = 1;
+        TextView textView = new TextView(this);
+        textView.setPadding(30, 30, 30, 30);
+        textView.setTextSize(27);
+        textView.setTextColor(Color.WHITE);
+        textView.setTypeface(font);
+        textView.setGravity(-1);
 
-        for(Program program:programArrayList){
-            if(program.status != -1) {
-                program.closeProgram();
+        if(errorCode.length>1) {
+            StringBuilder text = new StringBuilder("Fatal error\n");
+            StringBuilder text2 = new StringBuilder("Error code\n");
+            for (String code : errorCode) {
+                text.append(count).append(". ").append(BlackDeadScreen.ErrorCodeText.get(code)).append("\n");
+                text2.append(count).append(". ").append(code).append("\n");
+                count++;
             }
+            String str = text.toString() + text2.toString();
+            textView.setText(str);
+            layout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         }
-        programArrayList.clear();
+        else{
+            String str = "Fatal error\n"+BlackDeadScreen.ErrorCodeText.get(errorCode[0])+"\nError code: "+errorCode[0];
+            textView.setText(str);
+            layout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }
+        new Handler().postDelayed(() -> textView.setVisibility(View.GONE),1200);
     }
 }
