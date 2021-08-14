@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     void initView(){
-        layout = findViewById(R.id.monitor);
         button1 = findViewById(R.id.button1);
         button2 = findViewById(R.id.on_off);
         layout = findViewById(R.id.monitor);
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void updateDesktop(){
         String[] apps = Program.programList;
-        desktop.setLayoutManager(new GridLayoutManager(getBaseContext(),7));
+        desktop.setLayoutManager(new GridLayoutManager(getBaseContext(),5));
         desktop.setAdapter(new DesktopAdapter(this,apps));
     }
 
