@@ -38,6 +38,8 @@ public class NotepadFileSave extends Program {
     MainActivity mainActivity;
 
     public NotepadFileSave(MainActivity activity){
+        super(activity);
+        this.Title = "Saving a file";
         this.context = activity.getBaseContext();
         mainActivity = activity;
 
@@ -100,73 +102,60 @@ public class NotepadFileSave extends Program {
 
     View buff;
     public void openProgram(final String textFile){
-        this.status = 0;
-        initView();style();
+        if(status == -1) {
+            super.openProgram();
+            initView();
+            style();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(FileUtil.isDirectory(folders.get(position))) {
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                if (FileUtil.isDirectory(folders.get(position))) {
                     buffPath = folders.get(position);
-                    buffPath2 = folders.get(position)+"/";
+                    buffPath2 = folders.get(position) + "/";
                     FileUtil.listDir(folders.get(position), folders);
                     ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-                }
-                else if(folders.get(position).endsWith(".txt")){
-                    if(buff != null){
+                } else if (folders.get(position).endsWith(".txt")) {
+                    if (buff != null) {
                         buff.setBackgroundColor(styleSave.ThemeColor1);
                     }
                     view.setBackgroundColor(styleSave.ThemeColor2);
                     buff = view;
                     buffPath = folders.get(position);
-                    fileName.setText(buffPath.substring(buffPath.lastIndexOf("/")+1).replace(".txt",""));
+                    fileName.setText(buffPath.substring(buffPath.lastIndexOf("/") + 1).replace(".txt", ""));
                 }
-            }
-        });
+            });
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(FileUtil.isDirectory(buffPath)) {
-                    if(fileName.getText() != null) {
+            saveButton.setOnClickListener(v -> {
+                if (FileUtil.isDirectory(buffPath)) {
+                    if (fileName.getText() != null) {
                         FileUtil.writeFile(buffPath + fileName.getText().toString() + ".txt", textFile);
                         fileName.setText("");
                         FileUtil.listDir(buffPath, folders);
                         ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-                        fileSaveWindow.setVisibility(View.GONE);
-                        fileSaveWindow = null;
+                        closeProgram(1);
                     }
-                }
-                else if(buffPath.endsWith(".txt")){
-                    if(fileName.getText() != null) {
+                } else if (buffPath.endsWith(".txt")) {
+                    if (fileName.getText() != null) {
                         FileUtil.writeFile(buffPath, textFile);
                         FileUtil.listDir(buffPath, folders);
                         ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-                        fileSaveWindow.setVisibility(View.GONE);
-                        fileSaveWindow = null;
+                        closeProgram(1);
                     }
                 }
-            }
-        });
+            });
 
-        pageDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(buffPath2.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/"){
+            pageDown.setOnClickListener(v -> {
+                if (buffPath2.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/") {
                     v.setVisibility(View.VISIBLE);
                     buffPath2 = buffPath2.substring(0, buffPath2.lastIndexOf("/"));
                     FileUtil.listDir(buffPath2, folders);
                     ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
                 }
-            }
-        });
+            });
 
-        final int[] button2ClickCount = {0};
+            final int[] button2ClickCount = {0};
 
-        fullscreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(button2ClickCount[0]==0){
+            fullscreen.setOnClickListener(v -> {
+                if (button2ClickCount[0] == 0) {
                     fullscreen.setBackgroundResource(R.drawable.button_2_1_color17);
                     fileSaveWindow.setScaleX(0.7f);
                     fileSaveWindow.setScaleY(0.7f);
@@ -177,8 +166,7 @@ public class NotepadFileSave extends Program {
                         fileSaveWindow.setZ(0f);
                     }
                     button2ClickCount[0]++;
-                }
-                else{
+                } else {
                     fullscreen.setBackgroundResource(R.drawable.button_2_2_color17);
                     fileSaveWindow.setScaleX(1);
                     fileSaveWindow.setScaleY(1);
@@ -188,27 +176,26 @@ public class NotepadFileSave extends Program {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         fileSaveWindow.setZ(10f);
                     }
-                    button2ClickCount[0]=0;
+                    button2ClickCount[0] = 0;
                 }
+            });
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    closeProgram(1);
+                }
+            });
+            if (fileSaveWindow.getParent() == null) {
+                mainActivity.layout.addView(fileSaveWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                fileSaveWindow.setVisibility(View.VISIBLE);
             }
-        });
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeProgram();
-            }
-        });
-        if(fileSaveWindow.getParent() == null) {
-            mainActivity.layout.addView(fileSaveWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            fileSaveWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
 
     @Override
-    public void closeProgram() {
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         fileSaveWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 }

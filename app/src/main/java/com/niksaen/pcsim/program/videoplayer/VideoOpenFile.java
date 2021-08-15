@@ -38,6 +38,8 @@ public class VideoOpenFile extends Program {
     MainActivity mainActivity;
 
     public VideoOpenFile(MainActivity activity){
+        super(activity);
+        this.Title = "Opening file";
         context = activity.getBaseContext();
         layout = activity.layout;
         this.mainActivity = activity;
@@ -96,72 +98,71 @@ public class VideoOpenFile extends Program {
     String buffPathOpen = "",buffPath2 = "";
     View buffView;
     public void openProgram(){
-        this.status = 0;
-        initView();style();
+        if(status == -1) {
+            super.openProgram();
+            initView();
+            style();
 
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            if(FileUtil.isDirectory(folders.get(position))) {
-                buffPathOpen = folders.get(position);
-                FileUtil.listDir(folders.get(position), folders);
-                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-                if(buffView != null){
-                    buffView.setBackgroundColor(styleSave.ThemeColor1);
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                if (FileUtil.isDirectory(folders.get(position))) {
+                    buffPathOpen = folders.get(position);
+                    FileUtil.listDir(folders.get(position), folders);
+                    ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+                    if (buffView != null) {
+                        buffView.setBackgroundColor(styleSave.ThemeColor1);
+                    }
+                } else if (folders.get(position).endsWith(".mp4")) {
+                    view.setBackgroundColor(styleSave.ThemeColor2);
+                    buffView = view;
+                    buffPathOpen = folders.get(position);
                 }
-            }
-            else if(folders.get(position).endsWith(".mp4")){
-                view.setBackgroundColor(styleSave.ThemeColor2);
-                buffView = view;
-                buffPathOpen = folders.get(position);
-            }
-        });
-        pageDown.setOnClickListener(v -> {
-            if(buffPathOpen.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/"){
-                v.setVisibility(View.VISIBLE);
-                buffPathOpen = buffPathOpen.substring(0, buffPathOpen.lastIndexOf("/"));
-                FileUtil.listDir(buffPathOpen, folders);
-                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-            }
-        });
+            });
+            pageDown.setOnClickListener(v -> {
+                if (buffPathOpen.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/") {
+                    v.setVisibility(View.VISIBLE);
+                    buffPathOpen = buffPathOpen.substring(0, buffPathOpen.lastIndexOf("/"));
+                    FileUtil.listDir(buffPathOpen, folders);
+                    ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+                }
+            });
 
-        openButton.setOnClickListener(v -> {
-            if(buffPathOpen.endsWith(".mp4")) {
-                videoPlayer.openProgram(buffPathOpen);
-                mainWindow.setVisibility(View.GONE);
-                mainWindow = null;
-            }
-        });
+            openButton.setOnClickListener(v -> {
+                if (buffPathOpen.endsWith(".mp4")) {
+                    videoPlayer.openProgram(buffPathOpen);
+                    closeProgram(1);
+                }
+            });
 
-        final int[] buttonClickCount = {0,0};
-        fullscreen.setOnClickListener(v -> {
-            if(buttonClickCount[0]==0){
-                fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
-                mainWindow.setScaleX(0.7f);
-                mainWindow.setScaleY(0.7f);
-                PortableView portableView1 = new PortableView(mainWindow);
-                buttonClickCount[0]++;
+            final int[] buttonClickCount = {0, 0};
+            fullscreen.setOnClickListener(v -> {
+                if (buttonClickCount[0] == 0) {
+                    fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                    mainWindow.setScaleX(0.7f);
+                    mainWindow.setScaleY(0.7f);
+                    PortableView portableView1 = new PortableView(mainWindow);
+                    buttonClickCount[0]++;
+                } else {
+                    fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    mainWindow.setOnTouchListener(null);
+                    buttonClickCount[0] = 0;
+                }
+            });
+            close.setOnClickListener(v -> closeProgram(1));
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
             }
-            else{
-                fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                mainWindow.setOnTouchListener(null);
-                buttonClickCount[0]=0;
-            }
-        });
-        close.setOnClickListener(v -> closeProgram());
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
 
     @Override
-    public void closeProgram() {
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 }

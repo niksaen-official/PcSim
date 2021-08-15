@@ -48,6 +48,11 @@ public class Program {
         programIcon.put("Notepad",R.drawable.icon_notepad);
         programIcon.put("Personalization",R.drawable.icon_default);
         programIcon.put("Paint",R.drawable.icon_paint);
+        programIcon.put("Image Viewer",R.drawable.image_file);
+        programIcon.put("Text Viewer",R.drawable.text_file);
+        programIcon.put("Opening file",R.drawable.folder_icon);
+        programIcon.put("Saving a file",R.drawable.folder_icon);
+        programIcon.put("Warning",R.drawable.icon_warning);
     }
 
     public HashMap<String,Program> programHashMap = new HashMap<>();
@@ -67,12 +72,33 @@ public class Program {
         programHashMap.put("Personalization",new StyleSettings(activity));
         programHashMap.put("Paint",new Paint(activity));
     }
+    public String Title;
+    public MainActivity activity;
+    public Program(MainActivity activity){
+        this.activity = activity;
+    }
 
-    /* переменная используется для определения статуса программы
-     * status = -1 - означает что программа закрыта
-     * status = 0 - означает что программа открыта
-     * status = 1 - означает что программа свёрнута*/
+    /** переменная используется для определения статуса программы
+     * @param  status = -1 - означает что программа закрыта
+     * @param  status = 0 - означает что программа открыта
+     * @param status = 1 - означает что программа свёрнута*/
     public int status = -1;
-    public void openProgram(){}
-    public void closeProgram(){}
+    public void openProgram(){
+        status = 0;
+        activity.programArrayList.add(this);
+        activity.updateToolbar();
+    }
+
+    /** @param mode
+     * в значении 1 используется для закрытия программы во время работы пк,
+     * в значении 0 используется для закрытия программы при прекращении работы пк*/
+    public void closeProgram(int mode){
+        if(mode == 1) {
+            status = -1;
+            activity.programArrayList.remove(this);
+            activity.updateToolbar();
+        }else if(status == 0){
+            status = -1;
+        }
+    }
 }

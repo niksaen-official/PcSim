@@ -38,6 +38,8 @@ public class Browser extends Program {
     String titleText;
 
     public Browser(MainActivity activity){
+        super(activity);
+        this.Title = "Browser";
         this.context = activity.getBaseContext();
         mainActivity = activity;
         this.layout = activity.layout;
@@ -48,50 +50,49 @@ public class Browser extends Program {
     }
     int i=0;
     public void openProgram(){
-        this.status = 0;
-        style();
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("https://google.com/");
-        webView.getSettings().setSupportZoom(true);
-        webView.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-            }
+        if(status == -1) {
+            super.openProgram();
+            style();
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.loadUrl("https://google.com/");
+            webView.getSettings().setSupportZoom(true);
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                    super.onPageStarted(view, url, favicon);
+                }
 
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                webView.clearCache(true);
-                super.onPageFinished(view, url);
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    webView.clearCache(true);
+                    super.onPageFinished(view, url);
+                }
+            });
+            webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+            close.setOnClickListener(v -> closeProgram(1));
+            fullscreenMode.setOnClickListener(v -> {
+                if (i == 0) {
+                    mainWindow.setScaleX(0.6f);
+                    mainWindow.setScaleY(0.6f);
+                    PortableView portableView = new PortableView(mainWindow);
+                    v.setBackgroundResource(fullscreenMode1);
+                    i++;
+                } else {
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    mainWindow.setOnTouchListener(null);
+                    v.setBackgroundResource(fullscreenMode2);
+                    i = 0;
+                }
+            });
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
             }
-        });
-        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-
-
-        close.setOnClickListener(v -> closeProgram());
-        fullscreenMode.setOnClickListener(v -> {
-            if(i==0){
-                mainWindow.setScaleX(0.6f);
-                mainWindow.setScaleY(0.6f);
-                PortableView portableView = new PortableView(mainWindow);
-                v.setBackgroundResource(fullscreenMode1);
-                i++;
-            }else{
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                mainWindow.setOnTouchListener(null);
-                v.setBackgroundResource(fullscreenMode2);
-                i=0;
-            }
-        });
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else {
-            mainWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
 
     TextView title;
@@ -121,9 +122,9 @@ public class Browser extends Program {
         rollUp.setBackgroundResource(styleSave.RollUpButtonImageRes);
     }
     @Override
-    public void closeProgram(){
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 
     private void languageSettings(){

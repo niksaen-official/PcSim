@@ -53,6 +53,8 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
     String VIDEO_PATH;
 
     public VideoPlayer(MainActivity activity){
+        super(activity);
+        this.Title = "Video player";
         mainActivity = activity;
         this.context = activity.getBaseContext();
         this.pcParametersSave = activity.pcParametersSave;
@@ -126,7 +128,7 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
     Handler handler;
     int CurrentPos = 0;
     public void openProgram(final String PathOpen){
-        this.status = 0;
+        super.openProgram();
         mainWindow = layoutInflater.inflate(R.layout.program_videoplayer,null);
         initView();style();
 
@@ -150,7 +152,7 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
             }
         });
         close.setOnClickListener(v -> {
-            closeProgram();
+            closeProgram(1);
         });
 
         if(PathOpen != null){
@@ -214,11 +216,11 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 1){
-                    closeProgram();
+                    closeProgram(1);
                     new VideoOpenFile(mainActivity).openProgram();
                 }
                 else if(position == 2){
-                    closeProgram();
+                    closeProgram(1);
                 }
             }
 
@@ -235,110 +237,118 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
         mainActivity.programArrayList.add(this);
     }
     public void openProgram(){
-        this.status = 0;
-        mainWindow = layoutInflater.inflate(R.layout.program_videoplayer,null);
-        initView();style();
+        if(status == -1) {
+            super.openProgram();
+            mainWindow = layoutInflater.inflate(R.layout.program_videoplayer, null);
+            initView();
+            style();
 
-        final int[] buttonClickCount = {0,1};
-        fullScreen.setOnClickListener(v -> {
-            if(buttonClickCount[0]==0){
-                fullScreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
-                mainWindow.setScaleX(0.7f);
-                mainWindow.setScaleY(0.7f);
-                PortableView portableView1 = new PortableView(mainWindow);
-                buttonClickCount[0]++;
-            }
-            else{
-                fullScreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                mainWindow.setOnTouchListener(null);
-                buttonClickCount[0]=0;
-            }
-        });
-        close.setOnClickListener(v -> {
-            closeProgram();
-        });
+            final int[] buttonClickCount = {0, 1};
+            fullScreen.setOnClickListener(v -> {
+                if (buttonClickCount[0] == 0) {
+                    fullScreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                    mainWindow.setScaleX(0.7f);
+                    mainWindow.setScaleY(0.7f);
+                    PortableView portableView1 = new PortableView(mainWindow);
+                    buttonClickCount[0]++;
+                } else {
+                    fullScreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    mainWindow.setOnTouchListener(null);
+                    buttonClickCount[0] = 0;
+                }
+            });
+            close.setOnClickListener(v -> {
+                closeProgram(1);
+            });
 
-        //показываем таскбар при нажатии на видео
-        videoView.setOnClickListener(v -> {
-            taskBar.setVisibility(View.VISIBLE);
-            menu.setVisibility(View.VISIBLE);
-        });
-
-        // если пользователь перематывает видео то таск бар не убирается
-        seekBarTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            //показываем таскбар при нажатии на видео
+            videoView.setOnClickListener(v -> {
                 taskBar.setVisibility(View.VISIBLE);
                 menu.setVisibility(View.VISIBLE);
-                CurrentPos = progress;
-                new Handler().postDelayed(() -> {taskBar.setVisibility(View.GONE);menu.setVisibility(View.GONE);},1500);
-            }
+            });
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if(mediaPlayer != null) {
-                    mediaPlayer.seekTo(CurrentPos);
-                    mediaPlayer.start();
+            // если пользователь перематывает видео то таск бар не убирается
+            seekBarTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    taskBar.setVisibility(View.VISIBLE);
+                    menu.setVisibility(View.VISIBLE);
+                    CurrentPos = progress;
+                    new Handler().postDelayed(() -> {
+                        taskBar.setVisibility(View.GONE);
+                        menu.setVisibility(View.GONE);
+                    }, 1500);
                 }
-                new Handler().postDelayed(() -> {taskBar.setVisibility(View.GONE);menu.setVisibility(View.GONE);},1500);
-            }
-        });
 
-        //пауза
-        play_pause.setOnClickListener(v -> {
-            if(buttonClickCount[1] == 0){
-                v.setBackgroundResource(styleSave.PauseButtonRes);
-                buttonClickCount[1] = 1;
-            }
-            else{
-                v.setBackgroundResource(styleSave.PlayButtonImage);
-                buttonClickCount[1] = 0;
-            }
-            new Handler().postDelayed(() -> {taskBar.setVisibility(View.GONE);menu.setVisibility(View.GONE);},1500);
-        });
-
-        menu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 1){
-                    closeProgram();
-                    new VideoOpenFile(mainActivity).openProgram();
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
                 }
-                else if(position == 2){
-                    closeProgram();
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (mediaPlayer != null) {
+                        mediaPlayer.seekTo(CurrentPos);
+                        mediaPlayer.start();
+                    }
+                    new Handler().postDelayed(() -> {
+                        taskBar.setVisibility(View.GONE);
+                        menu.setVisibility(View.GONE);
+                    }, 1500);
                 }
-            }
+            });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            //пауза
+            play_pause.setOnClickListener(v -> {
+                if (buttonClickCount[1] == 0) {
+                    v.setBackgroundResource(styleSave.PauseButtonRes);
+                    buttonClickCount[1] = 1;
+                } else {
+                    v.setBackgroundResource(styleSave.PlayButtonImage);
+                    buttonClickCount[1] = 0;
+                }
+                new Handler().postDelayed(() -> {
+                    taskBar.setVisibility(View.GONE);
+                    menu.setVisibility(View.GONE);
+                }, 1500);
+            });
 
+            menu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 1) {
+                        closeProgram(1);
+                        new VideoOpenFile(mainActivity).openProgram();
+                    } else if (position == 2) {
+                        closeProgram(1);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
             }
-        });
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
 
 
-    public void closeProgram(){
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
         if(mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
-        this.status = -1;
     }
 
     private String convertTime(int milliSeconds){

@@ -45,6 +45,8 @@ public class Paint extends Program {
     private View mainWindow;
 
     public Paint(MainActivity activity) {
+        super(activity);
+        this.Title = "Paint";
         this.context = activity.getBaseContext();
         this.pcParametersSave = activity.pcParametersSave;
         this.layout = activity.layout;
@@ -129,78 +131,75 @@ public class Paint extends Program {
     }
 
     public void openProgram(Drawable drawable){
-        paintCanvas= new PaintCanvas(context);
+        if(status == -1) {
+            super.openProgram();
+            paintCanvas = new PaintCanvas(context);
+            initView();
+            adapters();
+            style();
 
-        initView();adapters();style();
-
-        if(drawable != null){
-            paintCanvas.setBackground(drawable);
-            canvas.addView(paintCanvas,
-                    (int)(drawable.getIntrinsicWidth()*1.4),
-                    (int)(drawable.getIntrinsicHeight()*1.4));
-            canvas.setBackgroundColor(styleSave.ThemeColor1);
-        }
-        else {
-            canvas.addView(paintCanvas);
-        }
-
-        file.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 1){
-                    paintCanvas.reset();
-                }
-                else if(position == 2){
-                    new PaintSaveFile(mainActivity).openProgram(paintCanvas);
-                }
-                else if(position == 3){
-                    closeProgram();
-                    new PaintOpenFile(mainActivity).openProgram();
-                }
-                else if(position == 4){
-                    closeProgram();
-                }
+            if (drawable != null) {
+                paintCanvas.setBackground(drawable);
+                canvas.addView(paintCanvas,
+                        (int) (drawable.getIntrinsicWidth() * 1.4),
+                        (int) (drawable.getIntrinsicHeight() * 1.4));
+                canvas.setBackgroundColor(styleSave.ThemeColor1);
+            } else {
+                canvas.addView(paintCanvas);
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        alpha.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position > 0) {
-                    paintCanvas.strokeAlpha = Integer.parseInt(alphaAdapter.getItem(position).replace("%", ""));
-                    paintCanvas.setStyle();
+            file.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 1) {
+                        paintCanvas.reset();
+                    } else if (position == 2) {
+                        new PaintSaveFile(mainActivity).openProgram(paintCanvas);
+                    } else if (position == 3) {
+                        closeProgram(1);
+                        new PaintOpenFile(mainActivity).openProgram();
+                    } else if (position == 4) {
+                        closeProgram(1);
+                    }
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-        weight.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position > 0) {
-                    paintCanvas.strokeWidth = Integer.parseInt(weightAdapter.getItem(position).replace("px", ""));
-                    paintCanvas.setStyle();
                 }
-            }
+            });
+            alpha.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position > 0) {
+                        paintCanvas.strokeAlpha = Integer.parseInt(alphaAdapter.getItem(position).replace("%", ""));
+                        paintCanvas.setStyle();
+                    }
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                }
+            });
+            weight.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position > 0) {
+                        paintCanvas.strokeWidth = Integer.parseInt(weightAdapter.getItem(position).replace("px", ""));
+                        paintCanvas.setStyle();
+                    }
+                }
 
-        final int[] button2ClickCount = {0};
-        fullscreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(button2ClickCount[0]==0){
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            final int[] button2ClickCount = {0};
+            fullscreen.setOnClickListener(v -> {
+                if (button2ClickCount[0] == 0) {
                     fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
                     mainWindow.setScaleX(0.7f);
                     mainWindow.setScaleY(0.7f);
@@ -209,8 +208,7 @@ public class Paint extends Program {
                     PortableView portableView = new PortableView(mainWindow);
                     mainWindow.setZ(0f);
                     button2ClickCount[0]++;
-                }
-                else{
+                } else {
                     fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
                     mainWindow.setScaleX(1);
                     mainWindow.setScaleY(1);
@@ -218,111 +216,109 @@ public class Paint extends Program {
                     mainWindow.setY(0);
                     mainWindow.setOnTouchListener(null);
                     mainWindow.setZ(10f);
-                    button2ClickCount[0]=0;
+                    button2ClickCount[0] = 0;
                 }
-            }
-        });
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeProgram();
-            }
-        });
+            });
+            close.setOnClickListener(v -> closeProgram(1));
 
-        layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
+            }
+        }
     }
     public void openProgram(){
-        this.status = 0;
-        paintCanvas= new PaintCanvas(context);
-        initView();adapters();style();
-        canvas.addView(paintCanvas);
+        if(status == -1) {
+            super.openProgram();
+            paintCanvas = new PaintCanvas(context);
+            initView();
+            adapters();
+            style();
+            canvas.addView(paintCanvas);
 
-        file.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 1){
-                    paintCanvas.reset();
+            file.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 1) {
+                        paintCanvas.reset();
+                    } else if (position == 2) {
+                        new PaintSaveFile(mainActivity).openProgram(paintCanvas);
+                    } else if (position == 3) {
+                        closeProgram(1);
+                        new PaintOpenFile(mainActivity).openProgram();
+                    } else if (position == 4) {
+                        closeProgram(1);
+                    }
                 }
-                else if(position == 2){
-                    new PaintSaveFile(mainActivity).openProgram(paintCanvas);
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
                 }
-                else if(position == 3){
-                    closeProgram();
-                    new PaintOpenFile(mainActivity).openProgram();
+            });
+            alpha.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position > 0) {
+                        paintCanvas.strokeAlpha = Integer.parseInt(alphaAdapter.getItem(position).replace("%", ""));
+                        paintCanvas.setStyle();
+                    }
                 }
-                else if(position == 4){
-                    closeProgram();
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
                 }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        alpha.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position > 0) {
-                    paintCanvas.strokeAlpha = Integer.parseInt(alphaAdapter.getItem(position).replace("%", ""));
-                    paintCanvas.setStyle();
+            });
+            weight.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position > 0) {
+                        paintCanvas.strokeWidth = Integer.parseInt(weightAdapter.getItem(position).replace("px", ""));
+                        paintCanvas.setStyle();
+                    }
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-        weight.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position > 0) {
-                    paintCanvas.strokeWidth = Integer.parseInt(weightAdapter.getItem(position).replace("px", ""));
-                    paintCanvas.setStyle();
                 }
-            }
+            });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            final int[] button2ClickCount = {0};
+            fullscreen.setOnClickListener(v -> {
+                if (button2ClickCount[0] == 0) {
+                    fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                    mainWindow.setScaleX(0.7f);
+                    mainWindow.setScaleY(0.7f);
+                    mainWindow.setX(0f);
+                    mainWindow.setY(0f);
+                    PortableView portableView = new PortableView(mainWindow);
+                    mainWindow.setZ(0f);
+                    button2ClickCount[0]++;
+                } else {
+                    fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    mainWindow.setOnTouchListener(null);
+                    mainWindow.setZ(10f);
+                    button2ClickCount[0] = 0;
+                }
+            });
+            close.setOnClickListener(v -> closeProgram(1));
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
             }
-        });
-
-        final int[] button2ClickCount = {0};
-        fullscreen.setOnClickListener(v -> {
-            if(button2ClickCount[0]==0){
-                fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
-                mainWindow.setScaleX(0.7f);
-                mainWindow.setScaleY(0.7f);
-                mainWindow.setX(0f);
-                mainWindow.setY(0f);
-                PortableView portableView = new PortableView(mainWindow);
-                mainWindow.setZ(0f);
-                button2ClickCount[0]++;
-            }
-            else{
-                fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                mainWindow.setOnTouchListener(null);
-                mainWindow.setZ(10f);
-                button2ClickCount[0]=0;
-            }
-        });
-        close.setOnClickListener(v -> closeProgram());
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
 
-    public void closeProgram(){
-        this.status = -1;
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
     }
 }

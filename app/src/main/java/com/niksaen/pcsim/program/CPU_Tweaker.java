@@ -35,6 +35,8 @@ public class CPU_Tweaker extends Program {
     int button_2_1, button_2_2;
 
     public CPU_Tweaker(MainActivity activity){
+        super(activity);
+        this.Title = "CPU Overclocking";
         this.pcParametersSave = activity.pcParametersSave;
         this.layout = activity.layout;
         this.context = activity.getBaseContext();
@@ -99,111 +101,111 @@ public class CPU_Tweaker extends Program {
     }
 
     public void openProgram(){
-        this.status = 0;
-        getLanguage();initView();style();
-
-        int[] buttonClicks = {0};
-        close.setOnClickListener(v -> {
-            closeProgram();
-        });
-        fullScreen.setOnClickListener(v->{
-            if(buttonClicks[0] == 0){
-                mainWindow.setScaleX(0.6f);
-                mainWindow.setScaleY(0.6f);
-                PortableView view = new PortableView(mainWindow);
-                v.setBackgroundResource(button_2_1);
-                buttonClicks[0]=1;
-            }else{
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setOnTouchListener(null);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                v.setBackgroundResource(button_2_2);
-                buttonClicks[0]=0;
-            }
-        });
-
-        cpu_model.setText(pcParametersSave.Cpu);
-
-        //logic
-        current_frequency = Integer.parseInt(pcParametersSave.CPU.get("Частота"));
-        current_temperature = pcParametersSave.currentCpuTemperature();
-        max_temperature = pcParametersSave.maxCpuTemperature();
-        power = pcParametersSave.cpuPower;
-
-        frequency.setText(words.get("Frequency")+": "+ current_frequency+"MHz");
-        temperature.setText(
-                words.get("CPU temperature")+": " + (int) current_temperature + "C\n" +
-                        words.get("Maximum cpu temperature")+": " + (int) max_temperature + "C\n" +
-                        words.get("Energy consumption")+": " + (int) power + "W");
-
-        setFrequency.setProgress(current_frequency);
-        setFrequency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(pcParametersSave.CPU.get("Возможность разгона").equals("+")) {
-                    frequency.setText(words.get("Frequency")+": " + progress + "MHz");
-                    current_frequency = progress;
-                    power = (progress * 0.025);
-                    current_temperature = progress * 0.016f - (Double.parseDouble(pcParametersSave.COOLER.get("TDP")) - Integer.parseInt(pcParametersSave.CPU.get("TDP"))) / 8;
-                    temperature.setText(
-                            words.get("CPU temperature")+": " + (int) current_temperature + "C\n" +
-                                    words.get("Maximum cpu temperature")+": " + (int) max_temperature + "C\n" +
-                                    words.get("Energy consumption")+": " + (int) power + "W");
+        if(status == -1) {
+            super.openProgram();
+            getLanguage();
+            initView();
+            style();
+            int[] buttonClicks = {0};
+            close.setOnClickListener(v -> {
+                closeProgram(1);
+            });
+            fullScreen.setOnClickListener(v -> {
+                if (buttonClicks[0] == 0) {
+                    mainWindow.setScaleX(0.6f);
+                    mainWindow.setScaleY(0.6f);
+                    PortableView view = new PortableView(mainWindow);
+                    v.setBackgroundResource(button_2_1);
+                    buttonClicks[0] = 1;
+                } else {
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setOnTouchListener(null);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    v.setBackgroundResource(button_2_2);
+                    buttonClicks[0] = 0;
                 }
-            }
+            });
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            cpu_model.setText(pcParametersSave.Cpu);
 
-            }
+            //logic
+            current_frequency = Integer.parseInt(pcParametersSave.CPU.get("Частота"));
+            current_temperature = pcParametersSave.currentCpuTemperature();
+            max_temperature = pcParametersSave.maxCpuTemperature();
+            power = pcParametersSave.cpuPower;
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if (pcParametersSave.CPU.get("Возможность разгона").equals("+")) {
-                    if (seekBar.getProgress() < 1000) {
-                        seekBar.setProgress(1000);
-                        frequency.setText(words.get("Frequency") + ": " + 1000 + "MHz");
-                        current_frequency = 1000;
-                        power = (1000 * 0.025);
-                        current_temperature = 1000 * 0.016f - (Double.parseDouble(pcParametersSave.COOLER.get("TDP")) - Integer.parseInt(pcParametersSave.CPU.get("TDP"))) / 8;
+            frequency.setText(words.get("Frequency") + ": " + current_frequency + "MHz");
+            temperature.setText(
+                    words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
+                            words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
+                            words.get("Energy consumption") + ": " + (int) power + "W");
+
+            setFrequency.setProgress(current_frequency);
+            setFrequency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (pcParametersSave.CPU.get("Возможность разгона").equals("+")) {
+                        frequency.setText(words.get("Frequency") + ": " + progress + "MHz");
+                        current_frequency = progress;
+                        power = (progress * 0.025);
+                        current_temperature = progress * 0.016f - (Double.parseDouble(pcParametersSave.COOLER.get("TDP")) - Integer.parseInt(pcParametersSave.CPU.get("TDP"))) / 8;
                         temperature.setText(
                                 words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
                                         words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
                                         words.get("Energy consumption") + ": " + (int) power + "W");
                     }
                 }
-            }
-        });
 
-        save.setOnClickListener(v -> {
-            pcParametersSave.CPU.put("Частота", String.valueOf(current_frequency));
-            pcParametersSave.setCpu(pcParametersSave.Cpu, pcParametersSave.CPU);
-            if (current_temperature > max_temperature && !pcParametersSave.psuEnoughPower()) {
-                pcParametersSave.setCpu(pcParametersSave.Cpu + "[Сломано]", null);
-                pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]", null);
-                mainActivity.blackDeadScreen(new String[]{"0xAA0001","0xBB0004"});
-            } else if (current_temperature > max_temperature) {
-                pcParametersSave.setCpu(pcParametersSave.Cpu + "[Сломано]",null);
-                mainActivity.blackDeadScreen(new String[]{"0xAA0001"});
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (pcParametersSave.CPU.get("Возможность разгона").equals("+")) {
+                        if (seekBar.getProgress() < 1000) {
+                            seekBar.setProgress(1000);
+                            frequency.setText(words.get("Frequency") + ": " + 1000 + "MHz");
+                            current_frequency = 1000;
+                            power = (1000 * 0.025);
+                            current_temperature = 1000 * 0.016f - (Double.parseDouble(pcParametersSave.COOLER.get("TDP")) - Integer.parseInt(pcParametersSave.CPU.get("TDP"))) / 8;
+                            temperature.setText(
+                                    words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
+                                            words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
+                                            words.get("Energy consumption") + ": " + (int) power + "W");
+                        }
+                    }
+                }
+            });
+            save.setOnClickListener(v -> {
+                pcParametersSave.CPU.put("Частота", String.valueOf(current_frequency));
+                pcParametersSave.setCpu(pcParametersSave.Cpu, pcParametersSave.CPU);
+                if (current_temperature > max_temperature && !pcParametersSave.psuEnoughPower()) {
+                    pcParametersSave.setCpu(pcParametersSave.Cpu + "[Сломано]", null);
+                    pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]", null);
+                    mainActivity.blackDeadScreen(new String[]{"0xAA0001", "0xBB0004"});
+                } else if (current_temperature > max_temperature) {
+                    pcParametersSave.setCpu(pcParametersSave.Cpu + "[Сломано]", null);
+                    mainActivity.blackDeadScreen(new String[]{"0xAA0001"});
+                } else if (current_temperature > max_temperature + 20) {
+                    pcParametersSave.setCpu(pcParametersSave.Cpu + "[Сломано]", null);
+                    pcParametersSave.setCooler(pcParametersSave.Cooler + "[Сломано]", null);
+                    mainActivity.blackDeadScreen(new String[]{"0xAA0001", "0xBB0004"});
+                }
+            });
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
             }
-            else if(current_temperature > max_temperature+20){
-                pcParametersSave.setCpu(pcParametersSave.Cpu + "[Сломано]",null);
-                pcParametersSave.setCooler(pcParametersSave.Cooler + "[Сломано]", null);
-                mainActivity.blackDeadScreen(new String[]{"0xAA0001","0xBB0004"});
-            }
-        });
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
     @Override
-    public void closeProgram(){
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 }

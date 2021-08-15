@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -36,6 +37,8 @@ public class RAM_Overclocking extends Program {
     StyleSave styleSave;
 
     public RAM_Overclocking(MainActivity activity){
+        super(activity);
+        this.Title = "RAM Overclocking";
         this.pcParametersSave = activity.pcParametersSave;
         this.layout = activity.layout;
         this.context = activity.getBaseContext();
@@ -115,82 +118,84 @@ public class RAM_Overclocking extends Program {
     private double k,power,temperature,throughput;
 
     public void openProgram(){
-        this.status = 0;
-        getLanguage();
-        initView();style();
+        if(status == -1) {
+            super.openProgram();
+            getLanguage();
+            initView();
+            style();
 
-        int[] buttonClicks = {0};
-        close.setOnClickListener(v -> {
-            closeProgram();
-        });
-        fullscreen.setOnClickListener(v->{
-            if(buttonClicks[0] == 0){
-                mainWindow.setScaleX(0.6f);
-                mainWindow.setScaleY(0.6f);
-                PortableView view = new PortableView(mainWindow);
-                v.setBackgroundResource(button_2_1);
-                buttonClicks[0]=1;
-            }else{
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setOnTouchListener(null);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                v.setBackgroundResource(button_2_2);
-                buttonClicks[0]=0;
+            int[] buttonClicks = {0};
+            close.setOnClickListener(v -> {
+                closeProgram(1);
+            });
+            fullscreen.setOnClickListener(v -> {
+                if (buttonClicks[0] == 0) {
+                    mainWindow.setScaleX(0.6f);
+                    mainWindow.setScaleY(0.6f);
+                    PortableView view = new PortableView(mainWindow);
+                    v.setBackgroundResource(button_2_1);
+                    buttonClicks[0] = 1;
+                } else {
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setOnTouchListener(null);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    v.setBackgroundResource(button_2_2);
+                    buttonClicks[0] = 0;
+                }
+            });
+
+            if (pcParametersSave.RAM1 != null) {
+                ram1.setVisibility(View.VISIBLE);
+                ram1.setOnClickListener(v -> {
+                    ram_model.setVisibility(View.VISIBLE);
+                    parameters.setVisibility(View.VISIBLE);
+                    seekBar.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                    ram_model.setText(pcParametersSave.Ram1);
+                    ram_overclocking(pcParametersSave.RAM1, 1);
+                });
             }
-        });
-
-        if(pcParametersSave.RAM1 != null){
-            ram1.setVisibility(View.VISIBLE);
-            ram1.setOnClickListener(v->{
-                ram_model.setVisibility(View.VISIBLE);
-                parameters.setVisibility(View.VISIBLE);
-                seekBar.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-                ram_model.setText(pcParametersSave.Ram1);
-                ram_overclocking(pcParametersSave.RAM1,1);
-            });
+            if (pcParametersSave.RAM2 != null) {
+                ram2.setVisibility(View.VISIBLE);
+                ram2.setOnClickListener(v -> {
+                    ram_model.setVisibility(View.VISIBLE);
+                    parameters.setVisibility(View.VISIBLE);
+                    seekBar.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                    ram_model.setText(pcParametersSave.Ram2);
+                    ram_overclocking(pcParametersSave.RAM2, 2);
+                });
+            }
+            if (pcParametersSave.RAM3 != null && (Integer.parseInt(pcParametersSave.MOBO.get("Кол-во слотов")) >= 3)) {
+                ram3.setVisibility(View.VISIBLE);
+                ram3.setOnClickListener(v -> {
+                    ram_model.setVisibility(View.VISIBLE);
+                    parameters.setVisibility(View.VISIBLE);
+                    seekBar.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                    ram_model.setText(pcParametersSave.Ram3);
+                    ram_overclocking(pcParametersSave.RAM3, 3);
+                });
+            }
+            if (pcParametersSave.RAM4 != null && (Integer.parseInt(pcParametersSave.MOBO.get("Кол-во слотов")) >= 4)) {
+                ram4.setVisibility(View.VISIBLE);
+                ram4.setOnClickListener(v -> {
+                    ram_model.setVisibility(View.VISIBLE);
+                    parameters.setVisibility(View.VISIBLE);
+                    seekBar.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                    ram_model.setText(pcParametersSave.Ram4);
+                    ram_overclocking(pcParametersSave.RAM4, 4);
+                });
+            }
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
+            }
         }
-        if(pcParametersSave.RAM2 != null){
-            ram2.setVisibility(View.VISIBLE);
-            ram2.setOnClickListener(v->{
-                ram_model.setVisibility(View.VISIBLE);
-                parameters.setVisibility(View.VISIBLE);
-                seekBar.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-                ram_model.setText(pcParametersSave.Ram2);
-                ram_overclocking(pcParametersSave.RAM2,2);
-            });
-        }
-        if(pcParametersSave.RAM3 != null && (Integer.parseInt(pcParametersSave.MOBO.get("Кол-во слотов"))>=3)){
-            ram3.setVisibility(View.VISIBLE);
-            ram3.setOnClickListener(v->{
-                ram_model.setVisibility(View.VISIBLE);
-                parameters.setVisibility(View.VISIBLE);
-                seekBar.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-                ram_model.setText(pcParametersSave.Ram3);
-                ram_overclocking(pcParametersSave.RAM3,3);
-            });
-        }
-        if(pcParametersSave.RAM4 != null && (Integer.parseInt(pcParametersSave.MOBO.get("Кол-во слотов"))>=4)){
-            ram4.setVisibility(View.VISIBLE);
-            ram4.setOnClickListener(v->{
-                ram_model.setVisibility(View.VISIBLE);
-                parameters.setVisibility(View.VISIBLE);
-                seekBar.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-                ram_model.setText(pcParametersSave.Ram4);
-                ram_overclocking(pcParametersSave.RAM4,4);
-            });
-        }
-        if(mainWindow.getParent() == null){
-            layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
-        }
-        mainActivity.programArrayList.add(this);
     }
 
     @SuppressLint("SetTextI18n")
@@ -293,8 +298,8 @@ public class RAM_Overclocking extends Program {
         });
     }
     @Override
-    public void closeProgram() {
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 }

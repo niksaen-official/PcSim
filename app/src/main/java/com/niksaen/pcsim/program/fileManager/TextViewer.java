@@ -34,6 +34,8 @@ public class TextViewer  extends Program {
     Typeface font;
 
     public TextViewer(MainActivity activity){
+        super(activity);
+        this.Title = "Text Viewer";
         this.context=activity.getBaseContext();
         this.layout = activity.layout;
         mainActivity = activity;
@@ -73,45 +75,48 @@ public class TextViewer  extends Program {
     }
 
     public void openProgram(String text){
-        initView();style();
-        textView.setText(text);
-        final int[] button2ClickCount = {0};
-        fullscreen.setOnClickListener(v -> {
-            if(button2ClickCount[0]==0){
-                fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
-                mainWindow.setScaleX(0.7f);
-                mainWindow.setScaleY(0.7f);
-                mainWindow.setX(0f);
-                mainWindow.setY(0f);
-                PortableView portableView1 = new PortableView(mainWindow);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mainWindow.setZ(0f);
+        if(status == -1) {
+            super.openProgram();
+            initView();
+            style();
+            textView.setText(text);
+            final int[] button2ClickCount = {0};
+            fullscreen.setOnClickListener(v -> {
+                if (button2ClickCount[0] == 0) {
+                    fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                    mainWindow.setScaleX(0.7f);
+                    mainWindow.setScaleY(0.7f);
+                    mainWindow.setX(0f);
+                    mainWindow.setY(0f);
+                    PortableView portableView1 = new PortableView(mainWindow);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        mainWindow.setZ(0f);
+                    }
+                    button2ClickCount[0]++;
+                } else {
+                    fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    mainWindow.setOnTouchListener(null);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        mainWindow.setZ(10f);
+                    }
+                    button2ClickCount[0] = 0;
                 }
-                button2ClickCount[0]++;
+            });
+            close.setOnClickListener(v -> closeProgram(1));
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
             }
-            else{
-                fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                mainWindow.setOnTouchListener(null);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mainWindow.setZ(10f);
-                }
-                button2ClickCount[0]=0;
-            }
-        });
-        close.setOnClickListener(v -> closeProgram());
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
         }
     }
 
-    public void closeProgram(){
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 }

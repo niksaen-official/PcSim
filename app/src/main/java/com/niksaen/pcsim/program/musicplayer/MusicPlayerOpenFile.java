@@ -42,6 +42,8 @@ public class MusicPlayerOpenFile extends Program {
     ConstraintLayout layout;
 
     public MusicPlayerOpenFile(MainActivity activity){
+        super(activity);
+        this.Title = "Opening file";
         this.context = activity.getBaseContext();
         this.musicPlayer = new MusicPlayer(activity);
         this.layout = activity.layout;
@@ -100,55 +102,45 @@ public class MusicPlayerOpenFile extends Program {
     String pathFolder;
     View buff;
     public void openProgram(){
-        this.status = 0;
-        initView();style();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(FileUtil.isDirectory(folders.get(position))) {
+        if(status == -1) {
+            super.openProgram();
+            initView();
+            style();
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                if (FileUtil.isDirectory(folders.get(position))) {
                     buffPathOpen = folders.get(position);
                     pathFolder = folders.get(position);
                     FileUtil.listDir(folders.get(position), folders);
                     ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-                }
-                else if(folders.get(position).endsWith(".mp3")){
-                    if(buff != null){
+                } else if (folders.get(position).endsWith(".mp3")) {
+                    if (buff != null) {
                         buff.setBackgroundColor(styleSave.ThemeColor1);
                     }
                     view.setBackgroundColor(styleSave.ThemeColor2);
                     buff = view;
                     buffPathOpen = folders.get(position);
                 }
-            }
-        });
+            });
 
-        pageDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(buffPathOpen.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/"){
+            pageDown.setOnClickListener(v -> {
+                if (buffPathOpen.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/") {
                     v.setVisibility(View.VISIBLE);
                     buffPathOpen = buffPathOpen.substring(0, buffPathOpen.lastIndexOf("/"));
                     FileUtil.listDir(buffPathOpen, folders);
                     ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
                 }
-            }
-        });
+            });
 
-        openButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(buffPathOpen.endsWith(".mp3")) {
-                    musicPlayer.openProgram(buffPathOpen,buffPathOpen.substring(0, buffPathOpen.lastIndexOf("/")));
-                    closeProgram();
+            openButton.setOnClickListener(v -> {
+                if (buffPathOpen.endsWith(".mp3")) {
+                    musicPlayer.openProgram(buffPathOpen, buffPathOpen.substring(0, buffPathOpen.lastIndexOf("/")));
+                    closeProgram(1);
                 }
-            }
-        });
+            });
 
-        final int[] button2ClickCount = {0};
-        fullscreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(button2ClickCount[0]==0){
+            final int[] button2ClickCount = {0};
+            fullscreen.setOnClickListener(v -> {
+                if (button2ClickCount[0] == 0) {
                     fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
                     fileOpenWindow.setScaleX(0.7f);
                     fileOpenWindow.setScaleY(0.7f);
@@ -159,8 +151,7 @@ public class MusicPlayerOpenFile extends Program {
                         fileOpenWindow.setZ(0f);
                     }
                     button2ClickCount[0]++;
-                }
-                else{
+                } else {
                     fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
                     fileOpenWindow.setScaleX(1);
                     fileOpenWindow.setScaleY(1);
@@ -170,27 +161,26 @@ public class MusicPlayerOpenFile extends Program {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         fileOpenWindow.setZ(10f);
                     }
-                    button2ClickCount[0]=0;
+                    button2ClickCount[0] = 0;
                 }
+            });
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    closeProgram(1);
+                }
+            });
+            if (fileOpenWindow.getParent() == null) {
+                layout.addView(fileOpenWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                fileOpenWindow.setVisibility(View.VISIBLE);
             }
-        });
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               closeProgram();
-            }
-        });
-        if(fileOpenWindow.getParent() == null){
-            layout.addView(fileOpenWindow,LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            fileOpenWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
 
     @Override
-    public void closeProgram() {
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         fileOpenWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 }

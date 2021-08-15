@@ -35,8 +35,11 @@ public class StyleSave {
     /** resource */     public int PlayButtonImage;
     /** resource */     public int PauseButtonRes;
     /** resource */     public int PrevOrNextImageRes;
+    /** not resource */ public boolean ToolbarAppNameVisible;
+    /** not resource */ public  boolean ToolbarAppIconVisible;
+    /** not resource */ public int ToolbarTextColor;
 
-    private void getStyle(){
+    public void getStyle(){
         BackgroundResource = preferences.getInt("Background",R.color.color8);
         ColorWindow = preferences.getInt("ColorWindow",Color.parseColor("#0D47A1"));
         TitleColor = preferences.getInt("TitleWindow",Color.parseColor("#FFFFFF"));
@@ -60,6 +63,9 @@ public class StyleSave {
         PlayButtonImage = preferences.getInt("PlayButtonImage",R.drawable.play_color16);
         PauseButtonRes = preferences.getInt("PauseButtonRes", R.drawable.pause_color16);
         PrevOrNextImageRes = preferences.getInt("PrevOrNextImageRes",R.drawable.prev_or_next_color16);
+        ToolbarAppIconVisible = preferences.getBoolean("ToolbarAppIconVisible",true);
+        ToolbarAppNameVisible = preferences.getBoolean("ToolbarAppNameVisible",true);
+        ToolbarTextColor = preferences.getInt("ToolbarTextColor",Color.parseColor("#FFFFFF"));
     }
 
     public void setStyle(){
@@ -86,5 +92,8 @@ public class StyleSave {
         preferences.edit().putInt("PauseButtonRes",PauseButtonRes).apply();
         preferences.edit().putInt("PlayButtonImage",PlayButtonImage).apply();
         preferences.edit().putInt("PrevOrNextImageRes",PrevOrNextImageRes).apply();
+        preferences.edit().putBoolean("ToolbarAppIconVisible",ToolbarAppIconVisible).apply();
+        preferences.edit().putBoolean("ToolbarAppNameVisible",ToolbarAppNameVisible).apply();
+        preferences.edit().putInt("ToolbarTextColor",ToolbarTextColor).apply();
     }
 }

@@ -37,6 +37,8 @@ public class ViewPowerSupplyLoad extends Program {
     StyleSave styleSave;
 
     public ViewPowerSupplyLoad(MainActivity activity){
+        super(activity);
+        this.Title = "View Power Supply Load";
         this.context = activity.getBaseContext();
         this.pcParametersSave = activity.pcParametersSave;
         this.layout = activity.layout;
@@ -144,38 +146,40 @@ public class ViewPowerSupplyLoad extends Program {
     }
 
     public void openProgram(){
-        this.status = 0;
-        initAdapter();initView();styleView();
-
-        close.setOnClickListener(v -> closeProgram());
-        int[] buttonClicks = {0};
-        fullscreen.setOnClickListener(v->{
-            if(buttonClicks[0] == 0){
-                mainWindow.setScaleX(0.6f);
-                mainWindow.setScaleY(0.6f);
-                PortableView view = new PortableView(mainWindow);
-                v.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
-                buttonClicks[0]=1;
-            }else{
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setOnTouchListener(null);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                v.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
-                buttonClicks[0]=0;
+        if(status == -1) {
+            super.openProgram();
+            initAdapter();
+            initView();
+            styleView();
+            close.setOnClickListener(v -> closeProgram(1));
+            int[] buttonClicks = {0};
+            fullscreen.setOnClickListener(v -> {
+                if (buttonClicks[0] == 0) {
+                    mainWindow.setScaleX(0.6f);
+                    mainWindow.setScaleY(0.6f);
+                    PortableView view = new PortableView(mainWindow);
+                    v.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                    buttonClicks[0] = 1;
+                } else {
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setOnTouchListener(null);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    v.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                    buttonClicks[0] = 0;
+                }
+            });
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
             }
-        });
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else {
-            mainWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
     @Override
-    public void closeProgram(){
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 }

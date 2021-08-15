@@ -43,6 +43,8 @@ public class PaintOpenFile extends Program {
     private MainActivity mainActivity;
 
     public PaintOpenFile(MainActivity activity){
+        super(activity);
+        this.Title = "Opening file";
         context = activity.getBaseContext();
         layout = activity.layout;
         mainActivity = activity;
@@ -97,96 +99,86 @@ public class PaintOpenFile extends Program {
         title.setText(words.get("Opening file"));
     }
 
-    private String buffPathOpen = "",buffPath2;
+    private String buffPathOpen = "";
     private View buff;
     public void openProgram(){
-        this.status = 0;
-        initView();style();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(FileUtil.isDirectory(folders.get(position))) {
+        if(status == -1) {
+            super.openProgram();
+            initView();
+            style();
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                if (FileUtil.isDirectory(folders.get(position))) {
                     buffPathOpen = folders.get(position);
                     FileUtil.listDir(folders.get(position), folders);
                     ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-                }
-                else if(folders.get(position).endsWith(".png") || folders.get(position).endsWith(".jpg")){
-                    if(buff != null){
+                } else if (folders.get(position).endsWith(".png") || folders.get(position).endsWith(".jpg")) {
+                    if (buff != null) {
                         buff.setBackgroundColor(styleSave.ThemeColor1);
                     }
                     view.setBackgroundColor(styleSave.ThemeColor2);
                     buff = view;
                     buffPathOpen = folders.get(position);
                 }
-            }
-        });
+            });
 
-        pageDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(buffPathOpen.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/"){
+            pageDown.setOnClickListener(v -> {
+                if (buffPathOpen.contains("/storage/emulated/0/")) {
                     v.setVisibility(View.VISIBLE);
                     buffPathOpen = buffPathOpen.substring(0, buffPathOpen.lastIndexOf("/"));
                     FileUtil.listDir(buffPathOpen, folders);
                     ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
                 }
-            }
-        });
+            });
 
-        openButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(buffPathOpen.endsWith(".png") || buffPathOpen.endsWith(".jpg")) {
+            openButton.setOnClickListener(v -> {
+                if (buffPathOpen.endsWith(".png") || buffPathOpen.endsWith(".jpg")) {
                     paint.openProgram(getImage(buffPathOpen));
-                    fileOpenWindow.setVisibility(View.GONE);
-                    fileOpenWindow = null;
+                    closeProgram(1);
                 }
-            }
-        });
+            });
 
-        final int[] button2ClickCount = {0};
-        fullscreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(button2ClickCount[0]==0){
-                    fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
-                    fileOpenWindow.setScaleX(0.7f);
-                    fileOpenWindow.setScaleY(0.7f);
-                    fileOpenWindow.setX(0f);
-                    fileOpenWindow.setY(0f);
-                    PortableView portableView = new PortableView(fileOpenWindow);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        fileOpenWindow.setZ(0f);
+            final int[] button2ClickCount = {0};
+            fullscreen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (button2ClickCount[0] == 0) {
+                        fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                        fileOpenWindow.setScaleX(0.7f);
+                        fileOpenWindow.setScaleY(0.7f);
+                        fileOpenWindow.setX(0f);
+                        fileOpenWindow.setY(0f);
+                        PortableView portableView = new PortableView(fileOpenWindow);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            fileOpenWindow.setZ(0f);
+                        }
+                        button2ClickCount[0]++;
+                    } else {
+                        fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                        fileOpenWindow.setScaleX(1);
+                        fileOpenWindow.setScaleY(1);
+                        fileOpenWindow.setX(0);
+                        fileOpenWindow.setY(0);
+                        fileOpenWindow.setOnTouchListener(null);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            fileOpenWindow.setZ(10f);
+                        }
+                        button2ClickCount[0] = 0;
                     }
-                    button2ClickCount[0]++;
                 }
-                else{
-                    fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
-                    fileOpenWindow.setScaleX(1);
-                    fileOpenWindow.setScaleY(1);
-                    fileOpenWindow.setX(0);
-                    fileOpenWindow.setY(0);
-                    fileOpenWindow.setOnTouchListener(null);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        fileOpenWindow.setZ(10f);
-                    }
-                    button2ClickCount[0]=0;
-                }
+            });
+            close.setOnClickListener(v -> closeProgram(1));
+            if (fileOpenWindow.getParent() == null) {
+                mainActivity.layout.addView(fileOpenWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                fileOpenWindow.setVisibility(View.VISIBLE);
             }
-        });
-        close.setOnClickListener(v -> closeProgram());
-        if(fileOpenWindow.getParent() == null) {
-            mainActivity.layout.addView(fileOpenWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else {
-            fileOpenWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
 
     @Override
-    public void closeProgram() {
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         fileOpenWindow.setVisibility(View.GONE);
-        status = -1;
     }
 
     Drawable getImage(String path){

@@ -44,6 +44,8 @@ public class StyleSettings extends Program {
     MainActivity mainActivity;
 
     public StyleSettings(MainActivity activity){
+        super(activity);
+        this.Title = "Personalization";
         this.testView = new View[]{activity.layout,activity.toolbar};
         this.pcParametersSave = activity.pcParametersSave;
         this.context = activity.getBaseContext();
@@ -213,267 +215,265 @@ public class StyleSettings extends Program {
 
     int i = 0;
     public void openProgram(){
-        this.status = 0;
-        initView();initAdapters();style();
+        if(status == -1) {
+            super.openProgram();
+            initView();
+            initAdapters();
+            style();
 
-        mainMenu.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            //settings background
-            if(menuAdapter.getGroup(groupPosition).equals(words.get("Background"))) {
-                SettingsGroup = "Background";
-                testWindow.setVisibility(View.GONE);
-                testLaunch.setVisibility(View.GONE);
-                testGreeting.setVisibility(View.GONE);
-                testBackground.setBackgroundResource(styleSave.BackgroundResource);
-                if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Color"))){
-                    BackgroundType = "Color";
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select background color"));
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                    secondMenu.setAdapter(backgroundResourceColorAdapter);
-                }
-                else if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Gradient"))){
-                    BackgroundType = "Gradient";
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select gradient background"));
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                    secondMenu.setAdapter(backgroundResourceGradientAdapter);
-                }
-                else if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Wallpaper"))){
-                    BackgroundType = "Image";
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select background image"));
-                    secondMenu.setLayoutManager(new GridLayoutManager(context, 2));
-                    secondMenu.setAdapter(backgroundResourceImageAdapter);
-                }
-            }
-            //settings window
-            else if(menuAdapter.getGroup(groupPosition).equals(words.get("Window"))){
-                testWindow.setVisibility(View.VISIBLE);
-                testGreeting.setVisibility(View.GONE);
-                if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Window Color"))){
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select window color"));
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                    secondMenu.setAdapter(windowBackColor);
-                }
-                else if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Button Color"))){
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select the color of the button"));
-                    secondMenu.setLayoutManager(linearLayoutManager);
-                    secondMenu.setAdapter(windowButtonColorAdapter);
-                }
-                else if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Title Color"))){
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select a title color"));
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                    secondMenu.setAdapter(titleTextColorAdapter);
-                }
-            }
-            //settings theme
-            else if(menuAdapter.getGroup(groupPosition).equals(words.get("Colors"))){
-                testGreeting.setVisibility(View.GONE);
-                testSeekBar.setVisibility(View.GONE);
-                testProgressBar.setVisibility(View.GONE);
-                testButton.setVisibility(View.VISIBLE);
-                testText.setVisibility(View.VISIBLE);
-                testWindow.setVisibility(View.VISIBLE);
-                if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Theme"))){
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select theme"));
-                    secondMenu.setLayoutManager(new GridLayoutManager(context,2));
-                    secondMenu.setAdapter(themeAdapter);
-                }
-                else if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Text Color"))){
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select text color"));
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                    secondMenu.setAdapter(textColorAdapter);
-                }
-                else if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Button text color"))){
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select the text color of the button"));
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                    secondMenu.setAdapter(buttonTextColorAdapter);
-                }
-            }
-            //settings launch
-            else if(menuAdapter.getGroup(groupPosition).equals(words.get("Start"))){
-                testGreeting.setVisibility(View.GONE);
-                testWindow.setVisibility(View.GONE);
-                testLaunch.setVisibility(View.VISIBLE);
-                if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Color"))){
-                    secondTitle.setText(words.get("Select start menu color"));
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                    secondMenu.setAdapter(launchBackColor);
-                }
-            }
-            //settings toolbar
-            else if(menuAdapter.getGroup(groupPosition).equals(words.get("Task bar"))){
-                testGreeting.setVisibility(View.GONE);
-                testWindow.setVisibility(View.GONE);
-                testLaunch.setVisibility(View.GONE);
-                if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Color"))){
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select the color of the task bar"));
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                    secondMenu.setAdapter(toolbarBackColor);
-                }
-            }
-            //settings progress bar
-            else if(menuAdapter.getGroup(groupPosition).equals(words.get("ProgressBar"))){
-                testGreeting.setVisibility(View.GONE);
-                testSeekBar.setVisibility(View.GONE);
-                testText.setVisibility(View.GONE);
-                testButton.setVisibility(View.GONE);
-                testWindow.setVisibility(View.VISIBLE);
-                testProgressBar.setVisibility(View.VISIBLE);
-                if (menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Color"))) {
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select indicator color"));
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                    secondMenu.setAdapter(progressBarColorAdapter);
-                }
-            }
-            //settings seekbar
-            else if(menuAdapter.getGroup(groupPosition).equals(words.get("SeekBar"))){
-                testGreeting.setVisibility(View.GONE);
-                testLaunch.setVisibility(View.GONE);
-                testText.setVisibility(View.GONE);
-                testButton.setVisibility(View.GONE);
-                testWindow.setVisibility(View.VISIBLE);
-                testProgressBar.setVisibility(View.GONE);
-                testSeekBar.setVisibility(View.VISIBLE);
-                if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Color of progress"))){
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select the SeekBar color"));
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                    secondMenu.setAdapter(seekBarColorAdapter);
-                }
-                else if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Slider color"))){
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select the color of the SeekBar slider"));
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                    secondMenu.setAdapter(seekThumbColorAdapter);
-                }
-            }
-            //other settings
-            else if(menuAdapter.getGroup(groupPosition).equals(words.get("Greeting"))){
-                testLaunch.setVisibility(View.GONE);
-                testWindow.setVisibility(View.GONE);
-                testGreeting.setVisibility(View.VISIBLE);
-                testBackground.setBackgroundColor(Color.BLACK);
-                testToolbar.setBackgroundColor(Color.BLACK);
-                if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Greeting color"))){
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Select a greeting color"));
-                    secondMenu.setAdapter(greetingTextColorAdapter);
-                    secondMenu.setLayoutManager(gridLayoutManager);
-                }
-                else if(menuAdapter.getChild(groupPosition,childPosition).equals(words.get("Greeting text"))){
-                    secondTitle.setVisibility(View.VISIBLE);
-                    secondTitle.setText(words.get("Enter welcome text"));
-                    secondMenu.setLayoutManager(linearLayoutManager);
-                    secondMenu.setAdapter(editTextAdapter);
-                }
-            }
-            return true;
-        });
-        saveButton.setOnClickListener(v -> {
-            // background settings save
-            if (SettingsGroup.equals("Background")) {
-                switch (BackgroundType) {
-                    case "Color": {
-                        styleSave.BackgroundResource = backgroundResourceColorAdapter.currentColorId;
-                        break;
-                    }
-                    case "Gradient": {
-                        styleSave.BackgroundResource = backgroundResourceGradientAdapter.currentGradientId;
-                        break;
-                    }
-                    case "Image": {
-                        styleSave.BackgroundResource = backgroundResourceImageAdapter.currentImageId;
-                        break;
+            mainMenu.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+                //settings background
+                if (menuAdapter.getGroup(groupPosition).equals(words.get("Background"))) {
+                    SettingsGroup = "Background";
+                    testWindow.setVisibility(View.GONE);
+                    testLaunch.setVisibility(View.GONE);
+                    testGreeting.setVisibility(View.GONE);
+                    testBackground.setBackgroundResource(styleSave.BackgroundResource);
+                    if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Color"))) {
+                        BackgroundType = "Color";
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select background color"));
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                        secondMenu.setAdapter(backgroundResourceColorAdapter);
+                    } else if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Gradient"))) {
+                        BackgroundType = "Gradient";
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select gradient background"));
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                        secondMenu.setAdapter(backgroundResourceGradientAdapter);
+                    } else if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Wallpaper"))) {
+                        BackgroundType = "Image";
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select background image"));
+                        secondMenu.setLayoutManager(new GridLayoutManager(context, 2));
+                        secondMenu.setAdapter(backgroundResourceImageAdapter);
                     }
                 }
+                //settings window
+                else if (menuAdapter.getGroup(groupPosition).equals(words.get("Window"))) {
+                    testWindow.setVisibility(View.VISIBLE);
+                    testGreeting.setVisibility(View.GONE);
+                    if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Window Color"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select window color"));
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                        secondMenu.setAdapter(windowBackColor);
+                    } else if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Button Color"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select the color of the button"));
+                        secondMenu.setLayoutManager(linearLayoutManager);
+                        secondMenu.setAdapter(windowButtonColorAdapter);
+                    } else if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Title Color"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select a title color"));
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                        secondMenu.setAdapter(titleTextColorAdapter);
+                    }
+                }
+                //settings theme
+                else if (menuAdapter.getGroup(groupPosition).equals(words.get("Colors"))) {
+                    testGreeting.setVisibility(View.GONE);
+                    testSeekBar.setVisibility(View.GONE);
+                    testProgressBar.setVisibility(View.GONE);
+                    testButton.setVisibility(View.VISIBLE);
+                    testText.setVisibility(View.VISIBLE);
+                    testWindow.setVisibility(View.VISIBLE);
+                    if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Theme"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select theme"));
+                        secondMenu.setLayoutManager(new GridLayoutManager(context, 2));
+                        secondMenu.setAdapter(themeAdapter);
+                    } else if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Text Color"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select text color"));
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                        secondMenu.setAdapter(textColorAdapter);
+                    } else if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Button text color"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select the text color of the button"));
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                        secondMenu.setAdapter(buttonTextColorAdapter);
+                    }
+                }
+                //settings launch
+                else if (menuAdapter.getGroup(groupPosition).equals(words.get("Start"))) {
+                    testGreeting.setVisibility(View.GONE);
+                    testWindow.setVisibility(View.GONE);
+                    testLaunch.setVisibility(View.VISIBLE);
+                    if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Color"))) {
+                        secondTitle.setText(words.get("Select start menu color"));
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                        secondMenu.setAdapter(launchBackColor);
+                    }
+                }
+                //settings toolbar
+                else if (menuAdapter.getGroup(groupPosition).equals(words.get("Task bar"))) {
+                    testGreeting.setVisibility(View.GONE);
+                    testWindow.setVisibility(View.GONE);
+                    testLaunch.setVisibility(View.GONE);
+                    if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Color"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select the color of the task bar"));
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                        secondMenu.setAdapter(toolbarBackColor);
+                    }
+                }
+                //settings progress bar
+                else if (menuAdapter.getGroup(groupPosition).equals(words.get("ProgressBar"))) {
+                    testGreeting.setVisibility(View.GONE);
+                    testSeekBar.setVisibility(View.GONE);
+                    testText.setVisibility(View.GONE);
+                    testButton.setVisibility(View.GONE);
+                    testWindow.setVisibility(View.VISIBLE);
+                    testProgressBar.setVisibility(View.VISIBLE);
+                    if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Color"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select indicator color"));
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                        secondMenu.setAdapter(progressBarColorAdapter);
+                    }
+                }
+                //settings seekbar
+                else if (menuAdapter.getGroup(groupPosition).equals(words.get("SeekBar"))) {
+                    testGreeting.setVisibility(View.GONE);
+                    testLaunch.setVisibility(View.GONE);
+                    testText.setVisibility(View.GONE);
+                    testButton.setVisibility(View.GONE);
+                    testWindow.setVisibility(View.VISIBLE);
+                    testProgressBar.setVisibility(View.GONE);
+                    testSeekBar.setVisibility(View.VISIBLE);
+                    if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Color of progress"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select the SeekBar color"));
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                        secondMenu.setAdapter(seekBarColorAdapter);
+                    } else if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Slider color"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select the color of the SeekBar slider"));
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                        secondMenu.setAdapter(seekThumbColorAdapter);
+                    }
+                }
+                //other settings
+                else if (menuAdapter.getGroup(groupPosition).equals(words.get("Greeting"))) {
+                    testLaunch.setVisibility(View.GONE);
+                    testWindow.setVisibility(View.GONE);
+                    testGreeting.setVisibility(View.VISIBLE);
+                    testBackground.setBackgroundColor(Color.BLACK);
+                    testToolbar.setBackgroundColor(Color.BLACK);
+                    if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Greeting color"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Select a greeting color"));
+                        secondMenu.setAdapter(greetingTextColorAdapter);
+                        secondMenu.setLayoutManager(gridLayoutManager);
+                    } else if (menuAdapter.getChild(groupPosition, childPosition).equals(words.get("Greeting text"))) {
+                        secondTitle.setVisibility(View.VISIBLE);
+                        secondTitle.setText(words.get("Enter welcome text"));
+                        secondMenu.setLayoutManager(linearLayoutManager);
+                        secondMenu.setAdapter(editTextAdapter);
+                    }
+                }
+                return true;
+            });
+            saveButton.setOnClickListener(v -> {
+                // background settings save
+                if (SettingsGroup.equals("Background")) {
+                    switch (BackgroundType) {
+                        case "Color": {
+                            activity.layout.setBackgroundResource(backgroundResourceColorAdapter.currentColorId);
+                            styleSave.BackgroundResource = backgroundResourceColorAdapter.currentColorId;
+                            break;
+                        }
+                        case "Gradient": {
+                            activity.layout.setBackgroundResource(backgroundResourceGradientAdapter.currentGradientId);
+                            styleSave.BackgroundResource = backgroundResourceGradientAdapter.currentGradientId;
+                            break;
+                        }
+                        case "Image": {
+                            activity.layout.setBackgroundResource(backgroundResourceImageAdapter.currentImageId);
+                            styleSave.BackgroundResource = backgroundResourceImageAdapter.currentImageId;
+                            break;
+                        }
+                    }
+                }
+
+                //window settings save
+                styleSave.ColorWindow = windowBackColor.currentColor;
+                styleSave.CloseButtonImageRes = windowButtonColorAdapter.currentCloseButtonImageRes;
+                styleSave.FullScreenMode1ImageRes = windowButtonColorAdapter.currentFullscreen1ButtonImageRes;
+                styleSave.FullScreenMode2ImageRes = windowButtonColorAdapter.currentFullscreen2ButtonImageRes;
+                styleSave.RollUpButtonImageRes = windowButtonColorAdapter.currentRollUpButtonImageRes;
+                styleSave.TitleColor = titleTextColorAdapter.currentTextColor;
+
+                //theme settings save
+                styleSave.ThemeColor1 = themeAdapter.ColorTheme1;
+                styleSave.ThemeColor2 = themeAdapter.ColorTheme2;
+                styleSave.ThemeColor3 = themeAdapter.ColorTheme3;
+                styleSave.PauseButtonRes = themeAdapter.PauseButtonRes;
+                styleSave.PlayButtonImage = themeAdapter.PlayButtonImage;
+                styleSave.PrevOrNextImageRes = themeAdapter.PrevOrNextImageRes;
+                styleSave.ArrowButtonImage = themeAdapter.ArrowButtonImage;
+
+                //text color save
+                styleSave.TextColor = textColorAdapter.currentTextColor;
+                styleSave.TextButtonColor = buttonTextColorAdapter.currentTextColor;
+
+                //launch settings save
+                styleSave.LaunchColor = launchBackColor.currentColor;
+
+                //toolbar settings save
+                styleSave.ToolbarColor = toolbarBackColor.currentColor;
+                toolbar.setBackgroundColor(toolbarBackColor.currentColor);
+
+                //progressBar save
+                styleSave.ProgressBarResource = progressBarColorAdapter.currentDrawableResource;
+
+                //seekBar settings save
+                styleSave.SeekBarProgressResource = seekBarColorAdapter.currentDrawableResource;
+                styleSave.SeekBarThumbResource = seekThumbColorAdapter.currentDrawableResource;
+
+                //greeting settings save
+                styleSave.Greeting = editTextAdapter.getCurrentText();
+                styleSave.GreetingColor = greetingTextColorAdapter.currentTextColor;
+
+                secondMenu.setAdapter(null);
+                secondTitle.setVisibility(View.GONE);
+                testWindow.setVisibility(View.GONE);
+                testLaunch.setVisibility(View.GONE);
+                testGreeting.setVisibility(View.GONE);
+
+                styleSave.setStyle();
+                style();
+                new Warning(mainActivity).warn(words.get("For some changes to take effect, restart your computer."));
+            });
+            closeButton.setOnClickListener(v -> closeProgram(1));
+            fullscreenModeButton.setOnClickListener(v -> {
+                if (i == 0) {
+                    mainWindow.setScaleY(0.65f);
+                    mainWindow.setScaleX(0.65f);
+                    PortableView portableView = new PortableView(mainWindow);
+                    fullscreenModeButton.setBackgroundResource(fullscreenMode1ImageRes);
+                    i++;
+                } else {
+                    mainWindow.setY(0);
+                    mainWindow.setX(0);
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setOnTouchListener(null);
+                    fullscreenModeButton.setBackgroundResource(fullscreenMode2ImageRes);
+                    i = 0;
+                }
+            });
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
             }
-            
-            //window settings save
-            styleSave.ColorWindow = windowBackColor.currentColor;
-            styleSave.CloseButtonImageRes = windowButtonColorAdapter.currentCloseButtonImageRes;
-            styleSave.FullScreenMode1ImageRes = windowButtonColorAdapter.currentFullscreen1ButtonImageRes;
-            styleSave.FullScreenMode2ImageRes = windowButtonColorAdapter.currentFullscreen2ButtonImageRes;
-            styleSave.RollUpButtonImageRes = windowButtonColorAdapter.currentRollUpButtonImageRes;
-            styleSave.TitleColor = titleTextColorAdapter.currentTextColor;
-
-            //theme settings save
-            styleSave.ThemeColor1 = themeAdapter.ColorTheme1;
-            styleSave.ThemeColor2 = themeAdapter.ColorTheme2;
-            styleSave.ThemeColor3 = themeAdapter.ColorTheme3;
-            styleSave.PauseButtonRes = themeAdapter.PauseButtonRes;
-            styleSave.PlayButtonImage = themeAdapter.PlayButtonImage;
-            styleSave.PrevOrNextImageRes = themeAdapter.PrevOrNextImageRes;
-            styleSave.ArrowButtonImage = themeAdapter.ArrowButtonImage;
-
-            //text color save
-            styleSave.TextColor = textColorAdapter.currentTextColor;
-            styleSave.TextButtonColor = buttonTextColorAdapter.currentTextColor;
-
-            //launch settings save
-            styleSave.LaunchColor=launchBackColor.currentColor;
-
-            //toolbar settings save
-            styleSave.ToolbarColor=toolbarBackColor.currentColor;
-            toolbar.setBackgroundColor(toolbarBackColor.currentColor);
-
-            //progressBar save
-            styleSave.ProgressBarResource = progressBarColorAdapter.currentDrawableResource;
-
-            //seekBar settings save
-            styleSave.SeekBarProgressResource = seekBarColorAdapter.currentDrawableResource;
-            styleSave.SeekBarThumbResource = seekThumbColorAdapter.currentDrawableResource;
-
-            //greeting settings save
-            styleSave.Greeting = editTextAdapter.getCurrentText();
-            styleSave.GreetingColor = greetingTextColorAdapter.currentTextColor;
-
-            secondMenu.setAdapter(null);
-            secondTitle.setVisibility(View.GONE);
-            testWindow.setVisibility(View.GONE);
-            testLaunch.setVisibility(View.GONE);
-            testGreeting.setVisibility(View.GONE);
-
-            styleSave.setStyle();
-            new Warning(mainActivity).warn(words.get("For some changes to take effect, restart your computer."));
-        });
-        closeButton.setOnClickListener(v -> closeProgram());
-        fullscreenModeButton.setOnClickListener(v -> {
-            if(i==0){
-                mainWindow.setScaleY(0.65f);
-                mainWindow.setScaleX(0.65f);
-                PortableView portableView = new PortableView(mainWindow);
-                fullscreenModeButton.setBackgroundResource(fullscreenMode1ImageRes);
-                i++;
-            }
-            else {
-                mainWindow.setY(0);
-                mainWindow.setX(0);
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setOnTouchListener(null);
-                fullscreenModeButton.setBackgroundResource(fullscreenMode2ImageRes);
-                i=0;
-            }
-        });
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
-    public void closeProgram(){
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 }

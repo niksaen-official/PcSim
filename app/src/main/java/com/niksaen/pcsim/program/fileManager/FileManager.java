@@ -39,6 +39,8 @@ public class FileManager extends Program {
     private final PcParametersSave pcParametersSave;
 
     public FileManager(MainActivity activity){
+        super(activity);
+        this.Title = "File manager";
         mainActivity = activity;
         this.context = activity.getBaseContext();
         this.layout = activity.layout;
@@ -106,79 +108,80 @@ public class FileManager extends Program {
     TextViewer  textViewer;
     ImageViewer imageViewer;
     public void openProgram(){
-        this.status = 0;
-        initView();initAdapter();style();
+        if(status == -1) {
+            super.openProgram();
+            this.status = 0;
+            initView();
+            initAdapter();
+            style();
 
-        listViewFiles.setOnItemClickListener((parent, view, position, id) -> {
-            if(FileUtil.isDirectory(files.get(position))){
-                folderName.setText(files.get(position));
-                path = files.get(position);
-                FileUtil.listDir(files.get(position), files);
-                ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
-            }
-            else if(files.get(position).endsWith(".txt")){
-                textViewer = new TextViewer(mainActivity);
-                textViewer.openProgram(FileUtil.readFile(files.get(position)));
-            }
-            else if(files.get(position).endsWith(".png") || files.get(position).endsWith(".jpg")){
-                imageViewer = new ImageViewer(mainActivity);
-                imageViewer.openProgram(files.get(position));
-            }
-        });
-
-        pageDown.setOnClickListener(v -> {
-            if(path.contains("/storage/emulated/0/") && path != "/storage/emulated/0/"){
-                v.setVisibility(View.VISIBLE);
-                path = path.substring(0, path.lastIndexOf("/"));
-                FileUtil.listDir(path, files);
-                folderName.setText(path);
-                ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
-            }
-        });
-
-        //нажатие кнопок
-        buttonClose.setOnClickListener(v -> closeProgram());
-        final int[] button2ClickCount = {0};
-        buttonFullscreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(button2ClickCount[0]==0){
-                    buttonFullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
-                    mainWindow.setScaleX(0.7f);
-                    mainWindow.setScaleY(0.7f);
-                    mainWindow.setX(0f);
-                    mainWindow.setY(0f);
-                    PortableView portableView = new PortableView(mainWindow);
-                    button2ClickCount[0]++;
+            listViewFiles.setOnItemClickListener((parent, view, position, id) -> {
+                if (FileUtil.isDirectory(files.get(position))) {
+                    folderName.setText(files.get(position));
+                    path = files.get(position);
+                    FileUtil.listDir(files.get(position), files);
+                    ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
+                } else if (files.get(position).endsWith(".txt")) {
+                    textViewer = new TextViewer(mainActivity);
+                    textViewer.openProgram(FileUtil.readFile(files.get(position)));
+                } else if (files.get(position).endsWith(".png") || files.get(position).endsWith(".jpg")) {
+                    imageViewer = new ImageViewer(mainActivity);
+                    imageViewer.openProgram(files.get(position));
                 }
-                else{
-                    buttonFullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
-                    mainWindow.setScaleX(1);
-                    mainWindow.setScaleY(1);
-                    mainWindow.setX(0);
-                    mainWindow.setY(0);
-                    mainWindow.setOnTouchListener(null);
-                    button2ClickCount[0]=0;
+            });
+
+            pageDown.setOnClickListener(v -> {
+                if (path.contains("/storage/emulated/0/") && path != "/storage/emulated/0/") {
+                    v.setVisibility(View.VISIBLE);
+                    path = path.substring(0, path.lastIndexOf("/"));
+                    FileUtil.listDir(path, files);
+                    folderName.setText(path);
+                    ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
                 }
+            });
+
+            //нажатие кнопок
+            buttonClose.setOnClickListener(v -> closeProgram(1));
+            final int[] button2ClickCount = {0};
+            buttonFullscreen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (button2ClickCount[0] == 0) {
+                        buttonFullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                        mainWindow.setScaleX(0.7f);
+                        mainWindow.setScaleY(0.7f);
+                        mainWindow.setX(0f);
+                        mainWindow.setY(0f);
+                        PortableView portableView = new PortableView(mainWindow);
+                        button2ClickCount[0]++;
+                    } else {
+                        buttonFullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                        mainWindow.setScaleX(1);
+                        mainWindow.setScaleY(1);
+                        mainWindow.setX(0);
+                        mainWindow.setY(0);
+                        mainWindow.setOnTouchListener(null);
+                        button2ClickCount[0] = 0;
+                    }
+                }
+            });
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
             }
-        });
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
 
     @Override
-    public void closeProgram(){
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
         if(textViewer != null){
-            textViewer.closeProgram();
+            textViewer.closeProgram(mode);
         }
         if(imageViewer != null){
-            imageViewer.closeProgram();
+            imageViewer.closeProgram(mode);
         }
-        this.status = -1;
     }
 }

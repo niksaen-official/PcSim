@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -46,6 +47,8 @@ public class Benchmark extends Program{
     StyleSave styleSave;
 
     public Benchmark(MainActivity activity){
+        super(activity);
+        this.Title = "Benchmark";
         this.context = activity.getBaseContext();
         this.layout = activity.layout;
         this.activity = activity;
@@ -67,51 +70,51 @@ public class Benchmark extends Program{
     }
 
     public void openProgram(){
-        this.status = 0;
-        int[] buttonClicks = {0};
+        if(status == -1) {
+            super.openProgram();
+            int[] buttonClicks = {0};
+            button3.setOnClickListener(v -> {
+                closeProgram(1);
+            });
+            button2.setOnClickListener(v -> {
+                if (buttonClicks[0] == 0) {
+                    mainWindow.setScaleX(0.6f);
+                    mainWindow.setScaleY(0.6f);
+                    PortableView view = new PortableView(mainWindow);
+                    v.setBackgroundResource(button_2_1);
+                    buttonClicks[0] = 1;
+                } else {
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setOnTouchListener(null);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    v.setBackgroundResource(button_2_2);
+                    buttonClicks[0] = 0;
+                }
+            });
 
-        button3.setOnClickListener(v -> {
-            closeProgram();
-        });
-        button2.setOnClickListener(v->{
-            if(buttonClicks[0] == 0){
-                mainWindow.setScaleX(0.6f);
-                mainWindow.setScaleY(0.6f);
-                PortableView view = new PortableView(mainWindow);
-                v.setBackgroundResource(button_2_1);
-                buttonClicks[0]=1;
-            }else{
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setOnTouchListener(null);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                v.setBackgroundResource(button_2_2);
-                buttonClicks[0]=0;
+            start_bench.setOnClickListener(v -> {
+                v.setClickable(false);
+                v.setVisibility(View.GONE);
+                bench();
+            });
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
             }
-        });
-
-        start_bench.setOnClickListener(v -> {
-            v.setClickable(false);
-            v.setVisibility(View.GONE);
-            bench();
-        });
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
         }
-        activity.programArrayList.add(this);
     }
 
     @Override
-    public void closeProgram(){
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
         if(timer != null) {
             timer.cancel();
             timer = null;
         }
-        this.status = -1;
     }
 
     private int getCpuBench(){

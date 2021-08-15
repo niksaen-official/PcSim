@@ -44,6 +44,8 @@ public class MusicPlayer extends Program {
     Typeface font;
 
     public MusicPlayer(MainActivity activity){
+        super(activity);
+        this.Title = "Music player";
         this.context = activity.getBaseContext();
         this.layout = activity.layout;
         this.pcParametersSave = activity.pcParametersSave;
@@ -135,248 +137,252 @@ public class MusicPlayer extends Program {
     int CurrentPosition = 0;
     String CurrentMusic;
     public void openProgram(String pathMusic,String pathFolder){
-        this.status = 0;
-        initView();style();
-        if(pathFolder != null){
-            CurrentMusic = pathMusic;
-            FileUtil.listDir(pathFolder,folder);
-            for(String file:folder) {
-                if(file.endsWith(".mp3")){
-                    musicFiles.add(file);
+        if(status == -1) {
+            super.openProgram();
+            initView();
+            style();
+            if (pathFolder != null) {
+                CurrentMusic = pathMusic;
+                FileUtil.listDir(pathFolder, folder);
+                for (String file : folder) {
+                    if (file.endsWith(".mp3")) {
+                        musicFiles.add(file);
+                    }
                 }
-            }
-            // настройка и подключение адаптера
-            musicListAdapter = new MusicListAdapter(context,0,musicFiles);
-            musicListAdapter.ColorBackground = styleSave.ThemeColor1;
-            musicListAdapter.ColorText = styleSave.TextColor;
-            songView.setAdapter(musicListAdapter);
-        }
-
-        // изменение счетчика времени и позиции seekbar
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                if(mediaPlayer != null) {
-                    seekBarTime.setProgress(mediaPlayer.getCurrentPosition());
-                    timeText.setText(convertTime(mediaPlayer.getCurrentPosition()));
-                    handler.postDelayed(this, 1000);
-                }
-            }
-        };
-
-        //работа кнопки паузы
-        buttonPlayStop.setOnClickListener(v -> {
-            if(buttonPlayPauseClickCount == 0) {
-                try {
-                    mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setDataSource(CurrentMusic);
-                    mediaPlayer.setOnPreparedListener(MediaPlayer::start);
-                    mediaPlayer.prepare();
-                    mediaPlayer.seekTo(CurrentPosition);
-                    musicName.setText(CurrentMusic.substring(CurrentMusic.lastIndexOf("/")+1));
-                    seekBarTime.setMax(mediaPlayer.getDuration());
-                    handler.post(runnable);
-
-                } catch (Exception ignored) {
-                }
-                buttonPlayPauseClickCount++;
-                buttonPlayStop.setBackgroundResource(styleSave.PauseButtonRes);
-            }else {
-                mediaPlayer.pause();
-                CurrentPosition = mediaPlayer.getCurrentPosition();
-                buttonPlayPauseClickCount = 0;
-                buttonPlayStop.setBackgroundResource(styleSave.PlayButtonImage);
-            }
-        });
-
-        //перемотка
-        seekBarTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(mediaPlayer != null) {
-                    CurrentPosition = progress;
-                    timeText.setText(convertTime(progress));
-                }
+                // настройка и подключение адаптера
+                musicListAdapter = new MusicListAdapter(context, 0, musicFiles);
+                musicListAdapter.ColorBackground = styleSave.ThemeColor1;
+                musicListAdapter.ColorText = styleSave.TextColor;
+                songView.setAdapter(musicListAdapter);
             }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                if(mediaPlayer != null)
+            // изменение счетчика времени и позиции seekbar
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (mediaPlayer != null) {
+                        seekBarTime.setProgress(mediaPlayer.getCurrentPosition());
+                        timeText.setText(convertTime(mediaPlayer.getCurrentPosition()));
+                        handler.postDelayed(this, 1000);
+                    }
+                }
+            };
+
+            //работа кнопки паузы
+            buttonPlayStop.setOnClickListener(v -> {
+                if (buttonPlayPauseClickCount == 0) {
+                    try {
+                        mediaPlayer = new MediaPlayer();
+                        mediaPlayer.setDataSource(CurrentMusic);
+                        mediaPlayer.setOnPreparedListener(MediaPlayer::start);
+                        mediaPlayer.prepare();
+                        mediaPlayer.seekTo(CurrentPosition);
+                        musicName.setText(CurrentMusic.substring(CurrentMusic.lastIndexOf("/") + 1));
+                        seekBarTime.setMax(mediaPlayer.getDuration());
+                        handler.post(runnable);
+
+                    } catch (Exception ignored) {
+                    }
+                    buttonPlayPauseClickCount++;
+                    buttonPlayStop.setBackgroundResource(styleSave.PauseButtonRes);
+                } else {
                     mediaPlayer.pause();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if(mediaPlayer != null) {
-                    mediaPlayer.seekTo(CurrentPosition);
-                    mediaPlayer.start();
+                    CurrentPosition = mediaPlayer.getCurrentPosition();
+                    buttonPlayPauseClickCount = 0;
+                    buttonPlayStop.setBackgroundResource(styleSave.PlayButtonImage);
                 }
-            }
-        });
+            });
 
-        //переключение на следующую или предыдущую песню
-        View.OnClickListener onNextOrPrevClick = v -> {
-            if(mediaPlayer != null) {
-                mediaPlayer.stop();
-                CurrentPosition = 0;
-                seekBarTime.setProgress(0);
-                timeText.setText("");
-                buttonPlayPauseClickCount = 1;
-                buttonPlayStop.setBackgroundResource(styleSave.PauseButtonRes);
-
-                switch (v.getId()) {
-                    case R.id.next: {
-                        if(musicFiles.indexOf(CurrentMusic) < musicFiles.size()-1) {
-                            CurrentMusic = musicFiles.get(musicFiles.indexOf(CurrentMusic) + 1);
-                        }
-                        break;
+            //перемотка
+            seekBarTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (mediaPlayer != null) {
+                        CurrentPosition = progress;
+                        timeText.setText(convertTime(progress));
                     }
-                    case R.id.prev: {
-                        if (musicFiles.indexOf(CurrentMusic) > 0) {
-                            CurrentMusic = musicFiles.get(musicFiles.indexOf(CurrentMusic) - 1);
-                        }
-                        break;
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    if (mediaPlayer != null)
+                        mediaPlayer.pause();
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (mediaPlayer != null) {
+                        mediaPlayer.seekTo(CurrentPosition);
+                        mediaPlayer.start();
                     }
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + v.getId());
                 }
-                try {
-                    mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setDataSource(CurrentMusic);
-                    mediaPlayer.setOnPreparedListener(MediaPlayer::start);
-                    mediaPlayer.prepare();
-                    mediaPlayer.seekTo(CurrentPosition);
-                    musicName.setText(CurrentMusic.substring(CurrentMusic.lastIndexOf("/") + 1));
-                    seekBarTime.setMax(mediaPlayer.getDuration());
-                    handler.post(runnable);
+            });
 
-                } catch (Exception ignored) { }
-            }
-        };
-        buttonNext.setOnClickListener(onNextOrPrevClick);
-        buttonPrev.setOnClickListener(onNextOrPrevClick);
+            //переключение на следующую или предыдущую песню
+            View.OnClickListener onNextOrPrevClick = v -> {
+                if (mediaPlayer != null) {
+                    mediaPlayer.stop();
+                    CurrentPosition = 0;
+                    seekBarTime.setProgress(0);
+                    timeText.setText("");
+                    buttonPlayPauseClickCount = 1;
+                    buttonPlayStop.setBackgroundResource(styleSave.PauseButtonRes);
 
-        //выбор песни
-        songView.setOnItemClickListener((parent, view, position, id) -> {
-            if(mediaPlayer != null) {
-                mediaPlayer.stop();
-                CurrentPosition = 0;
-                seekBarTime.setProgress(0);
-                timeText.setText("");
-                buttonPlayPauseClickCount = 1;
-                buttonPlayStop.setBackgroundResource(styleSave.PauseButtonRes);
+                    switch (v.getId()) {
+                        case R.id.next: {
+                            if (musicFiles.indexOf(CurrentMusic) < musicFiles.size() - 1) {
+                                CurrentMusic = musicFiles.get(musicFiles.indexOf(CurrentMusic) + 1);
+                            }
+                            break;
+                        }
+                        case R.id.prev: {
+                            if (musicFiles.indexOf(CurrentMusic) > 0) {
+                                CurrentMusic = musicFiles.get(musicFiles.indexOf(CurrentMusic) - 1);
+                            }
+                            break;
+                        }
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + v.getId());
+                    }
+                    try {
+                        mediaPlayer = new MediaPlayer();
+                        mediaPlayer.setDataSource(CurrentMusic);
+                        mediaPlayer.setOnPreparedListener(MediaPlayer::start);
+                        mediaPlayer.prepare();
+                        mediaPlayer.seekTo(CurrentPosition);
+                        musicName.setText(CurrentMusic.substring(CurrentMusic.lastIndexOf("/") + 1));
+                        seekBarTime.setMax(mediaPlayer.getDuration());
+                        handler.post(runnable);
 
-                CurrentMusic = musicFiles.get(position);
-
-                try {
-                    mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setDataSource(CurrentMusic);
-                    mediaPlayer.setOnPreparedListener(MediaPlayer::start);
-                    mediaPlayer.prepare();
-                    mediaPlayer.seekTo(CurrentPosition);
-                    musicName.setText(CurrentMusic.substring(CurrentMusic.lastIndexOf("/") + 1));
-                    seekBarTime.setMax(mediaPlayer.getDuration());
-                    handler.post(runnable);
-
-                } catch (Exception ignored) { }
-            }
-        });
-
-        //меню
-        menuSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 1){
-                    musicPlayerOpenFile = new MusicPlayerOpenFile(mainActivity);
-                    musicPlayerOpenFile.openProgram();
-                    closeProgram();
+                    } catch (Exception ignored) {
+                    }
                 }
-            }
+            };
+            buttonNext.setOnClickListener(onNextOrPrevClick);
+            buttonPrev.setOnClickListener(onNextOrPrevClick);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            //выбор песни
+            songView.setOnItemClickListener((parent, view, position, id) -> {
+                if (mediaPlayer != null) {
+                    mediaPlayer.stop();
+                    CurrentPosition = 0;
+                    seekBarTime.setProgress(0);
+                    timeText.setText("");
+                    buttonPlayPauseClickCount = 1;
+                    buttonPlayStop.setBackgroundResource(styleSave.PauseButtonRes);
 
-            }
-        });
+                    CurrentMusic = musicFiles.get(position);
 
-        close.setOnClickListener(v -> closeProgram());
-        final int[] buttonClick = {0};
-        fullscreen.setOnClickListener(v -> {
-            if(buttonClick[0] == 0){
-                mainWindow.setScaleX(0.65f);
-                mainWindow.setScaleY(0.65f);
-                PortableView portableView = new PortableView(mainWindow);
-                v.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
-                buttonClick[0] = 1;
-            }
-            else{
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                mainWindow.setOnTouchListener(null);
-                v.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
-                buttonClick[0] = 0;
-            }
-        });
+                    try {
+                        mediaPlayer = new MediaPlayer();
+                        mediaPlayer.setDataSource(CurrentMusic);
+                        mediaPlayer.setOnPreparedListener(MediaPlayer::start);
+                        mediaPlayer.prepare();
+                        mediaPlayer.seekTo(CurrentPosition);
+                        musicName.setText(CurrentMusic.substring(CurrentMusic.lastIndexOf("/") + 1));
+                        seekBarTime.setMax(mediaPlayer.getDuration());
+                        handler.post(runnable);
 
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
+                    } catch (Exception ignored) {
+                    }
+                }
+            });
+
+            //меню
+            menuSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 1) {
+                        musicPlayerOpenFile = new MusicPlayerOpenFile(mainActivity);
+                        musicPlayerOpenFile.openProgram();
+                        closeProgram(1);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            close.setOnClickListener(v -> closeProgram(1));
+            final int[] buttonClick = {0};
+            fullscreen.setOnClickListener(v -> {
+                if (buttonClick[0] == 0) {
+                    mainWindow.setScaleX(0.65f);
+                    mainWindow.setScaleY(0.65f);
+                    PortableView portableView = new PortableView(mainWindow);
+                    v.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                    buttonClick[0] = 1;
+                } else {
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    mainWindow.setOnTouchListener(null);
+                    v.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                    buttonClick[0] = 0;
+                }
+            });
+
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
+            }
         }
-        mainActivity.programArrayList.add(this);
     }
     public void openProgram(){
-        this.status = 0;
-        initView();style();
-
-        //меню
-        menuSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 1){
-                    musicPlayerOpenFile = new MusicPlayerOpenFile(mainActivity);
-                    musicPlayerOpenFile.openProgram();
-                    closeProgram();
+        if(status == -1) {
+            super.openProgram();
+            initView();
+            style();
+            //меню
+            menuSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 1) {
+                        musicPlayerOpenFile = new MusicPlayerOpenFile(mainActivity);
+                        musicPlayerOpenFile.openProgram();
+                        closeProgram(1);
+                    }
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                }
+            });
 
-        close.setOnClickListener(v -> closeProgram());
-        final int[] buttonClick = {0};
-        fullscreen.setOnClickListener(v -> {
-            if(buttonClick[0] == 0){
-                mainWindow.setScaleX(0.65f);
-                mainWindow.setScaleY(0.65f);
-                PortableView portableView = new PortableView(mainWindow);
-                v.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
-                buttonClick[0] = 1;
-            }
-            else{
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                mainWindow.setOnTouchListener(null);
-                v.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
-                buttonClick[0] = 0;
-            }
-        });
+            close.setOnClickListener(v -> closeProgram(1));
+            final int[] buttonClick = {0};
+            fullscreen.setOnClickListener(v -> {
+                if (buttonClick[0] == 0) {
+                    mainWindow.setScaleX(0.65f);
+                    mainWindow.setScaleY(0.65f);
+                    PortableView portableView = new PortableView(mainWindow);
+                    v.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
+                    buttonClick[0] = 1;
+                } else {
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    mainWindow.setOnTouchListener(null);
+                    v.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
+                    buttonClick[0] = 0;
+                }
+            });
 
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
+            }
         }
-        mainActivity.programArrayList.add(this);
     }
-    public void closeProgram(){
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
         if(mediaPlayer != null){
             mediaPlayer.stop();
@@ -385,7 +391,6 @@ public class MusicPlayer extends Program {
             seekBarTime.setProgress(0);
             timeText.setText("00:00");
         }
-        this.status = -1;
     }
     private String convertTime(int milliSeconds){
         int second = milliSeconds/1000;

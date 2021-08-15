@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -36,6 +37,8 @@ public class GPU_Overclocking extends Program {
     HashMap<String,String> words;
 
     public GPU_Overclocking(MainActivity activity){
+        super(activity);
+        this.Title = "GPU Overclocking";
         this.context = activity.getBaseContext();
         this.layout = activity.layout;
         this.pcParametersSave = activity.pcParametersSave;
@@ -104,63 +107,63 @@ public class GPU_Overclocking extends Program {
     }
 
     public void openProgram(){
-        this.status = 0;
-        getLanguage();
-        initView();style();
+        if(status == -1) {
+            super.openProgram();
+            getLanguage();
+            initView();
+            style();
 
-        int[] buttonClicks = {0};
-        close.setOnClickListener(v -> {
-            closeProgram();
-        });
-        fullscreen.setOnClickListener(v->{
-            if(buttonClicks[0] == 0){
-                mainWindow.setScaleX(0.6f);
-                mainWindow.setScaleY(0.6f);
-                PortableView view = new PortableView(mainWindow);
-                v.setBackgroundResource(button_2_1);
-                buttonClicks[0]=1;
-            }else{
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setOnTouchListener(null);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                v.setBackgroundResource(button_2_2);
-                buttonClicks[0]=0;
-            }
-        });
-
-
-        if(pcParametersSave.GPU1 != null){
-            gpu1.setVisibility(View.VISIBLE);
-            gpu1.setOnClickListener(v->{
-                gpu_model.setVisibility(View.VISIBLE);
-                parameters.setVisibility(View.VISIBLE);
-                seekBar.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-                gpu_model.setText(pcParametersSave.Gpu1);
-                overclocking(pcParametersSave.GPU1,1);
+            int[] buttonClicks = {0};
+            close.setOnClickListener(v -> {
+                closeProgram(1);
             });
-        }
-        if (Integer.parseInt(pcParametersSave.MOBO.get("Слотов PCI")) >= 2) {
-            if (pcParametersSave.GPU2 != null) {
-                gpu2.setVisibility(View.VISIBLE);
-                gpu2.setOnClickListener(v -> {
+            fullscreen.setOnClickListener(v -> {
+                if (buttonClicks[0] == 0) {
+                    mainWindow.setScaleX(0.6f);
+                    mainWindow.setScaleY(0.6f);
+                    PortableView view = new PortableView(mainWindow);
+                    v.setBackgroundResource(button_2_1);
+                    buttonClicks[0] = 1;
+                } else {
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setOnTouchListener(null);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    v.setBackgroundResource(button_2_2);
+                    buttonClicks[0] = 0;
+                }
+            });
+            if (pcParametersSave.GPU1 != null) {
+                gpu1.setVisibility(View.VISIBLE);
+                gpu1.setOnClickListener(v -> {
                     gpu_model.setVisibility(View.VISIBLE);
                     parameters.setVisibility(View.VISIBLE);
                     seekBar.setVisibility(View.VISIBLE);
                     save.setVisibility(View.VISIBLE);
-                    gpu_model.setText(pcParametersSave.Gpu2);
-                    overclocking(pcParametersSave.GPU2, 2);
+                    gpu_model.setText(pcParametersSave.Gpu1);
+                    overclocking(pcParametersSave.GPU1, 1);
                 });
             }
+            if (Integer.parseInt(pcParametersSave.MOBO.get("Слотов PCI")) >= 2) {
+                if (pcParametersSave.GPU2 != null) {
+                    gpu2.setVisibility(View.VISIBLE);
+                    gpu2.setOnClickListener(v -> {
+                        gpu_model.setVisibility(View.VISIBLE);
+                        parameters.setVisibility(View.VISIBLE);
+                        seekBar.setVisibility(View.VISIBLE);
+                        save.setVisibility(View.VISIBLE);
+                        gpu_model.setText(pcParametersSave.Gpu2);
+                        overclocking(pcParametersSave.GPU2, 2);
+                    });
+                }
+            }
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
+            }
         }
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
-        }
-        mainActivity.programArrayList.add(this);
     }
     float throughput,k,temperature,temperature_coefficient,power,power_coefficient,power_fan,main;
     private void overclocking(HashMap<String,String> GPU,int slot){
@@ -261,8 +264,8 @@ public class GPU_Overclocking extends Program {
     }
 
     @Override
-    public void closeProgram() {
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 }

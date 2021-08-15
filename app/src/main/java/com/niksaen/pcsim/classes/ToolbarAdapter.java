@@ -19,19 +19,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHolder> {
+public class ToolbarAdapter  extends  RecyclerView.Adapter<ToolbarAdapter.ViewHolder> {
 
     Context context;
-    String[] apps;
     MainActivity activity;
-    HashMap<String,Program> programHashMap;
-    public DesktopAdapter(MainActivity activity, String[] apps){
+    HashMap<String, Program> programHashMap;
+    public ToolbarAdapter(MainActivity activity){
         this.context = activity.getBaseContext();
-        this.apps = apps;
         this.activity = activity;
-        Program programForGetHashmap = new Program(activity);
-        programForGetHashmap.initHashMap(activity);
-        programHashMap = programForGetHashmap.programHashMap;
     }
 
 
@@ -39,26 +34,28 @@ public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHol
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(context).inflate(R.layout.item_desktop,null);
+        View item = LayoutInflater.from(context).inflate(R.layout.item_toolbar,null);
         return new ViewHolder(item);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull DesktopAdapter.ViewHolder holder, int position) {
-        holder.app_icon.setImageResource(Program.programIcon.get(apps[position]));
-        holder.app_name.setText(apps[position]);
-        holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
-        holder.itemView.setOnClickListener(v -> {
-            Program program = programHashMap.get(apps[position]);
-            program.openProgram();
+    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+        if(activity.programArrayList.get(position).status == 0) {
+            holder.app_icon.setImageResource(Program.programIcon.get(activity.programArrayList.get(position).Title));
+            holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
+            holder.app_name.setText(activity.programArrayList.get(position).Title);
+            holder.app_name.setTextColor(activity.styleSave.ToolbarTextColor);
+        }else{
+            holder.app_icon.setVisibility(View.GONE);
+            holder.app_name.setVisibility(View.GONE);
+            holder.itemView.setVisibility(View.GONE);
+            holder.itemView.setPadding(0,0,0,0);
         }
-        );
-
     }
 
     @Override
     public int getItemCount() {
-        return apps.length;
+        return activity.programArrayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

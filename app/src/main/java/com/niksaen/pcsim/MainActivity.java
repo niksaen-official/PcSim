@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.niksaen.pcsim.classes.BlackDeadScreen;
 import com.niksaen.pcsim.classes.DesktopAdapter;
+import com.niksaen.pcsim.classes.ToolbarAdapter;
 import com.niksaen.pcsim.program.Benchmark;
 import com.niksaen.pcsim.program.Browser;
 import com.niksaen.pcsim.program.CPU_Tweaker;
@@ -51,9 +53,10 @@ public class MainActivity extends AppCompatActivity{
     public LinearLayout toolbar;
     TextView greeting;
     RecyclerView desktop;
+    RecyclerView appList;
 
     public PcParametersSave pcParametersSave;
-    StyleSave styleSave;
+    public StyleSave styleSave;
     public ConstraintLayout layout;
 
     Typeface font;
@@ -96,12 +99,19 @@ public class MainActivity extends AppCompatActivity{
         toolbar =findViewById(R.id.toolbar);
         greeting = findViewById(R.id.greeting);
         desktop = findViewById(R.id.desktop);
+        appList = findViewById(R.id.app_list);
     }
 
-    private void updateDesktop(){
+    private void updateDesktop() {
         String[] apps = Program.programList;
-        desktop.setLayoutManager(new GridLayoutManager(getBaseContext(),5));
-        desktop.setAdapter(new DesktopAdapter(this,apps));
+        desktop.setLayoutManager(new GridLayoutManager(getBaseContext(), 5));
+        desktop.setAdapter(new DesktopAdapter(this, apps));
+    }
+    public void updateToolbar(){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        appList.setLayoutManager(layoutManager);
+        appList.setAdapter(new ToolbarAdapter(this));
     }
 
     void viewStyle(){
@@ -178,13 +188,14 @@ public class MainActivity extends AppCompatActivity{
 
         for(Program program:programArrayList){
             if(program.status != -1) {
-                program.closeProgram();
+                program.closeProgram(0);
             }
         }
         programArrayList.clear();
     }
     // включение пк
     public void pcWorkOn(){
+        styleSave.getStyle();
         greeting.setVisibility(View.VISIBLE);
         greeting.setTextColor(styleSave.GreetingColor);
         greeting.setText(styleSave.Greeting);

@@ -38,6 +38,8 @@ public class NotepadFileOpen extends Program {
     MainActivity mainActivity;
 
     public NotepadFileOpen(MainActivity activity){
+        super(activity);
+        this.Title = "Opening file";
         this.context = activity.getBaseContext();
         mainActivity = activity;
 
@@ -94,55 +96,44 @@ public class NotepadFileOpen extends Program {
     String buffPathOpen = "",buffPath2;
     View buff;
     public void openProgram(){
-        this.status = 0;
-        initView();style();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(FileUtil.isDirectory(folders.get(position))) {
+        if(status == -1) {
+            super.openProgram();
+            initView();
+            style();
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                if (FileUtil.isDirectory(folders.get(position))) {
                     buffPathOpen = folders.get(position);
                     FileUtil.listDir(folders.get(position), folders);
                     ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-                }
-                else if(folders.get(position).endsWith(".txt")){
-                    if(buff != null){
+                } else if (folders.get(position).endsWith(".txt")) {
+                    if (buff != null) {
                         buff.setBackgroundColor(styleSave.ThemeColor1);
                     }
                     view.setBackgroundColor(styleSave.ThemeColor2);
                     buff = view;
                     buffPathOpen = folders.get(position);
                 }
-            }
-        });
+            });
 
-        pageDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(buffPathOpen.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/"){
+            pageDown.setOnClickListener(v -> {
+                if (buffPathOpen.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/") {
                     v.setVisibility(View.VISIBLE);
                     buffPathOpen = buffPathOpen.substring(0, buffPathOpen.lastIndexOf("/"));
                     FileUtil.listDir(buffPathOpen, folders);
                     ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
                 }
-            }
-        });
+            });
 
-        openButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(buffPathOpen.endsWith(".txt")) {
+            openButton.setOnClickListener(v -> {
+                if (buffPathOpen.endsWith(".txt")) {
                     notepad.openProgram(FileUtil.readFile(buffPathOpen));
-                    fileOpenWindow.setVisibility(View.GONE);
-                    fileOpenWindow = null;
+                    closeProgram(1);
                 }
-            }
-        });
+            });
 
-        final int[] button2ClickCount = {0};
-        fullscreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(button2ClickCount[0]==0){
+            final int[] button2ClickCount = {0};
+            fullscreen.setOnClickListener(v -> {
+                if (button2ClickCount[0] == 0) {
                     fullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
                     fileOpenWindow.setScaleX(0.7f);
                     fileOpenWindow.setScaleY(0.7f);
@@ -153,8 +144,7 @@ public class NotepadFileOpen extends Program {
                         fileOpenWindow.setZ(0f);
                     }
                     button2ClickCount[0]++;
-                }
-                else{
+                } else {
                     fullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
                     fileOpenWindow.setScaleX(1);
                     fileOpenWindow.setScaleY(1);
@@ -164,22 +154,21 @@ public class NotepadFileOpen extends Program {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         fileOpenWindow.setZ(10f);
                     }
-                    button2ClickCount[0]=0;
+                    button2ClickCount[0] = 0;
                 }
+            });
+            close.setOnClickListener(v -> closeProgram(1));
+            if (fileOpenWindow.getParent() == null) {
+                mainActivity.layout.addView(fileOpenWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                fileOpenWindow.setVisibility(View.VISIBLE);
             }
-        });
-        close.setOnClickListener(v -> closeProgram());
-        if(fileOpenWindow.getParent() == null) {
-            mainActivity.layout.addView(fileOpenWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            fileOpenWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
 
     @Override
-    public void closeProgram() {
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         fileOpenWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 }

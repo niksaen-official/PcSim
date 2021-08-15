@@ -49,6 +49,8 @@ public class DeviceManager extends Program {
 
     HashMap<String,String> language;
     public DeviceManager(MainActivity mainActivity){
+        super(mainActivity);
+        this.Title = "Device manager";
         this.context = mainActivity.getBaseContext();
         this.pcParametersSave = mainActivity.pcParametersSave;
         this.layout = mainActivity.layout;
@@ -348,40 +350,41 @@ public class DeviceManager extends Program {
     }
 
     public void openProgram(){
-        this.status = 0;
-        mainWindow = inflater.inflate(R.layout.program_checkiron,null);
-        getLanguage();
-        initView();
-        getParameters();
-        style();
+        if(status == -1) {
+            super.openProgram();
+            mainWindow = inflater.inflate(R.layout.program_checkiron, null);
+            getLanguage();
+            initView();
+            getParameters();
+            style();
 
-        int[] buttonClicks = {0};
-        close.setOnClickListener(v -> {
-            closeProgram();
-        });
-        fullscreenMode.setOnClickListener(v->{
-            if(buttonClicks[0] == 0){
-                mainWindow.setScaleX(0.6f);
-                mainWindow.setScaleY(0.6f);
-                PortableView view = new PortableView(mainWindow);
-                v.setBackgroundResource(fullscreenMode1);
-                buttonClicks[0]=1;
-            }else{
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setOnTouchListener(null);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                v.setBackgroundResource(fullscreenMode2);
-                buttonClicks[0]=0;
+            int[] buttonClicks = {0};
+            close.setOnClickListener(v -> {
+                closeProgram(1);
+            });
+            fullscreenMode.setOnClickListener(v -> {
+                if (buttonClicks[0] == 0) {
+                    mainWindow.setScaleX(0.6f);
+                    mainWindow.setScaleY(0.6f);
+                    PortableView view = new PortableView(mainWindow);
+                    v.setBackgroundResource(fullscreenMode1);
+                    buttonClicks[0] = 1;
+                } else {
+                    mainWindow.setScaleX(1);
+                    mainWindow.setScaleY(1);
+                    mainWindow.setOnTouchListener(null);
+                    mainWindow.setX(0);
+                    mainWindow.setY(0);
+                    v.setBackgroundResource(fullscreenMode2);
+                    buttonClicks[0] = 0;
+                }
+            });
+            if (mainWindow.getParent() == null) {
+                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            } else {
+                mainWindow.setVisibility(View.VISIBLE);
             }
-        });
-        if(mainWindow.getParent() == null) {
-            layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        }else{
-            mainWindow.setVisibility(View.VISIBLE);
         }
-        mainActivity.programArrayList.add(this);
     }
 
     private ArrayList<String> concat(String[][] arrays){
@@ -392,8 +395,8 @@ public class DeviceManager extends Program {
         return result;
     }
     @Override
-    public void closeProgram(){
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
-        this.status = -1;
     }
 }
