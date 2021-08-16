@@ -30,7 +30,8 @@ public class Program {
             "Video player",
             "Notepad",
             "Personalization",
-            "Paint"
+            "Paint",
+            "Task Manager"
     };
     public static HashMap<String,Integer> programIcon = new HashMap<>();
     static {
