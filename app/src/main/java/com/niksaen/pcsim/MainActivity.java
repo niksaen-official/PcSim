@@ -21,6 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.BlackDeadScreen;
 import com.niksaen.pcsim.classes.DesktopAdapter;
 import com.niksaen.pcsim.classes.ToolbarAdapter;
@@ -37,6 +40,7 @@ import com.niksaen.pcsim.program.musicplayer.MusicPlayer;
 import com.niksaen.pcsim.program.notepad.Notepad;
 import com.niksaen.pcsim.program.paint.Paint;
 import com.niksaen.pcsim.program.RAM_Overclocking;
+import com.niksaen.pcsim.program.taskManager.TaskManager;
 import com.niksaen.pcsim.program.videoplayer.VideoPlayer;
 import com.niksaen.pcsim.program.styleSettings.StyleSettings;
 import com.niksaen.pcsim.save.Language;
@@ -44,6 +48,7 @@ import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -90,6 +95,7 @@ public class MainActivity extends AppCompatActivity{
         if(Language.getLanguage(this).equals("")){
             Language.ChangeLanguage(this);
         }
+        getLanguage();
     }
 
     void initView(){
@@ -102,6 +108,20 @@ public class MainActivity extends AppCompatActivity{
         appList = findViewById(R.id.app_list);
     }
 
+    void viewStyle(){
+        button1.setTypeface(font,style);
+        button2.setTypeface(font,style);
+        button2.setTextColor(Color.RED);
+        greeting.setTypeface(font,style);
+    }
+
+    public HashMap<String,String> words;
+    private void getLanguage(){
+        TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
+        words = new Gson().fromJson(new AssetFile(this).getText("language/"+ Language.getLanguage(this)+".json"),typeToken.getType());
+    }
+
+
     private void updateDesktop() {
         String[] apps = Program.programList;
         desktop.setLayoutManager(new GridLayoutManager(getBaseContext(), 5));
@@ -113,16 +133,9 @@ public class MainActivity extends AppCompatActivity{
         appList.setLayoutManager(layoutManager);
         appList.setAdapter(new ToolbarAdapter(this));
     }
-
-    void viewStyle(){
-        button1.setTypeface(font,style);
-        button2.setTypeface(font,style);
-        button2.setTextColor(Color.RED);
-        greeting.setTypeface(font,style);
-    }
-
     //список запущеных програм
     public ArrayList<Program> programArrayList = new ArrayList<>();
+    public TaskManager taskManager = new TaskManager(this);
 
     //кнопка питания пк
     private void buttonPC(){

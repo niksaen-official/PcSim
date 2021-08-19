@@ -106,5 +106,14 @@
   "CPU Overclocking": "CPU Overclocking",
   "RAM Overclocking": "RAM Overclocking",
   "GPU Overclocking": "GPU Overclocking",
-  "For some changes to take effect, restart your computer.": "For some changes to take effect, restart your computer."
+  "For some changes to take effect, restart your computer.": "For some changes to take effect, restart your computer.",
+  "Device manager": "Device manager",
+  "Music player": "Music player",
+  "Video player": "Video player",
+  "Paint": "Paint",
+  "Task Manager": "Task Manager",
+  "Application": "Application",
+  "Memory": "Memory",
+  "Streams": "Streams",
+  "Video memory": "Video memory"
 }

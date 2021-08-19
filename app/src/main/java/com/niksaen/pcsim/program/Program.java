@@ -8,6 +8,7 @@ import com.niksaen.pcsim.program.musicplayer.MusicPlayer;
 import com.niksaen.pcsim.program.notepad.Notepad;
 import com.niksaen.pcsim.program.paint.Paint;
 import com.niksaen.pcsim.program.styleSettings.StyleSettings;
+import com.niksaen.pcsim.program.taskManager.TaskManager;
 import com.niksaen.pcsim.program.videoplayer.VideoPlayer;
 
 import java.util.HashMap;
@@ -54,6 +55,7 @@ public class Program {
         programIcon.put("Opening file",R.drawable.folder_icon);
         programIcon.put("Saving a file",R.drawable.folder_icon);
         programIcon.put("Warning",R.drawable.icon_warning);
+        programIcon.put("Task Manager",R.drawable.icon_taskmanager);
     }
 
     public HashMap<String,Program> programHashMap = new HashMap<>();
@@ -72,7 +74,13 @@ public class Program {
         programHashMap.put("Notepad",new Notepad(activity));
         programHashMap.put("Personalization",new StyleSettings(activity));
         programHashMap.put("Paint",new Paint(activity));
+        programHashMap.put("Task Manager", activity.taskManager);
     }
+
+    public int RamUse = 256; // сколько программа использует оперативной памяти в мб
+    public int StreamUse = 1; // сколько программа использует потоков
+    public int VideoMemoryUse = 128; // сколько программа использует видопамяти в мб
+
     public String Title;
     public MainActivity activity;
     public Program(MainActivity activity){
@@ -88,6 +96,7 @@ public class Program {
         status = 0;
         activity.programArrayList.add(this);
         activity.updateToolbar();
+        activity.taskManager.update();
     }
 
     /** @param mode
@@ -98,6 +107,7 @@ public class Program {
             status = -1;
             activity.programArrayList.remove(this);
             activity.updateToolbar();
+            activity.taskManager.update();
         }else if(status == 0){
             status = -1;
         }
