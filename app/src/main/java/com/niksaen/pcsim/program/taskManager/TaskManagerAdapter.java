@@ -13,10 +13,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.save.Language;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TaskManagerAdapter extends ArrayAdapter<Program> {
     ArrayList<Program> programs;
@@ -25,6 +30,12 @@ public class TaskManagerAdapter extends ArrayAdapter<Program> {
         super(context, resource, objects);
         programs = objects;
         this.context = context;
+        getLanguage();
+    }
+    private HashMap<String,String> words;
+    private void getLanguage(){
+        TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
+        words = new Gson().fromJson(new AssetFile(context).getText("language/"+ Language.getLanguage(context)+".json"),typeToken.getType());
     }
 
     @Override
@@ -57,7 +68,7 @@ public class TaskManagerAdapter extends ArrayAdapter<Program> {
         videoMemoryUse.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"));
         streamUse.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"));
 
-        programName.setText(programs.get(position).Title);
+        programName.setText(words.get(programs.get(position).Title));
         ramUse.setText(programs.get(position).RamUse+"Mb");
         videoMemoryUse.setText(programs.get(position).VideoMemoryUse+"Mb");
         streamUse.setText(String.valueOf(programs.get(position).StreamUse));

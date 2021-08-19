@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/program_name"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
         android:textSize="22sp"
@@ -19,7 +19,7 @@
         android:layout_weight="1"
         android:id="@+id/ram_use"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="22sp"
         android:padding="6dp" />
@@ -27,7 +27,7 @@
         android:layout_weight="1"
         android:id="@+id/video_memory_use"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="22sp"
         android:padding="6dp" />
@@ -36,7 +36,7 @@
         android:layout_weight="1"
         android:id="@+id/stream_use"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="6dp"
         android:textSize="22sp" />

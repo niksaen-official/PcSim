@@ -23,7 +23,6 @@ public class ToolbarAdapter  extends  RecyclerView.Adapter<ToolbarAdapter.ViewHo
 
     Context context;
     MainActivity activity;
-    HashMap<String, Program> programHashMap;
     public ToolbarAdapter(MainActivity activity){
         this.context = activity.getBaseContext();
         this.activity = activity;
@@ -43,7 +42,7 @@ public class ToolbarAdapter  extends  RecyclerView.Adapter<ToolbarAdapter.ViewHo
         if(activity.programArrayList.get(position).status == 0) {
             holder.app_icon.setImageResource(Program.programIcon.get(activity.programArrayList.get(position).Title));
             holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
-            holder.app_name.setText(activity.programArrayList.get(position).Title);
+            holder.app_name.setText(activity.words.get(activity.programArrayList.get(position).Title));
             holder.app_name.setTextColor(activity.styleSave.ToolbarTextColor);
         }else{
             holder.app_icon.setVisibility(View.GONE);
