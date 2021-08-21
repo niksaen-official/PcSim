@@ -1,8 +1,5 @@
 package com.niksaen.pcsim.program.fileManager;
 
-import android.content.Context;
-import android.graphics.Typeface;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -11,61 +8,36 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
-
-import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.FileUtil;
-import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.program.Program;
-import com.niksaen.pcsim.save.Language;
-import com.niksaen.pcsim.save.PcParametersSave;
-import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class FileManager extends Program {
-    private View mainWindow;
-    private final ConstraintLayout layout;
-    MainActivity mainActivity;
-
-    private final LayoutInflater layoutInflater;
-    private final Typeface font;
-    private final Context context;
-
-    private final PcParametersSave pcParametersSave;
 
     public FileManager(MainActivity activity){
         super(activity);
         this.Title = "File manager";
-        mainActivity = activity;
-        this.context = activity.getBaseContext();
-        this.layout = activity.layout;
-        this.pcParametersSave = activity.pcParametersSave;
-
-        layoutInflater=LayoutInflater.from(activity.getBaseContext());
-        font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
     }
 
-    private String path = "",path2 = "";
-    private TextView title, folderName;
+    private String path = "";
+    private TextView folderName;
     private ListView listViewFiles;
     private FileManagerListViewAdapter fileManagerListViewAdapter;
-    private Button buttonClose,buttonFullscreen,rollUp,pageDown;
+    private Button pageDown;
     private LinearLayout container;
 
     private void initView(){
-        mainWindow = layoutInflater.inflate(R.layout.program_file_manager_filepage,null);
+        mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_file_manager_filepage,null);
 
-        title = mainWindow.findViewById(R.id.title);
+        titleTextView = mainWindow.findViewById(R.id.title);
         folderName = mainWindow.findViewById(R.id.folderName);
         listViewFiles = mainWindow.findViewById(R.id.main);
         buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreen = mainWindow.findViewById(R.id.fullscreenMode);
-        rollUp = mainWindow.findViewById(R.id.roll_up);
+        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
+        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
         container = mainWindow.findViewById(R.id.container);
         pageDown = mainWindow.findViewById(R.id.pageDown);
     }
@@ -74,114 +46,50 @@ public class FileManager extends Program {
     private void initAdapter(){
         files = new ArrayList<>();
         FileUtil.listDir("//storage/emulated/0/",files);
-        fileManagerListViewAdapter = new FileManagerListViewAdapter(context,R.layout.item_for_filemanager,files);
+        fileManagerListViewAdapter = new FileManagerListViewAdapter(activity.getBaseContext(),R.layout.item_for_filemanager,files);
     }
-
-    HashMap<String,String> words;
-
-    private StyleSave styleSave;
     private void style(){
-        styleSave = new StyleSave(context);
-        words = new Gson().fromJson(new AssetFile(context).getText("language/"+ Language.getLanguage(context)+".json"),new TypeToken<HashMap<String,String>>(){}.getType());
+        fileManagerListViewAdapter.ColorBackground = activity.styleSave.ThemeColor1;
+        fileManagerListViewAdapter.ColorText = activity.styleSave.TextColor;
 
-        fileManagerListViewAdapter.ColorBackground = styleSave.ThemeColor1;
-        fileManagerListViewAdapter.ColorText = styleSave.TextColor;
-
-        rollUp.setBackgroundResource(styleSave.RollUpButtonImageRes);
-        buttonClose.setBackgroundResource(styleSave.CloseButtonImageRes);
-        buttonFullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
-        title.setTypeface(font,Typeface.BOLD);
-        title.setTextColor(styleSave.TitleColor);
-        title.setText(words.get("File manager"));
-        folderName.setTextColor(styleSave.TextColor);
-        folderName.setTypeface(font);
+        buttonClose.setBackgroundResource(activity.styleSave.CloseButtonImageRes);
+        folderName.setTextColor(activity.styleSave.TextColor);
+        folderName.setTypeface(activity.font);
         folderName.setText("/storage/emulated/0");
-        pageDown.setBackgroundResource(styleSave.ArrowButtonImage);
-        container.setBackgroundColor(styleSave.ThemeColor1);
-        mainWindow.setBackgroundColor(styleSave.ColorWindow);
+        pageDown.setBackgroundResource(activity.styleSave.ArrowButtonImage);
+        container.setBackgroundColor(activity.styleSave.ThemeColor1);
+        mainWindow.setBackgroundColor(activity.styleSave.ColorWindow);
 
-        listViewFiles.setBackgroundColor(styleSave.ThemeColor1);
+        listViewFiles.setBackgroundColor(activity.styleSave.ThemeColor1);
         listViewFiles.setAdapter(fileManagerListViewAdapter);
     }
 
-
-    TextViewer  textViewer;
-    ImageViewer imageViewer;
-    public void openProgram(){
-        if(status == -1) {
-            super.openProgram();
-            this.status = 0;
-            initView();
-            initAdapter();
-            style();
-
-            listViewFiles.setOnItemClickListener((parent, view, position, id) -> {
-                if (FileUtil.isDirectory(files.get(position))) {
-                    folderName.setText(files.get(position));
-                    path = files.get(position);
-                    FileUtil.listDir(files.get(position), files);
-                    ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
-                } else if (files.get(position).endsWith(".txt")) {
-                    textViewer = new TextViewer(mainActivity);
-                    textViewer.openProgram(FileUtil.readFile(files.get(position)));
-                } else if (files.get(position).endsWith(".png") || files.get(position).endsWith(".jpg")) {
-                    imageViewer = new ImageViewer(mainActivity);
-                    imageViewer.openProgram(files.get(position));
-                }
-            });
-
-            pageDown.setOnClickListener(v -> {
-                if (path.contains("/storage/emulated/0/") && path != "/storage/emulated/0/") {
-                    v.setVisibility(View.VISIBLE);
-                    path = path.substring(0, path.lastIndexOf("/"));
-                    FileUtil.listDir(path, files);
-                    folderName.setText(path);
-                    ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
-                }
-            });
-
-            //нажатие кнопок
-            buttonClose.setOnClickListener(v -> closeProgram(1));
-            final int[] button2ClickCount = {0};
-            buttonFullscreen.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (button2ClickCount[0] == 0) {
-                        buttonFullscreen.setBackgroundResource(styleSave.FullScreenMode2ImageRes);
-                        mainWindow.setScaleX(0.7f);
-                        mainWindow.setScaleY(0.7f);
-                        mainWindow.setX(0f);
-                        mainWindow.setY(0f);
-                        PortableView portableView = new PortableView(mainWindow);
-                        button2ClickCount[0]++;
-                    } else {
-                        buttonFullscreen.setBackgroundResource(styleSave.FullScreenMode1ImageRes);
-                        mainWindow.setScaleX(1);
-                        mainWindow.setScaleY(1);
-                        mainWindow.setX(0);
-                        mainWindow.setY(0);
-                        mainWindow.setOnTouchListener(null);
-                        button2ClickCount[0] = 0;
-                    }
-                }
-            });
-            if (mainWindow.getParent() == null) {
-                layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
-            } else {
-                mainWindow.setVisibility(View.VISIBLE);
+    public void initProgram(){
+        initView();
+        initAdapter();
+        style();
+        listViewFiles.setOnItemClickListener((parent, view, position, id) -> {
+            if (FileUtil.isDirectory(files.get(position))) {
+                folderName.setText(files.get(position));
+                path = files.get(position);
+                FileUtil.listDir(files.get(position), files);
+                ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
+            } else if (files.get(position).endsWith(".txt")) {
+                new TextViewer(activity).openProgram(FileUtil.readFile(files.get(position)));
+            } else if (files.get(position).endsWith(".png") || files.get(position).endsWith(".jpg")) {
+                new ImageViewer(activity).openProgram(files.get(position));
             }
-        }
-    }
+        });
 
-    @Override
-    public void closeProgram(int mode){
-        super.closeProgram(mode);
-        mainWindow.setVisibility(View.GONE);
-        if(textViewer != null){
-            textViewer.closeProgram(mode);
-        }
-        if(imageViewer != null){
-            imageViewer.closeProgram(mode);
-        }
+        pageDown.setOnClickListener(v -> {
+            if (path.contains("/storage/emulated/0/") && path != "/storage/emulated/0/") {
+                v.setVisibility(View.VISIBLE);
+                path = path.substring(0, path.lastIndexOf("/"));
+                FileUtil.listDir(path, files);
+                folderName.setText(path);
+                ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
+            }
+        });
+        super.initProgram();
     }
 }

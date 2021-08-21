@@ -2,18 +2,12 @@ package com.niksaen.pcsim.program.taskManager;
 
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.program.Program;
 
 public class TaskManager extends Program {
@@ -23,58 +17,21 @@ public class TaskManager extends Program {
     }
 
     @Override
-    public void openProgram() {
-        super.openProgram();
+    public void initProgram() {
         initView();
         update();
         style();
-
-        int[] buttonClicks = {0};
-        close.setOnClickListener(v -> {
-            closeProgram(1);
-        });
-        fullscreen.setOnClickListener(v -> {
-            if (buttonClicks[0] == 0) {
-                mainWindow.setScaleX(0.6f);
-                mainWindow.setScaleY(0.6f);
-                PortableView view = new PortableView(mainWindow);
-                v.setBackgroundResource(activity.styleSave.FullScreenMode1ImageRes);
-                buttonClicks[0] = 1;
-            } else {
-                mainWindow.setScaleX(1);
-                mainWindow.setScaleY(1);
-                mainWindow.setOnTouchListener(null);
-                mainWindow.setX(0);
-                mainWindow.setY(0);
-                v.setBackgroundResource(activity.styleSave.FullScreenMode2ImageRes);
-                buttonClicks[0] = 0;
-            }
-        });
-
-        if (mainWindow.getParent() == null) {
-            activity.layout.addView(mainWindow, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
-        } else {
-            mainWindow.setVisibility(View.VISIBLE);
-        }
+        super.initProgram();
     }
-
-    @Override
-    public void closeProgram(int mode) {
-        mainWindow.setVisibility(View.GONE);
-        super.closeProgram(mode);
-    }
-
-    private View mainWindow;
-    private TextView title,programName,useRam,useStream,useVideoMemory;
-    private Button close,fullscreen,rollUp;
+    private TextView programName,useRam,useStream,useVideoMemory;
     private ListView programList;
     private LinearLayout main;
     private void initView(){
         mainWindow = LayoutInflater.from(activity.getBaseContext()).inflate(R.layout.program_taskmanager,null);
-        title = mainWindow.findViewById(R.id.title);
-        close = mainWindow.findViewById(R.id.close);
-        fullscreen = mainWindow.findViewById(R.id.fullscreenMode);
-        rollUp = mainWindow.findViewById(R.id.roll_up);
+        titleTextView = mainWindow.findViewById(R.id.title);
+        buttonClose = mainWindow.findViewById(R.id.close);
+        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
+        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
         programList = mainWindow.findViewById(R.id.app_list);
         main = mainWindow.findViewById(R.id.main);
         programName = mainWindow.findViewById(R.id.program_name);
@@ -83,10 +40,6 @@ public class TaskManager extends Program {
         useStream = mainWindow.findViewById(R.id.stream_use);
     }
     private void style(){
-        title.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"),Typeface.BOLD);
-        title.setText(activity.words.get("Task Manager"));
-        title.setTextColor(activity.styleSave.TitleColor);
-
         programName.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
         programName.setText(activity.words.get("Application"));
         programName.setTextColor(activity.styleSave.TextColor);
@@ -102,10 +55,6 @@ public class TaskManager extends Program {
         useVideoMemory.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
         useVideoMemory.setText(activity.words.get("Video memory"));
         useVideoMemory.setTextColor(activity.styleSave.TextColor);
-
-        close.setBackgroundResource(activity.styleSave.CloseButtonImageRes);
-        fullscreen.setBackgroundResource(activity.styleSave.FullScreenMode1ImageRes);
-        rollUp.setBackgroundResource(activity.styleSave.RollUpButtonImageRes);
 
         mainWindow.setBackgroundColor(activity.styleSave.ColorWindow);
         main.setBackgroundColor(activity.styleSave.ThemeColor1);

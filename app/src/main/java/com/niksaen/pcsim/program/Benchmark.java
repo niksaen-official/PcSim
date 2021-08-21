@@ -1,24 +1,21 @@
 package com.niksaen.pcsim.program;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
-import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.save.Language;
-import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
@@ -27,20 +24,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Benchmark extends Program{
-
-    LayoutInflater inflater;
-    Typeface font;
-    View mainWindow;
-
     Context context;
-    ConstraintLayout layout;
-    PcParametersSave pcParametersSave;
     MainActivity activity;
 
-    TextView title,cpu_bench,ram_bench,gpu_bench,data_bench,all_bench;
+    TextView cpu_bench,ram_bench,gpu_bench,data_bench,all_bench;
     ConstraintLayout content;
-    Button start_bench,button,button2,button3;
-    int button_2_1,button_2_2,button_1,button_3;
+    Button start_bench;
     ProgressBar progressBar;
     Timer timer;
 
@@ -48,18 +37,19 @@ public class Benchmark extends Program{
 
     public Benchmark(MainActivity activity){
         super(activity);
-        this.Title = "Benchmark";
+        Title = "Benchmark";
         this.context = activity.getBaseContext();
-        this.layout = activity.layout;
         this.activity = activity;
-        this.pcParametersSave = activity.pcParametersSave;
-        inflater = LayoutInflater.from(activity.getBaseContext());
-        font = Typeface.createFromAsset(activity.getBaseContext().getAssets(), "fonts/pixelFont.ttf");
-        mainWindow = inflater.inflate(R.layout.program_benchmark,null);
-        styleSave = new StyleSave(context);
-        mainWindow.setBackgroundColor(styleSave.ColorWindow);
-        getLanguage();
-        style();
+        styleSave = activity.styleSave;
+    }
+
+    @Override
+    public void closeProgram(int mode){
+        super.closeProgram(mode);
+        if(timer != null) {
+            timer.cancel();
+            timer = null;
+        }
     }
 
     // get language
@@ -68,119 +58,78 @@ public class Benchmark extends Program{
         TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
         words = new Gson().fromJson(new AssetFile(context).getText("language/"+ Language.getLanguage(context)+".json"),typeToken.getType());
     }
-
-    public void openProgram(){
-        if(status == -1) {
-            super.openProgram();
-            int[] buttonClicks = {0};
-            button3.setOnClickListener(v -> {
-                closeProgram(1);
-            });
-            button2.setOnClickListener(v -> {
-                if (buttonClicks[0] == 0) {
-                    mainWindow.setScaleX(0.6f);
-                    mainWindow.setScaleY(0.6f);
-                    PortableView view = new PortableView(mainWindow);
-                    v.setBackgroundResource(button_2_1);
-                    buttonClicks[0] = 1;
-                } else {
-                    mainWindow.setScaleX(1);
-                    mainWindow.setScaleY(1);
-                    mainWindow.setOnTouchListener(null);
-                    mainWindow.setX(0);
-                    mainWindow.setY(0);
-                    v.setBackgroundResource(button_2_2);
-                    buttonClicks[0] = 0;
-                }
-            });
-
-            start_bench.setOnClickListener(v -> {
-                v.setClickable(false);
-                v.setVisibility(View.GONE);
-                bench();
-            });
-            if (mainWindow.getParent() == null) {
-                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            } else {
-                mainWindow.setVisibility(View.VISIBLE);
-            }
-        }
+    public void initProgram(){
+        mainWindow = LayoutInflater.from(activity.getBaseContext()).inflate(R.layout.program_benchmark,null);
+        getLanguage();
+        style();
+        start_bench.setOnClickListener(v -> {
+            v.setClickable(false);
+            v.setVisibility(View.GONE);
+            bench();
+        });
+        super.initProgram();
     }
-
-    @Override
-    public void closeProgram(int mode){
-        super.closeProgram(mode);
-        mainWindow.setVisibility(View.GONE);
-        if(timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-    }
-
     private int getCpuBench(){
-        int core = Integer.parseInt(pcParametersSave.CPU.get("Кол-во ядер"));
-        int streams = Integer.parseInt(pcParametersSave.CPU.get("Кол-во потоков"));
-        int technical_process = Integer.parseInt(pcParametersSave.CPU.get("Техпроцесс"));
-        double cache = Double.parseDouble(pcParametersSave.CPU.get("Кэш"));
-        int frequency = Integer.parseInt(pcParametersSave.CPU.get("Частота"));
+        int core = Integer.parseInt(activity.pcParametersSave.CPU.get("Кол-во ядер"));
+        int streams = Integer.parseInt(activity.pcParametersSave.CPU.get("Кол-во потоков"));
+        int technical_process = Integer.parseInt(activity.pcParametersSave.CPU.get("Техпроцесс"));
+        double cache = Double.parseDouble(activity.pcParametersSave.CPU.get("Кэш"));
+        int frequency = Integer.parseInt(activity.pcParametersSave.CPU.get("Частота"));
         return (int) (((core*frequency*streams)/(technical_process/3)+(3000*cache))/2);
     }
-
     private int getRamBench(){
         int bench_ram1=0,bench_ram2=0,bench_ram3=0,bench_ram4=0;
-        if(pcParametersSave.RAM1 != null && pcParametersSave.ramValid(pcParametersSave.RAM1)){
-            int volume = Integer.parseInt(pcParametersSave.RAM1.get("Объём"));
-            int frequency = Integer.parseInt(pcParametersSave.RAM1.get("Частота"));
-            int throughput = Integer.parseInt(pcParametersSave.RAM1.get("Пропускная способность"));
+        if(activity.pcParametersSave.RAM1 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM1)){
+            int volume = Integer.parseInt(activity.pcParametersSave.RAM1.get("Объём"));
+            int frequency = Integer.parseInt(activity.pcParametersSave.RAM1.get("Частота"));
+            int throughput = Integer.parseInt(activity.pcParametersSave.RAM1.get("Пропускная способность"));
             bench_ram1 = (volume*frequency+throughput)/3;
         }
-        if(pcParametersSave.RAM2 != null && pcParametersSave.ramValid(pcParametersSave.RAM2)){
-            int volume = Integer.parseInt(pcParametersSave.RAM2.get("Объём"));
-            int frequency = Integer.parseInt(pcParametersSave.RAM2.get("Частота"));
-            int throughput = Integer.parseInt(pcParametersSave.RAM2.get("Пропускная способность"));
+        if(activity.pcParametersSave.RAM2 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM2)){
+            int volume = Integer.parseInt(activity.pcParametersSave.RAM2.get("Объём"));
+            int frequency = Integer.parseInt(activity.pcParametersSave.RAM2.get("Частота"));
+            int throughput = Integer.parseInt(activity.pcParametersSave.RAM2.get("Пропускная способность"));
             bench_ram2 = (volume*frequency+throughput)/3;
         }
-        if(pcParametersSave.RAM3 != null && pcParametersSave.ramValid(pcParametersSave.RAM3)){
-            int volume = Integer.parseInt(pcParametersSave.RAM3.get("Объём"));
-            int frequency = Integer.parseInt(pcParametersSave.RAM3.get("Частота"));
-            int throughput = Integer.parseInt(pcParametersSave.RAM3.get("Пропускная способность"));
+        if(activity.pcParametersSave.RAM3 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM3)){
+            int volume = Integer.parseInt(activity.pcParametersSave.RAM3.get("Объём"));
+            int frequency = Integer.parseInt(activity.pcParametersSave.RAM3.get("Частота"));
+            int throughput = Integer.parseInt(activity.pcParametersSave.RAM3.get("Пропускная способность"));
             bench_ram3 = (volume*frequency+throughput)/3;
         }
-        if(pcParametersSave.RAM4 != null && pcParametersSave.ramValid(pcParametersSave.RAM4)){
-            int volume = Integer.parseInt(pcParametersSave.RAM4.get("Объём"));
-            int frequency = Integer.parseInt(pcParametersSave.RAM4.get("Частота"));
-            int throughput = Integer.parseInt(pcParametersSave.RAM4.get("Пропускная способность"));
+        if(activity.pcParametersSave.RAM4 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM4)){
+            int volume = Integer.parseInt(activity.pcParametersSave.RAM4.get("Объём"));
+            int frequency = Integer.parseInt(activity.pcParametersSave.RAM4.get("Частота"));
+            int throughput = Integer.parseInt(activity.pcParametersSave.RAM4.get("Пропускная способность"));
             bench_ram4 = (volume*frequency+throughput)/3;
         }
-        return  (int) (((bench_ram1+bench_ram2+bench_ram3+bench_ram4)*pcParametersSave.ramCanals)/4);
+        return  (int) (((bench_ram1+bench_ram2+bench_ram3+bench_ram4)*activity.pcParametersSave.ramCanals)/4);
     }
-
     private int getGpuBench(){
         double gpu1_bench=0,gpu2_bench=0,gpu_i_bench=0;
-        if(Objects.equals(pcParametersSave.CPU.get("Графическое ядро"), "+")){
-            int model=gpu(pcParametersSave.CPU.get("Модель"));
-            int frequency = Integer.parseInt(pcParametersSave.CPU.get("Частота GPU"));
+        if(Objects.equals(activity.pcParametersSave.CPU.get("Графическое ядро"), "+")){
+            int model=gpu(activity.pcParametersSave.CPU.get("Модель"));
+            int frequency = Integer.parseInt(activity.pcParametersSave.CPU.get("Частота GPU"));
             gpu_i_bench = (int) (model+(frequency*1.5));
         }
-        if(pcParametersSave.GPU1 != null){
-            int model = gpu(pcParametersSave.GPU1.get( "Графический процессор"));
-            int count_chips = Integer.parseInt(pcParametersSave.GPU1.get("Кол-во видеочипов"));
-            int frequency = Integer.parseInt(pcParametersSave.GPU1.get("Частота"));
-            int volume = Integer.parseInt(pcParametersSave.GPU1.get("Объём видеопамяти"));
-            Double throughput = Double.parseDouble(pcParametersSave.GPU1.get("Пропускная способность"));
+        if(activity.pcParametersSave.GPU1 != null){
+            int model = gpu(activity.pcParametersSave.GPU1.get( "Графический процессор"));
+            int count_chips = Integer.parseInt(activity.pcParametersSave.GPU1.get("Кол-во видеочипов"));
+            int frequency = Integer.parseInt(activity.pcParametersSave.GPU1.get("Частота"));
+            int volume = Integer.parseInt(activity.pcParametersSave.GPU1.get("Объём видеопамяти"));
+            Double throughput = Double.parseDouble(activity.pcParametersSave.GPU1.get("Пропускная способность"));
             gpu1_bench = count_chips*frequency*volume*(throughput/4)+(model*2)/4;
         }
-        if(pcParametersSave.GPU2 != null){
-            int model = gpu(pcParametersSave.GPU2.get( "Графический процессор"));
-            int count_chips = Integer.parseInt(pcParametersSave.GPU2.get("Кол-во видеочипов"));
-            int frequency = Integer.parseInt(pcParametersSave.GPU2.get("Частота"));
-            int volume = Integer.parseInt(pcParametersSave.GPU2.get("Объём видеопамяти"));
-            double throughput = Double.parseDouble(pcParametersSave.GPU2.get("Пропускная способность"));
+        if(activity.pcParametersSave.GPU2 != null){
+            int model = gpu(activity.pcParametersSave.GPU2.get( "Графический процессор"));
+            int count_chips = Integer.parseInt(activity.pcParametersSave.GPU2.get("Кол-во видеочипов"));
+            int frequency = Integer.parseInt(activity.pcParametersSave.GPU2.get("Частота"));
+            int volume = Integer.parseInt(activity.pcParametersSave.GPU2.get("Объём видеопамяти"));
+            double throughput = Double.parseDouble(activity.pcParametersSave.GPU2.get("Пропускная способность"));
             gpu2_bench = count_chips*frequency*volume*(throughput/4)+(model*2)/4;
         }
         return (int)(gpu1_bench+gpu2_bench+gpu_i_bench);
     }
-
     private int gpu(String gpuName){
         switch (gpuName){
             case "Heforce GT 710": return 7143;
@@ -194,9 +143,8 @@ public class Benchmark extends Program{
             default: return 0;
         }
     }
-
     private int getDataBench(){
-        HashMap<String,String>[] data = new HashMap[]{pcParametersSave.DATA1, pcParametersSave.DATA2, pcParametersSave.DATA3, pcParametersSave.DATA4, pcParametersSave.DATA5, pcParametersSave.DATA6};
+        HashMap<String,String>[] data = new HashMap[]{activity.pcParametersSave.DATA1, activity.pcParametersSave.DATA2, activity.pcParametersSave.DATA3, activity.pcParametersSave.DATA4, activity.pcParametersSave.DATA5, activity.pcParametersSave.DATA6};
         int data_bench = 0;
         for(int i=0;i<6;i++){
             if(data[i] != null){
@@ -212,7 +160,6 @@ public class Benchmark extends Program{
         }
         return data_bench;
     }
-
     private int[] bench = {0,0,0,0,0};
     private void bench(){
 
@@ -247,14 +194,8 @@ public class Benchmark extends Program{
         };
         timer.scheduleAtFixedRate(timerTask,0,1);
     }
-
     private void style(){
-        button_1 = styleSave.CloseButtonImageRes;
-        button_2_1 = styleSave.FullScreenMode1ImageRes;
-        button_2_2 =  styleSave.FullScreenMode2ImageRes;
-        button_3 =  styleSave.RollUpButtonImageRes;
-
-        title = mainWindow.findViewById(R.id.title);
+        titleTextView = mainWindow.findViewById(R.id.title);
         cpu_bench = mainWindow.findViewById(R.id.cpu);
         ram_bench = mainWindow.findViewById(R.id.ram);
         gpu_bench = mainWindow.findViewById(R.id.gpu);
@@ -263,36 +204,30 @@ public class Benchmark extends Program{
         start_bench = mainWindow.findViewById(R.id.start);
         progressBar = mainWindow.findViewById(R.id.progressBar);
         content = mainWindow.findViewById(R.id.content);
-        button = mainWindow.findViewById(R.id.roll_up);
-        button2 = mainWindow.findViewById(R.id.fullscreenMode);
-        button3 = mainWindow.findViewById(R.id.close);
+        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
+        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
+        buttonClose = mainWindow.findViewById(R.id.close);
 
         //style
-        title.setTypeface(font,Typeface.BOLD);
-        title.setTextColor(styleSave.TitleColor);
-        cpu_bench.setTypeface(font,Typeface.BOLD);
+        cpu_bench.setTypeface(activity.font,Typeface.BOLD);
         cpu_bench.setTextColor(styleSave.TextColor);
-        ram_bench.setTypeface(font,Typeface.BOLD);
+        ram_bench.setTypeface(activity.font,Typeface.BOLD);
         ram_bench.setTextColor(styleSave.TextColor);
-        gpu_bench.setTypeface(font,Typeface.BOLD);
+        gpu_bench.setTypeface(activity.font,Typeface.BOLD);
         gpu_bench.setTextColor(styleSave.TextColor);
-        data_bench.setTypeface(font,Typeface.BOLD);
+        data_bench.setTypeface(activity.font,Typeface.BOLD);
         data_bench.setTextColor(styleSave.TextColor);
-        all_bench.setTypeface(font,Typeface.BOLD);
+        all_bench.setTypeface(activity.font,Typeface.BOLD);
         all_bench.setTextColor(styleSave.TextColor);
 
-        start_bench.setTypeface(font,Typeface.BOLD);
+        start_bench.setTypeface(activity.font,Typeface.BOLD);
         start_bench.setBackgroundColor(styleSave.ThemeColor2);
         start_bench.setTextColor(styleSave.TextButtonColor);
 
         content.setBackgroundColor(styleSave.ThemeColor1);
         progressBar.setProgressDrawable(context.getDrawable(styleSave.ProgressBarResource));
 
-        //set button image and background
-        button.setBackgroundResource(button_3);
-        button2.setBackgroundResource(button_2_2);
-        button3.setBackgroundResource(button_1);
+        //translation
         start_bench.setText(words.get("Start"));
-        title.setText(words.get("Benchmark"));
     }
 }

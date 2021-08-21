@@ -1,60 +1,33 @@
 package com.niksaen.pcsim.program;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Typeface;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.classes.AssetFile;
-import com.niksaen.pcsim.classes.PortableView;
-import com.niksaen.pcsim.save.Language;
-import com.niksaen.pcsim.save.PcParametersSave;
-import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
 
 public class RAM_Overclocking extends Program {
 
-    PcParametersSave pcParametersSave;
-    ConstraintLayout layout;
-    Context context;
-    MainActivity mainActivity;
-
-    View mainWindow;
-    Typeface typeface;
-    int button_2_1 = R.drawable.button_2_1_color17,
-            button_2_2=R.drawable.button_2_2_color17;
-    StyleSave styleSave;
-
     public RAM_Overclocking(MainActivity activity){
         super(activity);
         this.Title = "RAM Overclocking";
-        this.pcParametersSave = activity.pcParametersSave;
-        this.layout = activity.layout;
-        this.context = activity.getBaseContext();
-        mainActivity = activity;
-        styleSave = new StyleSave(context);
-        typeface = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
-        mainWindow=LayoutInflater.from(context).inflate(R.layout.program_ram_overclocking,null);
     }
 
-    private TextView parameters,title,ram_model;
+    private TextView parameters,ram_model;
     private SeekBar seekBar;
     private Button save,ram1,ram2,ram3,ram4;
-    private Button close,rollUp,fullscreen;
     private ConstraintLayout content;
     private void initView(){
-        title = mainWindow.findViewById(R.id.title);
+        titleTextView = mainWindow.findViewById(R.id.title);
         ram_model = mainWindow.findViewById(R.id.ram_model);
         parameters = mainWindow.findViewById(R.id.textView2);
         content = mainWindow.findViewById(R.id.content);
@@ -65,137 +38,94 @@ public class RAM_Overclocking extends Program {
         save = mainWindow.findViewById(R.id.button7);
         seekBar = mainWindow.findViewById(R.id.seekBar);
 
-        close = mainWindow.findViewById(R.id.close);
-        rollUp = mainWindow.findViewById(R.id.roll_up);
-        fullscreen = mainWindow.findViewById(R.id.fullscreenMode);
-    }
-
-    private HashMap<String,String> words;
-    private void getLanguage(){
-        TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
-        words = new Gson().fromJson(new AssetFile(context).getText("language/"+ Language.getLanguage(context)+".json"),typeToken.getType());
+        buttonClose = mainWindow.findViewById(R.id.close);
+        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
+        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
     }
 
     private void style(){
-        title.setTypeface(typeface,Typeface.BOLD);
-        ram_model.setTypeface(typeface,Typeface.BOLD);
-        parameters.setTypeface(typeface,Typeface.BOLD);
-        ram1.setTypeface(typeface,Typeface.BOLD);
-        ram2.setTypeface(typeface,Typeface.BOLD);
-        ram3.setTypeface(typeface,Typeface.BOLD);
-        ram4.setTypeface(typeface,Typeface.BOLD);
-        save.setTypeface(typeface,Typeface.BOLD);
+        ram_model.setTypeface(activity.font,Typeface.BOLD);
+        parameters.setTypeface(activity.font,Typeface.BOLD);
+        ram1.setTypeface(activity.font,Typeface.BOLD);
+        ram2.setTypeface(activity.font,Typeface.BOLD);
+        ram3.setTypeface(activity.font,Typeface.BOLD);
+        ram4.setTypeface(activity.font,Typeface.BOLD);
+        save.setTypeface(activity.font,Typeface.BOLD);
 
-        mainWindow.setBackgroundColor(styleSave.ColorWindow);
-        content.setBackgroundColor(styleSave.ThemeColor1);
-        ram1.setBackgroundColor(styleSave.ThemeColor2);
-        ram1.setTextColor(styleSave.TextButtonColor);
-        ram2.setBackgroundColor(styleSave.ThemeColor2);
-        ram2.setTextColor(styleSave.TextButtonColor);
-        ram3.setBackgroundColor(styleSave.ThemeColor2);
-        ram3.setTextColor(styleSave.TextButtonColor);
-        ram4.setBackgroundColor(styleSave.ThemeColor2);
-        ram4.setTextColor(styleSave.TextButtonColor);
+        mainWindow.setBackgroundColor(activity.styleSave.ColorWindow);
+        content.setBackgroundColor(activity.styleSave.ThemeColor1);
+        ram1.setBackgroundColor(activity.styleSave.ThemeColor2);
+        ram1.setTextColor(activity.styleSave.TextButtonColor);
+        ram2.setBackgroundColor(activity.styleSave.ThemeColor2);
+        ram2.setTextColor(activity.styleSave.TextButtonColor);
+        ram3.setBackgroundColor(activity.styleSave.ThemeColor2);
+        ram3.setTextColor(activity.styleSave.TextButtonColor);
+        ram4.setBackgroundColor(activity.styleSave.ThemeColor2);
+        ram4.setTextColor(activity.styleSave.TextButtonColor);
 
-        ram_model.setTextColor(styleSave.TextColor);
-        parameters.setTextColor(styleSave.TextColor);
+        ram_model.setTextColor(activity.styleSave.TextColor);
+        parameters.setTextColor(activity.styleSave.TextColor);
 
-        save.setBackgroundColor(styleSave.ThemeColor2);
-        save.setTextColor(styleSave.TextButtonColor);
-        save.setText(words.get("Will apply"));
-        title.setTextColor(styleSave.TitleColor);
-        close.setBackgroundResource(styleSave.CloseButtonImageRes);
-        rollUp.setBackgroundResource(styleSave.RollUpButtonImageRes);
-        button_2_1 = styleSave.FullScreenMode1ImageRes;
-        button_2_2 = styleSave.FullScreenMode2ImageRes;
-        fullscreen.setBackgroundResource(button_2_2);
-        seekBar.setThumb(context.getDrawable(styleSave.SeekBarThumbResource));
-        seekBar.setProgressDrawable(context.getDrawable(styleSave.SeekBarProgressResource));
-        title.setText(words.get("GPU Overclocking"));
+        save.setBackgroundColor(activity.styleSave.ThemeColor2);
+        save.setTextColor(activity.styleSave.TextButtonColor);
+        save.setText(activity.words.get("Will apply"));
+        seekBar.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
+        seekBar.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
     }
 
     private int frequency;
     private double k,power,temperature,throughput;
 
-    public void openProgram(){
-        if(status == -1) {
-            super.openProgram();
-            getLanguage();
-            initView();
-            style();
+    public void initProgram(){
+        mainWindow=LayoutInflater.from(activity).inflate(R.layout.program_ram_overclocking,null);
+        initView();
+        style();
 
-            int[] buttonClicks = {0};
-            close.setOnClickListener(v -> {
-                closeProgram(1);
+        if (activity.pcParametersSave.RAM1 != null) {
+            ram1.setVisibility(View.VISIBLE);
+            ram1.setOnClickListener(v -> {
+                ram_model.setVisibility(View.VISIBLE);
+                parameters.setVisibility(View.VISIBLE);
+                seekBar.setVisibility(View.VISIBLE);
+                save.setVisibility(View.VISIBLE);
+                ram_model.setText(activity.pcParametersSave.Ram1);
+                ram_overclocking(activity.pcParametersSave.RAM1, 1);
             });
-            fullscreen.setOnClickListener(v -> {
-                if (buttonClicks[0] == 0) {
-                    mainWindow.setScaleX(0.6f);
-                    mainWindow.setScaleY(0.6f);
-                    PortableView view = new PortableView(mainWindow);
-                    v.setBackgroundResource(button_2_1);
-                    buttonClicks[0] = 1;
-                } else {
-                    mainWindow.setScaleX(1);
-                    mainWindow.setScaleY(1);
-                    mainWindow.setOnTouchListener(null);
-                    mainWindow.setX(0);
-                    mainWindow.setY(0);
-                    v.setBackgroundResource(button_2_2);
-                    buttonClicks[0] = 0;
-                }
-            });
-
-            if (pcParametersSave.RAM1 != null) {
-                ram1.setVisibility(View.VISIBLE);
-                ram1.setOnClickListener(v -> {
-                    ram_model.setVisibility(View.VISIBLE);
-                    parameters.setVisibility(View.VISIBLE);
-                    seekBar.setVisibility(View.VISIBLE);
-                    save.setVisibility(View.VISIBLE);
-                    ram_model.setText(pcParametersSave.Ram1);
-                    ram_overclocking(pcParametersSave.RAM1, 1);
-                });
-            }
-            if (pcParametersSave.RAM2 != null) {
-                ram2.setVisibility(View.VISIBLE);
-                ram2.setOnClickListener(v -> {
-                    ram_model.setVisibility(View.VISIBLE);
-                    parameters.setVisibility(View.VISIBLE);
-                    seekBar.setVisibility(View.VISIBLE);
-                    save.setVisibility(View.VISIBLE);
-                    ram_model.setText(pcParametersSave.Ram2);
-                    ram_overclocking(pcParametersSave.RAM2, 2);
-                });
-            }
-            if (pcParametersSave.RAM3 != null && (Integer.parseInt(pcParametersSave.MOBO.get("Кол-во слотов")) >= 3)) {
-                ram3.setVisibility(View.VISIBLE);
-                ram3.setOnClickListener(v -> {
-                    ram_model.setVisibility(View.VISIBLE);
-                    parameters.setVisibility(View.VISIBLE);
-                    seekBar.setVisibility(View.VISIBLE);
-                    save.setVisibility(View.VISIBLE);
-                    ram_model.setText(pcParametersSave.Ram3);
-                    ram_overclocking(pcParametersSave.RAM3, 3);
-                });
-            }
-            if (pcParametersSave.RAM4 != null && (Integer.parseInt(pcParametersSave.MOBO.get("Кол-во слотов")) >= 4)) {
-                ram4.setVisibility(View.VISIBLE);
-                ram4.setOnClickListener(v -> {
-                    ram_model.setVisibility(View.VISIBLE);
-                    parameters.setVisibility(View.VISIBLE);
-                    seekBar.setVisibility(View.VISIBLE);
-                    save.setVisibility(View.VISIBLE);
-                    ram_model.setText(pcParametersSave.Ram4);
-                    ram_overclocking(pcParametersSave.RAM4, 4);
-                });
-            }
-            if (mainWindow.getParent() == null) {
-                layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            } else {
-                mainWindow.setVisibility(View.VISIBLE);
-            }
         }
+        if (activity.pcParametersSave.RAM2 != null) {
+            ram2.setVisibility(View.VISIBLE);
+            ram2.setOnClickListener(v -> {
+                ram_model.setVisibility(View.VISIBLE);
+                parameters.setVisibility(View.VISIBLE);
+                seekBar.setVisibility(View.VISIBLE);
+                save.setVisibility(View.VISIBLE);
+                ram_model.setText(activity.pcParametersSave.Ram2);
+                ram_overclocking(activity.pcParametersSave.RAM2, 2);
+            });
+        }
+        if (activity.pcParametersSave.RAM3 != null && (Integer.parseInt(activity.pcParametersSave.MOBO.get("Кол-во слотов")) >= 3)) {
+            ram3.setVisibility(View.VISIBLE);
+            ram3.setOnClickListener(v -> {
+                ram_model.setVisibility(View.VISIBLE);
+                parameters.setVisibility(View.VISIBLE);
+                seekBar.setVisibility(View.VISIBLE);
+                save.setVisibility(View.VISIBLE);
+                ram_model.setText(activity.pcParametersSave.Ram3);
+                ram_overclocking(activity.pcParametersSave.RAM3, 3);
+            });
+        }
+        if (activity.pcParametersSave.RAM4 != null && (Integer.parseInt(activity.pcParametersSave.MOBO.get("Кол-во слотов")) >= 4)) {
+            ram4.setVisibility(View.VISIBLE);
+            ram4.setOnClickListener(v -> {
+                ram_model.setVisibility(View.VISIBLE);
+                parameters.setVisibility(View.VISIBLE);
+                seekBar.setVisibility(View.VISIBLE);
+                save.setVisibility(View.VISIBLE);
+                ram_model.setText(activity.pcParametersSave.Ram4);
+                ram_overclocking(activity.pcParametersSave.RAM4, 4);
+            });
+        }
+       super.initProgram();
     }
 
     @SuppressLint("SetTextI18n")
@@ -221,13 +151,13 @@ public class RAM_Overclocking extends Program {
         temperature = frequency*(k*0.25);
         seekBar.setProgress(frequency);
         parameters.setText(
-                words.get("Frequency")+": "+frequency + "MHz\n" +
-                        words.get("Throughput")+": " +(int)throughput+"PC\n" +
-                        words.get("Energy consumption")+": "+(float)power+"W\n" +
-                        words.get("Temperature")+": "+(int)temperature+"C\n" +
-                        words.get("Maximum temperature")+": "+"90С\n" +
-                        words.get("Maximum frequency")+": "+pcParametersSave.maxRamFrequency+"MHz\n" +
-                        words.get("Minimum frequency")+": "+pcParametersSave.minRamFrequency+"MHz");
+                activity.words.get("Frequency")+": "+frequency + "MHz\n" +
+                        activity.words.get("Throughput")+": " +(int)throughput+"PC\n" +
+                        activity.words.get("Energy consumption")+": "+(float)power+"W\n" +
+                        activity.words.get("Temperature")+": "+(int)temperature+"C\n" +
+                        activity.words.get("Maximum temperature")+": "+"90С\n" +
+                        activity.words.get("Maximum frequency")+": "+activity.pcParametersSave.maxRamFrequency+"MHz\n" +
+                        activity.words.get("Minimum frequency")+": "+activity.pcParametersSave.minRamFrequency+"MHz");
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -237,13 +167,13 @@ public class RAM_Overclocking extends Program {
                 temperature = frequency*(k*0.25);
                 throughput = frequency/k;
                 parameters.setText(
-                        words.get("Frequency")+": "+frequency + "MHz\n" +
-                                words.get("Throughput")+": " +(int)throughput+"PC\n" +
-                                words.get("Energy consumption")+": "+(float)power+"W\n" +
-                                words.get("Temperature")+": "+(int)temperature+"C\n" +
-                                words.get("Maximum temperature")+": "+"90С\n" +
-                                words.get("Maximum frequency")+": "+pcParametersSave.maxRamFrequency+"MHz\n" +
-                                words.get("Minimum frequency")+": "+pcParametersSave.minRamFrequency+"MHz");
+                        activity.words.get("Frequency")+": "+frequency + "MHz\n" +
+                                activity.words.get("Throughput")+": " +(int)throughput+"PC\n" +
+                                activity.words.get("Energy consumption")+": "+(float)power+"W\n" +
+                                activity.words.get("Temperature")+": "+(int)temperature+"C\n" +
+                                activity.words.get("Maximum temperature")+": "+"90С\n" +
+                                activity.words.get("Maximum frequency")+": "+activity.pcParametersSave.maxRamFrequency+"MHz\n" +
+                                activity.words.get("Minimum frequency")+": "+activity.pcParametersSave.minRamFrequency+"MHz");
             }
 
             @Override
@@ -256,50 +186,45 @@ public class RAM_Overclocking extends Program {
                 temperature = frequency*(k*0.25);
                 throughput = frequency/k;
                 parameters.setText(
-                        words.get("Frequency")+": "+frequency + "MHz\n" +
-                                words.get("Throughput")+": " +(int)throughput+"PC\n" +
-                                words.get("Energy consumption")+": "+(float)power+"W\n" +
-                                words.get("Temperature")+": "+(int)temperature+"C\n" +
-                                words.get("Maximum temperature")+": "+"90С\n" +
-                                words.get("Maximum frequency")+": "+pcParametersSave.maxRamFrequency+"MHz\n" +
-                                words.get("Minimum frequency")+": "+pcParametersSave.minRamFrequency+"MHz");
+                        activity.words.get("Frequency")+": "+frequency + "MHz\n" +
+                                activity.words.get("Throughput")+": " +(int)throughput+"PC\n" +
+                                activity.words.get("Energy consumption")+": "+(float)power+"W\n" +
+                                activity.words.get("Temperature")+": "+(int)temperature+"C\n" +
+                                activity.words.get("Maximum temperature")+": "+"90С\n" +
+                                activity.words.get("Maximum frequency")+": "+activity.pcParametersSave.maxRamFrequency+"MHz\n" +
+                                activity.words.get("Minimum frequency")+": "+activity.pcParametersSave.minRamFrequency+"MHz");
             }
         });
         save.setOnClickListener(v -> {
             if(temperature<=90){
                 RAM.put("Частота",String.valueOf(frequency));
                 RAM.put("Пропускная способность", String.valueOf((int)throughput));
-                if(pcParametersSave.ramValid(RAM)){
+                if(activity.pcParametersSave.ramValid(RAM)){
                     switch (slot){
-                        case 1:{pcParametersSave.setRam1(pcParametersSave.Ram1,RAM);break;}
-                        case 2:{pcParametersSave.setRam2(pcParametersSave.Ram2,RAM);break;}
-                        case 3:{pcParametersSave.setRam3(pcParametersSave.Ram3,RAM);break;}
-                        case 4:{pcParametersSave.setRam4(pcParametersSave.Ram4,RAM);break;}
+                        case 1:{activity.pcParametersSave.setRam1(activity.pcParametersSave.Ram1,RAM);break;}
+                        case 2:{activity.pcParametersSave.setRam2(activity.pcParametersSave.Ram2,RAM);break;}
+                        case 3:{activity.pcParametersSave.setRam3(activity.pcParametersSave.Ram3,RAM);break;}
+                        case 4:{activity.pcParametersSave.setRam4(activity.pcParametersSave.Ram4,RAM);break;}
                     }
                 }
                 else{
-                    if(frequency>pcParametersSave.maxRamFrequency){
-                        mainActivity.blackDeadScreen(new String[]{"0xAA0004"});
+                    if(frequency>activity.pcParametersSave.maxRamFrequency){
+                        activity.blackDeadScreen(new String[]{"0xAA0004"});
                     }
-                    else if(frequency<pcParametersSave.minRamFrequency){
-                        mainActivity.blackDeadScreen(new String[]{"0xAA0005"});
+                    else if(frequency<activity.pcParametersSave.minRamFrequency){
+                        activity.blackDeadScreen(new String[]{"0xAA0005"});
                     }
                 }
             }
             else{
                 switch (slot){
-                    case 1:{pcParametersSave.setRam1(pcParametersSave.Ram1 +"[Сломано]",null);break;}
-                    case 2:{pcParametersSave.setRam2(pcParametersSave.Ram2 +"[Сломано]",null);break;}
-                    case 3:{pcParametersSave.setRam3(pcParametersSave.Ram3 +"[Сломано]",null);break;}
-                    case 4:{pcParametersSave.setRam4(pcParametersSave.Ram4 +"[Сломано]",null);break;}
+                    case 1:{activity.pcParametersSave.setRam1(activity.pcParametersSave.Ram1 +"[Сломано]",null);break;}
+                    case 2:{activity.pcParametersSave.setRam2(activity.pcParametersSave.Ram2 +"[Сломано]",null);break;}
+                    case 3:{activity.pcParametersSave.setRam3(activity.pcParametersSave.Ram3 +"[Сломано]",null);break;}
+                    case 4:{activity.pcParametersSave.setRam4(activity.pcParametersSave.Ram4 +"[Сломано]",null);break;}
                 }
-                mainActivity.blackDeadScreen(new String[]{"0xAA0003"});
+                activity.blackDeadScreen(new String[]{"0xAA0003"});
             }
         });
-    }
-    @Override
-    public void closeProgram(int mode){
-        super.closeProgram(mode);
-        mainWindow.setVisibility(View.GONE);
     }
 }

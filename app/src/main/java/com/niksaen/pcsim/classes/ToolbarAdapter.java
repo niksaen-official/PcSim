@@ -44,6 +44,7 @@ public class ToolbarAdapter  extends  RecyclerView.Adapter<ToolbarAdapter.ViewHo
             holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
             holder.app_name.setText(activity.words.get(activity.programArrayList.get(position).Title));
             holder.app_name.setTextColor(activity.styleSave.ToolbarTextColor);
+            holder.itemView.setOnClickListener(v -> {activity.programArrayList.get(position).rollUpProgram(0);});
         }else{
             holder.app_icon.setVisibility(View.GONE);
             holder.app_name.setVisibility(View.GONE);
