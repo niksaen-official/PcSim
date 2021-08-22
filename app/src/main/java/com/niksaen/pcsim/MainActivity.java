@@ -4,33 +4,31 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-
-import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.adapterDisplay.DesktopAdapter;
 import com.niksaen.pcsim.adapterDisplay.StartMenuAdapter;
+import com.niksaen.pcsim.adapterDisplay.ToolbarAdapter;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.BlackDeadScreen;
-import com.niksaen.pcsim.adapterDisplay.DesktopAdapter;
-import com.niksaen.pcsim.adapterDisplay.ToolbarAdapter;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.taskManager.TaskManager;
 import com.niksaen.pcsim.save.Language;
@@ -149,12 +147,7 @@ public class MainActivity extends AppCompatActivity{
         StartMenuAdapter menuAdapter = new StartMenuAdapter(this,0,apps);
         menuAdapter.setMainActivity(this);
         allAppList.setAdapter(menuAdapter);
-        allAppList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                program.programHashMap.get(menuAdapter.getItem(position)).openProgram();
-            }
-        });
+        allAppList.setOnItemClickListener((parent, view, position, id) -> program.programHashMap.get(menuAdapter.getItem(position)).openProgram());
     }
     public void updateToolbar(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -209,9 +202,7 @@ public class MainActivity extends AppCompatActivity{
                 TimerTask timerTask = new TimerTask() {
                     @Override
                     public void run() {
-                        runOnUiThread(() -> {
-                            pcWorkOff();
-                        });
+                        runOnUiThread(() -> pcWorkOff());
                     }
                 };
                 timer.schedule(timerTask,450);
