@@ -40,7 +40,7 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder>{
                 break;
             }
             case 1:{
-                currentColor = styleSave.LaunchColor;
+                currentColor = styleSave.StartMenuColor;
                 colorId = ColorList.ColorLaunch;
                 break;
             }

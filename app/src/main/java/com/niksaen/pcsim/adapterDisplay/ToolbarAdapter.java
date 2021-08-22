@@ -1,4 +1,4 @@
-package com.niksaen.pcsim.classes;
+package com.niksaen.pcsim.adapterDisplay;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -16,8 +16,6 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.program.Program;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
 
 public class ToolbarAdapter  extends  RecyclerView.Adapter<ToolbarAdapter.ViewHolder> {
 
@@ -40,11 +38,22 @@ public class ToolbarAdapter  extends  RecyclerView.Adapter<ToolbarAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         if(activity.programArrayList.get(position).status == 0) {
-            holder.app_icon.setImageResource(Program.programIcon.get(activity.programArrayList.get(position).Title));
-            holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
-            holder.app_name.setText(activity.words.get(activity.programArrayList.get(position).Title));
-            holder.app_name.setTextColor(activity.styleSave.ToolbarTextColor);
-            holder.itemView.setOnClickListener(v -> {activity.programArrayList.get(position).rollUpProgram(0);});
+            if(activity.styleSave.ToolbarAppIconVisible) {
+                holder.app_icon.setImageResource(Program.programIcon.get(activity.programArrayList.get(position).Title));
+            }else{
+                holder.app_icon.setVisibility(View.GONE);
+            }
+
+            if(activity.styleSave.ToolbarAppNameVisible) {
+                holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
+                holder.app_name.setText(activity.words.get(activity.programArrayList.get(position).Title));
+                holder.app_name.setTextColor(activity.styleSave.ToolbarTextColor);
+            }else{
+                holder.app_name.setVisibility(View.GONE);
+            }
+                holder.itemView.setOnClickListener(v -> {
+                    activity.programArrayList.get(position).rollUpProgram(0);
+                });
         }else{
             holder.app_icon.setVisibility(View.GONE);
             holder.app_name.setVisibility(View.GONE);

@@ -24,7 +24,10 @@ public class StyleSave {
     /** resource */     public int RollUpButtonImageRes;
     /** not resource */ public int ThemeColor1,ThemeColor2,ThemeColor3;
     /** not resource */ public int TextColor,TextButtonColor;
-    /** not resource */ public int LaunchColor;
+    /** not resource */ public int StartMenuColor;
+    /** not resource */public int StartMenuTextColor;
+    /** not resource */public boolean StartMenuAppIconVisible;
+    /** not resource */public boolean StartMenuAppNameVisible;
     /** not resource */ public int ToolbarColor;
     /** resource */     public int ProgressBarResource;
     /** resource */     public int SeekBarProgressResource;
@@ -52,7 +55,7 @@ public class StyleSave {
         ThemeColor3 = preferences.getInt("ThemeColor3",Color.parseColor(ColorList.ThemeColorList3[15]));
         TextColor = preferences.getInt("TextColor",Color.parseColor("#000000"));
         TextButtonColor = preferences.getInt("TextButtonColor",Color.parseColor("#000000"));
-        LaunchColor = preferences.getInt("LaunchColor",Color.parseColor("#2C3488"));
+        StartMenuColor = preferences.getInt("StartMenuColor",Color.parseColor("#2C3488"));
         ToolbarColor = preferences.getInt("ToolbarColor",Color.parseColor("#131A5E"));
         ProgressBarResource = preferences.getInt("ProgressBarResource", R.drawable.progress_bar_circle_color5);
         SeekBarProgressResource = preferences.getInt("SeekBarProgressResource",R.drawable.seek_progress_color5);
@@ -66,6 +69,9 @@ public class StyleSave {
         ToolbarAppIconVisible = preferences.getBoolean("ToolbarAppIconVisible",true);
         ToolbarAppNameVisible = preferences.getBoolean("ToolbarAppNameVisible",true);
         ToolbarTextColor = preferences.getInt("ToolbarTextColor",Color.parseColor("#FFFFFF"));
+        StartMenuTextColor = preferences.getInt("StartMenuTextColor",Color.parseColor("#FFFFFF"));
+        StartMenuAppIconVisible = preferences.getBoolean("StartMenuAppIconVisible",true);
+        StartMenuAppNameVisible = preferences.getBoolean("StartMenuAppNameVisible",true);
     }
 
     public void setStyle(){
@@ -81,7 +87,7 @@ public class StyleSave {
         preferences.edit().putInt("ThemeColor1",ThemeColor1).apply();
         preferences.edit().putInt("ThemeColor2",ThemeColor2).apply();
         preferences.edit().putInt("ThemeColor3",ThemeColor3).apply();
-        preferences.edit().putInt("LaunchColor",LaunchColor).apply();
+        preferences.edit().putInt("StartMenuColor",StartMenuColor).apply();
         preferences.edit().putInt("ToolbarColor",ToolbarColor).apply();
         preferences.edit().putInt("ProgressBarResource",ProgressBarResource).apply();
         preferences.edit().putInt("SeekBarProgressResource",SeekBarProgressResource).apply();
@@ -95,5 +101,8 @@ public class StyleSave {
         preferences.edit().putBoolean("ToolbarAppIconVisible",ToolbarAppIconVisible).apply();
         preferences.edit().putBoolean("ToolbarAppNameVisible",ToolbarAppNameVisible).apply();
         preferences.edit().putInt("ToolbarTextColor",ToolbarTextColor).apply();
+        preferences.edit().putInt("StartMenuTextColor",StartMenuTextColor).apply();
+        preferences.edit().putBoolean("StartMenuAppIconVisible",StartMenuAppIconVisible).apply();
+        preferences.edit().putBoolean("StartMenuAppNameVisible",StartMenuAppNameVisible).apply();
     }
 }

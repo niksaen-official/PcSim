@@ -1,8 +1,6 @@
 package com.niksaen.pcsim;
 
 import android.Manifest;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -15,48 +13,31 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.adapterDisplay.StartMenuAdapter;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.BlackDeadScreen;
-import com.niksaen.pcsim.classes.DesktopAdapter;
-import com.niksaen.pcsim.classes.ToolbarAdapter;
-import com.niksaen.pcsim.program.Benchmark;
-import com.niksaen.pcsim.program.Browser;
-import com.niksaen.pcsim.program.CPU_Tweaker;
+import com.niksaen.pcsim.adapterDisplay.DesktopAdapter;
+import com.niksaen.pcsim.adapterDisplay.ToolbarAdapter;
 import com.niksaen.pcsim.program.Program;
-import com.niksaen.pcsim.program.TemperatureViewer;
-import com.niksaen.pcsim.program.ViewPowerSupplyLoad;
-import com.niksaen.pcsim.program.deviceManager.DeviceManager;
-import com.niksaen.pcsim.program.fileManager.FileManager;
-import com.niksaen.pcsim.program.GPU_Overclocking;
-import com.niksaen.pcsim.program.musicplayer.MusicPlayer;
-import com.niksaen.pcsim.program.notepad.Notepad;
-import com.niksaen.pcsim.program.paint.Paint;
-import com.niksaen.pcsim.program.RAM_Overclocking;
 import com.niksaen.pcsim.program.taskManager.TaskManager;
-import com.niksaen.pcsim.program.videoplayer.VideoPlayer;
-import com.niksaen.pcsim.program.styleSettings.StyleSettings;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -65,9 +46,11 @@ public class MainActivity extends AppCompatActivity{
 
     Button button1,button2;
     public LinearLayout toolbar;
-    TextView greeting;
+    public LinearLayout startMenu;
+    TextView greeting,startMenuTitle;
     RecyclerView desktop;
     RecyclerView appList;
+    ListView allAppList;
 
     public PcParametersSave pcParametersSave;
     public StyleSave styleSave;
@@ -120,6 +103,10 @@ public class MainActivity extends AppCompatActivity{
         greeting = findViewById(R.id.greeting);
         desktop = findViewById(R.id.desktop);
         appList = findViewById(R.id.app_list);
+
+        startMenu = findViewById(R.id.startMenu);
+        startMenuTitle = findViewById(R.id.startMenuTitle);
+        allAppList = findViewById(R.id.allAppList);
     }
 
     void viewStyle(){
@@ -135,11 +122,39 @@ public class MainActivity extends AppCompatActivity{
         words = new Gson().fromJson(new AssetFile(this).getText("language/"+ Language.getLanguage(this)+".json"),typeToken.getType());
     }
 
-
     private void updateDesktop() {
         String[] apps = Program.programList;
         desktop.setLayoutManager(new GridLayoutManager(getBaseContext(), 5));
         desktop.setAdapter(new DesktopAdapter(this, apps));
+    }
+
+    public void StartMenu(View view){
+        if(startMenu.getVisibility() == View.GONE){
+            startMenu.setVisibility(View.VISIBLE);
+            updateStartMenu();
+        }
+        else{
+            startMenu.setVisibility(View.GONE);
+        }
+    }
+    private void updateStartMenu(){
+        Program program = new Program(this);
+        program.initHashMap(this);
+        String[] apps = Program.programList;
+        startMenu.setBackgroundColor(styleSave.StartMenuColor);
+        startMenuTitle.setTextColor(styleSave.StartMenuTextColor);
+        startMenuTitle.setTypeface(font,Typeface.BOLD);
+        startMenuTitle.setText(words.get("Start"));
+
+        StartMenuAdapter menuAdapter = new StartMenuAdapter(this,0,apps);
+        menuAdapter.setMainActivity(this);
+        allAppList.setAdapter(menuAdapter);
+        allAppList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                program.programHashMap.get(menuAdapter.getItem(position)).openProgram();
+            }
+        });
     }
     public void updateToolbar(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -152,10 +167,10 @@ public class MainActivity extends AppCompatActivity{
     public TaskManager taskManager = new TaskManager(this);
 
     //кнопка питания пк
+    private int PcWorkStatus = 0;
     private void buttonPC(){
-        final int[] button2Click = {0};
         button2.setOnClickListener(v -> {
-            if(button2Click[0] == 0) {
+            if(PcWorkStatus == 0) {
                 if (pcParametersSave.getPcWork()) {
                     if (pcParametersSave.currentCpuTemperature() <= pcParametersSave.maxCpuTemperature()) {
                         if (pcParametersSave.psuEnoughPower()) {
@@ -188,7 +203,6 @@ public class MainActivity extends AppCompatActivity{
                         blackDeadScreen(new String[]{"0xBB0004"});
                     }
                 }
-                button2Click[0] = 1;
             }
             else{
                 Timer timer = new Timer();
@@ -197,7 +211,6 @@ public class MainActivity extends AppCompatActivity{
                     public void run() {
                         runOnUiThread(() -> {
                             pcWorkOff();
-                            button2Click[0] = 0;
                         });
                     }
                 };
@@ -207,6 +220,7 @@ public class MainActivity extends AppCompatActivity{
     }
     // выключение пк
     public void pcWorkOff(){
+        PcWorkStatus = 0;
         button2.setText("ВЫКЛ");
         button2.setTextColor(Color.RED);
         layout.setBackgroundColor(Color.BLACK);
@@ -222,6 +236,7 @@ public class MainActivity extends AppCompatActivity{
     }
     // включение пк
     public void pcWorkOn(){
+        PcWorkStatus = 1;
         styleSave.getStyle();
         greeting.setVisibility(View.VISIBLE);
         greeting.setTextColor(styleSave.GreetingColor);

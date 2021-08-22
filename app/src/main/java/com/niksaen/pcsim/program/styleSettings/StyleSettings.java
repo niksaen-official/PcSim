@@ -146,7 +146,7 @@ public class StyleSettings extends Program {
         testButton.setBackgroundColor(activity.styleSave.ThemeColor2);
         testButton.setTextColor(activity.styleSave.TextButtonColor);
         testText.setTextColor(activity.styleSave.TextColor);
-        testLaunch.setBackgroundColor(activity.styleSave.LaunchColor);
+        testLaunch.setBackgroundColor(activity.styleSave.StartMenuColor);
         testToolbar.setBackgroundColor(activity.styleSave.ToolbarColor);
         testGreeting.setText(activity.styleSave.Greeting);
         testGreeting.setTextColor(activity.styleSave.GreetingColor);
@@ -368,7 +368,7 @@ public class StyleSettings extends Program {
             activity.styleSave.TextButtonColor = buttonTextColorAdapter.currentTextColor;
 
             //launch settings save
-            activity.styleSave.LaunchColor = launchBackColor.currentColor;
+            activity.styleSave.StartMenuColor = launchBackColor.currentColor;
 
             //toolbar settings save
             activity.styleSave.ToolbarColor = toolbarBackColor.currentColor;
