@@ -14,6 +14,8 @@ public class TemperatureViewer extends Program {
     public TemperatureViewer(MainActivity activity){
         super(activity);
         this.Title = "Temperature Viewer";
+        ValueRam = new int[]{30,45};
+        ValueVideoMemory = new int[]{10,20};
     }
 
     private ListView temperatureView;

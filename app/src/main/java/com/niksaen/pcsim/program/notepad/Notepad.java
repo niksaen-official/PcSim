@@ -16,6 +16,8 @@ public class Notepad extends Program {
     public Notepad(MainActivity activity){
         super(activity);
         this.Title = "Notepad";
+        ValueRam = new int[]{20,35};
+        ValueVideoMemory = new int[]{42,73};
     }
 
     EditText editText;

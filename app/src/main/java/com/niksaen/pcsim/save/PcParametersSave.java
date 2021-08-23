@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.program.Program;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
 /**
- * В этом классе происходит сохранение комплектуюхищ пк,            *
+ * В этом классе происходит сохранение комплектуюхищ пк            *
  * и их параметров, также здесь проверяется пк на работоспособность *
  * и проверка блока питания на нехватку мощности                    *
  **/
@@ -567,5 +569,31 @@ public class PcParametersSave {
         else{
             return 0;
         }
+    }
+    public int getEmptyRam(ArrayList<Program> programs){
+        int allRam = 0;
+        if(RAM1 != null){
+            allRam+= Integer.valueOf(RAM1.get("Объём"));
+        }
+        if(RAM2 != null){
+            allRam+= Integer.valueOf(RAM2.get("Объём"));
+        }
+        if(RAM3 != null){
+            allRam+= Integer.valueOf(RAM3.get("Объём"));
+        }
+        if(RAM4 != null){
+            allRam+= Integer.valueOf(RAM4.get("Объём"));
+        }
+        allRam = allRam*1024;
+
+        if(CPU.get("Графическое ядро").equals("+")){
+            allRam-= 1024;
+        }
+
+        for(Program program:programs){
+            allRam -= program.CurrentRamUse;
+        }
+        System.out.println("Empty ram: "+allRam +"mb");
+        return allRam;
     }
 }

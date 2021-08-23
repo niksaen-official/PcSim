@@ -20,6 +20,8 @@ public class FileManager extends Program {
     public FileManager(MainActivity activity){
         super(activity);
         this.Title = "File manager";
+        ValueRam = new int[]{30,50};
+        ValueVideoMemory = new int[]{10,15};
     }
 
     private String path = "";

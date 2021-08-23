@@ -14,6 +14,8 @@ public class TaskManager extends Program {
     public TaskManager(MainActivity activity) {
         super(activity);
         Title = "Task Manager";
+        ValueRam = new int[]{40,160};
+        ValueVideoMemory = new int[]{130,200};
     }
 
     @Override
@@ -23,7 +25,7 @@ public class TaskManager extends Program {
         style();
         super.initProgram();
     }
-    private TextView programName,useRam,useStream,useVideoMemory;
+    private TextView programName,useRam,useVideoMemory;
     private ListView programList;
     private LinearLayout main;
     private void initView(){
@@ -37,7 +39,6 @@ public class TaskManager extends Program {
         programName = mainWindow.findViewById(R.id.program_name);
         useRam = mainWindow.findViewById(R.id.ram_use);
         useVideoMemory = mainWindow.findViewById(R.id.video_memory_use);
-        useStream = mainWindow.findViewById(R.id.stream_use);
     }
     private void style(){
         programName.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
@@ -47,10 +48,6 @@ public class TaskManager extends Program {
         useRam.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
         useRam.setText(activity.words.get("Memory"));
         useRam.setTextColor(activity.styleSave.TextColor);
-
-        useStream.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
-        useStream.setText(activity.words.get("Streams"));
-        useStream.setTextColor(activity.styleSave.TextColor);
 
         useVideoMemory.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
         useVideoMemory.setText(activity.words.get("Video memory"));

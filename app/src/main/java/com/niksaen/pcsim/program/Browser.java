@@ -8,12 +8,15 @@ import android.webkit.WebViewClient;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.Others;
 
 public class Browser extends Program {
 
     public Browser(MainActivity activity){
         super(activity);
         Title = "Browser";
+        ValueRam = new int[]{200,250};
+        ValueVideoMemory = new int[]{150,250};
     }
     public void initProgram(){
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_browser,null);

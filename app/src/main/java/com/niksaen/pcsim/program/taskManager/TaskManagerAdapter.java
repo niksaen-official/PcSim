@@ -54,24 +54,20 @@ public class TaskManagerAdapter extends ArrayAdapter<Program> {
         TextView
                 programName = layout.findViewById(R.id.program_name),
                 ramUse = layout.findViewById(R.id.ram_use),
-                videoMemoryUse = layout.findViewById(R.id.video_memory_use),
-                streamUse = layout.findViewById(R.id.stream_use);
+                videoMemoryUse = layout.findViewById(R.id.video_memory_use);
 
         programName.setTextColor(TextColor);
         ramUse.setTextColor(TextColor);
         videoMemoryUse.setTextColor(TextColor);
-        streamUse.setTextColor(TextColor);
         layout.setBackgroundColor(BackgroundColor);
 
         programName.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"));
         ramUse.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"));
         videoMemoryUse.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"));
-        streamUse.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"));
 
         programName.setText(words.get(programs.get(position).Title));
-        ramUse.setText(programs.get(position).RamUse+"Mb");
-        videoMemoryUse.setText(programs.get(position).VideoMemoryUse+"Mb");
-        streamUse.setText(String.valueOf(programs.get(position).StreamUse));
+        ramUse.setText(programs.get(position).CurrentRamUse+"Mb");
+        videoMemoryUse.setText(programs.get(position).CurrentVideoMemoryUse+"Mb");
         return layout;
     }
 }

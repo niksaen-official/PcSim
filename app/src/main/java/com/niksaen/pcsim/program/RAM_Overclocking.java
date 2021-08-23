@@ -20,6 +20,8 @@ public class RAM_Overclocking extends Program {
     public RAM_Overclocking(MainActivity activity){
         super(activity);
         this.Title = "RAM Overclocking";
+        ValueRam = new int[]{200,300};
+        ValueVideoMemory = new int[]{100,250};
     }
 
     private TextView parameters,ram_model;

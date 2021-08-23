@@ -14,6 +14,8 @@ public class ViewPowerSupplyLoad extends Program {
     public ViewPowerSupplyLoad(MainActivity activity){
         super(activity);
         this.Title = "View Power Supply Load";
+        ValueRam = new int[]{50,60};
+        ValueVideoMemory = new int[]{50,150};
     }
     private ListView temperatureView;
     private void initView(){

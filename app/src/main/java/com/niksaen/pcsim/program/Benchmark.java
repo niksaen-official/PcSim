@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
+import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.StyleSave;
 
@@ -41,6 +42,8 @@ public class Benchmark extends Program{
         this.context = activity.getBaseContext();
         this.activity = activity;
         styleSave = activity.styleSave;
+        ValueRam = new int[]{90,128};
+        ValueVideoMemory = new int[]{200,324};
     }
 
     @Override

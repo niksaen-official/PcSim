@@ -20,6 +20,8 @@ public class MusicPlayerOpenFile extends Program {
     public MusicPlayerOpenFile(MainActivity activity){
         super(activity);
         this.Title = "Opening file";
+        ValueRam = new int[]{30,50};
+        ValueVideoMemory = new int[]{10,15};
     }
     Button openButton,pageDown;
     ListView listView;

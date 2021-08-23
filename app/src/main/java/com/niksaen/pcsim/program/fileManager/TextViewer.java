@@ -12,6 +12,8 @@ public class TextViewer  extends Program {
     public TextViewer(MainActivity activity){
         super(activity);
         this.Title = "Text Viewer";
+        ValueRam = new int[]{30,50};
+        ValueVideoMemory = new int[]{10,15};
     }
 
     TextView textView;

@@ -19,6 +19,8 @@ public class GPU_Overclocking extends Program {
     public GPU_Overclocking(MainActivity activity){
         super(activity);
         Title = "GPU Overclocking";
+        ValueRam = new int[]{230,340};
+        ValueVideoMemory = new int[]{100,200};
     }
     private int frequency;
     private TextView parameters,gpu_model;

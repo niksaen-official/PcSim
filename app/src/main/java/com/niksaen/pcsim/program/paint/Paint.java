@@ -24,6 +24,8 @@ public class Paint extends Program {
     public Paint(MainActivity activity) {
         super(activity);
         this.Title = "Paint";
+        ValueRam = new int[]{10,20};
+        ValueVideoMemory = new int[]{60,77};
     }
 
     Spinner file,alpha,weight;

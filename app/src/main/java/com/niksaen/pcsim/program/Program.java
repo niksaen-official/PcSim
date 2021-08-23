@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.program.deviceManager.DeviceManager;
 import com.niksaen.pcsim.program.fileManager.FileManager;
@@ -87,32 +88,34 @@ public class Program {
         programHashMap.put("Task Manager", activity.taskManager);
     }
 
-    /** сколько программа использует оперативной памяти в мб*/
-    public int RamUse = 256;
+    /** @param  CurrentRamUse - показывает сколько программа использует оперативной памяти в мб*/
+    public int CurrentRamUse;
 
-    /** сколько программе требуется потоков*/
-    public int StreamUse = 1;
+    /**@param  ValueRam - показывает сколько минимум и максимум оперативной памяти использует программа*/
+    public int[] ValueRam = {100,200};
 
-    /** сколько программа использует видопамяти в мб*/
-    public int VideoMemoryUse = 128;
+    /**@param  CurrentVideoMemoryUse - показывает сколько программа использует видопамяти в мб*/
+    public int CurrentVideoMemoryUse;
 
-    /** название программы на английском*/
+    /**@param  ValueVideoMemory - показывает сколько минимум и максимум программа использует видопамяти в мб*/
+    public int[] ValueVideoMemory = {100,200};
+
+    /**@param  Title - название программы на английском*/
     public String Title;
     public MainActivity activity;
 
-    /** главное окно программы*/
+    /** @param  mainWindow - главное окно программы*/
     public View mainWindow;
 
     /**@param  status  используется для определения статуса программы
-     * в значении -1 - означает что программа закрыта
-     * в значении 0 - означает что программа открыта
-     * в значении 1 - означает что программа свёрнута*/
+     *-1 - означает что программа закрыта
+     *0 - означает что программа открыта
+     *1 - означает что программа свёрнута*/
     public int status = -1;
 
     public Program(MainActivity activity){
         this.activity = activity;
     }
-
 
     public Button buttonClose;  /** кнопка закрытия программы*/
     public Button buttonFullscreenMode;  /** кнопка полноэкранного режима*/
@@ -123,6 +126,8 @@ public class Program {
     /** инициализация программы перед открытием
      * т.е. применение стилей и настройка логики*/
     public void initProgram(){
+        CurrentRamUse = Others.random(ValueRam[0],ValueRam[1]);
+        CurrentVideoMemoryUse = Others.random(ValueVideoMemory[0],ValueVideoMemory[1]);
         // настройка кнопок
         buttonClose.setOnClickListener(v->closeProgram(1));
         buttonFullscreenMode.setOnClickListener(v -> {
@@ -144,7 +149,7 @@ public class Program {
         });
         buttonRollUp.setOnClickListener(v->rollUpProgram(1));
 
-        //настройка стиля программы
+        //настройка базовой части стиля программы
         mainWindow.setBackgroundColor(activity.styleSave.ColorWindow);
         titleTextView.setText(activity.words.get(Title));
         titleTextView.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"), Typeface.BOLD);
@@ -154,18 +159,21 @@ public class Program {
         buttonRollUp.setBackgroundResource(activity.styleSave.RollUpButtonImageRes);
     }
 
-    /** открытие программы после инициализации*/
+    /** открытие программы*/
+    // сначала необходимо инициализировать программу
     public void openProgram(){
-        if(status == -1) {
-            initProgram();
-            status = 0;
-            activity.programArrayList.add(this);
-            activity.updateToolbar();
-            activity.taskManager.update();
-            if (mainWindow.getParent() == null) {
-                activity.layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            } else {
-                mainWindow.setVisibility(View.VISIBLE);
+        initProgram();
+        if(activity.pcParametersSave.getEmptyRam(activity.programArrayList) > CurrentRamUse) {
+            if (status == -1) {
+                status = 0;
+                activity.programArrayList.add(this);
+                activity.updateToolbar();
+                activity.taskManager.update();
+                if (mainWindow.getParent() == null) {
+                    activity.layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                } else {
+                    mainWindow.setVisibility(View.VISIBLE);
+                }
             }
         }
     }

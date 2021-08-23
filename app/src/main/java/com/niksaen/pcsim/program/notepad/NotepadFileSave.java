@@ -22,6 +22,8 @@ public class NotepadFileSave extends Program {
     public NotepadFileSave(MainActivity activity){
         super(activity);
         this.Title = "Saving a file";
+        ValueRam = new int[]{30,50};
+        ValueVideoMemory = new int[]{10,15};
     }
 
     String buffPath = "",buffPath2;

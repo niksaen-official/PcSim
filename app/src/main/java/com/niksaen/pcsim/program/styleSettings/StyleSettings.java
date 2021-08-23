@@ -26,6 +26,8 @@ public class StyleSettings extends Program {
     public StyleSettings(MainActivity activity){
         super(activity);
         this.Title = "Personalization";
+        ValueRam = new int[]{20,35};
+        ValueVideoMemory = new int[]{40,70};
     }
     //main view
     ExpandableListView mainMenu;

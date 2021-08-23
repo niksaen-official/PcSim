@@ -34,6 +34,8 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
     public VideoPlayer(MainActivity activity){
         super(activity);
         this.Title = "Video player";
+        ValueRam = new int[]{40,80};
+        ValueVideoMemory = new int[]{60,90};
     }
 
     Spinner menu;

@@ -32,6 +32,8 @@ public class MusicPlayer extends Program {
     public MusicPlayer(MainActivity activity){
         super(activity);
         this.Title = "Music player";
+        ValueRam = new int[]{55,80};
+        ValueVideoMemory = new int[]{30,40};
     }
 
     TextView musicName;

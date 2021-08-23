@@ -23,6 +23,8 @@ public class DeviceManager extends Program {
     public DeviceManager(MainActivity mainActivity){
         super(mainActivity);
         this.Title = "Device manager";
+        ValueRam = new int[]{15,40};
+        ValueVideoMemory = new int[]{10,20};
     }
     private void initView(){
         content = mainWindow.findViewById(R.id.content);

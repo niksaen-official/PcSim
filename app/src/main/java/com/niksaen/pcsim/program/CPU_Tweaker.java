@@ -21,6 +21,8 @@ public class CPU_Tweaker extends Program {
     public CPU_Tweaker(MainActivity activity){
         super(activity);
         this.Title = "CPU Overclocking";
+        ValueRam = new int[]{200,300};
+        ValueVideoMemory = new int[]{200,250};
     }
 
     private int current_frequency;

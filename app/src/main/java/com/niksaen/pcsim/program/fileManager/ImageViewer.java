@@ -21,7 +21,8 @@ public class ImageViewer extends Program {
         this.Title = "Image Viewer";
 
         font = Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf");
-
+        ValueRam = new int[]{10,20};
+        ValueVideoMemory = new int[]{10,30};
     }
     ImageView imageView;
 
