@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.FileUtil;
+import com.niksaen.pcsim.fileWorkLib.FilePermission;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.fileManager.FileManagerListViewAdapter;
 
@@ -75,6 +76,13 @@ public class NotepadFileSave extends Program {
     public void openProgram(final String textFile){
         initView();
         style();
+        boolean hasPermission = FilePermission.checkStoragePermission(activity);
+        if(hasPermission){
+            ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+        }else {
+            FilePermission.requestStoragePermission(activity);
+        }
+
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (FileUtil.isDirectory(folders.get(position))) {
                 buffPath = folders.get(position);

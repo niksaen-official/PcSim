@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.FileUtil;
+import com.niksaen.pcsim.fileWorkLib.FilePermission;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.fileManager.FileManagerListViewAdapter;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 public class NotepadFileOpen extends Program {
 
+    private boolean hasPermission = false;
     public NotepadFileOpen(MainActivity activity){
         super(activity);
         this.Title = "Opening file";
@@ -59,6 +61,13 @@ public class NotepadFileOpen extends Program {
     public void initProgram(){
         initView();
         style();
+        hasPermission = FilePermission.checkStoragePermission(activity);
+        if(hasPermission){
+            ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+        }else {
+            FilePermission.requestStoragePermission(activity);
+        }
+
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (FileUtil.isDirectory(folders.get(position))) {
                 buffPathOpen = folders.get(position);
