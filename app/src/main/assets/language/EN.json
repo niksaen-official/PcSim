@@ -115,5 +115,10 @@
   "Application": "Application",
   "Memory": "Memory",
   "Streams": "Streams",
-  "Video memory": "Video memory"
+  "Video memory": "Video memory",
+  "Shop": "Shop",
+  "PC assembly": "PC assembly",
+  "Menu": "Menu",
+  "Settings": "Settings",
+  "About me": "About me"
 }

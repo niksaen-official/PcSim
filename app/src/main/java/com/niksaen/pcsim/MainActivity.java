@@ -24,9 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.niksaen.pcsim.adapterDisplay.DesktopAdapter;
-import com.niksaen.pcsim.adapterDisplay.StartMenuAdapter;
-import com.niksaen.pcsim.adapterDisplay.ToolbarAdapter;
+import com.niksaen.pcsim.adapters.DesktopAdapter;
+import com.niksaen.pcsim.adapters.DrawerAdapter;
+import com.niksaen.pcsim.adapters.StartMenuAdapter;
+import com.niksaen.pcsim.adapters.ToolbarAdapter;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.BlackDeadScreen;
 import com.niksaen.pcsim.program.Program;
@@ -42,7 +43,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity{
 
-    Button button1,button2;
+    Button button2;
     public LinearLayout toolbar;
     public LinearLayout startMenu;
     TextView greeting,startMenuTitle;
@@ -71,29 +72,23 @@ public class MainActivity extends AppCompatActivity{
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         font = Typeface.createFromAsset(getAssets(), "fonts/pixelFont.ttf");
 
+        if(Language.getLanguage(this).equals("")){
+            Language.ChangeLanguage(this);
+        }else {
+            getLanguage();
+        }
         //init classes
         pcParametersSave = new PcParametersSave(this);
         styleSave = new StyleSave(this);
 
         initView();
         viewStyle();
+        initDrawer();
 
-        button1.setOnClickListener(v -> {
-            Intent intent = new Intent(getBaseContext(),IronActivity.class);
-            startActivity(intent);
-            finish();
-        });
         buttonPC();
-
-        if(Language.getLanguage(this).equals("")){
-            Language.ChangeLanguage(this);
-        }else {
-            getLanguage();
-        }
     }
 
     void initView(){
-        button1 = findViewById(R.id.button1);
         button2 = findViewById(R.id.on_off);
         layout = findViewById(R.id.monitor);
         toolbar =findViewById(R.id.toolbar);
@@ -107,7 +102,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     void viewStyle(){
-        button1.setTypeface(font,style);
         button2.setTypeface(font,style);
         button2.setTextColor(Color.RED);
         greeting.setTypeface(font,style);
@@ -117,6 +111,33 @@ public class MainActivity extends AppCompatActivity{
     private void getLanguage(){
         TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
         words = new Gson().fromJson(new AssetFile(this).getText("language/"+ Language.getLanguage(this)+".json"),typeToken.getType());
+    }
+
+    private Intent intent = new Intent();
+    private void initDrawer(){
+        String[] menuList = new String[]{
+                words.get("Menu")+":",
+                words.get("Shop"),
+                words.get("PC assembly"),
+                words.get("Settings"),
+                words.get("About me")
+        };
+        ListView drawer = findViewById(R.id.drawer);
+        DrawerAdapter drawerAdapter = new DrawerAdapter(this,menuList);
+        drawerAdapter.BackgroundColor = Color.parseColor("#111111");
+        drawerAdapter.TextColor = Color.parseColor("#FFFFFF");
+        drawer.setAdapter(drawerAdapter);
+
+        drawer.setOnItemClickListener((parent, view, position, id) -> {
+           if(position == 1){
+               intent = new Intent(MainActivity.this,MainShopActivity.class);
+               startActivity(intent);
+           }
+            if(position == 2){
+                intent = new Intent(MainActivity.this,IronActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void updateDesktop() {

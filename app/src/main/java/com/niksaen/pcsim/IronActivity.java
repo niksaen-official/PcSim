@@ -1,6 +1,5 @@
 package com.niksaen.pcsim;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -83,13 +82,6 @@ public class IronActivity extends AppCompatActivity {
         initViewAndStyle();
         getSavedPc();
         logic();
-    }
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        Intent intent = new Intent(this,MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     //инициализация вью и стили для них

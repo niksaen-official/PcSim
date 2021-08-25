@@ -5,7 +5,7 @@ import android.widget.ListView;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.classes.CustomListViewAdapter;
+import com.niksaen.pcsim.adapters.CustomListViewAdapter;
 
 import java.util.ArrayList;
 

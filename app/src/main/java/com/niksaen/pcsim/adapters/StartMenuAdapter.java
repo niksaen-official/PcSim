@@ -1,4 +1,4 @@
-package com.niksaen.pcsim.adapterDisplay;
+package com.niksaen.pcsim.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;

@@ -1,4 +1,4 @@
-package com.niksaen.pcsim.classes;
+package com.niksaen.pcsim.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -53,6 +53,7 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
         return textView;
     }
 
+    // for listview
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull @NotNull ViewGroup parent) {
         TextView textView = new TextView(context);
