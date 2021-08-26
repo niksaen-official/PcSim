@@ -14,18 +14,13 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.fileWorkLib.FileUtil;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.notepad.NotepadSpinnerAdapter;
-import com.niksaen.pcsim.save.Language;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MusicPlayer extends Program {
 
@@ -66,7 +61,6 @@ public class MusicPlayer extends Program {
         timeText = mainWindow.findViewById(R.id.timeText);
     }
 
-    HashMap<String,String> words;
     public void style(){
 
         mainContent.setBackgroundColor(activity.styleSave.ThemeColor1);
@@ -87,13 +81,12 @@ public class MusicPlayer extends Program {
         seekBarTime.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
 
         //настройка адаптеров и перевода
-        words = new Gson().fromJson(new AssetFile(activity).getText("language/"+ Language.getLanguage(activity.getBaseContext())+".json"),new TypeToken<HashMap<String,String>>(){}.getType());
         String[] fileWork = new String[]{
-                words.get("File")+":",
-                words.get("Open"),
-                words.get("Exit")
+                activity.words.get("File")+":",
+                activity.words.get("Open"),
+                activity.words.get("Exit")
         };
-        spinnerAdapter = new NotepadSpinnerAdapter(activity.getBaseContext(),R.layout.item_textview,fileWork,words.get("File"));
+        spinnerAdapter = new NotepadSpinnerAdapter(activity.getBaseContext(),R.layout.item_textview,fileWork,activity.words.get("File"));
         spinnerAdapter.BackgroundColor = activity.styleSave.ThemeColor2;
         spinnerAdapter.TextColor = activity.styleSave.TextColor;
         menuSpinner.setAdapter(spinnerAdapter);

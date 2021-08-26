@@ -7,14 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.classes.AssetFile;
-import com.niksaen.pcsim.save.Language;
-
-import java.util.HashMap;
 
 public class CPU_Tweaker extends Program {
 
@@ -33,13 +27,6 @@ public class CPU_Tweaker extends Program {
     private Button save;
     private LinearLayout linearLayout;
 
-    HashMap<String,String> words;
-
-    private void getLanguage(){
-        TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
-        words = new Gson().fromJson(new AssetFile(activity).getText("language/"+ Language.getLanguage(activity.getBaseContext())+".json"),typeToken.getType());
-    }
-
     private void initView(){
         titleTextView = mainWindow.findViewById(R.id.title);
         cpu_model = mainWindow.findViewById(R.id.cpu_model);
@@ -56,7 +43,7 @@ public class CPU_Tweaker extends Program {
         linearLayout.setBackgroundColor(activity.styleSave.ThemeColor1);
         save.setBackgroundColor(activity.styleSave.ThemeColor2);
         save.setTextColor(activity.styleSave.TextButtonColor);
-        save.setText(words.get("Will apply"));
+        save.setText(activity.words.get("Will apply"));
         cpu_model.setTextColor(activity.styleSave.TextColor);
         frequency.setTextColor(activity.styleSave.TextColor);
         temperature.setTextColor(activity.styleSave.TextColor);
@@ -71,7 +58,6 @@ public class CPU_Tweaker extends Program {
 
     public void initProgram(){
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_cpu_tweaker,null);
-        getLanguage();
         initView();
         style();
 
@@ -82,24 +68,24 @@ public class CPU_Tweaker extends Program {
         max_temperature = activity.pcParametersSave.maxCpuTemperature();
         power = activity.pcParametersSave.cpuPower;
 
-        frequency.setText(words.get("Frequency") + ": " + current_frequency + "MHz");
-        temperature.setText(words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
-                words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
-                words.get("Energy consumption") + ": " + (int) power + "W");
+        frequency.setText(activity.words.get("Frequency") + ": " + current_frequency + "MHz");
+        temperature.setText(activity.words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
+                activity.words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
+                activity.words.get("Energy consumption") + ": " + (int) power + "W");
 
         setFrequency.setProgress(current_frequency);
         setFrequency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (activity.pcParametersSave.CPU.get("Возможность разгона").equals("+")) {
-                    frequency.setText(words.get("Frequency") + ": " + progress + "MHz");
+                    frequency.setText(activity.words.get("Frequency") + ": " + progress + "MHz");
                     current_frequency = progress;
                     power = (progress * 0.025);
                     current_temperature = progress * 0.016f - (Double.parseDouble(activity.pcParametersSave.COOLER.get("TDP")) - Integer.parseInt(activity.pcParametersSave.CPU.get("TDP"))) / 8;
                     temperature.setText(
-                            words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
-                                    words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
-                                    words.get("Energy consumption") + ": " + (int) power + "W");
+                            activity.words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
+                                    activity.words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
+                                    activity.words.get("Energy consumption") + ": " + (int) power + "W");
                     }
                 }
                 @Override
@@ -112,14 +98,14 @@ public class CPU_Tweaker extends Program {
                     if (activity.pcParametersSave.CPU.get("Возможность разгона").equals("+")) {
                         if (seekBar.getProgress() < 1000) {
                             seekBar.setProgress(1000);
-                            frequency.setText(words.get("Frequency") + ": " + 1000 + "MHz");
+                            frequency.setText(activity.words.get("Frequency") + ": " + 1000 + "MHz");
                             current_frequency = 1000;
                             power = (1000 * 0.025);
                             current_temperature = 1000 * 0.016f - (Double.parseDouble(activity.pcParametersSave.COOLER.get("TDP")) - Integer.parseInt(activity.pcParametersSave.CPU.get("TDP"))) / 8;
                             temperature.setText(
-                                    words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
-                                            words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
-                                            words.get("Energy consumption") + ": " + (int) power + "W");
+                                    activity.words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
+                                            activity.words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
+                                            activity.words.get("Energy consumption") + ": " + (int) power + "W");
                         }
                     }
                 }

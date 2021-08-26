@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.Custom;
-import com.niksaen.pcsim.classes.ForDebug;
+import com.niksaen.pcsim.classes.PcComponentLists;
 import com.niksaen.pcsim.pcView.MotherBoardView;
 import com.niksaen.pcsim.save.PcParametersSave;
 
@@ -57,9 +57,6 @@ public class IronActivity extends AppCompatActivity {
     Custom custom = new Custom(this);
     AssetFile assetFile = new AssetFile(this);
 
-    //debug
-    ForDebug forDebug = new ForDebug(this);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,14 +66,15 @@ public class IronActivity extends AppCompatActivity {
 
         parametersSave = new PcParametersSave(this);
 
-        caseList = forDebug.caseList;
-        moboList = forDebug.moboList;
-        cpuList = forDebug.cpuList;
-        coolerList = forDebug.coolerList;
-        ramList = forDebug.ramList;
-        gpuList = forDebug.gpuList;
-        dataList = forDebug.dataList;
-        psuList = forDebug.psuList;
+        //debug
+        caseList = PcComponentLists.CaseList;
+        moboList = PcComponentLists.MotherboardList;
+        cpuList = PcComponentLists.CpuList;
+        coolerList  = PcComponentLists.CoolerList;
+        ramList = PcComponentLists.RamList;
+        gpuList = PcComponentLists.GraphicsCardList;
+        dataList = PcComponentLists.DataStorageList;
+        psuList = PcComponentLists.PowerSupplyList;
 
 
         initViewAndStyle();

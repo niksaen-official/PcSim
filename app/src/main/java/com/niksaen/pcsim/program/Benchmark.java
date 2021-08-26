@@ -1,6 +1,5 @@
 package com.niksaen.pcsim.program;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +9,8 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.classes.AssetFile;
-import com.niksaen.pcsim.classes.Others;
-import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
@@ -25,7 +19,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Benchmark extends Program{
-    Context context;
     MainActivity activity;
 
     TextView cpu_bench,ram_bench,gpu_bench,data_bench,all_bench;
@@ -39,7 +32,6 @@ public class Benchmark extends Program{
     public Benchmark(MainActivity activity){
         super(activity);
         Title = "Benchmark";
-        this.context = activity.getBaseContext();
         this.activity = activity;
         styleSave = activity.styleSave;
         ValueRam = new int[]{90,128};
@@ -54,16 +46,8 @@ public class Benchmark extends Program{
             timer = null;
         }
     }
-
-    // get language
-    private HashMap<String,String> words;
-    private void getLanguage(){
-        TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
-        words = new Gson().fromJson(new AssetFile(context).getText("language/"+ Language.getLanguage(context)+".json"),typeToken.getType());
-    }
     public void initProgram(){
         mainWindow = LayoutInflater.from(activity.getBaseContext()).inflate(R.layout.program_benchmark,null);
-        getLanguage();
         style();
         start_bench.setOnClickListener(v -> {
             v.setClickable(false);
@@ -228,9 +212,9 @@ public class Benchmark extends Program{
         start_bench.setTextColor(styleSave.TextButtonColor);
 
         content.setBackgroundColor(styleSave.ThemeColor1);
-        progressBar.setProgressDrawable(context.getDrawable(styleSave.ProgressBarResource));
+        progressBar.setProgressDrawable(activity.getDrawable(styleSave.ProgressBarResource));
 
         //translation
-        start_bench.setText(words.get("Start"));
+        start_bench.setText(activity.words.get("Start"));
     }
 }

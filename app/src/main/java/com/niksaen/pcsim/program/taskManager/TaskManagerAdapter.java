@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,7 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.program.Program;
-import com.niksaen.pcsim.save.Language;
+import com.niksaen.pcsim.save.Settings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +34,7 @@ public class TaskManagerAdapter extends ArrayAdapter<Program> {
     private HashMap<String,String> words;
     private void getLanguage(){
         TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
-        words = new Gson().fromJson(new AssetFile(context).getText("language/"+ Language.getLanguage(context)+".json"),typeToken.getType());
+        words = new Gson().fromJson(new AssetFile(context).getText("language/"+ new Settings(context).Language+".json"),typeToken.getType());
     }
 
     @Override

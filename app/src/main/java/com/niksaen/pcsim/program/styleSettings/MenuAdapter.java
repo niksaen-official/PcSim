@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
-import com.niksaen.pcsim.save.Language;
+import com.niksaen.pcsim.save.Settings;
 
 import java.util.HashMap;
 
@@ -34,7 +34,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
     private void getLanguage(){
         HashMap<String,String> words;
         TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
-        words = new Gson().fromJson(new AssetFile(context).getText("language/"+ Language.getLanguage(context)+".json"),typeToken.getType());
+        words = new Gson().fromJson(new AssetFile(context).getText("language/"+ new Settings(context).Language+".json"),typeToken.getType());
         listGroup = new String[]{
                 words.get("Background"),
                 words.get("Window"),

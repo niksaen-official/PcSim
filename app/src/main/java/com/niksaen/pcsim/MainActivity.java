@@ -34,7 +34,9 @@ import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.taskManager.TaskManager;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
+import com.niksaen.pcsim.save.Settings;
 import com.niksaen.pcsim.save.StyleSave;
+import com.niksaen.pcsim.shop.MainShopActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity{
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         font = Typeface.createFromAsset(getAssets(), "fonts/pixelFont.ttf");
 
-        if(Language.getLanguage(this).equals("")){
+        if(new Settings(this).Language.equals("")){
             Language.ChangeLanguage(this);
         }else {
             getLanguage();
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity{
     public HashMap<String,String> words;
     private void getLanguage(){
         TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
-        words = new Gson().fromJson(new AssetFile(this).getText("language/"+ Language.getLanguage(this)+".json"),typeToken.getType());
+        words = new Gson().fromJson(new AssetFile(this).getText("language/"+ new Settings(this).Language+".json"),typeToken.getType());
     }
 
     private Intent intent = new Intent();
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity{
 
         drawer.setOnItemClickListener((parent, view, position, id) -> {
            if(position == 1){
-               intent = new Intent(MainActivity.this,MainShopActivity.class);
+               intent = new Intent(MainActivity.this, MainShopActivity.class);
                startActivity(intent);
            }
             if(position == 2){

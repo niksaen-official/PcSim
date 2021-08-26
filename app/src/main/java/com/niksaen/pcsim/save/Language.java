@@ -16,12 +16,8 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.program.notepad.NotepadSpinnerAdapter;
 
 public class Language {
-    public static String getLanguage(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("lang",Context.MODE_PRIVATE);
-        return sharedPreferences.getString("lang","");
-    }
-    public static void setLanguage(Context context,String langCode){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("lang",Context.MODE_PRIVATE);
+    private static void setLanguage(Context context,String langCode){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
         sharedPreferences.edit().putString("lang",langCode).apply();
     }
     public static void ChangeLanguage(Context context){
