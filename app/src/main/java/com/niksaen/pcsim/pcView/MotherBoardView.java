@@ -26,12 +26,10 @@ public class MotherBoardView {
         ram4View = caseImage.findViewById(R.id.ramImage4);
         gpu1View = caseImage.findViewById(R.id.gpu1View);
         gpu2View = caseImage.findViewById(R.id.gpu2View);
-        if(name!=null) {
-            setMotherboard();
-        }
+        setMotherboard();
     }
 
-    void setMotherboard(){
+    public void setMotherboard(){
         switch (name){
             case "BSRock H110M-DVS":{
                 cpuImage.setScaleX(1);
@@ -190,7 +188,6 @@ public class MotherBoardView {
                 break;
             }
             default:{
-
             }
         }
     }

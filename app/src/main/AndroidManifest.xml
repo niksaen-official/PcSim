@@ -16,7 +16,7 @@
         <activity android:name="com.niksaen.pcsim.IronActivity"
             android:screenOrientation="landscape"/>
         <activity
-            android:name="com.niksaen.pcsim.shop.MainShopActivity"
+            android:name="com.niksaen.pcsim.MainShopActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name="com.niksaen.pcsim.MainActivity"

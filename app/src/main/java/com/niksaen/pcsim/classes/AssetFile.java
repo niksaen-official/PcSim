@@ -1,6 +1,5 @@
 package com.niksaen.pcsim.classes;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
@@ -10,8 +9,6 @@ import java.io.InputStream;
 public class AssetFile {
 
     Context context;
-    Activity test;
-
     public AssetFile(Context context){
         this.context = context;
     }
@@ -28,7 +25,6 @@ public class AssetFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         String str_data = new String(buffer);
         return str_data;
     }
@@ -40,7 +36,9 @@ public class AssetFile {
             // загружаем как Drawable
             return Drawable.createFromStream(ims, null);
         }
-        catch(IOException ex) { return null;}
-
+        catch(IOException ex) {
+            System.out.println("Not found image: "+filePath);
+            return null;
+        }
     }
 }

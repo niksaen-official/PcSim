@@ -74,7 +74,7 @@ public class DeviceManager extends Program {
                         "    " + activity.words.get("Maximum frequency") + ": " + activity.pcParametersSave.CPU.get("Макс. частота") + "MHz",
                         activity.words.get("Integrated graphics core")+": " + activity.pcParametersSave.CPU.get("Графическое ядро"),
                         "    " + activity.words.get("Model") + ": " + activity.pcParametersSave.CPU.get("Модель"),
-                        "    " + activity.words.get("Frequency") + ": " + activity.pcParametersSave.CPU.get("Частота GPU") + "MHz",
+                        "    " + activity.words.get("Frequency") + ": " + activity.pcParametersSave.CPU.get("Частота Graphics card") + "MHz",
                 };
             }else{
                 cpuParameters = new String[]{
@@ -260,12 +260,12 @@ public class DeviceManager extends Program {
     private void style(){
         content.setBackgroundColor(activity.styleSave.ThemeColor1);
 
-        motherboardAdapter = new SpinnerAdapter(activity.getBaseContext(),0,motherboardParameters,activity.words.get("Motherboard"),"MOBO");
+        motherboardAdapter = new SpinnerAdapter(activity.getBaseContext(),0,motherboardParameters,activity.words.get("Motherboard"),"Motherboard");
         cpuAdapter = new SpinnerAdapter(activity.getBaseContext(),0,cpuParameters,activity.words.get("CPU"),"CPU");
         ramAdapter = new SpinnerAdapter(activity.getBaseContext(),0,ramParameters,activity.words.get("RAM"),"RAM");
-        psuAdapter = new SpinnerAdapter(activity.getBaseContext(),0,psuParameters,activity.words.get("Power supply"),"PSU");
-        dataAdapter = new SpinnerAdapter(activity.getBaseContext(),0,dataParameters,activity.words.get("Storage device"),"DATA");
-        gpuAdapter = new SpinnerAdapter(activity.getBaseContext(),0,gpuParameters,activity.words.get("Graphics card"),"GPU");
+        psuAdapter = new SpinnerAdapter(activity.getBaseContext(),0,psuParameters,activity.words.get("Power supply"),"Power supply");
+        dataAdapter = new SpinnerAdapter(activity.getBaseContext(),0,dataParameters,activity.words.get("Storage device"),"Storage device");
+        gpuAdapter = new SpinnerAdapter(activity.getBaseContext(),0,gpuParameters,activity.words.get("Graphics card"),"Graphics card");
 
         motherboardAdapter.BackgroundColor_DropDownView = activity.styleSave.ThemeColor2;
         motherboardAdapter.TextColor_DropDownView = activity.styleSave.TextColor;

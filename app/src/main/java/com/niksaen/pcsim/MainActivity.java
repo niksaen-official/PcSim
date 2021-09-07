@@ -24,10 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.niksaen.pcsim.adapters.DesktopAdapter;
-import com.niksaen.pcsim.adapters.DrawerAdapter;
-import com.niksaen.pcsim.adapters.StartMenuAdapter;
-import com.niksaen.pcsim.adapters.ToolbarAdapter;
+import com.niksaen.pcsim.classes.adapters.DesktopAdapter;
+import com.niksaen.pcsim.classes.adapters.DrawerAdapter;
+import com.niksaen.pcsim.classes.adapters.StartMenuAdapter;
+import com.niksaen.pcsim.classes.adapters.ToolbarAdapter;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.BlackDeadScreen;
 import com.niksaen.pcsim.program.Program;
@@ -36,7 +36,6 @@ import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.Settings;
 import com.niksaen.pcsim.save.StyleSave;
-import com.niksaen.pcsim.shop.MainShopActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -194,7 +193,7 @@ public class MainActivity extends AppCompatActivity{
                             pcWorkOn();
                         } else {
                             if(pcParametersSave.PSU != null) {
-                                if (pcParametersSave.PSU.get("Защита").equals("нет")) {
+                                if (pcParametersSave.PSU.get("Защита").equals("-")) {
                                     pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]", null);
                                     blackDeadScreen(new String[]{"0xBB0004"});
                                 } else {

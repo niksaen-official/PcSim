@@ -31,7 +31,7 @@ public class Program {
             "Browser",
             "CPU Overclocking",
             "RAM Overclocking",
-            "GPU Overclocking",
+            "Graphics card Overclocking",
             "Temperature Viewer",
             "View Power Supply Load",
             "Device manager",
@@ -50,7 +50,7 @@ public class Program {
         programIcon.put("Browser",R.drawable.icon_browser);
         programIcon.put("CPU Overclocking",R.drawable.icon_cputweaker);
         programIcon.put("RAM Overclocking",R.drawable.icon_ramoverclocking);
-        programIcon.put("GPU Overclocking",R.drawable.icon_gpuiverclocking);
+        programIcon.put("Graphics card Overclocking",R.drawable.icon_gpuiverclocking);
         programIcon.put("Temperature Viewer",R.drawable.icon_temperatureviewer);
         programIcon.put("View Power Supply Load",R.drawable.icon_viewpsuload);
         programIcon.put("Device manager",R.drawable.icon_checkiron);
@@ -75,7 +75,7 @@ public class Program {
         programHashMap.put("Browser",new Browser(activity));
         programHashMap.put("CPU Overclocking",new CPU_Tweaker(activity));
         programHashMap.put("RAM Overclocking",new RAM_Overclocking(activity));
-        programHashMap.put("GPU Overclocking",new GPU_Overclocking(activity));
+        programHashMap.put("Graphics card Overclocking",new GPU_Overclocking(activity));
         programHashMap.put("Temperature Viewer",new TemperatureViewer(activity));
         programHashMap.put("View Power Supply Load",new ViewPowerSupplyLoad(activity));
         programHashMap.put("Device manager",new DeviceManager(activity));

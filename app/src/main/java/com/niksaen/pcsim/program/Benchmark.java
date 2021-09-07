@@ -96,7 +96,7 @@ public class Benchmark extends Program{
         double gpu1_bench=0,gpu2_bench=0,gpu_i_bench=0;
         if(Objects.equals(activity.pcParametersSave.CPU.get("Графическое ядро"), "+")){
             int model=gpu(activity.pcParametersSave.CPU.get("Модель"));
-            int frequency = Integer.parseInt(activity.pcParametersSave.CPU.get("Частота GPU"));
+            int frequency = Integer.parseInt(activity.pcParametersSave.CPU.get("Частота Graphics card"));
             gpu_i_bench = (int) (model+(frequency*1.5));
         }
         if(activity.pcParametersSave.GPU1 != null){
@@ -165,11 +165,11 @@ public class Benchmark extends Program{
                            bench[1]++;
                            bench[4]++;
                        } else if (bench[2] <= getGpuBench()) {
-                           gpu_bench.setText("GPU: " + bench[2]);
+                           gpu_bench.setText("Graphics card: " + bench[2]);
                            bench[2]++;
                            bench[4]++;
                        } else if (bench[3] <= getDataBench()) {
-                           data_bench.setText("DATA: " + bench[3]);
+                           data_bench.setText("Storage device: " + bench[3]);
                            bench[3]++;
                            bench[4]++;
                        }

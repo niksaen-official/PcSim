@@ -12,9 +12,9 @@ import java.util.HashMap;
 import java.util.Objects;
 
 /**
- * В этом классе происходит сохранение комплектуюхищ пк            *
- * и их параметров, также здесь проверяется пк на работоспособность *
- * и проверка блока питания на нехватку мощности                    *
+ * В этом классе происходит сохранение комплектуюхищ пк
+ * и их параметров, также здесь проверяется пк на работоспособность
+ * и проверка блока питания на нехватку мощности
  **/
 
 public class PcParametersSave {
@@ -474,9 +474,12 @@ public class PcParametersSave {
 
     //энерго потребление различного железа
     public double ramPower(HashMap<String,String> RAM){
-        int frequency = Integer.parseInt(RAM.get("Частота"));
-        double k = frequency/Double.parseDouble(RAM.get("Пропускная способность"));
-        return frequency*(k/100);
+        double k =  Integer.parseInt(RAM.get("Частота"))/Double.parseDouble(RAM.get("Пропускная способность"));
+        return  Integer.parseInt(RAM.get("Частота"))*(k/100);
+    }
+    public static float RamPower(HashMap<String,String> RAM){
+        double k =  Integer.parseInt(RAM.get("Частота"))/Double.parseDouble(RAM.get("Пропускная способность"));
+        return (float) (Integer.parseInt(RAM.get("Частота"))*(k/100));
     }
     public void gpuPower(HashMap<String,String> GPU,int slot){
         double main = 0;
@@ -492,8 +495,8 @@ public class PcParametersSave {
             default: throw new IllegalStateException("Unexpected value: " + GPU.get("Тип памяти"));
         }
         switch (GPU.get("Тип охлаждения")){
-            case "Радиатор":{break; }
-            case "Кулер":{ power_fan = 10;break; }
+            case "Passive":{break; }
+            case "Cooler":{ power_fan = 10;break; }
             default: throw new IllegalStateException("Unexpected value: " + GPU.get("Тип охлаждения"));
         }
         main = (frequency /power_coefficient)/5;
@@ -502,6 +505,30 @@ public class PcParametersSave {
             case 1:{gpu1Power = power;break;}
             case 2:{gpu2Power = power;break;}
         }
+    }
+    public static float GpuPower(HashMap<String,String> GPU){
+        float main = 0;
+        int frequency = Integer.parseInt(GPU.get("Частота"));
+        float power,power_fan = 0;
+        float power_coefficient;
+        switch (GPU.get("Тип памяти")){
+            case "GDDR":{power_coefficient = 1.68f;break;}
+            case "GDDR2":{power_coefficient = 1.8f;break;}
+            case "GDDR3":{power_coefficient = 1.92f;break;}
+            case "GDDR4":{power_coefficient = 2.55f;break;}
+            case "GDDR5":{power_coefficient = 2.7f;break;}
+            default: throw new IllegalStateException("Unexpected value: " + GPU.get("Тип памяти"));
+        }
+        switch (GPU.get("Тип охлаждения")){
+            case "Passive":{break; }
+            case "Cooler":{ power_fan = 10;break; }
+            case "Cooler*2":{ power_fan = 20;break; }
+            case "Cooler*3":{ power_fan = 30;break; }
+            default: throw new IllegalStateException("Unexpected value: " + GPU.get("Тип охлаждения"));
+        }
+        main = (frequency /power_coefficient)/5;
+        power = (float)(main*power_coefficient)/1.6f+power_fan;
+        return power;
     }
 
     // температура железа
@@ -525,37 +552,30 @@ public class PcParametersSave {
             float temperature;
 
             switch (GPU.get("Тип памяти")) {
-                case "GDDR": {
-                    power_coefficient = 1.4f * 1.4f;
-                    break;
-                }
-                case "GDDR2": {
-                    power_coefficient = 1.5f * 1.4f;
-                    break;
-                }
-                case "GDDR3": {
-                    power_coefficient = 1.6f * 1.4f;
-                    break;
-                }
-                case "GDDR4": {
-                    power_coefficient = 1.7f * 1.4f;
-                    break;
-                }
-                case "GDDR5": {
-                    power_coefficient = 1.8f * 1.4f;
-                    break;
-                }
+                case "GDDR":{power_coefficient = 1.68f;break;}
+                case "GDDR2":{power_coefficient = 1.8f;break;}
+                case "GDDR3":{power_coefficient = 1.92f;break;}
+                case "GDDR4":{power_coefficient = 2.55f;break;}
+                case "GDDR5":{power_coefficient = 2.7f;break;}
                 default:
                     throw new IllegalStateException("Unexpected value: " + GPU.get("Тип памяти"));
             }
 
             switch (GPU.get("Тип охлаждения")) {
-                case "Радиатор": {
+                case "Passive": {
                     temperature_coefficient = 1.4f;
                     break;
                 }
-                case "Кулер": {
+                case "Cooler": {
                     temperature_coefficient = 1.15f;
+                    break;
+                }
+                case "Cooler*2": {
+                    temperature_coefficient = 0.9f;
+                    break;
+                }
+                case "Cooler*3": {
+                    temperature_coefficient = 0.65f;
                     break;
                 }
                 default:
@@ -593,7 +613,6 @@ public class PcParametersSave {
         for(Program program:programs){
             allRam -= program.CurrentRamUse;
         }
-        System.out.println("Empty ram: "+allRam +"mb");
         return allRam;
     }
 }
