@@ -82,9 +82,9 @@ public class IronActivity extends AppCompatActivity {
         playerData = new PlayerData(this);
         getLanguage();
         initView();
-        style();
         getSaveData();
         logic();
+        style();
     }
 
     //инициализация view
@@ -217,10 +217,6 @@ public class IronActivity extends AppCompatActivity {
                         if(cpuParameters.get("Графическое ядро").equals("+")){
                             gpuInstall = true;
                         }
-                        cpuParameters.put("Y", String.valueOf(cpuView.getY()));
-                        cpuParameters.put("X", String.valueOf(cpuView.getX()));
-                        System.out.println("X: "+cpuView.getX());
-                        System.out.println("Y: "+cpuView.getY());
                         parametersSave.setCpu(cpuList.get(position),cpuParameters);
                         cpuList.remove(position);
                         coolerList.add(parametersSave.Cooler);
@@ -473,12 +469,10 @@ public class IronActivity extends AppCompatActivity {
         if(moboParameters != null) {
             ramSlotCount = Integer.parseInt(moboParameters.get("Кол-во слотов"));
             moboInstall = parametersSave.Mobo != null;
+            MotherBoardView motherBoardView = new MotherBoardView(parametersSave.Mobo,caseView,this);
             moboView.setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.Motherboard+"/" + parametersSave.Mobo + ".png"));
             if(parametersSave.CPU != null) {
                 cpuView.setImageDrawable(assetFile.getImage("pc_component/images/" + PcComponent.CPU + "/" + parametersSave.Cpu + ".png"));
-                cpuView.setY(Float.parseFloat(parametersSave.CPU.get("Y")));
-                cpuView.setX(Float.parseFloat(parametersSave.CPU.get("X")));
-                System.out.println("current X: "+cpuView.getX()+" VS "+"save X: "+parametersSave.CPU.get("X"));
             }
             coolerView.setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.COOLER+"/" + parametersSave.Cooler + ".png"));
             ram1View.setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.RAM+"/" + parametersSave.Ram1 + "_top.png"));
