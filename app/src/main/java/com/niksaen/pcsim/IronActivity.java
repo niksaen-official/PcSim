@@ -1,5 +1,6 @@
 package com.niksaen.pcsim;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.Others;
+import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.pcComponents.PcComponent;
 import com.niksaen.pcsim.pcView.MotherBoardView;
 import com.niksaen.pcsim.save.PcParametersSave;
@@ -645,5 +647,22 @@ public class IronActivity extends AppCompatActivity {
 
         popupWindow.setContentView(listViewDogs);
         return popupWindow;
+    }
+
+    @Override
+    public void onBackPressed() {
+        playerData.PcCaseList = StringArrayWork.ArrayListToArray(caseList);
+        playerData.MotherboardList = StringArrayWork.ArrayListToArray(moboList);
+        playerData.CpuList = StringArrayWork.ArrayListToArray(cpuList);
+        playerData.CoolerList =StringArrayWork.ArrayListToArray(coolerList);
+        playerData.RamList = StringArrayWork.ArrayListToArray(ramList);
+        playerData.GraphicsCardList = StringArrayWork.ArrayListToArray(gpuList);
+        playerData.StorageDeviceList = StringArrayWork.ArrayListToArray(dataList);
+        playerData.PowerSupplyList = StringArrayWork.ArrayListToArray(psuList);
+        playerData.setAllData();
+
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

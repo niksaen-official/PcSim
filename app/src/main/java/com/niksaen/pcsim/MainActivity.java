@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity{
             if(position == 2){
                 intent = new Intent(MainActivity.this,IronActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
