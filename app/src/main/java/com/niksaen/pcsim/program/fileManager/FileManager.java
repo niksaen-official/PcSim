@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.fileWorkLib.FileUtil;
-import com.niksaen.pcsim.fileWorkLib.FilePermission;
 import com.niksaen.pcsim.program.Program;
 
 import java.util.ArrayList;
@@ -71,12 +70,6 @@ public class FileManager extends Program {
         initView();
         initAdapter();
         style();
-        boolean hasPermission = FilePermission.checkStoragePermission(activity);
-        if(hasPermission){
-            ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
-        }else {
-            FilePermission.requestStoragePermission(activity);
-        }
         listViewFiles.setOnItemClickListener((parent, view, position, id) -> {
             if (FileUtil.isDirectory(files.get(position))) {
                 folderName.setText(files.get(position));

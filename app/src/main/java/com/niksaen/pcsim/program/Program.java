@@ -38,7 +38,6 @@ public class Program {
             "File manager",
             "Music player",
             "Video player",
-            "Notepad",
             "Personalization",
             "Paint",
             "Task Manager"

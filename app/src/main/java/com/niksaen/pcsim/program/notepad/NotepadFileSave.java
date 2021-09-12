@@ -1,6 +1,7 @@
 package com.niksaen.pcsim.program.notepad;
 
 import android.graphics.Typeface;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -8,10 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.annotation.RequiresApi;
+
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.fileWorkLib.FileUtil;
-import com.niksaen.pcsim.fileWorkLib.FilePermission;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.fileManager.FileManagerListViewAdapter;
 
@@ -47,6 +49,7 @@ public class NotepadFileSave extends Program {
 
     FileManagerListViewAdapter listViewAdapter;
     ArrayList<String> folders;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void style(){
         fileName.setTypeface(activity.font,Typeface.BOLD);
         saveButton.setTypeface(activity.font,Typeface.BOLD);
@@ -57,10 +60,7 @@ public class NotepadFileSave extends Program {
         fileName.setHintTextColor(activity.styleSave.TextColor);
         pageDown.setBackgroundResource(activity.styleSave.ArrowButtonImage);
 
-        //adapter settings
-        // "//storage/emulated/0/"
         folders = new ArrayList<>();
-        FileUtil.listDir("//storage/emulated/0/",folders);
         listViewAdapter = new FileManagerListViewAdapter(activity.getBaseContext(),R.layout.item_textview,folders);
         listViewAdapter.ColorBackground = activity.styleSave.ThemeColor1;
         listViewAdapter.ColorText = activity.styleSave.TextColor;
@@ -76,13 +76,6 @@ public class NotepadFileSave extends Program {
     public void openProgram(final String textFile){
         initView();
         style();
-        boolean hasPermission = FilePermission.checkStoragePermission(activity);
-        if(hasPermission){
-            ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-        }else {
-            FilePermission.requestStoragePermission(activity);
-        }
-
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (FileUtil.isDirectory(folders.get(position))) {
                 buffPath = folders.get(position);

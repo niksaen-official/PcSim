@@ -10,15 +10,12 @@ import android.widget.ListView;
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.fileWorkLib.FileUtil;
-import com.niksaen.pcsim.fileWorkLib.FilePermission;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.fileManager.FileManagerListViewAdapter;
 
 import java.util.ArrayList;
 
 public class NotepadFileOpen extends Program {
-
-    private boolean hasPermission = false;
     public NotepadFileOpen(MainActivity activity){
         super(activity);
         this.Title = "Opening file";
@@ -47,7 +44,6 @@ public class NotepadFileOpen extends Program {
         openButton.setTextColor(activity.styleSave.TextButtonColor);
         pageDown.setBackgroundResource(activity.styleSave.ArrowButtonImage);
         folders = new ArrayList<>();
-        FileUtil.listDir("//storage/emulated/0/",folders);
         listViewAdapter = new FileManagerListViewAdapter(activity.getBaseContext(),0,folders);
         listViewAdapter.ColorText = activity.styleSave.TextColor;
         listViewAdapter.ColorBackground = activity.styleSave.ThemeColor1;
@@ -61,13 +57,6 @@ public class NotepadFileOpen extends Program {
     public void initProgram(){
         initView();
         style();
-        hasPermission = FilePermission.checkStoragePermission(activity);
-        if(hasPermission){
-            ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-        }else {
-            FilePermission.requestStoragePermission(activity);
-        }
-
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (FileUtil.isDirectory(folders.get(position))) {
                 buffPathOpen = folders.get(position);
