@@ -1,6 +1,8 @@
 package com.niksaen.pcsim.program;
 
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -182,7 +184,6 @@ public class Benchmark extends Program{
         timer.scheduleAtFixedRate(timerTask,0,1);
     }
     private void style(){
-        titleTextView = mainWindow.findViewById(R.id.title);
         cpu_bench = mainWindow.findViewById(R.id.cpu);
         ram_bench = mainWindow.findViewById(R.id.ram);
         gpu_bench = mainWindow.findViewById(R.id.gpu);
@@ -191,9 +192,6 @@ public class Benchmark extends Program{
         start_bench = mainWindow.findViewById(R.id.start);
         progressBar = mainWindow.findViewById(R.id.progressBar);
         content = mainWindow.findViewById(R.id.content);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonClose = mainWindow.findViewById(R.id.close);
 
         //style
         cpu_bench.setTypeface(activity.font,Typeface.BOLD);
@@ -213,7 +211,8 @@ public class Benchmark extends Program{
 
         content.setBackgroundColor(styleSave.ThemeColor1);
         progressBar.setProgressDrawable(activity.getDrawable(styleSave.ProgressBarResource));
-
+        LayerDrawable progressBarBackground = (LayerDrawable) progressBar.getProgressDrawable();
+        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
         //translation
         start_bench.setText(activity.words.get("Start"));
     }

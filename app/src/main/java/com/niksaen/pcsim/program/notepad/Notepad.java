@@ -28,12 +28,8 @@ public class Notepad extends Program {
 
     private void initView(){
         mainWindow = LayoutInflater.from(activity.getBaseContext()).inflate(R.layout.program_notepad,null);
-        titleTextView = mainWindow.findViewById(R.id.title);
         editText = mainWindow.findViewById(R.id.editText);
         spinner = mainWindow.findViewById(R.id.file);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
         toolbar = mainWindow.findViewById(R.id.toolbar);
     }
     private void style(){

@@ -1,5 +1,7 @@
 package com.niksaen.pcsim.program.musicplayer;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -52,10 +54,6 @@ public class MusicPlayer extends Program {
         mainContent = mainWindow.findViewById(R.id.main);
         taskbar = mainWindow.findViewById(R.id.taskBar);
         musicName = mainWindow.findViewById(R.id.musicName);
-        titleTextView = mainWindow.findViewById(R.id.title);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
         buttonPrev = mainWindow.findViewById(R.id.prev);
         buttonNext = mainWindow.findViewById(R.id.next);
         timeText = mainWindow.findViewById(R.id.timeText);
@@ -78,6 +76,8 @@ public class MusicPlayer extends Program {
         timeText.setTextColor(activity.styleSave.TextColor);
 
         seekBarTime.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
+        LayerDrawable progressBarBackground = (LayerDrawable) seekBarTime.getProgressDrawable();
+        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
         seekBarTime.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
 
         //настройка адаптеров и перевода

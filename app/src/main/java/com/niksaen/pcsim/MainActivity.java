@@ -24,12 +24,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.classes.AssetFile;
+import com.niksaen.pcsim.classes.BlackDeadScreen;
+import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.DesktopAdapter;
 import com.niksaen.pcsim.classes.adapters.DrawerAdapter;
 import com.niksaen.pcsim.classes.adapters.StartMenuAdapter;
 import com.niksaen.pcsim.classes.adapters.ToolbarAdapter;
-import com.niksaen.pcsim.classes.AssetFile;
-import com.niksaen.pcsim.classes.BlackDeadScreen;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.taskManager.TaskManager;
 import com.niksaen.pcsim.save.Language;
@@ -140,14 +141,38 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
-    private void updateDesktop() {
-        String[] apps = Program.programList;
-        desktop.setLayoutManager(new GridLayoutManager(getBaseContext(), 5));
-        desktop.setAdapter(new DesktopAdapter(this, apps));
+    public String[] apps;
+    public void updateAppList(){
+        String[][] allDiskAppList = new String[0][];
+        if(pcParametersSave.DATA1 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,pcParametersSave.DATA1.get("Содержимое").split(","));
+        }
+        if(pcParametersSave.DATA2 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,pcParametersSave.DATA2.get("Содержимое").split(","));
+        }
+        if(pcParametersSave.DATA3 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,pcParametersSave.DATA3.get("Содержимое").split(","));
+        }
+        if(pcParametersSave.DATA4 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,pcParametersSave.DATA4.get("Содержимое").split(","));
+        }
+        if(pcParametersSave.DATA5 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,pcParametersSave.DATA5.get("Содержимое").split(","));
+        }
+        if(pcParametersSave.DATA6 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,pcParametersSave.DATA6.get("Содержимое").split(","));
+        }
+        apps = StringArrayWork.concatAll(allDiskAppList);
     }
-
+    public void updateDesktop() {
+        desktop.setLayoutManager(new GridLayoutManager(getBaseContext(), 6));
+        if(styleSave.getDesktopProgramList()!="") {
+            desktop.setAdapter(new DesktopAdapter(this, styleSave.getDesktopProgramList().split(",")));
+        }
+    }
     public void StartMenu(View view){
         if(startMenu.getVisibility() == View.GONE){
+            updateAppList();
             startMenu.setVisibility(View.VISIBLE);
             updateStartMenu();
         }
@@ -158,13 +183,11 @@ public class MainActivity extends AppCompatActivity{
     private void updateStartMenu(){
         Program program = new Program(this);
         program.initHashMap(this);
-        String[] apps = Program.programList;
         startMenu.setBackgroundColor(styleSave.StartMenuColor);
         startMenuTitle.setTextColor(styleSave.StartMenuTextColor);
         startMenuTitle.setTypeface(font,Typeface.BOLD);
         startMenuTitle.setText(words.get("Start"));
-
-        StartMenuAdapter menuAdapter = new StartMenuAdapter(this,0,apps);
+        StartMenuAdapter menuAdapter = new StartMenuAdapter(this, 0, apps);
         menuAdapter.setMainActivity(this);
         allAppList.setAdapter(menuAdapter);
         allAppList.setOnItemClickListener((parent, view, position, id) -> program.programHashMap.get(menuAdapter.getItem(position)).openProgram());
@@ -175,6 +198,7 @@ public class MainActivity extends AppCompatActivity{
         appList.setLayoutManager(layoutManager);
         appList.setAdapter(new ToolbarAdapter(this));
     }
+
     //список запущеных програм
     public ArrayList<Program> programArrayList = new ArrayList<>();
     public TaskManager taskManager = new TaskManager(this);

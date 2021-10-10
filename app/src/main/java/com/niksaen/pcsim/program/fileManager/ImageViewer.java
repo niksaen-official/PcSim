@@ -28,11 +28,7 @@ public class ImageViewer extends Program {
 
     private void initView() {
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_filemanager_imageviewer, null);
-        titleTextView = mainWindow.findViewById(R.id.title);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
         imageView = mainWindow.findViewById(R.id.image);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
     }
 
     private void style() {

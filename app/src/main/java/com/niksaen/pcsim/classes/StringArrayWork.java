@@ -3,6 +3,29 @@ package com.niksaen.pcsim.classes;
 import java.util.ArrayList;
 
 public class StringArrayWork {
+    public static String[][] add(String[][] array,String[] strings){
+        String[][] res = new String[array.length+1][];
+        for(int i = 0;i< res.length;i++){
+            if(i< res.length-1) {
+                res[i] = array[i];
+            }
+            else {
+                res[i] = strings;
+            }
+        }
+        return res;
+    }
+    public static String[] concatAll(String[][] strings){
+        String res = "";
+        for(String[] itemStrings: strings){
+            for (String item: itemStrings){
+                if(!res.contains(item)){
+                    res+=item+",";
+                }
+            }
+        }
+        return res.split(",");
+    }
     public static String[] add(String[] strings,String str){
         String[] buff = new String[strings.length+1];
         for (int i = 0;i< buff.length;i++){
@@ -50,5 +73,14 @@ public class StringArrayWork {
             strings[i] = arrayList.get(i);
         }
         return strings;
+    }
+
+    public static String ArrayListToString(String[] arrayList) {
+        StringBuilder res = new StringBuilder();
+        for(String item:arrayList){
+            res.append(item);
+            res.append(",");
+        }
+        return res.toString();
     }
 }

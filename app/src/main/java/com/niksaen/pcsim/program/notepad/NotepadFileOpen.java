@@ -27,10 +27,6 @@ public class NotepadFileOpen extends Program {
 
     private void initView(){
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_for_open_file,null);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        titleTextView = mainWindow.findViewById(R.id.title);
         openButton = mainWindow.findViewById(R.id.button4);
         listView = mainWindow.findViewById(R.id.listView);
         pageDown = mainWindow.findViewById(R.id.pageDown);

@@ -49,6 +49,7 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
     public int BackgroundColor2 = Color.parseColor("#ffffff");
     public int TextColor = Color.parseColor("#000000");
 
+    // for spinner
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull @NotNull ViewGroup parent) {
         TextView textView = new TextView(context);

@@ -19,11 +19,7 @@ public class TextViewer  extends Program {
     TextView textView;
     private void initView(){
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_filemanager_textviewer,null);
-        titleTextView = mainWindow.findViewById(R.id.title);
         textView = mainWindow.findViewById(R.id.textView);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
     }
 
     private void style(){

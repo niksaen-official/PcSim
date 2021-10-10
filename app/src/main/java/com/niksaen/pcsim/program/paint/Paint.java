@@ -40,13 +40,9 @@ public class Paint extends Program {
         alpha = mainWindow.findViewById(R.id.spinner2);
         weight = mainWindow.findViewById(R.id.spinner3);
         currentColor = mainWindow.findViewById(R.id.current_color);
-        titleTextView = mainWindow.findViewById(R.id.title);
         recyclerView = mainWindow.findViewById(R.id.colors);
         canvas = mainWindow.findViewById(R.id.canvas);
         main = mainWindow.findViewById(R.id.main);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
     }
 
     private void style(){

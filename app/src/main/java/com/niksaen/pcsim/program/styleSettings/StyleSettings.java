@@ -51,10 +51,6 @@ public class StyleSettings extends Program {
         mainMenu = mainWindow.findViewById(R.id.menu);
         secondMenu = mainWindow.findViewById(R.id.secondMenu);
         content = mainWindow.findViewById(R.id.content);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
-        titleTextView = mainWindow.findViewById(R.id.title);
         secondTitle = mainWindow.findViewById(R.id.secondTitle);
         saveButton = mainWindow.findViewById(R.id.save);
 

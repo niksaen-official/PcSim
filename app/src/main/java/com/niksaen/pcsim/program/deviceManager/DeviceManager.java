@@ -28,10 +28,6 @@ public class DeviceManager extends Program {
     }
     private void initView(){
         content = mainWindow.findViewById(R.id.content);
-        titleTextView = mainWindow.findViewById(R.id.title);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
         mobo = mainWindow.findViewById(R.id.motherboard);
         cpu = mainWindow.findViewById(R.id.cpu);
         ram = mainWindow.findViewById(R.id.ram);

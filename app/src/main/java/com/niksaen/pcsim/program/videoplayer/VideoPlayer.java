@@ -1,5 +1,7 @@
 package com.niksaen.pcsim.program.videoplayer;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -46,13 +48,9 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
 
     private void initView(){
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_videoplayer,null);
-        titleTextView = mainWindow.findViewById(R.id.title);
         timeText = mainWindow.findViewById(R.id.textViewTime);
         seekBarTime = mainWindow.findViewById(R.id.seekBarTime);
         menu = mainWindow.findViewById(R.id.menu);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
         play_pause = mainWindow.findViewById(R.id.pause);
         taskBar = mainWindow.findViewById(R.id.taskBar);
         videoView = mainWindow.findViewById(R.id.surfaceView);
@@ -66,6 +64,8 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
         timeText.setTypeface(activity.font);
         timeText.setTextColor(activity.styleSave.TextColor);
         seekBarTime.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
+        LayerDrawable progressBarBackground = (LayerDrawable) seekBarTime.getProgressDrawable();
+        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
         seekBarTime.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
 
         videoView.setZ(-1);

@@ -8,7 +8,6 @@ import android.webkit.WebViewClient;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.classes.Others;
 
 public class Browser extends Program {
 
@@ -42,10 +41,6 @@ public class Browser extends Program {
     WebView webView;
     private void style(){
         webView  = mainWindow.findViewById(R.id.web);
-        titleTextView=mainWindow.findViewById(R.id.title);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
     }
     @Override
     public void closeProgram(int mode){

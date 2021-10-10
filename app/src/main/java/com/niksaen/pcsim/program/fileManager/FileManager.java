@@ -34,12 +34,8 @@ public class FileManager extends Program {
     private void initView(){
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_file_manager_filepage,null);
 
-        titleTextView = mainWindow.findViewById(R.id.title);
         folderName = mainWindow.findViewById(R.id.folderName);
         listViewFiles = mainWindow.findViewById(R.id.main);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
         container = mainWindow.findViewById(R.id.container);
         pageDown = mainWindow.findViewById(R.id.pageDown);
     }
@@ -53,8 +49,6 @@ public class FileManager extends Program {
     private void style(){
         fileManagerListViewAdapter.ColorBackground = activity.styleSave.ThemeColor1;
         fileManagerListViewAdapter.ColorText = activity.styleSave.TextColor;
-
-        buttonClose.setBackgroundResource(activity.styleSave.CloseButtonImageRes);
         folderName.setTextColor(activity.styleSave.TextColor);
         folderName.setTypeface(activity.font);
         folderName.setText("/storage/emulated/0");

@@ -1,5 +1,6 @@
 package com.niksaen.pcsim.program;
 
+import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.program.appDownloader.AppDownloader;
 import com.niksaen.pcsim.program.deviceManager.DeviceManager;
 import com.niksaen.pcsim.program.fileManager.FileManager;
 import com.niksaen.pcsim.program.musicplayer.MusicPlayer;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 * Базовый класс для создания программ
 * */
 public class Program {
+    public static String OtherSoftPrefix = "//";
 
     /** список всех программ*/
     public static String[] programList = {
@@ -40,11 +43,13 @@ public class Program {
             "Video player",
             "Personalization",
             "Paint",
-            "Task Manager"
+            "Task Manager",
+            "App Downloader",
     };
-    /** иконки программ*/
     public static HashMap<String,Integer> programIcon = new HashMap<>();
+    public static HashMap<String,Float> programSize = new HashMap<>();
     static {
+        // иконки программ
         programIcon.put("Benchmark",R.drawable.icon_benchmark);
         programIcon.put("Browser",R.drawable.icon_browser);
         programIcon.put("CPU Overclocking",R.drawable.icon_cputweaker);
@@ -63,11 +68,31 @@ public class Program {
         programIcon.put("Text Viewer",R.drawable.text_file);
         programIcon.put("Opening file",R.drawable.folder_icon);
         programIcon.put("Saving a file",R.drawable.folder_icon);
-        programIcon.put("Warning",R.drawable.icon_warning);
         programIcon.put("Task Manager",R.drawable.icon_taskmanager);
+        programIcon.put("App Downloader",R.drawable.icon_default);
+        programIcon.put("Installation Wizard",R.drawable.icon_default);
+        programIcon.put("",0);
+
+        //вес програм
+        programSize.put("Benchmark",2f);
+        programSize.put("Browser",0.5f);
+        programSize.put("CPU Overclocking",1f);
+        programSize.put("RAM Overclocking",1f);
+        programSize.put("GPU Overclocking",1.5f);
+        programSize.put("Temperature Viewer",0.25f);
+        programSize.put("View Power Supply Load",0.25f);
+        programSize.put("Device manager",0.1f);
+        programSize.put("File manager",0.65f);
+        programSize.put("Music player",1.9f);
+        programSize.put("Video player",1.6f);
+        programSize.put("Notepad",1.1f);
+        programSize.put("Personalization",5f);
+        programSize.put("Paint",3.9f);
+        programSize.put("Task Manager",0.23f);
+        programSize.put("App Downloader",0.1f);
     }
 
-    /** код программ*/
+    /** классы программ*/
     public HashMap<String,Program> programHashMap = new HashMap<>();
     public void initHashMap(MainActivity activity){
         programHashMap.put("Benchmark",new Benchmark(activity));
@@ -85,6 +110,7 @@ public class Program {
         programHashMap.put("Personalization",new StyleSettings(activity));
         programHashMap.put("Paint",new Paint(activity));
         programHashMap.put("Task Manager", activity.taskManager);
+        programHashMap.put("App Downloader", new AppDownloader(activity));
     }
 
     /** @param  CurrentRamUse - показывает сколько программа использует оперативной памяти в мб*/
@@ -124,7 +150,13 @@ public class Program {
     private int buttonClicks = 0;
     /** инициализация программы перед открытием
      * т.е. применение стилей и настройка логики*/
+    @SuppressLint("ClickableViewAccessibility")
     public void initProgram(){
+        titleTextView = mainWindow.findViewById(R.id.title);
+        buttonClose = mainWindow.findViewById(R.id.close);
+        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
+        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
+
         CurrentRamUse = Others.random(ValueRam[0],ValueRam[1]);
         CurrentVideoMemoryUse = Others.random(ValueVideoMemory[0],ValueVideoMemory[1]);
         // настройка кнопок

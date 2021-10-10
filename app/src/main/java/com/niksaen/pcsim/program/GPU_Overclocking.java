@@ -1,6 +1,8 @@
 package com.niksaen.pcsim.program;
 
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +30,6 @@ public class GPU_Overclocking extends Program {
     private Button save,gpu1,gpu2;
     private ConstraintLayout content;
     private void initView(){
-        titleTextView = mainWindow.findViewById(R.id.title);
         gpu_model = mainWindow.findViewById(R.id.gpu_model);
         parameters = mainWindow.findViewById(R.id.textView2);
 
@@ -36,9 +37,6 @@ public class GPU_Overclocking extends Program {
         gpu2 = mainWindow.findViewById(R.id.gpu2);
         save = mainWindow.findViewById(R.id.button7);
         seekBar = mainWindow.findViewById(R.id.seekBar);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
         content = mainWindow.findViewById(R.id.content);
     }
 
@@ -63,6 +61,8 @@ public class GPU_Overclocking extends Program {
         content.setBackgroundColor(activity.styleSave.ThemeColor1);
         seekBar.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
         seekBar.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
+        LayerDrawable progressBarBackground = (LayerDrawable) seekBar.getProgressDrawable();
+        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
     }
 
     public void initProgram(){
@@ -192,5 +192,4 @@ public class GPU_Overclocking extends Program {
             }
         });
     }
-
 }

@@ -20,10 +20,6 @@ public class TemperatureViewer extends Program {
 
     private ListView temperatureView;
     private void initView(){
-        titleTextView = mainWindow.findViewById(R.id.title);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
         temperatureView = mainWindow.findViewById(R.id.main);
     }
 

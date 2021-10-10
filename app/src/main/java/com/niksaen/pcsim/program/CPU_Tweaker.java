@@ -1,6 +1,8 @@
 package com.niksaen.pcsim.program;
 
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -28,16 +30,12 @@ public class CPU_Tweaker extends Program {
     private LinearLayout linearLayout;
 
     private void initView(){
-        titleTextView = mainWindow.findViewById(R.id.title);
         cpu_model = mainWindow.findViewById(R.id.cpu_model);
         temperature = mainWindow.findViewById(R.id.temperature);
         frequency = mainWindow.findViewById(R.id.textView);
         setFrequency = mainWindow.findViewById(R.id.frequency);
         save = mainWindow.findViewById(R.id.save);
         linearLayout = mainWindow.findViewById(R.id.content);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
     }
     private void style(){
         linearLayout.setBackgroundColor(activity.styleSave.ThemeColor1);
@@ -49,6 +47,8 @@ public class CPU_Tweaker extends Program {
         temperature.setTextColor(activity.styleSave.TextColor);
         setFrequency.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
         setFrequency.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
+        LayerDrawable progressBarBackground = (LayerDrawable) setFrequency.getProgressDrawable();
+        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
 
         cpu_model.setTypeface(activity.font,Typeface.BOLD);
         temperature.setTypeface(activity.font,Typeface.BOLD);

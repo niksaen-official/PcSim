@@ -34,7 +34,6 @@ public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHol
         programHashMap = programForGetHashmap.programHashMap;
     }
 
-
     @NonNull
     @NotNull
     @Override
@@ -51,14 +50,12 @@ public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHol
         holder.itemView.setOnClickListener(v -> {
             Program program = programHashMap.get(apps[position]);
             program.openProgram();
-        }
-        );
-
+        });
     }
 
     @Override
     public int getItemCount() {
-        return apps.length;
+        return Math.min(apps.length, 18);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

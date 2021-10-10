@@ -39,14 +39,10 @@ public class PaintSaveFile extends Program {
 
     private void initView(){
         mainWindow = LayoutInflater.from(activity.getBaseContext()).inflate(R.layout.program_for_save_file,null);
-        titleTextView = mainWindow.findViewById(R.id.title);
         saveButton = mainWindow.findViewById(R.id.button4);
         fileName = mainWindow.findViewById(R.id.fileName);
         listView = mainWindow.findViewById(R.id.listView);
         pageDown = mainWindow.findViewById(R.id.pageDown);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
     }
 
     FileManagerListViewAdapter listViewAdapter;

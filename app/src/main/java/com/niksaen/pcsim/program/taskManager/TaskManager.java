@@ -30,10 +30,6 @@ public class TaskManager extends Program {
     private LinearLayout main;
     private void initView(){
         mainWindow = LayoutInflater.from(activity.getBaseContext()).inflate(R.layout.program_taskmanager,null);
-        titleTextView = mainWindow.findViewById(R.id.title);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
         programList = mainWindow.findViewById(R.id.app_list);
         main = mainWindow.findViewById(R.id.main);
         programName = mainWindow.findViewById(R.id.program_name);

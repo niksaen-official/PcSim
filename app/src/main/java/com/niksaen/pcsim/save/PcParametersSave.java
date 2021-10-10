@@ -118,35 +118,30 @@ public class PcParametersSave {
         preferences.edit().putString("Case",Case).apply();
         preferences.edit().putString("CASE",new Gson().toJson(CASE)).apply();
     }
-
     public void setMobo(String Mobo,HashMap<String,String> MOBO){
         this.Mobo = Mobo;
         this.MOBO = MOBO;
         preferences.edit().putString("Mobo",Mobo).apply();
         preferences.edit().putString("MOBO",new Gson().toJson(MOBO)).apply();
     }
-
     public void setCpu(String Cpu,HashMap<String,String> CPU){
         this.Cpu = Cpu;
         this.CPU = CPU;
         preferences.edit().putString("Cpu",Cpu).apply();
         preferences.edit().putString("CPU",new Gson().toJson(CPU)).apply();
     }
-
     public void setCooler(String Cooler,HashMap<String,String> COOLER){
         this.Cooler = Cooler;
         this.COOLER = COOLER;
         preferences.edit().putString("Cooler",Cooler).apply();
         preferences.edit().putString("COOLER",new Gson().toJson(COOLER)).apply();
     }
-
     public void setRam1(String Ram1,HashMap<String,String> RAM1){
             this.Ram1 = Ram1;
             this.RAM1 = RAM1;
             preferences.edit().putString("Ram1", Ram1).apply();
             preferences.edit().putString("RAM1", new Gson().toJson(RAM1)).apply();
     }
-
     public void setRam2(String Ram2,HashMap<String,String> RAM2){
             this.Ram2 = Ram2;
             this.RAM2 = RAM2;
@@ -154,7 +149,6 @@ public class PcParametersSave {
             preferences.edit().putString("RAM2", new Gson().toJson(RAM2)).apply();
 
     }
-
     public void setRam3(String Ram3,HashMap<String,String> RAM3){
             this.Ram3 = Ram3;
             this.RAM3 = RAM3;
@@ -162,88 +156,128 @@ public class PcParametersSave {
             preferences.edit().putString("RAM3", new Gson().toJson(RAM3)).apply();
 
     }
-
     public void setRam4(String Ram4,HashMap<String,String> RAM4){
             this.Ram4 = Ram4;
             this.RAM4 = RAM4;
             preferences.edit().putString("Ram4", Ram4).apply();
             preferences.edit().putString("RAM4", new Gson().toJson(RAM4)).apply();
     }
-
     public void setGpu1(String Gpu1,HashMap<String,String> GPU1){
         this.Gpu1 = Gpu1;
         this.GPU1 = GPU1;
         preferences.edit().putString("Gpu1",Gpu1).apply();
         preferences.edit().putString("GPU1",new Gson().toJson(GPU1)).apply();
     }
-
     public void setGpu2(String Gpu2,HashMap<String,String> GPU2){
         this.Gpu2 = Gpu2;
         this.GPU2 = GPU2;
         preferences.edit().putString("Gpu2",Gpu2).apply();
         preferences.edit().putString("GPU2",new Gson().toJson(GPU2)).apply();
     }
-
     public void setData1(String Data1,HashMap<String,String> DATA1){
         this.Data1 = Data1;
         this.DATA1 = DATA1;
         preferences.edit().putString("Data1",Data1).apply();
         preferences.edit().putString("DATA1",new Gson().toJson(DATA1)).apply();
     }
-
     public void setData2(String Data2,HashMap<String,String> DATA2){
         this.Data2 = Data2;
         this.DATA2 = DATA2;
         preferences.edit().putString("Data2",Data2).apply();
         preferences.edit().putString("DATA2",new Gson().toJson(DATA2)).apply();
     }
-
     public void setData3(String Data3,HashMap<String,String> DATA3){
         this.Data3 = Data3;
         this.DATA3 = DATA3;
         preferences.edit().putString("Data3",Data3).apply();
         preferences.edit().putString("DATA3",new Gson().toJson(DATA3)).apply();
     }
-
     public void setData4(String Data4,HashMap<String,String> DATA4){
         this.Data4 = Data4;
         this.DATA4 = DATA4;
         preferences.edit().putString("Data4",Data4).apply();
         preferences.edit().putString("DATA4",new Gson().toJson(DATA4)).apply();
     }
-
     public void setData5(String Data5,HashMap<String,String> DATA5){
         this.Data5 = Data5;
         this.DATA5 = DATA5;
         preferences.edit().putString("Data5",Data5).apply();
         preferences.edit().putString("DATA5",new Gson().toJson(DATA5)).apply();
     }
-
     public void setData6(String Data6,HashMap<String,String> DATA6){
         this.Data6 = Data6;
         this.DATA6 = DATA6;
         preferences.edit().putString("Data6",Data6).apply();
         preferences.edit().putString("DATA6",new Gson().toJson(DATA6)).apply();
     }
-
     public void setPsu(String Psu,HashMap<String,String> PSU) {
         this.Psu = Psu;
         this.PSU = PSU;
         preferences.edit().putString("Psu", Psu).apply();
         preferences.edit().putString("PSU", new Gson().toJson(PSU)).apply();
     }
+    public void setData(String diskId,HashMap<String,String> dataHashMap){
+        if(DATA1 != null) {
+            if(diskId.equals(DATA1.get("name"))){
+                setData1(Data1,dataHashMap);
+            }
+        }
+        if(DATA2 != null) {
+            if (diskId.equals(DATA2.get("name"))) {
+                setData2(Data2, dataHashMap);
+            }
+        }
+        if(DATA3 != null) {
+            if (diskId.equals(DATA3.get("name"))) {
+                setData3(Data3, dataHashMap);
+            }
+        }
+        if(DATA4 != null) {
+            if(diskId.equals(DATA4.get("name"))){
+                setData4(Data4,dataHashMap);
+            }
+        }
+        if(DATA5 != null) {
+            if(diskId.equals(DATA5.get("name"))){
+                setData5(Data5,dataHashMap);
+            }
+        }
 
+        if(DATA6 != null) {
+            if(diskId.equals(DATA6.get("name"))){
+                setData6(Data6,dataHashMap);
+            }
+        }
+    }
 
     // получение типа главного диска
     public String getMainDiskType(){
         String type = null;
         HashMap<String,String>[] mainDiskId = new HashMap[]{DATA1, DATA2, DATA3, DATA4, DATA5, DATA6};
-        if(DATA1!=null){DATA1.put("MainDisk","true");}
-        else if(DATA2!=null){DATA2.put("MainDisk","true");}
-        else if(DATA3!=null){DATA3.put("MainDisk","true");}
-        else if(DATA4!=null){DATA4.put("MainDisk","true");}
-        else if(DATA5!=null){DATA5.put("MainDisk","true");}
-        else if(DATA6!=null){DATA6.put("MainDisk","true");}
+        if(DATA1!=null){
+            DATA1.put("MainDisk","true");
+            DATA1.put("Свободно",String.valueOf((Integer.parseInt(DATA1.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
+        }
+        else if(DATA2!=null){
+            DATA2.put("MainDisk","true");
+            DATA2.put("Свободно",String.valueOf((Integer.parseInt(DATA2.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
+        }
+        else if(DATA3!=null){
+            DATA3.put("MainDisk","true");
+            DATA3.put("Свободно",String.valueOf((Integer.parseInt(DATA3.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
+        }
+        else if(DATA4!=null){
+            DATA4.put("MainDisk","true");
+            DATA4.put("Свободно",String.valueOf((Integer.parseInt(DATA4.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
+        }
+        else if(DATA5!=null){
+            DATA5.put("MainDisk","true");
+            DATA5.put("Свободно",String.valueOf((Integer.parseInt(DATA5.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
+        }
+        else if(DATA6!=null){
+            DATA6.put("MainDisk","true");
+            DATA6.put("Свободно",String.valueOf((Integer.parseInt(DATA6.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
+        }
 
         for(HashMap<String,String> hashMap:mainDiskId){
             if(hashMap.get("MainDisk").equals("true")){
@@ -590,6 +624,8 @@ public class PcParametersSave {
             return 0;
         }
     }
+
+    //получение свободной оперативки в MB
     public int getEmptyRam(ArrayList<Program> programs){
         int allRam = 0;
         if(RAM1 != null){
@@ -605,7 +641,6 @@ public class PcParametersSave {
             allRam+= Integer.valueOf(RAM4.get("Объём"));
         }
         allRam = allRam*1024;
-
         if(CPU.get("Графическое ядро").equals("+")){
             allRam-= 1024;
         }
@@ -613,6 +648,27 @@ public class PcParametersSave {
         for(Program program:programs){
             allRam -= program.CurrentRamUse;
         }
+        //выделение оперативки под операционку
+        allRam -= 455;
+
         return allRam;
+    }
+
+    //получение свободного места на диске в MB
+    public float getEmptyStorageSpace(HashMap<String,String> disk){
+        if(!disk.get("Содержимое").equals("")) {
+            String[] program = disk.get("Содержимое").split(",");
+
+            float allSpace = Float.parseFloat(disk.get("Свободно"));// in Mb
+            for (String item : program) {
+                if (item.equals("App Downloader") || item.startsWith(Program.OtherSoftPrefix)) {
+                    continue;
+                }
+                allSpace -= Program.programSize.get(item) * 1024;
+            }
+            return allSpace;
+        }else {
+            return Float.parseFloat(disk.get("Объём")) * 1024;
+        }
     }
 }

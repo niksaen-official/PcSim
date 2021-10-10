@@ -29,10 +29,6 @@ public class VideoOpenFile extends Program {
 
     private void initView(){
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_for_open_file,null);
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
-        titleTextView = mainWindow.findViewById(R.id.title);
         openButton = mainWindow.findViewById(R.id.button4);
         listView = mainWindow.findViewById(R.id.listView);
         pageDown = mainWindow.findViewById(R.id.pageDown);

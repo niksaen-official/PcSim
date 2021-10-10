@@ -15,6 +15,13 @@ public class StyleSave {
         preferences = context.getSharedPreferences("style",Context.MODE_PRIVATE);
         getStyle();
     }
+    public String getDesktopProgramList(){
+        return preferences.getString("DesktopProgramList","");
+    }
+    public void setDesktopProgramList(String desktopProgramList ){
+        preferences.edit().putString("DesktopProgramList", desktopProgramList).apply();
+    }
+
     /** resource */     public int BackgroundResource;
     /** not resource */ public int ColorWindow;
     /** not resource */ public int TitleColor;
@@ -24,11 +31,12 @@ public class StyleSave {
     /** resource */     public int RollUpButtonImageRes;
     /** not resource */ public int ThemeColor1,ThemeColor2,ThemeColor3;
     /** not resource */ public int TextColor,TextButtonColor;
+
     /** not resource */ public int StartMenuColor;
     /** not resource */public int StartMenuTextColor;
     /** not resource */public boolean StartMenuAppIconVisible;
     /** not resource */public boolean StartMenuAppNameVisible;
-    /** not resource */ public int ToolbarColor;
+
     /** resource */     public int ProgressBarResource;
     /** resource */     public int SeekBarProgressResource;
     /** resource */     public int SeekBarThumbResource;
@@ -38,6 +46,8 @@ public class StyleSave {
     /** resource */     public int PlayButtonImage;
     /** resource */     public int PauseButtonRes;
     /** resource */     public int PrevOrNextImageRes;
+
+    /** not resource */ public int ToolbarColor;
     /** not resource */ public boolean ToolbarAppNameVisible;
     /** not resource */ public  boolean ToolbarAppIconVisible;
     /** not resource */ public int ToolbarTextColor;

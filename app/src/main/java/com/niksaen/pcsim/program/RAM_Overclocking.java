@@ -1,7 +1,9 @@
 package com.niksaen.pcsim.program;
 
 import android.annotation.SuppressLint;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +31,6 @@ public class RAM_Overclocking extends Program {
     private Button save,ram1,ram2,ram3,ram4;
     private ConstraintLayout content;
     private void initView(){
-        titleTextView = mainWindow.findViewById(R.id.title);
         ram_model = mainWindow.findViewById(R.id.ram_model);
         parameters = mainWindow.findViewById(R.id.textView2);
         content = mainWindow.findViewById(R.id.content);
@@ -39,10 +40,6 @@ public class RAM_Overclocking extends Program {
         ram4 = mainWindow.findViewById(R.id.ram4);
         save = mainWindow.findViewById(R.id.button7);
         seekBar = mainWindow.findViewById(R.id.seekBar);
-
-        buttonClose = mainWindow.findViewById(R.id.close);
-        buttonRollUp = mainWindow.findViewById(R.id.roll_up);
-        buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
     }
 
     private void style(){
@@ -73,6 +70,8 @@ public class RAM_Overclocking extends Program {
         save.setText(activity.words.get("Will apply"));
         seekBar.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
         seekBar.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
+        LayerDrawable progressBarBackground = (LayerDrawable) seekBar.getProgressDrawable();
+        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
     }
 
     private int frequency;
