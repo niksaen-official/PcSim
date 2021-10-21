@@ -9,6 +9,7 @@ import android.widget.Spinner;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.Program;
 
 public class Notepad extends Program {
@@ -61,10 +62,14 @@ public class Notepad extends Program {
                 if (position == 1) {
                     editText.setText("");
                 } else if (position == 2) {
-                    new NotepadFileSave(activity).openProgram(editText.getText().toString());
+                    if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: SaveLibs")) {
+                        new NotepadFileSave(activity).openProgram(editText.getText().toString());
+                    }
                 } else if (position == 3) {
-                    closeProgram(1);
-                    new NotepadFileOpen(activity).openProgram();
+                    if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: OpenLibs")) {
+                        closeProgram(1);
+                        new NotepadFileOpen(activity).openProgram();
+                    }
                 } else if (position == 4) {
                     closeProgram(1);
                 }

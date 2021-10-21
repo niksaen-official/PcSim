@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.StringArrayWork;
 
 import java.util.HashMap;
 
@@ -65,6 +66,13 @@ public class GPU_Overclocking extends Program {
         progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
     }
 
+    @Override
+    public void openProgram() {
+        if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.DriversPrefix+"GPU_PRO")) {
+            super.openProgram();
+        }
+    }
+
     public void initProgram(){
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_gpu_overclocking,null);
         initView();
@@ -110,8 +118,8 @@ public class GPU_Overclocking extends Program {
             default: throw new IllegalStateException("Unexpected value: " + GPU.get("Тип памяти"));
         }
         switch (GPU.get("Тип охлаждения")){
-            case "Радиатор":{ temperature_coefficient = 1.4f;break; }
-            case "Кулер":{ temperature_coefficient = 1.15f;power_fan = 10;break; }
+            case "Passive":{ temperature_coefficient = 1.4f;break; }
+            case "Cooler":{ temperature_coefficient = 1.15f;power_fan = 10;break; }
             default: throw new IllegalStateException("Unexpected value: " + GPU.get("Тип охлаждения"));
         }
         seekBar.setProgress(frequency);
@@ -145,7 +153,7 @@ public class GPU_Overclocking extends Program {
                             activity.words.get("Frequency")+": "+500+"MHz"+"\n" +
                                     activity.words.get("Throughput")+": "+throughput+"Gb/s"+"\n" +
                                     activity.words.get("Temperature")+": "+temperature+"C\n" +
-                                    activity.words.get("Maximum temperature")+": "+"85C\n" +
+                                    activity.words.get("Maximum temperature")+": "+"75C\n" +
                                     activity.words.get("Energy consumption")+": "+power+"W");
                 }
             }
@@ -158,7 +166,7 @@ public class GPU_Overclocking extends Program {
                 activity.words.get("Frequency")+": "+frequency+"MHz"+"\n" +
                         activity.words.get("Throughput")+": "+throughput+"Gb/s"+"\n" +
                         activity.words.get("Temperature")+": "+temperature+"C\n" +
-                        activity.words.get("Maximum temperature")+": "+"85C\n" +
+                        activity.words.get("Maximum temperature")+": "+"75C\n" +
                         activity.words.get("Energy consumption")+": "+power+"W");
 
         save.setOnClickListener(v -> {
@@ -166,13 +174,17 @@ public class GPU_Overclocking extends Program {
                 GPU.put("Частота", String.valueOf(frequency));
                 GPU.put("Пропускная способность", String.valueOf(throughput));
                 activity.pcParametersSave.setGpu1(activity.pcParametersSave.Gpu1, GPU);
-                if(temperature>85 && !activity.pcParametersSave.psuEnoughPower()){
+                if(temperature>75 && !activity.pcParametersSave.psuEnoughPower()){
                     activity.pcParametersSave.setGpu1(activity.pcParametersSave.Gpu1 + "[Сломано]", null);
-                    activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]", null);
+                    if(activity.pcParametersSave.PSU.get("Защита").equals("-")) {
+                        activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]", null);
+                    }
                     activity.blackDeadScreen(new String[]{"0xAA0002","0xBB0004"});
                 }
                 else if(!activity.pcParametersSave.psuEnoughPower()){
-                    activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]",null);
+                    if(activity.pcParametersSave.PSU.get("Защита").equals("-")) {
+                        activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]", null);
+                    }
                     activity.blackDeadScreen(new String[]{"0xAA0002"});
                 }
             }
@@ -180,13 +192,17 @@ public class GPU_Overclocking extends Program {
                 GPU.put("Частота", String.valueOf(frequency));
                 GPU.put("Пропускная способность", String.valueOf(throughput));
                 activity.pcParametersSave.setGpu2(activity.pcParametersSave.Gpu2, GPU);
-                if(temperature>85 && !activity.pcParametersSave.psuEnoughPower()){
+                if(temperature>75 && !activity.pcParametersSave.psuEnoughPower()){
                     activity.pcParametersSave.setGpu2(activity.pcParametersSave.Gpu2 + "[Сломано]",null);
-                    activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]",null);
+                    if(activity.pcParametersSave.PSU.get("Защита").equals("-")) {
+                        activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]", null);
+                    }
                     activity.blackDeadScreen(new String[]{"0xAA0002","0xBB0004"});
                 }
                 else if(!activity.pcParametersSave.psuEnoughPower()){
-                    activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]",null);
+                    if(activity.pcParametersSave.PSU.get("Защита").equals("-")) {
+                        activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]", null);
+                    }
                     activity.blackDeadScreen(new String[]{"0xAA0002"});
                 }
             }

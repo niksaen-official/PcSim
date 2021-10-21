@@ -287,6 +287,7 @@ public class MainActivity extends AppCompatActivity{
                     toolbar.setBackgroundColor(styleSave.ToolbarColor);
                     toolbar.setVisibility(View.VISIBLE);
                     updateDesktop();
+                    updateAppList();
                 });
             }
         };

@@ -14,6 +14,7 @@ import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.program.appDownloader.AppDownloader;
 import com.niksaen.pcsim.program.deviceManager.DeviceManager;
 import com.niksaen.pcsim.program.fileManager.FileManager;
+import com.niksaen.pcsim.program.miner.Miner;
 import com.niksaen.pcsim.program.musicplayer.MusicPlayer;
 import com.niksaen.pcsim.program.notepad.Notepad;
 import com.niksaen.pcsim.program.paint.Paint;
@@ -26,7 +27,8 @@ import java.util.HashMap;
 * Базовый класс для создания программ
 * */
 public class Program {
-    public static String OtherSoftPrefix = "//";
+    public static String AdditionalSoftPrefix = "SOFT: ";
+    public static String DriversPrefix = "DRIVER: ";
 
     /** список всех программ*/
     public static String[] programList = {
@@ -45,6 +47,7 @@ public class Program {
             "Paint",
             "Task Manager",
             "App Downloader",
+            "Miner"
     };
     public static HashMap<String,Integer> programIcon = new HashMap<>();
     public static HashMap<String,Float> programSize = new HashMap<>();
@@ -71,6 +74,7 @@ public class Program {
         programIcon.put("Task Manager",R.drawable.icon_taskmanager);
         programIcon.put("App Downloader",R.drawable.icon_default);
         programIcon.put("Installation Wizard",R.drawable.icon_default);
+        programIcon.put("Miner",R.drawable.icon_default);
         programIcon.put("",0);
 
         //вес програм
@@ -90,6 +94,7 @@ public class Program {
         programSize.put("Paint",3.9f);
         programSize.put("Task Manager",0.23f);
         programSize.put("App Downloader",0.1f);
+        programSize.put("Miner",0.2f);
     }
 
     /** классы программ*/
@@ -97,7 +102,7 @@ public class Program {
     public void initHashMap(MainActivity activity){
         programHashMap.put("Benchmark",new Benchmark(activity));
         programHashMap.put("Browser",new Browser(activity));
-        programHashMap.put("CPU Overclocking",new CPU_Tweaker(activity));
+        programHashMap.put("CPU Overclocking",new CPU_Overclocking(activity));
         programHashMap.put("RAM Overclocking",new RAM_Overclocking(activity));
         programHashMap.put("GPU Overclocking",new GPU_Overclocking(activity));
         programHashMap.put("Temperature Viewer",new TemperatureViewer(activity));
@@ -111,6 +116,7 @@ public class Program {
         programHashMap.put("Paint",new Paint(activity));
         programHashMap.put("Task Manager", activity.taskManager);
         programHashMap.put("App Downloader", new AppDownloader(activity));
+        programHashMap.put("Miner",new Miner(activity));
     }
 
     /** @param  CurrentRamUse - показывает сколько программа использует оперативной памяти в мб*/
@@ -195,15 +201,17 @@ public class Program {
     public void openProgram(){
         initProgram();
         if(activity.pcParametersSave.getEmptyRam(activity.programArrayList) > CurrentRamUse) {
-            if (status == -1) {
-                status = 0;
-                activity.programArrayList.add(this);
-                activity.updateToolbar();
-                activity.taskManager.update();
-                if (mainWindow.getParent() == null) {
-                    activity.layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                } else {
-                    mainWindow.setVisibility(View.VISIBLE);
+            if(activity.pcParametersSave.getEmptyVideoMemory(activity.programArrayList)>CurrentVideoMemoryUse) {
+                if (status == -1) {
+                    status = 0;
+                    activity.programArrayList.add(this);
+                    activity.updateToolbar();
+                    activity.taskManager.update();
+                    if (mainWindow.getParent() == null) {
+                        activity.layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    } else {
+                        mainWindow.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         }

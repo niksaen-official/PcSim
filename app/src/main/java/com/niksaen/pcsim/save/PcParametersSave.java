@@ -661,7 +661,7 @@ public class PcParametersSave {
 
             float allSpace = Float.parseFloat(disk.get("Свободно"));// in Mb
             for (String item : program) {
-                if (item.equals("App Downloader") || item.startsWith(Program.OtherSoftPrefix)) {
+                if (item.equals("App Downloader") || item.startsWith(Program.DriversPrefix) || item.startsWith(Program.AdditionalSoftPrefix)) {
                     continue;
                 }
                 allSpace -= Program.programSize.get(item) * 1024;
@@ -670,5 +670,24 @@ public class PcParametersSave {
         }else {
             return Float.parseFloat(disk.get("Объём")) * 1024;
         }
+    }
+
+    //получение свободной видео памяти в MB
+    public int getEmptyVideoMemory(ArrayList<Program> programs){
+        int allVideoMemory = 0;
+        if(CPU.get("Графическое ядро").equals("+")){
+            allVideoMemory += 1024;
+        }
+        if(GPU1 != null){
+            allVideoMemory += Integer.parseInt(GPU1.get("Объём видеопамяти"))*1024;
+        }
+        if(GPU2 != null){
+            allVideoMemory += Integer.parseInt(GPU2.get("Объём видеопамяти"))*1024;
+        }
+
+        for(Program program:programs){
+            allVideoMemory-= program.CurrentVideoMemoryUse;
+        }
+        return allVideoMemory;
     }
 }

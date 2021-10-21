@@ -11,10 +11,11 @@ import android.widget.TextView;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.StringArrayWork;
 
-public class CPU_Tweaker extends Program {
+public class CPU_Overclocking extends Program {
 
-    public CPU_Tweaker(MainActivity activity){
+    public CPU_Overclocking(MainActivity activity){
         super(activity);
         this.Title = "CPU Overclocking";
         ValueRam = new int[]{200,300};
@@ -54,6 +55,13 @@ public class CPU_Tweaker extends Program {
         temperature.setTypeface(activity.font,Typeface.BOLD);
         frequency.setTypeface(activity.font,Typeface.BOLD);
         save.setTypeface(activity.font,Typeface.BOLD);
+    }
+
+    @Override
+    public void openProgram() {
+        if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.DriversPrefix+"CPU_PRO")) {
+            super.openProgram();
+        }
     }
 
     public void initProgram(){

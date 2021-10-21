@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.fileWorkLib.FileUtil;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.notepad.NotepadSpinnerAdapter;
@@ -255,8 +256,10 @@ public class MusicPlayer extends Program {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 1) {
-                    new MusicPlayerOpenFile(activity).openProgram();
-                    closeProgram(1);
+                    if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: OpenLibs")) {
+                        new MusicPlayerOpenFile(activity).openProgram();
+                        closeProgram(1);
+                    }
                 }
             }
             @Override

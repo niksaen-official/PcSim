@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.Program;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,13 +45,19 @@ public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull DesktopAdapter.ViewHolder holder, int position) {
-        holder.app_icon.setImageResource(Program.programIcon.get(apps[position]));
-        holder.app_name.setText(activity.words.get(apps[position]));
-        holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
-        holder.itemView.setOnClickListener(v -> {
-            Program program = programHashMap.get(apps[position]);
-            program.openProgram();
-        });
+        if(!(apps[position].startsWith(Program.DriversPrefix) || apps[position].startsWith(Program.AdditionalSoftPrefix))) {
+            holder.app_icon.setImageResource(Program.programIcon.get(apps[position]));
+            holder.app_name.setText(activity.words.get(apps[position]));
+            holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
+            holder.itemView.setOnClickListener(v -> {
+                Program program = programHashMap.get(apps[position]);
+                program.openProgram();
+                System.out.println(StringArrayWork.ArrayListToString(activity.apps));
+            });
+        }
+        else {
+            holder.itemView.setVisibility(View.GONE);
+        }
     }
 
     @Override

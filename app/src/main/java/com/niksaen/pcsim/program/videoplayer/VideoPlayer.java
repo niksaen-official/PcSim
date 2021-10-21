@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.notepad.NotepadSpinnerAdapter;
 
@@ -91,8 +92,10 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 1){
-                    closeProgram(1);
-                    new VideoOpenFile(activity).openProgram();
+                    if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: OpenLibs")) {
+                        closeProgram(1);
+                        new VideoOpenFile(activity).openProgram();
+                    }
                 }
                 else if(position == 2){
                     closeProgram(1);

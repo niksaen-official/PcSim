@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.Program;
 
 import java.util.HashMap;
@@ -138,6 +139,7 @@ public class SetupWindow extends Program {
                     if(unpackingProgress == 100){
                         setupText += "Архивы распакованы!\n";
                         diskHashMap.get(disk).put("Содержимое",diskHashMap.get(disk).get(("Содержимое"))+programForSetup+",");
+                        InstallMainLibs();
                         activity.pcParametersSave.setData(disk,diskHashMap.get(disk));
                         timer.cancel();
                         timer = new Timer();
@@ -168,6 +170,7 @@ public class SetupWindow extends Program {
                     }
                     if(installAdditionalSoftProgress == 100){
                         setupText += "Установка дополнительного программного обеспечения завершена.\n";
+                        InstallAdditionalSoftLogic();
                         timer.cancel();
                         timer = new Timer();
                         timer.scheduleAtFixedRate(new TimerTask() {
@@ -258,7 +261,7 @@ public class SetupWindow extends Program {
                                 setupText += "Добавление значка программы на рабочий стол...\n";
                             }
                             else {
-                                setupProgress = 29;
+                                setupProgress = 39;
                             }
                             break;
                         }
@@ -302,5 +305,48 @@ public class SetupWindow extends Program {
         setupProgress = 0;
         timer.cancel();
         super.closeProgram(mode);
+    }
+
+    private void InstallAdditionalSoftLogic(){
+        switch (programForSetup){
+            case "Paint":
+            case"Notepad":{
+                if(!StringArrayWork.ArrayListToString(activity.apps).contains("File manager")) {
+                    diskHashMap.get(disk).put("Содержимое", diskHashMap.get(disk).get(("Содержимое")) + Program.AdditionalSoftPrefix + "File manager: OpenLibs," + Program.AdditionalSoftPrefix + "File manager: SaveLibs,");
+                }
+                break;
+            }
+            case "Music player":
+            case "Video player": {
+                if(!StringArrayWork.ArrayListToString(activity.apps).contains("File manager")) {
+                    diskHashMap.get(disk).put("Содержимое", diskHashMap.get(disk).get(("Содержимое")) + Program.AdditionalSoftPrefix + "File manager: OpenLibs,");
+                }
+                break;
+            }
+            case "CPU Overclocking":{
+                diskHashMap.get(disk).put("Содержимое",diskHashMap.get(disk).get(("Содержимое"))+Program.DriversPrefix+"CPU_PRO,");
+                break;
+            }
+            case "RAM Overclocking":{
+                diskHashMap.get(disk).put("Содержимое",diskHashMap.get(disk).get(("Содержимое"))+Program.DriversPrefix+"RAM_PRO,");
+                break;
+            }
+            case "GPU Overclocking":{
+                diskHashMap.get(disk).put("Содержимое",diskHashMap.get(disk).get(("Содержимое"))+Program.DriversPrefix+"GPU_PRO,");
+                break;
+            }
+            case "File manager":{
+                diskHashMap.get(disk).put("Содержимое", diskHashMap.get(disk).get(("Содержимое")) + Program.AdditionalSoftPrefix + "File manager: Image Viewer,"+ Program.AdditionalSoftPrefix + "File manager: Text Viewer,");
+            }
+        }
+        activity.pcParametersSave.setData(disk,diskHashMap.get(disk));
+    }
+    private void InstallMainLibs(){
+        switch (programForSetup){
+            case "File manager":{
+                diskHashMap.get(disk).put("Содержимое", diskHashMap.get(disk).get(("Содержимое")) + Program.AdditionalSoftPrefix + "File manager: OpenLibs" + "," + Program.AdditionalSoftPrefix + "File manager: SaveLibs" + ",");
+                break;
+            }
+        }
     }
 }

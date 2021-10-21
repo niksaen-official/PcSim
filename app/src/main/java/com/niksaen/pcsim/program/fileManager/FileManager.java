@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.fileWorkLib.FileUtil;
 import com.niksaen.pcsim.program.Program;
 
@@ -71,9 +72,13 @@ public class FileManager extends Program {
                 FileUtil.listDir(files.get(position), files);
                 ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
             } else if (files.get(position).endsWith(".txt")) {
-                new TextViewer(activity).openProgram(FileUtil.readFile(files.get(position)));
+                if(StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: Text Viewer")) {
+                    new TextViewer(activity).openProgram(FileUtil.readFile(files.get(position)));
+                }
             } else if (files.get(position).endsWith(".png") || files.get(position).endsWith(".jpg")) {
-                new ImageViewer(activity).openProgram(files.get(position));
+                if(StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: Image Viewer")) {
+                    new ImageViewer(activity).openProgram(files.get(position));
+                }
             }
         });
 

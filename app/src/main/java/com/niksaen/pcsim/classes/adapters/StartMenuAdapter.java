@@ -36,7 +36,7 @@ public class StartMenuAdapter extends  ArrayAdapter<String> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View item = LayoutInflater.from(getContext()).inflate(R.layout.item_start_menu, null);
-        if(!getItem(position).startsWith(Program.OtherSoftPrefix)) {
+        if(!(getItem(position).startsWith(Program.DriversPrefix) || getItem(position).startsWith(Program.AdditionalSoftPrefix))) {
             item.setBackgroundColor(activity.styleSave.StartMenuColor);
             TextView programName = item.findViewById(R.id.app_name);
             ImageView programIcon = item.findViewById(R.id.app_icon);

@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.StringArrayWork;
 
 import java.util.HashMap;
 
@@ -76,6 +77,13 @@ public class RAM_Overclocking extends Program {
 
     private int frequency;
     private double k,power,temperature,throughput;
+
+    @Override
+    public void openProgram() {
+        if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.DriversPrefix+"CPU_PRO")) {
+            super.openProgram();
+        }
+    }
 
     public void initProgram(){
         mainWindow=LayoutInflater.from(activity).inflate(R.layout.program_ram_overclocking,null);
