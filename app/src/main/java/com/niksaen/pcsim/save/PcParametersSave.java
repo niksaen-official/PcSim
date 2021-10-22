@@ -85,27 +85,21 @@ public class PcParametersSave {
         }
         if(Data1 != null){
             DATA1 = new Gson().fromJson(preferences.getString("DATA1",""),typeToken.getType());
-            DATA1.put("name","A:");
         }
         if(Data2 != null){
             DATA2 = new Gson().fromJson(preferences.getString("DATA2",""),typeToken.getType());
-            DATA2.put("name","B:");
         }
         if(Data3 != null){
             DATA3 = new Gson().fromJson(preferences.getString("DATA3",""),typeToken.getType());
-            DATA3.put("name","C:");
         }
         if(Data4 != null){
             DATA4 = new Gson().fromJson(preferences.getString("DATA4",""),typeToken.getType());
-            DATA4.put("name","D:");
         }
         if(Data5 != null){
             DATA5 = new Gson().fromJson(preferences.getString("DATA5",""),typeToken.getType());
-            DATA5.put("name","F:");
         }
         if(Data6 != null){
             DATA6 = new Gson().fromJson(preferences.getString("DATA6",""),typeToken.getType());
-            DATA6.put("name","G:");
         }
         if(Psu != null){
             PSU = new Gson().fromJson(preferences.getString("PSU",""),typeToken.getType());
@@ -177,36 +171,58 @@ public class PcParametersSave {
     public void setData1(String Data1,HashMap<String,String> DATA1){
         this.Data1 = Data1;
         this.DATA1 = DATA1;
+        DATA1.put("MainDisk","true");
+        DATA1.put("name","A:");
         preferences.edit().putString("Data1",Data1).apply();
         preferences.edit().putString("DATA1",new Gson().toJson(DATA1)).apply();
     }
     public void setData2(String Data2,HashMap<String,String> DATA2){
         this.Data2 = Data2;
         this.DATA2 = DATA2;
+        if(DATA1 == null){
+            DATA2.put("MainDisk","true");
+            DATA2.put("name","B:");
+        }
         preferences.edit().putString("Data2",Data2).apply();
         preferences.edit().putString("DATA2",new Gson().toJson(DATA2)).apply();
     }
     public void setData3(String Data3,HashMap<String,String> DATA3){
         this.Data3 = Data3;
         this.DATA3 = DATA3;
+        if(DATA1 == null && DATA2 == null){
+            DATA3.put("MainDisk","true");
+            DATA3.put("name","C:");
+        }
         preferences.edit().putString("Data3",Data3).apply();
         preferences.edit().putString("DATA3",new Gson().toJson(DATA3)).apply();
     }
     public void setData4(String Data4,HashMap<String,String> DATA4){
         this.Data4 = Data4;
         this.DATA4 = DATA4;
+        if(DATA1 == null && DATA2 == null && DATA3 == null){
+            DATA4.put("MainDisk","true");
+            DATA4.put("name","D:");
+        }
         preferences.edit().putString("Data4",Data4).apply();
         preferences.edit().putString("DATA4",new Gson().toJson(DATA4)).apply();
     }
     public void setData5(String Data5,HashMap<String,String> DATA5){
         this.Data5 = Data5;
         this.DATA5 = DATA5;
+        if(DATA1 == null && DATA2 == null && DATA3 == null && DATA4 == null){
+            DATA5.put("MainDisk","true");
+            DATA5.put("name","E:");
+        }
         preferences.edit().putString("Data5",Data5).apply();
         preferences.edit().putString("DATA5",new Gson().toJson(DATA5)).apply();
     }
     public void setData6(String Data6,HashMap<String,String> DATA6){
         this.Data6 = Data6;
         this.DATA6 = DATA6;
+        if(DATA1 == null && DATA2 == null && DATA3 == null && DATA4 == null && DATA5 == null){
+            DATA6.put("MainDisk","true");
+            DATA6.put("name","F:");
+        }
         preferences.edit().putString("Data6",Data6).apply();
         preferences.edit().putString("DATA6",new Gson().toJson(DATA6)).apply();
     }
@@ -254,31 +270,6 @@ public class PcParametersSave {
     public String getMainDiskType(){
         String type = null;
         HashMap<String,String>[] mainDiskId = new HashMap[]{DATA1, DATA2, DATA3, DATA4, DATA5, DATA6};
-        if(DATA1!=null){
-            DATA1.put("MainDisk","true");
-            DATA1.put("Свободно",String.valueOf((Integer.parseInt(DATA1.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
-        }
-        else if(DATA2!=null){
-            DATA2.put("MainDisk","true");
-            DATA2.put("Свободно",String.valueOf((Integer.parseInt(DATA2.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
-        }
-        else if(DATA3!=null){
-            DATA3.put("MainDisk","true");
-            DATA3.put("Свободно",String.valueOf((Integer.parseInt(DATA3.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
-        }
-        else if(DATA4!=null){
-            DATA4.put("MainDisk","true");
-            DATA4.put("Свободно",String.valueOf((Integer.parseInt(DATA4.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
-        }
-        else if(DATA5!=null){
-            DATA5.put("MainDisk","true");
-            DATA5.put("Свободно",String.valueOf((Integer.parseInt(DATA5.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
-        }
-        else if(DATA6!=null){
-            DATA6.put("MainDisk","true");
-            DATA6.put("Свободно",String.valueOf((Integer.parseInt(DATA6.get("Объём"))*1024) - 34*1024 - Program.programSize.get("App Downloader")));
-        }
-
         for(HashMap<String,String> hashMap:mainDiskId){
             if(hashMap.get("MainDisk").equals("true")){
                 type = hashMap.get("Тип");
@@ -294,36 +285,42 @@ public class PcParametersSave {
             case 1:{
                 if(DATA1 != null){
                     DATA1.put("MainDisk","true");
+                    setData1(Data1,DATA1);
                 }
                 break;
             }
             case 2:{
                 if(DATA2 != null){
                     DATA2.put("MainDisk","true");
+                    setData2(Data2,DATA2);
                 }
                 break;
             }
             case 3:{
                 if(DATA3 != null){
                     DATA3.put("MainDisk","true");
+                    setData3(Data3,DATA3);
                 }
                 break;
             }
             case 4:{
                 if(DATA4 != null){
                     DATA4.put("MainDisk","true");
+                    setData4(Data4,DATA4);
                 }
                 break;
             }
             case 5:{
                 if(DATA5 != null){
                     DATA5.put("MainDisk","true");
+                    setData5(Data5,DATA5);
                 }
                 break;
             }
             case 6:{
                 if(DATA6 != null){
                     DATA6.put("MainDisk","true");
+                    setData6(Data6,DATA6);
                 }
                 break;
             }

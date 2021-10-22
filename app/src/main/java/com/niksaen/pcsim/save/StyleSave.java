@@ -15,6 +15,7 @@ public class StyleSave {
         preferences = context.getSharedPreferences("style",Context.MODE_PRIVATE);
         getStyle();
     }
+
     public String getDesktopProgramList(){
         return preferences.getString("DesktopProgramList","");
     }
@@ -52,6 +53,38 @@ public class StyleSave {
     /** not resource */ public  boolean ToolbarAppIconVisible;
     /** not resource */ public int ToolbarTextColor;
 
+    public void resetAllStyle(){
+        preferences.edit().putInt("Background",R.color.color8).apply();
+        preferences.edit().putInt("ColorWindow",Color.parseColor("#0D47A1")).apply();
+        preferences.edit().putInt("TitleWindow",Color.parseColor("#FFFFFF")).apply();
+        preferences.edit().putInt("TextColor",Color.parseColor("#000000")).apply();
+        preferences.edit().putInt("TextButtonColor",Color.parseColor("#000000")).apply();
+        preferences.edit().putInt("CloseButtonImageRes",R.drawable.button_1_color17).apply();
+        preferences.edit().putInt("FullScreenMode1ImageRes",R.drawable.button_2_1_color17).apply();
+        preferences.edit().putInt("FullScreenMode2ImageRes",R.drawable.button_2_2_color17).apply();
+        preferences.edit().putInt("RollUpButtonImageRes",R.drawable.button_3_color17).apply();
+        preferences.edit().putInt("ThemeColor1",Color.parseColor(ColorList.ThemeColorList1[15])).apply();
+        preferences.edit().putInt("ThemeColor2",Color.parseColor(ColorList.ThemeColorList2[15])).apply();
+        preferences.edit().putInt("ThemeColor3",Color.parseColor(ColorList.ThemeColorList3[15])).apply();
+        preferences.edit().putInt("StartMenuColor",Color.parseColor("#2C3488")).apply();
+        preferences.edit().putInt("ToolbarColor",Color.parseColor("#131A5E")).apply();
+        preferences.edit().putInt("ProgressBarResource", R.drawable.progress_bar_circle_color5).apply();
+        preferences.edit().putInt("SeekBarProgressResource",R.drawable.seek_progress_color5).apply();
+        preferences.edit().putInt("SeekBarThumbResource",R.drawable.seek_thumb_color5).apply();
+        preferences.edit().putString("Greeting","User").apply();
+        preferences.edit().putInt("GreetingColor",Color.parseColor("#FFFFFF")).apply();
+        preferences.edit().putInt("ArrowButtonImage",R.drawable.arrow_color16).apply();
+        preferences.edit().putInt("PauseButtonRes",R.drawable.play_color16).apply();
+        preferences.edit().putInt("PlayButtonImage",R.drawable.pause_color16).apply();
+        preferences.edit().putInt("PrevOrNextImageRes",R.drawable.prev_or_next_color16).apply();
+        preferences.edit().putBoolean("ToolbarAppIconVisible",true).apply();
+        preferences.edit().putBoolean("ToolbarAppNameVisible",true).apply();
+        preferences.edit().putInt("ToolbarTextColor",Color.parseColor("#FFFFFF")).apply();
+        preferences.edit().putInt("StartMenuTextColor",Color.parseColor("#FFFFFF")).apply();
+        preferences.edit().putBoolean("StartMenuAppIconVisible",true).apply();
+        preferences.edit().putBoolean("StartMenuAppNameVisible",true).apply();
+        preferences.edit().putString("DesktopProgramList", "").apply();
+    }
     public void getStyle(){
         BackgroundResource = preferences.getInt("Background",R.color.color8);
         ColorWindow = preferences.getInt("ColorWindow",Color.parseColor("#0D47A1"));
