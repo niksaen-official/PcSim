@@ -263,7 +263,7 @@ public class IronActivity extends AppCompatActivity {
                         parametersSave.setGpu1(gpuList.get(position),gpu1Parameters);
                         gpuList.remove(position);
                         gpuInstall = true;
-                        Others.clearEmpty(gpuList);
+                        gpuList = Others.clearEmpty(gpuList);
                         gpuAdapter.notifyDataSetChanged();
                     }
                 }
@@ -308,10 +308,12 @@ public class IronActivity extends AppCompatActivity {
                     data1View.setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.StorageDevice+"/" + nameForInstall + "_h.png"));
                     data1Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/"+PcComponent.StorageDevice+"/" + nameForInstall + ".json"), typeToken.getType());
                     dataList.add(parametersSave.Data1);
-                    if(parametersSave.DATA1.get("MainDisk").equals("true")){
+                    if(parametersSave.DATA1 != null && parametersSave.DATA1.get("MainDisk").equals("true")){
                         StyleSave styleSave = new StyleSave(IronActivity.this);
                         styleSave.resetAllStyle();
                     }
+                    data1Parameters.put("MainDisk","true");
+                    data1Parameters.put("name","A:");
                     parametersSave.setData1(nameForInstall, data1Parameters);
                     dataList.remove(nameForInstall);
                 }
@@ -343,9 +345,13 @@ public class IronActivity extends AppCompatActivity {
                     data2View.setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.StorageDevice+"/" + nameForInstall + "_h.png"));
                     data2Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/"+PcComponent.StorageDevice+"/" + nameForInstall + ".json"), typeToken.getType());
                     dataList.add(parametersSave.Data2);
-                    if(parametersSave.DATA2.get("MainDisk").equals("true")){
+                    if(parametersSave.DATA2 != null && parametersSave.DATA2.get("MainDisk").equals("true")){
                         StyleSave styleSave = new StyleSave(IronActivity.this);
                         styleSave.resetAllStyle();
+                    }
+                    if(data1Parameters == null){
+                        data2Parameters.put("MainDisk","true");
+                        data2Parameters.put("name","B:");
                     }
                     parametersSave.setData2(nameForInstall, data2Parameters);
                     dataList.remove(nameForInstall);
@@ -373,9 +379,13 @@ public class IronActivity extends AppCompatActivity {
                     data3View.setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.StorageDevice+"/" + nameForInstall + "_h.png"));
                     data3Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/"+PcComponent.StorageDevice+"/" + nameForInstall + ".json"), typeToken.getType());
                     dataList.add(parametersSave.Data3);
-                    if(parametersSave.DATA3.get("MainDisk").equals("true")){
+                    if(parametersSave.DATA3 != null && parametersSave.DATA3.get("MainDisk").equals("true")){
                         StyleSave styleSave = new StyleSave(IronActivity.this);
                         styleSave.resetAllStyle();
+                    }
+                    if(data1Parameters == null && data2Parameters == null){
+                        data3Parameters.put("MainDisk","true");
+                        data3Parameters.put("name","C:");
                     }
                     parametersSave.setData3(nameForInstall, data3Parameters);
                     dataList.remove(nameForInstall);
@@ -403,9 +413,13 @@ public class IronActivity extends AppCompatActivity {
                     data4View.setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.StorageDevice+"/" + nameForInstall + "_h.png"));
                     data4Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/"+PcComponent.StorageDevice+"/" + nameForInstall + ".json"), typeToken.getType());
                     dataList.add(parametersSave.Data4);
-                    if(parametersSave.DATA4.get("MainDisk").equals("true")){
+                    if(parametersSave.DATA4 != null && parametersSave.DATA4.get("MainDisk").equals("true")){
                         StyleSave styleSave = new StyleSave(IronActivity.this);
                         styleSave.resetAllStyle();
+                    }
+                    if(data1Parameters == null && data2Parameters == null && data3Parameters == null){
+                        data4Parameters.put("MainDisk","true");
+                        data4Parameters.put("name","D:");
                     }
                     parametersSave.setData4(nameForInstall, data4Parameters);
                     dataList.remove(nameForInstall);
@@ -419,9 +433,13 @@ public class IronActivity extends AppCompatActivity {
                     data5View.setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.StorageDevice+"/" + nameForInstall + "_h.png"));
                     data5Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/"+PcComponent.StorageDevice+"/" + nameForInstall + ".json"), typeToken.getType());
                     dataList.add(parametersSave.Data5);
-                    if(parametersSave.DATA5.get("MainDisk").equals("true")){
+                    if(parametersSave.DATA5 != null && parametersSave.DATA5.get("MainDisk").equals("true")){
                         StyleSave styleSave = new StyleSave(IronActivity.this);
                         styleSave.resetAllStyle();
+                    }
+                    if(data1Parameters == null && data2Parameters == null && data3Parameters == null && data4Parameters == null){
+                        data5Parameters.put("MainDisk","true");
+                        data5Parameters.put("name","E:");
                     }
                     parametersSave.setData5(nameForInstall, data5Parameters);
                     dataList.remove(nameForInstall);
@@ -435,9 +453,13 @@ public class IronActivity extends AppCompatActivity {
                     data6View.setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.StorageDevice+"/" + nameForInstall + "_h.png"));
                     data6Parameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/"+PcComponent.StorageDevice+"/" + nameForInstall + ".json"), typeToken.getType());
                     dataList.add(parametersSave.Data6);
-                    if(parametersSave.DATA6.get("MainDisk").equals("true")){
+                    if(parametersSave.DATA6 != null && parametersSave.DATA6.get("MainDisk").equals("true")){
                         StyleSave styleSave = new StyleSave(IronActivity.this);
                         styleSave.resetAllStyle();
+                    }
+                    if(data1Parameters == null && data2Parameters == null && data3Parameters == null && data4Parameters == null && data5Parameters == null){
+                        data6Parameters.put("MainDisk","true");
+                        data6Parameters.put("name","F:");
                     }
                     parametersSave.setData6(nameForInstall, data6Parameters);
                     dataList.remove(nameForInstall);

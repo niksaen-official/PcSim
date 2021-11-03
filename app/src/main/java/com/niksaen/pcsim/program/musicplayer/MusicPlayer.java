@@ -151,26 +151,26 @@ public class MusicPlayer extends Program {
             }
         });
         //перемотка
-        seekBarTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (mediaPlayer != null) {
+        if(mediaPlayer != null) {
+            seekBarTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     CurrentPosition = progress;
                     timeText.setText(convertTime(progress));
                 }
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                if (mediaPlayer != null) mediaPlayer.pause();
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if (mediaPlayer != null) {
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    mediaPlayer.pause();
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
                     mediaPlayer.seekTo(CurrentPosition);
                     mediaPlayer.start();
                 }
-            }
-        });
+            });
+        }
         //переключение на следующую или предыдущую песню
         View.OnClickListener onNextOrPrevClick = v -> {
             if (mediaPlayer != null) {

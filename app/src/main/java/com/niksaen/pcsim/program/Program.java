@@ -13,6 +13,7 @@ import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.program.appDownloader.AppDownloader;
 import com.niksaen.pcsim.program.deviceManager.DeviceManager;
+import com.niksaen.pcsim.program.diskManager.DiskManager;
 import com.niksaen.pcsim.program.fileManager.FileManager;
 import com.niksaen.pcsim.program.miner.Miner;
 import com.niksaen.pcsim.program.musicplayer.MusicPlayer;
@@ -47,7 +48,8 @@ public class Program {
             "Paint",
             "Task Manager",
             "App Downloader",
-            "Miner"
+            "Miner",
+            "Disk manager"
     };
     public static HashMap<String,Integer> programIcon = new HashMap<>();
     public static HashMap<String,Float> programSize = new HashMap<>();
@@ -65,16 +67,18 @@ public class Program {
         programIcon.put("Music player",R.drawable.icon_musicplayer);
         programIcon.put("Video player",R.drawable.icon_videoplayer);
         programIcon.put("Notepad",R.drawable.icon_notepad);
-        programIcon.put("Personalization",R.drawable.icon_default);
+        programIcon.put("Personalization",R.drawable.icon_personalization);
         programIcon.put("Paint",R.drawable.icon_paint);
         programIcon.put("Image Viewer",R.drawable.image_file);
         programIcon.put("Text Viewer",R.drawable.text_file);
         programIcon.put("Opening file",R.drawable.folder_icon);
         programIcon.put("Saving a file",R.drawable.folder_icon);
         programIcon.put("Task Manager",R.drawable.icon_taskmanager);
-        programIcon.put("App Downloader",R.drawable.icon_default);
+        programIcon.put("App Downloader",R.drawable.icon_downloader);
         programIcon.put("Installation Wizard",R.drawable.icon_default);
         programIcon.put("Miner",R.drawable.icon_default);
+        programIcon.put("Disk manager",R.drawable.icon_default);
+        programIcon.put("App manager",R.drawable.icon_default);
         programIcon.put("",0);
 
         //вес програм
@@ -95,6 +99,7 @@ public class Program {
         programSize.put("Task Manager",0.23f);
         programSize.put("App Downloader",0.1f);
         programSize.put("Miner",0.2f);
+        programSize.put("Disk manager",0.1f);
     }
 
     /** классы программ*/
@@ -117,6 +122,7 @@ public class Program {
         programHashMap.put("Task Manager", activity.taskManager);
         programHashMap.put("App Downloader", new AppDownloader(activity));
         programHashMap.put("Miner",new Miner(activity));
+        programHashMap.put("Disk manager",new DiskManager(activity));
     }
 
     /** @param  CurrentRamUse - показывает сколько программа использует оперативной памяти в мб*/

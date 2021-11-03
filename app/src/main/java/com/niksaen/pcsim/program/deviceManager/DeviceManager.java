@@ -192,8 +192,7 @@ public class DeviceManager extends Program {
                     activity.words.get("Drive characteristics")+" ("+activity.words.get("Slot")+" 1):",
                     " "+activity.words.get("Model")+": " + activity.pcParametersSave.Data1,
                     " "+activity.words.get("Volume")+": " + activity.pcParametersSave.DATA1.get("Объём") +"Gb",
-                    " "+activity.words.get("Type")+": " + activity.pcParametersSave.DATA1.get("Тип"),
-                    " "+activity.words.get("Main")+": " + activity.pcParametersSave.DATA1.get("MainDisk")
+                    " "+activity.words.get("Type")+": " + activity.pcParametersSave.DATA1.get("Тип")
             };
         }
         if(activity.pcParametersSave.DATA2 != null){
@@ -202,7 +201,6 @@ public class DeviceManager extends Program {
                     " "+activity.words.get("Model")+": " + activity.pcParametersSave.Data2,
                     " "+activity.words.get("Volume")+": " + activity.pcParametersSave.DATA2.get("Объём") +"Gb",
                     " "+activity.words.get("Type")+": " + activity.pcParametersSave.DATA2.get("Тип"),
-                    " "+activity.words.get("Main")+": " + activity.pcParametersSave.DATA2.get("MainDisk")
             };
         }
         if(activity.pcParametersSave.DATA3 != null){
@@ -210,8 +208,7 @@ public class DeviceManager extends Program {
                     activity.words.get("Drive characteristics") +" ("+activity.words.get("Slot")+" 3):",
                     " "+activity.words.get("Model")+": " + activity.pcParametersSave.Data3,
                     " "+activity.words.get("Volume")+": " + activity.pcParametersSave.DATA3.get("Объём") +"Gb",
-                    " "+activity.words.get("Type")+": " + activity.pcParametersSave.DATA3.get("Тип"),
-                    " "+activity.words.get("Main")+": " + activity.pcParametersSave.DATA3.get("MainDisk")
+                    " "+activity.words.get("Type")+": " + activity.pcParametersSave.DATA3.get("Тип")
             };
         }
         if(activity.pcParametersSave.DATA4 != null){
@@ -219,8 +216,7 @@ public class DeviceManager extends Program {
                     activity.words.get("Drive characteristics")+" ("+activity.words.get("Slot")+" 4):",
                     " "+activity.words.get("Model")+": " + activity.pcParametersSave.Data4,
                     " "+activity.words.get("Volume")+": " + activity.pcParametersSave.DATA4.get("Объём") +"Gb",
-                    " "+activity.words.get("Type")+": " + activity.pcParametersSave.DATA4.get("Тип"),
-                    " "+activity.words.get("Main")+": " + activity.pcParametersSave.DATA4.get("MainDisk")
+                    " "+activity.words.get("Type")+": " + activity.pcParametersSave.DATA4.get("Тип")
             };
         }
         if(activity.pcParametersSave.DATA5 != null){
@@ -228,8 +224,7 @@ public class DeviceManager extends Program {
                     activity.words.get("Drive characteristics")+" ("+activity.words.get("Slot")+" 5):",
                     " "+activity.words.get("Model")+": " + activity.pcParametersSave.Data5,
                     " "+activity.words.get("Volume")+": " + activity.pcParametersSave.DATA5.get("Объём") +"Gb",
-                    " "+activity.words.get("Type")+": " + activity.pcParametersSave.DATA5.get("Тип"),
-                    " "+activity.words.get("Main")+": " + activity.pcParametersSave.DATA5.get("MainDisk")
+                    " "+activity.words.get("Type")+": " + activity.pcParametersSave.DATA5.get("Тип")
             };
         }
         if(activity.pcParametersSave.DATA6 != null){
@@ -237,8 +232,7 @@ public class DeviceManager extends Program {
                     activity.words.get("Drive characteristics")+" ("+activity.words.get("Slot")+" 6):",
                     " "+activity.words.get("Model")+": " + activity.pcParametersSave.Data6,
                     " "+activity.words.get("Volume")+": " + activity.pcParametersSave.DATA6.get("Объём") +"Gb",
-                    " "+activity.words.get("Type")+": " + activity.pcParametersSave.DATA6.get("Тип"),
-                    " "+activity.words.get("Main")+": " + activity.pcParametersSave.DATA6.get("MainDisk")
+                    " "+activity.words.get("Type")+": " + activity.pcParametersSave.DATA6.get("Тип")
             };
         }
         dataParameters = concat(new String[][]{data1,data2,data3,data4,data5,data6});
@@ -259,9 +253,9 @@ public class DeviceManager extends Program {
         motherboardAdapter = new SpinnerAdapter(activity.getBaseContext(),0,motherboardParameters,activity.words.get("Motherboard"),"Motherboard");
         cpuAdapter = new SpinnerAdapter(activity.getBaseContext(),0,cpuParameters,activity.words.get("CPU"),"CPU");
         ramAdapter = new SpinnerAdapter(activity.getBaseContext(),0,ramParameters,activity.words.get("RAM"),"RAM");
-        psuAdapter = new SpinnerAdapter(activity.getBaseContext(),0,psuParameters,activity.words.get("Power supply"),"Power supply");
-        dataAdapter = new SpinnerAdapter(activity.getBaseContext(),0,dataParameters,activity.words.get("Storage device"),"Storage device");
-        gpuAdapter = new SpinnerAdapter(activity.getBaseContext(),0,gpuParameters,activity.words.get("Graphics card"),"Graphics card");
+        psuAdapter = new SpinnerAdapter(activity.getBaseContext(),0,psuParameters,activity.words.get("Power supply"),"PSU");
+        dataAdapter = new SpinnerAdapter(activity.getBaseContext(),0,dataParameters,activity.words.get("Storage device"),"DATA");
+        gpuAdapter = new SpinnerAdapter(activity.getBaseContext(),0,gpuParameters,activity.words.get("Graphics card"),"GPU");
 
         motherboardAdapter.BackgroundColor_DropDownView = activity.styleSave.ThemeColor2;
         motherboardAdapter.TextColor_DropDownView = activity.styleSave.TextColor;

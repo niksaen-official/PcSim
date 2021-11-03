@@ -42,8 +42,7 @@ public class TaskManagerAdapter extends ArrayAdapter<Program> {
         return programs.size();
     }
 
-    int
-            TextColor = Color.parseColor("#000000"),
+    int TextColor = Color.parseColor("#000000"),
             BackgroundColor;
     @NonNull
     @Override

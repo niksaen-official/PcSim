@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,18 +46,20 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity{
 
-    Button button2;
+    Button powerButton;
     public LinearLayout toolbar;
     public LinearLayout startMenu;
     TextView greeting,startMenuTitle;
     RecyclerView desktop;
     RecyclerView appList;
     ListView allAppList;
+    private View caseView;
 
     public PcParametersSave pcParametersSave;
     public StyleSave styleSave;
     public ConstraintLayout layout;
 
+    private MediaPlayer player;
     public Typeface font;
     int style = Typeface.BOLD;
 
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     void initView(){
-        button2 = findViewById(R.id.on_off);
+        powerButton = findViewById(R.id.on_off);
         layout = findViewById(R.id.monitor);
         toolbar =findViewById(R.id.toolbar);
         greeting = findViewById(R.id.greeting);
@@ -99,12 +102,19 @@ public class MainActivity extends AppCompatActivity{
         startMenu = findViewById(R.id.startMenu);
         startMenuTitle = findViewById(R.id.startMenuTitle);
         allAppList = findViewById(R.id.allAppList);
+        caseView = findViewById(R.id.linearLayout2);
     }
 
     void viewStyle(){
-        button2.setTypeface(font,style);
-        button2.setTextColor(Color.RED);
         greeting.setTypeface(font,style);
+
+        //case color
+        if(pcParametersSave.CASE != null) {
+            caseView.setBackgroundColor(Color.parseColor(pcParametersSave.CASE.get("Color")));
+        }else{
+            caseView.setVisibility(View.INVISIBLE);
+            powerButton.setClickable(false);
+        }
     }
 
     public HashMap<String,String> words;
@@ -206,30 +216,27 @@ public class MainActivity extends AppCompatActivity{
     //кнопка питания пк
     private int PcWorkStatus = 0;
     private void buttonPC(){
-        button2.setOnClickListener(v -> {
+        powerButton.setOnClickListener(v -> {
             if(PcWorkStatus == 0) {
                 if (pcParametersSave.getPcWork()) {
                     if (pcParametersSave.currentCpuTemperature() <= pcParametersSave.maxCpuTemperature()) {
                         if (pcParametersSave.psuEnoughPower()) {
-                            button2.setText("ВКЛ");
-                            button2.setTextColor(Color.GREEN);
+                            powerButton.setForeground(getDrawable(R.drawable.on));
                             pcWorkOn();
                         } else {
                             if(pcParametersSave.PSU != null) {
                                 if (pcParametersSave.PSU.get("Защита").equals("-")) {
                                     pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]", null);
                                     blackDeadScreen(new String[]{"0xBB0004"});
-                                } else {
-                                    button2.setTextColor(Color.BLUE);
                                 }
                             }
-                            button2.setTextColor(Color.RED);
+                            powerButton.setForeground(getDrawable(R.drawable.off));
                         }
                     }
                     else{
                         pcParametersSave.setCpu(pcParametersSave.Cpu+"[Сломано]",null);
                         blackDeadScreen(new String[]{"0xBB0002"});
-                        button2.setTextColor(Color.RED);
+                        powerButton.setForeground(getDrawable(R.drawable.off));
                     }
                 }
                 else{
@@ -242,35 +249,50 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
             else{
-                Timer timer = new Timer();
-                TimerTask timerTask = new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(() -> pcWorkOff());
-                    }
-                };
-                timer.schedule(timerTask,450);
+                pcWorkOff();
             }
         });
     }
     // выключение пк
     public void pcWorkOff(){
-        PcWorkStatus = 0;
-        button2.setText("ВЫКЛ");
-        button2.setTextColor(Color.RED);
-        layout.setBackgroundColor(Color.BLACK);
-        toolbar.setVisibility(View.GONE);
-        desktop.setVisibility(View.GONE);
-
-        for(Program program:programArrayList){
-            if(program.status != -1) {
-                program.closeProgram(0);
+        player.stop();
+        player = MediaPlayer.create(this, R.raw.pc_work_end_sound);
+        player.setLooping(false);
+        player.start();
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(() ->{
+                    PcWorkStatus = 0;
+                    powerButton.setForeground(getDrawable(R.drawable.off));
+                    layout.setBackgroundColor(Color.BLACK);
+                    toolbar.setVisibility(View.GONE);
+                    desktop.setVisibility(View.GONE);
+                    startMenu.setVisibility(View.GONE);
+                    for(Program program:programArrayList){
+                        if(program.status != -1) {
+                            program.closeProgram(0);
+                        }
+                    }
+                    programArrayList.clear();
+                } );
             }
+        };
+        if(pcParametersSave.getMainDiskType().equals("SSD")){
+            timer.schedule(timerTask,1500);
         }
-        programArrayList.clear();
+        else{
+            timer.schedule(timerTask,3000);
+        }
     }
     // включение пк
     public void pcWorkOn(){
+        player = MediaPlayer.create(this, R.raw.pc_work_start_sound);
+        player.setVolume(0.15f,0.15f);
+        player.setLooping(false);
+        player.start();
+
         PcWorkStatus = 1;
         styleSave.getStyle();
         greeting.setVisibility(View.VISIBLE);
@@ -288,15 +310,21 @@ public class MainActivity extends AppCompatActivity{
                     toolbar.setVisibility(View.VISIBLE);
                     updateDesktop();
                     updateAppList();
+                    pcWorkSound();
                 });
             }
         };
         if(pcParametersSave.getMainDiskType().equals("SSD")){
-            timer.schedule(timerTask,300);
+            timer.schedule(timerTask,1500);
         }
         else{
-            timer.schedule(timerTask,900);
+            timer.schedule(timerTask,3000);
         }
+    }
+    private void pcWorkSound(){
+        player = MediaPlayer.create(this, R.raw.pc_work_sound);
+        player.setLooping(true);
+        player.start();
     }
 
     // экран смерти

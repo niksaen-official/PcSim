@@ -30,7 +30,7 @@ public class PlayerData {
         GraphicsCardList = preferences.getString("GraphicsCardList","").split(",");
         StorageDeviceList = preferences.getString("StorageDeviceList","").split(",");
         PowerSupplyList = preferences.getString("PowerSupplyList","").split(",");
-        Money = preferences.getInt("Money",16000);
+        Money = preferences.getInt("Money",160000);
     }
     public void setAllData(){
         preferences.edit().putString("PcCaseList", Others.ArrayToString(PcCaseList)).apply();

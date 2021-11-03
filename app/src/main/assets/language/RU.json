@@ -150,5 +150,8 @@
   "App Downloader": "Загрузчик приложений",
   "Installation Wizard": "Мастер установки",
   "Continue": "Продолжить",
-  "Miner": "Miner"
+  "Miner": "Miner",
+  "Disk": "Диск",
+  "Disk manager": "Диспетчер дисков",
+  "App manager": "Диспетчер приложений"
 }

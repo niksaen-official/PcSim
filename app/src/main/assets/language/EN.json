@@ -149,5 +149,8 @@
   "App Downloader": "App downloader",
   "Installation Wizard": "Installation Wizard",
   "Continue": "Continue",
-  "Miner": "Miner"
+  "Miner": "Miner",
+  "Disk":"Disk",
+  "Disk manager": "Disk manager",
+  "App manager":"App manager"
 }

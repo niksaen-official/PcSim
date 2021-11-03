@@ -3,14 +3,15 @@ package com.niksaen.pcsim.program.deviceManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
@@ -70,7 +71,7 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
         textView.setTypeface(font);
         textView.setText(str);
         ImageView imageView = view.findViewById(R.id.image);
-        imageView.setImageDrawable(new AssetFile(context).getImage("icons/"+type+".png"));
+        imageView.setImageDrawable(new AssetFile(context).getImage("icons/deviceManager/"+type+".png"));
 
         textView.setTextColor(TextColor_View);
         textView.setBackgroundColor(BackgroundColor_View);
