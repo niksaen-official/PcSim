@@ -3,22 +3,29 @@ package com.niksaen.pcsim.program.diskManager;
 import android.view.LayoutInflater;
 import android.widget.ListView;
 
-import com.niksaen.pcsim.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.window.WarningWindow;
+
+import java.util.HashMap;
 
 public class AppManager extends Program {
-    private String[] appList;
 
-    public void setAppList(String[] appList) {
-        this.appList = appList;
+    WarningWindow warningWindow;
+
+    private HashMap<String,String> diskData;
+
+    public void setDiskData(HashMap<String, String> diskData) {
+        this.diskData = diskData;
     }
 
     public AppManager(MainActivity activity) {
         super(activity);
         Title = "App manager";
-        ValueRam = new int[]{50,75};
-        ValueVideoMemory = new int[]{10,20};
+        ValueRam = new int[]{100,125};
+        ValueVideoMemory = new int[]{70,90};
+        warningWindow = new WarningWindow(activity);
     }
 
     private ListView appListView;
@@ -28,12 +35,23 @@ public class AppManager extends Program {
         appListView = mainWindow.findViewById(R.id.main);
         appListView.setBackgroundColor(activity.styleSave.ThemeColor1);
 
-        AppManagerAdapter adapter = new AppManagerAdapter(activity,0,appList);
+        AppManagerAdapter adapter = new AppManagerAdapter(activity,0,diskData.get("Содержимое").split(","));
         adapter.BackgroundColor = activity.styleSave.ThemeColor1;
         adapter.TextColor = activity.styleSave.TextColor;
+        adapter.activity = activity;
         appListView.setAdapter(adapter);
 
-
+        appListView.setOnItemClickListener((parent, view, position, id) -> {
+            warningWindow.setMessageText("Вы хотите удалить программу \""+activity.words.get(diskData.get("Содержимое").split(",")[position])+"\" ?\nПосле удаления ваш компьютер будет перезагржен!");
+            warningWindow.setButtonOkClick(v->{
+                diskData.put("Содержимое",diskData.get("Содержимое").replace(diskData.get("Содержимое").split(",")[position]+",",""));
+                activity.pcParametersSave.setData(diskData.get("name"),diskData);
+                activity.reloadPc();
+            });
+            warningWindow.setOkButtonText(activity.words.get("Yes"));
+            warningWindow.setCancelButtonText(activity.words.get("Cancel"));
+            warningWindow.openProgram();
+        });
         super.initProgram();
     }
 }

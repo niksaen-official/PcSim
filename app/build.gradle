@@ -9,8 +9,8 @@ android {
         applicationId "com.niksaen.pcsim"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 13
-        versionName "1.0.6 Alpha"
+        versionCode 14
+        versionName "1.0.7 Alpha"
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }

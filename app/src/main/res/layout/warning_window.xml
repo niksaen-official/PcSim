@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color6">
+    <include layout="@layout/toolbar_for_program"/>
+    <LinearLayout
+        android:gravity="end"
+        android:padding="8dp"
+        android:id="@+id/background"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/color17"
+        android:layout_height="match_parent">
+        <TextView
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textColor="#000000"
+            android:textSize="27sp" />
+        <LinearLayout
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/cancel"
+                android:padding="6dp"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:layout_marginStart="8dp"
+                android:id="@+id/ok"
+                android:padding="6dp"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

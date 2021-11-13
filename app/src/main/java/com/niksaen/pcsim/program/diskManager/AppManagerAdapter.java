@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.program.Program;
 
@@ -29,6 +30,7 @@ public class AppManagerAdapter extends ArrayAdapter<String> {
 
     public int BackgroundColor = Color.parseColor("#ffffff");
     public int TextColor = Color.parseColor("#000000");
+    public MainActivity activity;
 
     @NonNull
     @Override
@@ -38,17 +40,20 @@ public class AppManagerAdapter extends ArrayAdapter<String> {
         TextView appName = item.findViewById(R.id.app_name);
         TextView useSpace = item.findViewById(R.id.use_space);
 
-        appName.setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/pixelFont.ttf" ));
-        useSpace.setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/pixelFont.ttf" ));
+        appName.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/pixelFont.ttf"));
+        useSpace.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/pixelFont.ttf"));
 
         item.setBackgroundColor(BackgroundColor);
         appName.setTextColor(TextColor);
         useSpace.setTextColor(TextColor);
-
-        appIcon.setImageResource(Program.programIcon.get(getItem(position)));
-        appName.setText(getItem(position));
-        useSpace.setText(Program.programSize.get(getItem(position))+"Gb");
-
+        try {
+            appIcon.setImageResource(Program.programIcon.get(getItem(position)));
+            appName.setText(activity.words.get(getItem(position)));
+            useSpace.setText(Program.programSize.get(getItem(position)) + "Gb");
+        }catch (Exception e){
+            item.setVisibility(View.GONE);
+            System.out.println("not found: "+getItem(position));
+        }
         return item;
     }
 }

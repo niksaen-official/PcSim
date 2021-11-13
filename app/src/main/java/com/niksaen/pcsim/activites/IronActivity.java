@@ -1,4 +1,4 @@
-package com.niksaen.pcsim;
+package com.niksaen.pcsim.activites;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.StringArrayWork;

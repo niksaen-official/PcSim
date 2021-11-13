@@ -2,12 +2,13 @@ package com.niksaen.pcsim.program;
 
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.niksaen.pcsim.MainActivity;
+import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.PortableView;
@@ -79,7 +80,7 @@ public class Program {
         programIcon.put("Miner",R.drawable.icon_default);
         programIcon.put("Disk manager",R.drawable.icon_default);
         programIcon.put("App manager",R.drawable.icon_default);
-        programIcon.put("",0);
+        programIcon.put( "Warning",R.drawable.icon_warning);
 
         //вес програм
         programSize.put("Benchmark",2f);
@@ -183,7 +184,12 @@ public class Program {
                 } else {
                     mainWindow.setScaleX(1);
                     mainWindow.setScaleY(1);
-                    mainWindow.setOnTouchListener(null);
+                    mainWindow.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            return false;
+                        }
+                    });
                     mainWindow.setX(0);
                     mainWindow.setY(0);
                     v.setBackgroundResource(activity.styleSave.FullScreenMode2ImageRes);

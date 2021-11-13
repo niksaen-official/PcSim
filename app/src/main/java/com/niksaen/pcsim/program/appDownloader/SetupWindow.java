@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.niksaen.pcsim.MainActivity;
+import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.Program;
@@ -304,6 +304,7 @@ public class SetupWindow extends Program {
     public void closeProgram(int mode) {
         setupProgress = 0;
         timer.cancel();
+        setupText = "Подготовка к установке...\n";
         super.closeProgram(mode);
     }
 

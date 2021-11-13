@@ -1,10 +1,12 @@
-package com.niksaen.pcsim;
+package com.niksaen.pcsim.activites;
 
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import com.niksaen.pcsim.R;
 
 import java.util.Timer;
 import java.util.TimerTask;

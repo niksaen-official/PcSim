@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.niksaen.pcsim.MainActivity;
+import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.program.Program;
 
@@ -17,8 +17,8 @@ public class DiskManager extends Program {
     public DiskManager(MainActivity activity) {
         super(activity);
         Title = "Disk manager";
-        ValueRam = new int[]{50,75};
-        ValueVideoMemory = new int[]{10,20};
+        ValueRam = new int[]{100,125};
+        ValueVideoMemory = new int[]{70,90};
     }
 
     @Override

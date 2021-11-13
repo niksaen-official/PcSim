@@ -1,4 +1,4 @@
-package com.niksaen.pcsim;
+package com.niksaen.pcsim.activites;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.ItemClickSupport;
 import com.niksaen.pcsim.classes.StringArrayWork;

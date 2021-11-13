@@ -1,11 +1,10 @@
-package com.niksaen.pcsim;
+package com.niksaen.pcsim.activites;
 
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -25,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.BlackDeadScreen;
 import com.niksaen.pcsim.classes.StringArrayWork;
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity{
     public Typeface font;
     int style = Typeface.BOLD;
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +86,7 @@ public class MainActivity extends AppCompatActivity{
         viewStyle();
         initDrawer();
 
+        player = new MediaPlayer();
         buttonPC();
     }
 
@@ -141,6 +140,7 @@ public class MainActivity extends AppCompatActivity{
         drawer.setOnItemClickListener((parent, view, position, id) -> {
            if(position == 1){
                intent = new Intent(MainActivity.this, MainShopActivity.class);
+               player.pause();
                startActivity(intent);
            }
             if(position == 2){
@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity{
     // включение пк
     public void pcWorkOn(){
         player = MediaPlayer.create(this, R.raw.pc_work_start_sound);
-        player.setVolume(0.15f,0.15f);
+        player.setVolume(0.1f,0.1f);
         player.setLooping(false);
         player.start();
 
@@ -322,11 +322,11 @@ public class MainActivity extends AppCompatActivity{
         }
     }
     private void pcWorkSound(){
+        player.stop();
         player = MediaPlayer.create(this, R.raw.pc_work_sound);
         player.setLooping(true);
         player.start();
     }
-
     // экран смерти
     public void blackDeadScreen(String[] errorCode){
         pcWorkOff();
@@ -356,5 +356,35 @@ public class MainActivity extends AppCompatActivity{
             layout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         }
         new Handler().postDelayed(() -> textView.setVisibility(View.GONE),1200);
+    }
+    //перезагрузка пк
+    public void reloadPc(){
+        pcWorkOff();
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(()->{
+                    pcWorkOn();
+                });
+            }
+        };
+        timer.schedule(task,1000);
+    }
+
+    @Override
+    protected void onResume() {
+        if(player != null){
+            player.start();
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        if(player.isPlaying()){
+            player.stop();
+        }
+        super.onStop();
     }
 }

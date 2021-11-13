@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.niksaen.pcsim.MainActivity;
+import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -60,7 +60,7 @@ public class DiskManagerAdapter extends RecyclerView.Adapter<DiskManagerAdapter.
 
         holder.itemView.setOnClickListener(v -> {
             AppManager appManager = new AppManager(activity);
-            appManager.setAppList(disk.get("Содержимое").split(","));
+            appManager.setDiskData(diskList.get(position));
             appManager.openProgram();
         });
     }
