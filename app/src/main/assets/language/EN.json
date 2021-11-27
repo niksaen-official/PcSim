@@ -153,5 +153,8 @@
   "Disk":"Disk",
   "Disk manager": "Disk manager",
   "App manager":"App manager",
-  "Warning": "Warning"
+  "Warning": "Warning",
+  "Calculator": "Calculator",
+  "Close program": "Close program",
+  "Error": "Error"
 }

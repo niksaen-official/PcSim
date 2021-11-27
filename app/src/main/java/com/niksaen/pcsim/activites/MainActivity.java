@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
-import com.niksaen.pcsim.classes.BlackDeadScreen;
+import com.niksaen.pcsim.classes.ErrorCodeList;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.DesktopAdapter;
 import com.niksaen.pcsim.classes.adapters.DrawerAdapter;
@@ -342,7 +342,7 @@ public class MainActivity extends AppCompatActivity{
             StringBuilder text = new StringBuilder("Fatal error\n");
             StringBuilder text2 = new StringBuilder("Error code\n");
             for (String code : errorCode) {
-                text.append(count).append(". ").append(BlackDeadScreen.ErrorCodeText.get(code)).append("\n");
+                text.append(count).append(". ").append(ErrorCodeList.ErrorCodeText.get(code)).append("\n");
                 text2.append(count).append(". ").append(code).append("\n");
                 count++;
             }
@@ -351,7 +351,7 @@ public class MainActivity extends AppCompatActivity{
             layout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         }
         else{
-            String str = "Fatal error\n"+BlackDeadScreen.ErrorCodeText.get(errorCode[0])+"\nError code: "+errorCode[0];
+            String str = "Fatal error\n"+ErrorCodeList.ErrorCodeText.get(errorCode[0])+"\nError code: "+errorCode[0];
             textView.setText(str);
             layout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         }

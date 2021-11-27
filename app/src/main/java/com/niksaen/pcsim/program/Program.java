@@ -13,6 +13,7 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.program.appDownloader.AppDownloader;
+import com.niksaen.pcsim.program.calculator.Calculator;
 import com.niksaen.pcsim.program.deviceManager.DeviceManager;
 import com.niksaen.pcsim.program.diskManager.DiskManager;
 import com.niksaen.pcsim.program.fileManager.FileManager;
@@ -50,7 +51,8 @@ public class Program {
             "Task Manager",
             "App Downloader",
             "Miner",
-            "Disk manager"
+            "Disk manager",
+            "Calculator"
     };
     public static HashMap<String,Integer> programIcon = new HashMap<>();
     public static HashMap<String,Float> programSize = new HashMap<>();
@@ -81,6 +83,8 @@ public class Program {
         programIcon.put("Disk manager",R.drawable.icon_default);
         programIcon.put("App manager",R.drawable.icon_default);
         programIcon.put( "Warning",R.drawable.icon_warning);
+        programIcon.put( "Error",R.drawable.icon_error);
+        programIcon.put("Calculator",R.drawable.icon_default);
 
         //вес програм
         programSize.put("Benchmark",2f);
@@ -101,6 +105,7 @@ public class Program {
         programSize.put("App Downloader",0.1f);
         programSize.put("Miner",0.2f);
         programSize.put("Disk manager",0.1f);
+        programSize.put("Calculator",0.08f);
     }
 
     /** классы программ*/
@@ -124,6 +129,7 @@ public class Program {
         programHashMap.put("App Downloader", new AppDownloader(activity));
         programHashMap.put("Miner",new Miner(activity));
         programHashMap.put("Disk manager",new DiskManager(activity));
+        programHashMap.put("Calculator",new Calculator(activity));
     }
 
     /** @param  CurrentRamUse - показывает сколько программа использует оперативной памяти в мб*/

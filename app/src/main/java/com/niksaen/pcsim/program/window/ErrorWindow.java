@@ -9,32 +9,28 @@ import android.widget.TextView;
 
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activites.MainActivity;
-import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.classes.ErrorCodeList;
 import com.niksaen.pcsim.program.Program;
 
-public class WarningWindow extends Program {
-    private String messageText;
+public class ErrorWindow extends Program {
+    private String ErrorCode;
     private View.OnClickListener buttonOkClick = v -> { };
 
     public void setButtonOkClick(View.OnClickListener buttonOkClick) {
         this.buttonOkClick = buttonOkClick;
     }
 
-    private String okButtonText,cancelButtonText;
+    private String okButtonText;
     public void setOkButtonText(String okButtonText) {
         this.okButtonText = okButtonText;
     }
-    public void setCancelButtonText(String cancelButtonText) {
-        this.cancelButtonText = cancelButtonText;
+    public void setErrorCode(String ErrorCode) {
+        this.ErrorCode = ErrorCode;
     }
 
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
-    }
-
-    public WarningWindow(MainActivity activity) {
+    public ErrorWindow(MainActivity activity) {
         super(activity);
-        Title = "Warning";
+        Title = "Error";
         ValueRam = new int[]{10,25};
         ValueVideoMemory = new int[]{10,20};
     }
@@ -49,16 +45,21 @@ public class WarningWindow extends Program {
         style();
         super.initProgram();
 
-        message.setText(messageText);
+        titleTextView.setText("Error code: "+ErrorCode);
         ok.setOnClickListener(buttonOkClick);
+        buttonClose.setClickable(false);
+        buttonRollUp.setClickable(false);
         buttonFullscreenMode.setClickable(false);
         mainWindow.setScaleX(0.6f);
         mainWindow.setScaleY(0.6f);
-        PortableView portableView = new PortableView(mainWindow);
+        mainWindow.setZ(100f);
         buttonFullscreenMode.setBackgroundResource(activity.styleSave.FullScreenMode1ImageRes);
 
+        if(ErrorCode.contains("CL")){
+            message.setText("В работе программы произошёл сбой!!!\nОшибка: "+ ErrorCodeList.ErrorCodeText.get(ErrorCode) +"\nКод ошибки: "+ErrorCode);
+        }
         ok.setText(okButtonText);
-        cancel.setText(cancelButtonText);
+        cancel.setVisibility(View.GONE);
     }
     private void initView(){
         message = mainWindow.findViewById(R.id.message);
