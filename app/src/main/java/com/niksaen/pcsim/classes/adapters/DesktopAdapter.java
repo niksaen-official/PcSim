@@ -15,6 +15,7 @@ import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.ProgramListAndData;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +31,7 @@ public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHol
         this.context = activity.getBaseContext();
         this.apps = apps;
         this.activity = activity;
-        Program programForGetHashmap = new Program(activity);
+        ProgramListAndData programForGetHashmap = new ProgramListAndData();
         programForGetHashmap.initHashMap(activity);
         programHashMap = programForGetHashmap.programHashMap;
     }
@@ -46,7 +47,7 @@ public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHol
     @Override
     public void onBindViewHolder(@NonNull @NotNull DesktopAdapter.ViewHolder holder, int position) {
         if(!(apps[position].startsWith(Program.DriversPrefix) || apps[position].startsWith(Program.AdditionalSoftPrefix))) {
-            holder.app_icon.setImageResource(Program.programIcon.get(apps[position]));
+            holder.app_icon.setImageResource(ProgramListAndData.programIcon.get(apps[position]));
             holder.app_name.setText(activity.words.get(apps[position]));
             holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
             holder.itemView.setOnClickListener(v -> {

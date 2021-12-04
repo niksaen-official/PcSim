@@ -13,9 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.program.ProgramListAndData;
 
 public class AppManagerAdapter extends ArrayAdapter<String> {
 
@@ -47,9 +47,9 @@ public class AppManagerAdapter extends ArrayAdapter<String> {
         appName.setTextColor(TextColor);
         useSpace.setTextColor(TextColor);
         try {
-            appIcon.setImageResource(Program.programIcon.get(getItem(position)));
+            appIcon.setImageResource(ProgramListAndData.programIcon.get(getItem(position)));
             appName.setText(activity.words.get(getItem(position)));
-            useSpace.setText(Program.programSize.get(getItem(position)) + "Gb");
+            useSpace.setText(ProgramListAndData.programSize.get(getItem(position)) + "Gb");
         }catch (Exception e){
             item.setVisibility(View.GONE);
             System.out.println("not found: "+getItem(position));

@@ -48,13 +48,15 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
     public int BackgroundColor1 = Color.parseColor("#ffffff");
     public int BackgroundColor2 = Color.parseColor("#ffffff");
     public int TextColor = Color.parseColor("#000000");
+    public int TextSize = 27;
+    public int TextStyle = Typeface.NORMAL;
 
     // for spinner
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull @NotNull ViewGroup parent) {
         TextView textView = new TextView(context);
-        textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"));
-        textView.setTextSize(27);
+        textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"),TextStyle);
+        textView.setTextSize(TextSize);
         textView.setPadding(12,12,12,12);
         textView.setTextColor(TextColor);
         textView.setBackgroundColor(BackgroundColor1);
@@ -66,8 +68,8 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull @NotNull ViewGroup parent) {
         TextView textView = new TextView(context);
-        textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"));
-        textView.setTextSize(27);
+        textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"),TextStyle);
+        textView.setTextSize(TextSize);
         textView.setPadding(12,12,12,12);
         textView.setTextColor(TextColor);
         textView.setText(strings[position]);

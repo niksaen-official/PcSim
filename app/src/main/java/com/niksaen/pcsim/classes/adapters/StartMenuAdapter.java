@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.ProgramListAndData;
 
 public class StartMenuAdapter extends  ArrayAdapter<String> {
 
@@ -42,7 +43,7 @@ public class StartMenuAdapter extends  ArrayAdapter<String> {
             ImageView programIcon = item.findViewById(R.id.app_icon);
 
             if (activity.styleSave.StartMenuAppIconVisible)
-                programIcon.setImageResource(Program.programIcon.get(getItem(position)));
+                programIcon.setImageResource(ProgramListAndData.programIcon.get(getItem(position)));
             else
                 programIcon.setVisibility(View.GONE);
 

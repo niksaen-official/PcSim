@@ -11,6 +11,7 @@ import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.ProgramListAndData;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -207,14 +208,14 @@ public class SetupWindow extends Program {
                         }
                         // загрузка главного архива
                         case 3:{
-                            if(activity.pcParametersSave.getEmptyStorageSpace(diskHashMap.get(disk))>= programSize.get(programForSetup)){
+                            if(activity.pcParametersSave.getEmptyStorageSpace(diskHashMap.get(disk))>= ProgramListAndData.programSize.get(programForSetup)){
                                 setupText += "Места на диске достаточно для установки программы.\nСкачивание архивов...\n";
                                 timer.cancel();
                                 timer = new Timer();
                                 if(diskHashMap.get(disk).get("Тип").equals("HDD")) {
-                                    timer.scheduleAtFixedRate(downloadArchiveTask, 0, (long) ((programSize.get(programForSetup) * 70)*10 ));
+                                    timer.scheduleAtFixedRate(downloadArchiveTask, 0, (long) ((ProgramListAndData.programSize.get(programForSetup) * 70)*10 ));
                                 }else {
-                                    timer.scheduleAtFixedRate(downloadArchiveTask, 0, (long) ((programSize.get(programForSetup) * 70)*7));
+                                    timer.scheduleAtFixedRate(downloadArchiveTask, 0, (long) ((ProgramListAndData.programSize.get(programForSetup) * 70)*7));
                                 }
                             }
                             else {
@@ -232,9 +233,9 @@ public class SetupWindow extends Program {
                             timer.cancel();
                             timer = new Timer();
                             if(diskHashMap.get(disk).get("Тип").equals("HDD")) {
-                                timer.scheduleAtFixedRate(unpackingArchiveTask, 0, (long) ((programSize.get(programForSetup) * 300)));
+                                timer.scheduleAtFixedRate(unpackingArchiveTask, 0, (long) ((ProgramListAndData.programSize.get(programForSetup) * 300)));
                             }else {
-                                timer.scheduleAtFixedRate(unpackingArchiveTask, 0, (long) ((programSize.get(programForSetup) * 210)));
+                                timer.scheduleAtFixedRate(unpackingArchiveTask, 0, (long) ((ProgramListAndData.programSize.get(programForSetup) * 210)));
                             }
                             break;
                         }

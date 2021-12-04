@@ -142,7 +142,7 @@
   "Yes": "Yes",
   "No": "No",
   "Back": "Back",
-  "Confirm Purchase":"Confirm Purchase",
+  "Confirm Purchase":"Confirm purchase",
   "Total cost": "Total cost",
   "Name of product": "Name of product",
   "The price of the product": "The price of the product",
@@ -156,5 +156,16 @@
   "Warning": "Warning",
   "Calculator": "Calculator",
   "Close program": "Close program",
-  "Error": "Error"
+  "Error": "Error",
+  "Tic Tac Toe": "Tic Tac Toe",
+  "New Game": "New Game",
+  " vs Bots":" vs Bots",
+  " vs Player": " vs Player",
+  "GStore":"GStore",
+  "Tic Tac Toe:Description": "A logical game between two opponents on a square field of 3 by 3 cells. One of the players plays with crosses, the other with noughts.",
+  "Application description page": "Application description page",
+  "Buy for": "Buy for",
+  "Game": "Game",
+  "Program": "Program",
+  "Install": "Install"
 }

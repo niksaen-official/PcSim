@@ -1,4 +1,4 @@
-package com.niksaen.pcsim.program.appDownloader;
+package com.niksaen.pcsim.program.gStore;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -22,8 +22,8 @@ import com.niksaen.pcsim.save.Settings;
 
 import java.util.HashMap;
 
-public class AppDownloaderListAdapter extends ArrayAdapter<String> {
-    public AppDownloaderListAdapter(@NonNull Context context, int resource) {
+public class GStoreAdapter extends ArrayAdapter<String> {
+    public GStoreAdapter(@NonNull Context context, int resource) {
         super(context, resource);
         getLanguage();
     }
@@ -36,22 +36,27 @@ public class AppDownloaderListAdapter extends ArrayAdapter<String> {
 
     @Override
     public int getCount() {
-        return ProgramListAndData.FreeAppList.length;
+        return ProgramListAndData.DontFreeAppList.length;
     }
 
-    public int BackgroundColor = Color.parseColor("#ffffff");
-    public int TextColor = Color.parseColor("#000000");
+    @Nullable
+    @Override
+    public String getItem(int position) {
+        return ProgramListAndData.DontFreeAppList[position];
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View main = LayoutInflater.from(getContext()).inflate(R.layout.item_start_menu,null);
+        main.setPadding(8,8,8,8);
         TextView textView = main.findViewById(R.id.app_name);
         textView.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/pixelFont.ttf"));
-        textView.setTextColor(TextColor);
-        textView.setBackgroundColor(BackgroundColor);
-        textView.setText(words.get(ProgramListAndData.FreeAppList[position]));
+        textView.setTextColor(Color.parseColor("#FFFFFF"));
+        textView.setBackgroundColor(Color.parseColor("#0042A5"));
+        textView.setText(words.get(ProgramListAndData.DontFreeAppList[position]));
         ImageView image = main.findViewById(R.id.app_icon);
-        image.setImageResource(ProgramListAndData.programIcon.get(ProgramListAndData.FreeAppList[position]));
+        image.setImageResource(ProgramListAndData.programIcon.get(ProgramListAndData.DontFreeAppList[position]));
         return main;
     }
 }

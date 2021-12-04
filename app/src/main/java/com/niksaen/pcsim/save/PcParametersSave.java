@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.ProgramListAndData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -576,7 +577,7 @@ public class PcParametersSave {
                 if (item.startsWith(Program.DriversPrefix) || item.startsWith(Program.AdditionalSoftPrefix)) {
                     continue;
                 }
-                allSpace -= Program.programSize.get(item) * 1024;
+                allSpace -= ProgramListAndData.programSize.get(item) * 1024;
             }
             return allSpace;
         }else {

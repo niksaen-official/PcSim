@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.ProgramListAndData;
 
 public class AcceptPolitic extends Program {
 
@@ -39,12 +40,12 @@ public class AcceptPolitic extends Program {
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_disk_change,null);
         initView();
         style();
-        appIcon.setImageResource(Program.programIcon.get(programForSetup));
-        programName.setText("Вас приветствует мастер установки "+activity.words.get(programForSetup));
+        appIcon.setImageResource(ProgramListAndData.programIcon.get(programForSetup));
+        programName.setText("Вас приветствует мастер установки "+"\""+activity.words.get(programForSetup)+"\"");
 
         continueButton.setText("Далее >");
         cancelButton.setText(activity.words.get("Cancel"));
-        text.setText("Программа установит "+activity.words.get(programForSetup) +" на ваш компьютер.\n\nРекомендуется закрыть все прочие программы перед тем, как продолжитью.\n\nНажмите \"Далее\" чтобы продолжить, или нажмите \"Отмена\" для выхода.");
+        text.setText("Программа установит "+"\""+activity.words.get(programForSetup) +"\""+" на ваш компьютер.\n\nРекомендуется закрыть все прочие программы перед тем, как продолжитью.\n\nНажмите \"Далее\" чтобы продолжить, или нажмите \"Отмена\" для выхода.");
 
         continueButton.setOnClickListener(v -> {
             prepareForInstall.setProgramForSetup(programForSetup);

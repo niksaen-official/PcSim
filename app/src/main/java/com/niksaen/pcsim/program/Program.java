@@ -8,23 +8,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.PortableView;
-import com.niksaen.pcsim.program.appDownloader.AppDownloader;
-import com.niksaen.pcsim.program.calculator.Calculator;
-import com.niksaen.pcsim.program.deviceManager.DeviceManager;
-import com.niksaen.pcsim.program.diskManager.DiskManager;
-import com.niksaen.pcsim.program.fileManager.FileManager;
-import com.niksaen.pcsim.program.miner.Miner;
-import com.niksaen.pcsim.program.musicplayer.MusicPlayer;
-import com.niksaen.pcsim.program.notepad.Notepad;
-import com.niksaen.pcsim.program.paint.Paint;
-import com.niksaen.pcsim.program.styleSettings.StyleSettings;
-import com.niksaen.pcsim.program.videoplayer.VideoPlayer;
-
-import java.util.HashMap;
 
 /*
 * Базовый класс для создания программ
@@ -32,105 +19,6 @@ import java.util.HashMap;
 public class Program {
     public static String AdditionalSoftPrefix = "SOFT: ";
     public static String DriversPrefix = "DRIVER: ";
-
-    /** список всех программ*/
-    public static String[] programList = {
-        "Benchmark",
-            "Browser",
-            "CPU Overclocking",
-            "RAM Overclocking",
-            "GPU Overclocking",
-            "Temperature Viewer",
-            "View Power Supply Load",
-            "Device manager",
-            "File manager",
-            "Music player",
-            "Video player",
-            "Personalization",
-            "Paint",
-            "Task Manager",
-            "App Downloader",
-            "Miner",
-            "Disk manager",
-            "Calculator"
-    };
-    public static HashMap<String,Integer> programIcon = new HashMap<>();
-    public static HashMap<String,Float> programSize = new HashMap<>();
-    static {
-        // иконки программ
-        programIcon.put("Benchmark",R.drawable.icon_benchmark);
-        programIcon.put("Browser",R.drawable.icon_browser);
-        programIcon.put("CPU Overclocking",R.drawable.icon_cputweaker);
-        programIcon.put("RAM Overclocking",R.drawable.icon_ramoverclocking);
-        programIcon.put("GPU Overclocking",R.drawable.icon_gpuiverclocking);
-        programIcon.put("Temperature Viewer",R.drawable.icon_temperatureviewer);
-        programIcon.put("View Power Supply Load",R.drawable.icon_viewpsuload);
-        programIcon.put("Device manager",R.drawable.icon_checkiron);
-        programIcon.put("File manager",R.drawable.icon_filemanager);
-        programIcon.put("Music player",R.drawable.icon_musicplayer);
-        programIcon.put("Video player",R.drawable.icon_videoplayer);
-        programIcon.put("Notepad",R.drawable.icon_notepad);
-        programIcon.put("Personalization",R.drawable.icon_personalization);
-        programIcon.put("Paint",R.drawable.icon_paint);
-        programIcon.put("Image Viewer",R.drawable.image_file);
-        programIcon.put("Text Viewer",R.drawable.text_file);
-        programIcon.put("Opening file",R.drawable.folder_icon);
-        programIcon.put("Saving a file",R.drawable.folder_icon);
-        programIcon.put("Task Manager",R.drawable.icon_taskmanager);
-        programIcon.put("App Downloader",R.drawable.icon_downloader);
-        programIcon.put("Installation Wizard",R.drawable.icon_default);
-        programIcon.put("Miner",R.drawable.icon_default);
-        programIcon.put("Disk manager",R.drawable.icon_default);
-        programIcon.put("App manager",R.drawable.icon_default);
-        programIcon.put( "Warning",R.drawable.icon_warning);
-        programIcon.put( "Error",R.drawable.icon_error);
-        programIcon.put("Calculator",R.drawable.icon_default);
-
-        //вес програм
-        programSize.put("Benchmark",2f);
-        programSize.put("Browser",0.5f);
-        programSize.put("CPU Overclocking",1f);
-        programSize.put("RAM Overclocking",1f);
-        programSize.put("GPU Overclocking",1.5f);
-        programSize.put("Temperature Viewer",0.25f);
-        programSize.put("View Power Supply Load",0.25f);
-        programSize.put("Device manager",0.1f);
-        programSize.put("File manager",0.65f);
-        programSize.put("Music player",1.9f);
-        programSize.put("Video player",1.6f);
-        programSize.put("Notepad",1.1f);
-        programSize.put("Personalization",5f);
-        programSize.put("Paint",3.9f);
-        programSize.put("Task Manager",0.23f);
-        programSize.put("App Downloader",0.1f);
-        programSize.put("Miner",0.2f);
-        programSize.put("Disk manager",0.1f);
-        programSize.put("Calculator",0.08f);
-    }
-
-    /** классы программ*/
-    public HashMap<String,Program> programHashMap = new HashMap<>();
-    public void initHashMap(MainActivity activity){
-        programHashMap.put("Benchmark",new Benchmark(activity));
-        programHashMap.put("Browser",new Browser(activity));
-        programHashMap.put("CPU Overclocking",new CPU_Overclocking(activity));
-        programHashMap.put("RAM Overclocking",new RAM_Overclocking(activity));
-        programHashMap.put("GPU Overclocking",new GPU_Overclocking(activity));
-        programHashMap.put("Temperature Viewer",new TemperatureViewer(activity));
-        programHashMap.put("View Power Supply Load",new ViewPowerSupplyLoad(activity));
-        programHashMap.put("Device manager",new DeviceManager(activity));
-        programHashMap.put("File manager",new FileManager(activity));
-        programHashMap.put("Music player",new MusicPlayer(activity));
-        programHashMap.put("Video player",new VideoPlayer(activity));
-        programHashMap.put("Notepad",new Notepad(activity));
-        programHashMap.put("Personalization",new StyleSettings(activity));
-        programHashMap.put("Paint",new Paint(activity));
-        programHashMap.put("Task Manager", activity.taskManager);
-        programHashMap.put("App Downloader", new AppDownloader(activity));
-        programHashMap.put("Miner",new Miner(activity));
-        programHashMap.put("Disk manager",new DiskManager(activity));
-        programHashMap.put("Calculator",new Calculator(activity));
-    }
 
     /** @param  CurrentRamUse - показывает сколько программа использует оперативной памяти в мб*/
     public int CurrentRamUse;
@@ -175,9 +63,6 @@ public class Program {
         buttonClose = mainWindow.findViewById(R.id.close);
         buttonFullscreenMode = mainWindow.findViewById(R.id.fullscreenMode);
         buttonRollUp = mainWindow.findViewById(R.id.roll_up);
-
-        CurrentRamUse = Others.random(ValueRam[0],ValueRam[1]);
-        CurrentVideoMemoryUse = Others.random(ValueVideoMemory[0],ValueVideoMemory[1]);
         // настройка кнопок
         buttonClose.setOnClickListener(v->closeProgram(1));
         buttonFullscreenMode.setOnClickListener(v -> {
@@ -218,6 +103,8 @@ public class Program {
     // сначала необходимо инициализировать программу
     public void openProgram(){
         initProgram();
+        CurrentRamUse = Others.random(ValueRam[0],ValueRam[1]);
+        CurrentVideoMemoryUse = Others.random(ValueVideoMemory[0],ValueVideoMemory[1]);
         if(activity.pcParametersSave.getEmptyRam(activity.programArrayList) > CurrentRamUse) {
             if(activity.pcParametersSave.getEmptyVideoMemory(activity.programArrayList)>CurrentVideoMemoryUse) {
                 if (status == -1) {

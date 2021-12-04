@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:padding="4dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <Button
+        android:background="@color/color17"
+        android:id="@+id/cell"
+        android:layout_width="70dp"
+        android:layout_height="70dp">
+    </Button>
+</LinearLayout>

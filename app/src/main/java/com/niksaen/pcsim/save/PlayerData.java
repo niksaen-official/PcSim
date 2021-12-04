@@ -15,6 +15,7 @@ public class PlayerData {
     public String[] StorageDeviceList;
     public String[] PowerSupplyList;
     public int Money;
+    public String[] ListPurchasedPrograms;
 
     private SharedPreferences preferences;
     public PlayerData(Context context){
@@ -31,6 +32,7 @@ public class PlayerData {
         StorageDeviceList = preferences.getString("StorageDeviceList","").split(",");
         PowerSupplyList = preferences.getString("PowerSupplyList","").split(",");
         Money = preferences.getInt("Money",16000);
+        ListPurchasedPrograms = preferences.getString("ListPurchasedPrograms","").split(",");
     }
     public void setAllData(){
         preferences.edit().putString("PcCaseList", Others.ArrayToString(PcCaseList)).apply();
@@ -42,5 +44,6 @@ public class PlayerData {
         preferences.edit().putString("StorageDeviceList", Others.ArrayToString(StorageDeviceList)).apply();
         preferences.edit().putString("PowerSupplyList", Others.ArrayToString(PowerSupplyList)).apply();
         preferences.edit().putInt("Money",Money).apply();
+        preferences.edit().putString("ListPurchasedPrograms", Others.ArrayToString(ListPurchasedPrograms)).apply();
     }
 }

@@ -3,9 +3,10 @@ package com.niksaen.pcsim.program.appDownloader;
 import android.view.LayoutInflater;
 import android.widget.ListView;
 
-import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.ProgramListAndData;
 
 public class AppDownloader extends Program {
     AcceptPolitic acceptPolitic;
@@ -25,7 +26,7 @@ public class AppDownloader extends Program {
         initViewAndStyle();
 
         appList.setOnItemClickListener((parent, view, position, id) -> {
-            acceptPolitic.setProgramForSetup(Program.programList[position]);
+            acceptPolitic.setProgramForSetup(ProgramListAndData.FreeAppList[position]);
             acceptPolitic.openProgram();
             closeProgram(1);
         });

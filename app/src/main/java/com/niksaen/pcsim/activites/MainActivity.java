@@ -32,6 +32,7 @@ import com.niksaen.pcsim.classes.adapters.DrawerAdapter;
 import com.niksaen.pcsim.classes.adapters.StartMenuAdapter;
 import com.niksaen.pcsim.classes.adapters.ToolbarAdapter;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.ProgramListAndData;
 import com.niksaen.pcsim.program.taskManager.TaskManager;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
     private void updateStartMenu(){
-        Program program = new Program(this);
+        ProgramListAndData program = new ProgramListAndData();
         program.initHashMap(this);
         startMenu.setBackgroundColor(styleSave.StartMenuColor);
         startMenuTitle.setTextColor(styleSave.StartMenuTextColor);
@@ -348,13 +349,12 @@ public class MainActivity extends AppCompatActivity{
             }
             String str = text.toString() + text2.toString();
             textView.setText(str);
-            layout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         }
         else{
             String str = "Fatal error\n"+ErrorCodeList.ErrorCodeText.get(errorCode[0])+"\nError code: "+errorCode[0];
             textView.setText(str);
-            layout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         }
+        layout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         new Handler().postDelayed(() -> textView.setVisibility(View.GONE),1200);
     }
     //перезагрузка пк

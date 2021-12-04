@@ -74,5 +74,7 @@ public class ErrorWindow extends Program {
         cancel.setTypeface(activity.font, Typeface.BOLD);
         ok.setTypeface(activity.font, Typeface.BOLD);
         message.setTypeface(activity.font, Typeface.BOLD);
+        ok.setTextColor(activity.styleSave.TextButtonColor);
+        cancel.setTextColor(activity.styleSave.TextButtonColor);
     }
 }
