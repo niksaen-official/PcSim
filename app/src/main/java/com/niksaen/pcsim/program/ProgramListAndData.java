@@ -44,7 +44,7 @@ public class ProgramListAndData {
             "RAM Overclocking",
             "GPU Overclocking",
             "Benchmark",
-            "Miner",
+            "Miner"
     };
 
     public static HashMap<String,String> programType = new HashMap<>();
@@ -59,7 +59,7 @@ public class ProgramListAndData {
         programPrice.put("GPU Overclocking",690);
         programPrice.put("Benchmark",400);
         programPrice.put("Miner",200);
-        //установка типа приложения только для платных
+        //установка типа приложения, только для платных
         programType.put("Tic Tac Toe","Game");
         programType.put("CPU Overclocking","Program");
         programType.put("RAM Overclocking","Program");

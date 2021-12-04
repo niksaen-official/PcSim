@@ -23,7 +23,7 @@ public class TicTacToe extends Program {
     public TicTacToe(MainActivity activity) {
         super(activity);
         Title = "Tic Tac Toe";
-        ValueRam = new int[]{1022,1024};
+        ValueRam = new int[]{1025,1224};
         ValueVideoMemory = new int[]{400,500};
     }
 
@@ -104,5 +104,14 @@ public class TicTacToe extends Program {
         adapter.reset = reset;
         field.setLayoutManager(new GridLayoutManager(activity,3));
         field.setAdapter(adapter);
+    }
+
+    @Override
+    public void openProgram() {
+        if(Integer.parseInt(activity.pcParametersSave.CPU.get("Кол-во потоков"))>=4){
+            if(activity.pcParametersSave.GPU1!=null || activity.pcParametersSave.GPU2!=null) {
+                super.openProgram();
+            }
+        }
     }
 }

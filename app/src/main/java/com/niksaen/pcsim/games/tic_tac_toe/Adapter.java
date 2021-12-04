@@ -1,6 +1,5 @@
 package com.niksaen.pcsim.games.tic_tac_toe;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,28 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.classes.Others;
 
 import org.jetbrains.annotations.NotNull;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
-    private final String TAG_X = "a";
-    private final String TAG_O = "b";
-    private final String TAG_EMPTY = "0";
-
-    public final String MODE_PVE = "PvE";
-    public final String MODE_PVP = "PvP";
-
     public String[] field = {
-            TAG_EMPTY,TAG_EMPTY,TAG_EMPTY,
-            TAG_EMPTY,TAG_EMPTY,TAG_EMPTY,
-            TAG_EMPTY,TAG_EMPTY,TAG_EMPTY
+            "0","0","0",
+            "0","0","0",
+            "0","0","0"
     };
-    public Activity activity;
+    public MainActivity activity;
     public TextView textView;
     public Button reset;
-    public Adapter(Activity activity){
+    public Adapter(MainActivity activity){
         this.activity = activity;
     }
     @NonNull
@@ -44,40 +37,40 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
     int count = 0;
     public int isPlayer = 1;
-    public String Type = MODE_PVE;
+    public String Type = "PvE";
     @Override
     public void onBindViewHolder(@NonNull @NotNull Adapter.ViewHolder holder, int position) {
-        if(field[position] == TAG_O){
+        if(field[position] == "b"){
             holder.cell.setBackgroundResource(R.drawable.circle);
         }
-        else if(field[position] == TAG_X){
+        else if(field[position] == "a"){
             holder.cell.setBackgroundResource(R.drawable.cross);
         }
         holder.cell.setOnClickListener(v->{
             if (isPlayer == 1 && count<8){
-                if(field[position] == TAG_EMPTY){
-                    field[position] = TAG_X;
+                if(field[position] == "0"){
+                    field[position] = "a";
                     isPlayer = 0;
                     count++;
                     holder.cell.setBackgroundResource(R.drawable.cross);
-                    if(validateForWin() == TAG_X){
-                        textView.setText(validateForWin());
+                    if(validateForWin() == "Win cross"){
+                        textView.setText(activity.words.get("Cross win"));
                         isPlayer = -1;
                         reset.setVisibility(View.VISIBLE);
                     }
-                    if (Type == MODE_PVE && count<8) {
+                    if (Type == "PvE" && count<8) {
                         bot();
                     }
                 }
             }
-            if(isPlayer == 0 && Type == MODE_PVP && count<8){
-                if(field[position] == TAG_EMPTY){
-                    field[position] = TAG_O;
+            if(isPlayer == 0 && Type == "PvP" && count<8){
+                if(field[position] == "0"){
+                    field[position] = "b";
                     isPlayer = 1;
                     count++;
                     holder.cell.setBackgroundResource(R.drawable.circle);
-                    if(validateForWin() == TAG_O){
-                        textView.setText(validateForWin());
+                    if(validateForWin() == "Win circle"){
+                        textView.setText(activity.words.get("Circle win"));
                         isPlayer = -1;
                         reset.setVisibility(View.VISIBLE);
                     }
@@ -101,74 +94,65 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
         }
     }
     public String validateForWin(){
-        if((field[0] == TAG_X && field[1] == TAG_X && field[2] == TAG_X)||//p,p,p,*,*,*,*,*,*
-                (field[3] == TAG_X && field[4] == TAG_X && field[5] == TAG_X)||//*,*,*,p,p,p,*,*,*
-                (field[6] == TAG_X && field[7] == TAG_X && field[8] == TAG_X)||// *,*,*,*,*,*,p,p,p,
-                (field[0] == TAG_X && field[3] == TAG_X && field[6] == TAG_X)||//p,*,*,p,*,*,p,*,*
-                (field[1] == TAG_X && field[4] == TAG_X && field[7] == TAG_X)||//*,p,*,*,p,*,*,p,*
-                (field[2] == TAG_X && field[5] == TAG_X && field[8] == TAG_X)||// *,*,p,*,*,p,*,*,p,
-                (field[0] == TAG_X && field[4] == TAG_X && field[8] == TAG_X)||//p,*,*,*,p,*,*,*,p
-                (field[2] == TAG_X && field[4] == TAG_X && field[6] == TAG_X)//*,*,p,*,p,*,p,*,*
+        if((field[0] == "a" && field[1] == "a" && field[2] == "a")||//p,p,p,*,*,*,*,*,*
+                (field[3] == "a" && field[4] == "a" && field[5] == "a")||//*,*,*,p,p,p,*,*,*
+                (field[6] == "a" && field[7] == "a" && field[8] == "a")||// *,*,*,*,*,*,p,p,p,
+                (field[0] == "a" && field[3] == "a" && field[6] == "a")||//p,*,*,p,*,*,p,*,*
+                (field[1] == "a" && field[4] == "a" && field[7] == "a")||//*,p,*,*,p,*,*,p,*
+                (field[2] == "a" && field[5] == "a" && field[8] == "a")||// *,*,p,*,*,p,*,*,p,
+                (field[0] == "a" && field[4] == "a" && field[8] == "a")||//p,*,*,*,p,*,*,*,p
+                (field[2] == "a" && field[4] == "a" && field[6] == "a")//*,*,p,*,p,*,p,*,*
         ){
-            return TAG_X;
+            return "Win cross";
         }
-        else if((field[0] == TAG_O && field[1] == TAG_O && field[2] == TAG_O)||
-                (field[3] == TAG_O && field[4] == TAG_O && field[5] == TAG_O)||
-                (field[6] == TAG_O && field[7] == TAG_O && field[8] == TAG_O)||
-                (field[0] == TAG_O && field[3] == TAG_O && field[6] == TAG_O)||
-                (field[1] == TAG_O && field[4] == TAG_O && field[7] == TAG_O)||
-                (field[2] == TAG_O && field[5] == TAG_O && field[8] == TAG_O)||
-                (field[0] == TAG_O && field[4] == TAG_O && field[8] == TAG_O)||
-                (field[2] == TAG_O && field[4] == TAG_O && field[6] == TAG_O)
+        else if((field[0] == "b" && field[1] == "b" && field[2] == "b")||
+                (field[3] == "b" && field[4] == "b" && field[5] == "b")||
+                (field[6] == "b" && field[7] == "b" && field[8] == "b")||
+                (field[0] == "b" && field[3] == "b" && field[6] == "b")||
+                (field[1] == "b" && field[4] == "b" && field[7] == "b")||
+                (field[2] == "b" && field[5] == "b" && field[8] == "b")||
+                (field[0] == "b" && field[4] == "b" && field[8] == "b")||
+                (field[2] == "b" && field[4] == "b" && field[6] == "b")
         ){
-            return TAG_O;
-        }
-        else{
-            return "Draw";
-        }
-    }
-    public String validateForWin(String[] field2){
-        if((field2[0] == TAG_X && field2[1] == TAG_X && field2[2] == TAG_X)||//p,p,p,*,*,*,*,*,*
-                (field2[3] == TAG_X && field2[4] == TAG_X && field2[5] == TAG_X)||//*,*,*,p,p,p,*,*,*
-                (field2[6] == TAG_X && field2[7] == TAG_X && field2[8] == TAG_X)||// *,*,*,*,*,*,p,p,p,
-                (field2[0] == TAG_X && field2[3] == TAG_X && field2[6] == TAG_X)||//p,*,*,p,*,*,p,*,*
-                (field2[1] == TAG_X && field2[4] == TAG_X && field2[7] == TAG_X)||//*,p,*,*,p,*,*,p,*
-                (field2[2] == TAG_X && field2[5] == TAG_X && field2[8] == TAG_X)||// *,*,p,*,*,p,*,*,p,
-                (field2[0] == TAG_X && field2[4] == TAG_X && field2[8] == TAG_X)||//p,*,*,*,p,*,*,*,p
-                (field2[2] == TAG_X && field2[4] == TAG_X && field2[6] == TAG_X)//*,*,p,*,p,*,p,*,*
-        ){
-            return TAG_X;
-        }
-        else if((field2[0] == TAG_O && field2[1] == TAG_O && field2[2] == TAG_O)||
-                (field2[3] == TAG_O && field2[4] == TAG_O && field2[5] == TAG_O)||
-                (field2[6] == TAG_O && field2[7] == TAG_O && field2[8] == TAG_O)||
-                (field2[0] == TAG_O && field2[3] == TAG_O && field2[6] == TAG_O)||
-                (field2[1] == TAG_O && field2[4] == TAG_O && field2[7] == TAG_O)||
-                (field2[2] == TAG_O && field2[5] == TAG_O && field2[8] == TAG_O)||
-                (field2[0] == TAG_O && field2[4] == TAG_O && field2[8] == TAG_O)||
-                (field2[2] == TAG_O && field2[4] == TAG_O && field2[6] == TAG_O)
-        ){
-            return TAG_O;
+            return "Win circle";
         }
         else{
             return "Draw";
         }
     }
     private void bot(){
-        while (true) {
-            int cellId = Others.random(0, 8);
-            if (field[cellId] == TAG_EMPTY) {
-                field[cellId] = TAG_O;
+        while(true){
+            int cellId = Others.random(0,8);
+            if(field[cellId]=="0"){
+                field[cellId] = "b";
                 isPlayer = 1;
                 count++;
                 notifyItemChanged(cellId);
-                if (validateForWin() == TAG_O) {
-                    textView.setText(validateForWin());
+                if(validateForWin() == "Win circle"){
+                    textView.setText(activity.words.get("Circle win"));
                     isPlayer = -1;
                     reset.setVisibility(View.VISIBLE);
                 }
                 break;
             }
         }
+    }
+    private void botV2(){
+        if(field[0] == "a" && field[2]=="0") {field[2] = "b"; }
+        else if(field[0] == "a" && field[1]=="0") {field[1] = "b"; }
+        else if(field[0] == "a" && field[3]=="0") {field[3] = "b"; }
+        else if(field[0] == "a" && field[6]=="0") {field[6] = "b"; }
+
+        else if(field[1] == "a" && field[0]=="0") {field[0] = "b"; }
+        else if(field[1] == "a" && field[2]=="0") {field[2] = "b"; }
+        else if(field[1] == "a" && field[7]=="0") {field[7] = "b"; }
+
+        else if(field[2] == "a" && field[5]=="0") {field[5] = "b"; }
+        else if(field[2] == "a" && field[7]=="0") {field[7] = "b"; }
+        else if(field[2] == "a" && field[0]=="0") {field[0] = "b"; }
+
+        else if(field[3] == "a" && field[0]=="0") {field[0] = "b"; }
+        else if(field[3] == "a" && field[6]=="0") {field[6] = "b"; }
+        else if(field[3] == "a" && field[5]=="0") {field[5] = "b"; }
     }
 }

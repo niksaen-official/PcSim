@@ -52,15 +52,20 @@ public class AppDescriptionPage extends Program {
                     data.setAllData();
                     forBuy.closeProgram(1);
                     next.setText(activity.words.get("Install"));
+                    PrepareForInstall prepareForInstall = new PrepareForInstall(activity);
+                    prepareForInstall.setProgramForSetup(ProgramForInstall);
+                    prepareForInstall.openProgram();
                 });
                 forBuy.openProgram();
             });
         }else{
             next.setText(activity.words.get("Install"));
             next.setOnClickListener(v->{
-                PrepareForInstall prepareForInstall = new PrepareForInstall(activity);
-                prepareForInstall.setProgramForSetup(ProgramForInstall);
-                prepareForInstall.openProgram();
+                if(next.getText().toString().equals(activity.words.get("Install"))) {
+                    PrepareForInstall prepareForInstall = new PrepareForInstall(activity);
+                    prepareForInstall.setProgramForSetup(ProgramForInstall);
+                    prepareForInstall.openProgram();
+                }
             });
         }
     }

@@ -126,14 +126,12 @@ public class GPU_Overclocking extends Program {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                throughput = k*progress;
                 frequency = progress;
                 main = (progress /power_coefficient)/5;
                 temperature = main*temperature_coefficient/1.75f;
                 power =(main*power_coefficient)/1.6f+power_fan;
                 parameters.setText(
                         activity.words.get("Frequency")+": "+progress+"MHz"+"\n" +
-                                activity.words.get("Throughput")+": "+throughput+"Gb/s"+"\n" +
                                 activity.words.get("Temperature")+": "+temperature+"C\n" +
                                 activity.words.get("Energy consumption")+": "+power+"W");
             }
@@ -144,14 +142,12 @@ public class GPU_Overclocking extends Program {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if(seekBar.getProgress() < 500){
                     seekBar.setProgress(500);
-                    throughput = k*500;
                     frequency = 500;
                     main = (500 /power_coefficient)/5;
                     temperature = main*temperature_coefficient/1.75f;
                     power = (main*power_coefficient)/1.6f+power_fan;
                     parameters.setText(
                             activity.words.get("Frequency")+": "+500+"MHz"+"\n" +
-                                    activity.words.get("Throughput")+": "+throughput+"Gb/s"+"\n" +
                                     activity.words.get("Temperature")+": "+temperature+"C\n" +
                                     activity.words.get("Maximum temperature")+": "+"75C\n" +
                                     activity.words.get("Energy consumption")+": "+power+"W");
@@ -164,7 +160,6 @@ public class GPU_Overclocking extends Program {
         power = (main*power_coefficient)/1.6f+power_fan;
         parameters.setText(
                 activity.words.get("Frequency")+": "+frequency+"MHz"+"\n" +
-                        activity.words.get("Throughput")+": "+throughput+"Gb/s"+"\n" +
                         activity.words.get("Temperature")+": "+temperature+"C\n" +
                         activity.words.get("Maximum temperature")+": "+"75C\n" +
                         activity.words.get("Energy consumption")+": "+power+"W");
