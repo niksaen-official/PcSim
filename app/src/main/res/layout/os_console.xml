@@ -1,0 +1,51 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1B1B1B"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/include2"
+    app:layout_constraintVertical_bias="0.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListView
+        android:padding="8dp"
+        android:id="@+id/output_field"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="@color/color17"
+        android:dividerHeight="-1dp"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/input_field"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:padding="8dp"
+        android:id="@+id/input_field"
+        android:background="@color/color30"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color17"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/enter"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:padding="8dp"
+        android:id="@+id/enter"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/color30"
+        android:text="->"
+        android:textColor="@color/color17"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/output_field" />
+</androidx.constraintlayout.widget.ConstraintLayout>

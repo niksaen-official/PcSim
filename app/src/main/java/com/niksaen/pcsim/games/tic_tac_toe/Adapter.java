@@ -137,22 +137,4 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
             }
         }
     }
-    private void botV2(){
-        if(field[0] == "a" && field[2]=="0") {field[2] = "b"; }
-        else if(field[0] == "a" && field[1]=="0") {field[1] = "b"; }
-        else if(field[0] == "a" && field[3]=="0") {field[3] = "b"; }
-        else if(field[0] == "a" && field[6]=="0") {field[6] = "b"; }
-
-        else if(field[1] == "a" && field[0]=="0") {field[0] = "b"; }
-        else if(field[1] == "a" && field[2]=="0") {field[2] = "b"; }
-        else if(field[1] == "a" && field[7]=="0") {field[7] = "b"; }
-
-        else if(field[2] == "a" && field[5]=="0") {field[5] = "b"; }
-        else if(field[2] == "a" && field[7]=="0") {field[7] = "b"; }
-        else if(field[2] == "a" && field[0]=="0") {field[0] = "b"; }
-
-        else if(field[3] == "a" && field[0]=="0") {field[0] = "b"; }
-        else if(field[3] == "a" && field[6]=="0") {field[6] = "b"; }
-        else if(field[3] == "a" && field[5]=="0") {field[5] = "b"; }
-    }
 }

@@ -162,12 +162,18 @@
   " vs Bots":" vs Bots",
   " vs Player": " vs Player",
   "GStore":"GStore",
-  "Tic Tac Toe:Description": "A logical game between two opponents on a square field of 3 by 3 cells. One of the players plays with crosses, the other with noughts.",
+  "Tic Tac Toe: Description": "A logic game between two opponents on a 3 by 3 square field. One of the players plays with crosses , the other - toe . \nSystem requirements: \nProcessor with 4 or more streams \nDiscrete video card with more than 1GB memory ",
   "Application description page": "Application description page",
   "Buy for": "Buy for",
   "Game": "Game",
   "Program": "Program",
   "Install": "Install",
   "Cross win": "Cross win",
-  "Circle win": "Circle win"
+  "Circle win": "Circle win",
+  "OS Installer:Description": "CD installer for the operating system.\nInstructions not included.",
+  "Change disk": "Change disk",
+  "CMD": "CMD",
+  "CPU Overclocking: Description": "A program designed to overclock the processor. \nBefore starting, it is recommended to update the drivers and protocols.",
+  "GPU Overclocking: Description": "A program designed to overclock a video card. \nBefore work, it is recommended to update drivers and protocols.",
+  "RAM Overclocking: Description": "A program designed to overclock RAM. \nBefore work, it is recommended to update the protocols."
 }

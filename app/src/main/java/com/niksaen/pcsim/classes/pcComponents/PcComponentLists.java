@@ -11,6 +11,7 @@ public class PcComponentLists {
     public static ArrayList<String> GraphicsCardList = new ArrayList<>();
     public static ArrayList<String> DataStorageList = new ArrayList<>();
     public static ArrayList<String> PowerSupplyList = new ArrayList<>();
+    public static ArrayList<String> DiskList = new ArrayList<>();
     static {
         setCaseList();
         setMoboList();
@@ -20,6 +21,7 @@ public class PcComponentLists {
         setGpuList();
         setDataList();
         setPsuList();
+        setDiskList();
     }
 
     private static void setCaseList(){
@@ -96,5 +98,8 @@ public class PcComponentLists {
         PowerSupplyList.add("WVolt WV500W12V");
         PowerSupplyList.add("ZShark 600W12V");
         PowerSupplyList.add("Office 700W12");
+    }
+    private static void setDiskList(){
+        DiskList.add("OS Installer");
     }
 }

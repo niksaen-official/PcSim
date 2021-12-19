@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 public class ShopDialog {
     private Context context;
+    private String name;
     public ShopDialog(Context context){
         this.context = context;
     }
@@ -38,6 +39,7 @@ public class ShopDialog {
     public View.OnClickListener buyClickAction;
     public void create(PcComponent pcComponent){
         getLanguage();
+        name = pcComponent.Name;
         builder = new AlertDialog.Builder(context);
         View main = LayoutInflater.from(context).inflate(R.layout.dialog_shop,null);
         TextView Title = main.findViewById(R.id.title);
@@ -160,6 +162,10 @@ public class ShopDialog {
             case PcComponent.PowerSupply:{
                 result = words.get("Power")+": "+parameters.get("Мощность")+"W\n"+
                         words.get("Protection")+": "+parameters.get("Защита")+"\n";
+                break;
+            }
+            case PcComponent.Disk:{
+                result += words.get(name+":Description")+"\n";
                 break;
             }
         }

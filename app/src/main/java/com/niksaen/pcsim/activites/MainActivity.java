@@ -26,16 +26,20 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.ErrorCodeList;
+import com.niksaen.pcsim.classes.PopuListView.PopupListView;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.DesktopAdapter;
+import com.niksaen.pcsim.classes.adapters.DiskChangeAdapter;
 import com.niksaen.pcsim.classes.adapters.DrawerAdapter;
 import com.niksaen.pcsim.classes.adapters.StartMenuAdapter;
 import com.niksaen.pcsim.classes.adapters.ToolbarAdapter;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.ProgramListAndData;
+import com.niksaen.pcsim.program.cmd.CMD;
 import com.niksaen.pcsim.program.taskManager.TaskManager;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
+import com.niksaen.pcsim.save.PlayerData;
 import com.niksaen.pcsim.save.Settings;
 import com.niksaen.pcsim.save.StyleSave;
 
@@ -54,10 +58,12 @@ public class MainActivity extends AppCompatActivity{
     RecyclerView appList;
     ListView allAppList;
     private View caseView;
+    Button startMenuOpener;
 
     public PcParametersSave pcParametersSave;
     public StyleSave styleSave;
     public ConstraintLayout layout;
+    public String DiskInDrive;
 
     private MediaPlayer player;
     public Typeface font;
@@ -89,6 +95,13 @@ public class MainActivity extends AppCompatActivity{
 
         player = new MediaPlayer();
         buttonPC();
+
+        startMenuOpener.setOnLongClickListener(v -> {
+            CMD cmd = new CMD(MainActivity.this);
+            cmd.setType(CMD.WINDOW);
+            cmd.openProgram();
+            return false;
+        });
     }
 
     void initView(){
@@ -103,6 +116,7 @@ public class MainActivity extends AppCompatActivity{
         startMenuTitle = findViewById(R.id.startMenuTitle);
         allAppList = findViewById(R.id.allAppList);
         caseView = findViewById(R.id.linearLayout2);
+        startMenuOpener = findViewById(R.id.menu);
     }
 
     void viewStyle(){
@@ -271,6 +285,7 @@ public class MainActivity extends AppCompatActivity{
                     toolbar.setVisibility(View.GONE);
                     desktop.setVisibility(View.GONE);
                     startMenu.setVisibility(View.GONE);
+                    greeting.setVisibility(View.GONE);
                     for(Program program:programArrayList){
                         if(program.status != -1) {
                             program.closeProgram(0);
@@ -304,13 +319,18 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void run() {
                 runOnUiThread(() -> {
-                    greeting.setVisibility(View.GONE);
-                    layout.setBackgroundResource(styleSave.BackgroundResource);
-                    desktop.setVisibility(View.VISIBLE);
-                    toolbar.setBackgroundColor(styleSave.ToolbarColor);
-                    toolbar.setVisibility(View.VISIBLE);
-                    updateDesktop();
                     updateAppList();
+                    if(StringArrayWork.ArrayListToString(apps).contains("OS,")) {
+                        greeting.setVisibility(View.GONE);
+                        layout.setBackgroundResource(styleSave.BackgroundResource);
+                        desktop.setVisibility(View.VISIBLE);
+                        toolbar.setBackgroundColor(styleSave.ToolbarColor);
+                        toolbar.setVisibility(View.VISIBLE);
+                        updateDesktop();
+                    }else{
+                        CMD cmd = new CMD(MainActivity.this);
+                        cmd.openProgram();
+                    }
                     pcWorkSound();
                 });
             }
@@ -327,6 +347,19 @@ public class MainActivity extends AppCompatActivity{
         player = MediaPlayer.create(this, R.raw.pc_work_sound);
         player.setLooping(true);
         player.start();
+    }
+
+    //выбор диска
+    public void changeCD(View view){
+        String[] strings = new PlayerData(this).DiskSoftList;
+        ((TextView)view).setText(words.get("Change disk"));
+        PopupListView listView = new PopupListView((TextView) view,MainActivity.this);
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            DiskInDrive = strings[position];
+            listView.dismiss();
+        });
+        listView.setAdapter(new DiskChangeAdapter(this,strings));
+        listView.show();
     }
     // экран смерти
     public void blackDeadScreen(String[] errorCode){
@@ -351,8 +384,7 @@ public class MainActivity extends AppCompatActivity{
             textView.setText(str);
         }
         else{
-            String str = "Fatal error\n"+ErrorCodeList.ErrorCodeText.get(errorCode[0])+"\nError code: "+errorCode[0];
-            textView.setText(str);
+
         }
         layout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         new Handler().postDelayed(() -> textView.setVisibility(View.GONE),1200);

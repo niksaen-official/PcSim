@@ -36,8 +36,8 @@ public class StartMenuAdapter extends  ArrayAdapter<String> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View item = LayoutInflater.from(getContext()).inflate(R.layout.item_start_menu, null);
-        if(!(getItem(position).startsWith(Program.DriversPrefix) || getItem(position).startsWith(Program.AdditionalSoftPrefix))) {
+        View item = LayoutInflater.from(getContext()).inflate(R.layout.item_start_menu,null);
+        if(!(getItem(position).startsWith(Program.DriversPrefix) || getItem(position).startsWith(Program.AdditionalSoftPrefix) || getItem(position).startsWith("OS") || getItem(position).startsWith("CMD"))) {
             item.setBackgroundColor(activity.styleSave.StartMenuColor);
             TextView programName = item.findViewById(R.id.app_name);
             ImageView programIcon = item.findViewById(R.id.app_icon);
@@ -55,6 +55,7 @@ public class StartMenuAdapter extends  ArrayAdapter<String> {
                 programName.setVisibility(View.GONE);
             }
         }else {
+            item = new View(getContext());
             item.setPadding(0,0,0,0);
             item.setVisibility(View.GONE);
         }

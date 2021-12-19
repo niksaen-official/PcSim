@@ -46,7 +46,7 @@ public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull DesktopAdapter.ViewHolder holder, int position) {
-        if(!(apps[position].startsWith(Program.DriversPrefix) || apps[position].startsWith(Program.AdditionalSoftPrefix))) {
+        if(!(apps[position].startsWith(Program.DriversPrefix) || apps[position].startsWith(Program.AdditionalSoftPrefix) || apps[position].startsWith("OS") || apps[position].startsWith("CMD"))) {
             holder.app_icon.setImageResource(ProgramListAndData.programIcon.get(apps[position]));
             holder.app_name.setText(activity.words.get(apps[position]));
             holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));

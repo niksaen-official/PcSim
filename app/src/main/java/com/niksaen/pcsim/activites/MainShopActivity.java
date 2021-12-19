@@ -97,6 +97,7 @@ public class MainShopActivity extends AppCompatActivity {
         strings.add(PcComponent.GPU);
         strings.add(PcComponent.StorageDevice);
         strings.add(PcComponent.PowerSupply);
+        strings.add(PcComponent.Disk);
 
         baseAdapter = new ShopAdapter(this,strings,"icon");
         adapters.add(new ShopAdapter(this, PcComponentLists.CaseList,PcComponent.CASE));
@@ -107,6 +108,7 @@ public class MainShopActivity extends AppCompatActivity {
         adapters.add(new ShopAdapter(this, PcComponentLists.GraphicsCardList,PcComponent.GPU));
         adapters.add(new ShopAdapter(this, PcComponentLists.DataStorageList,PcComponent.StorageDevice));
         adapters.add(new ShopAdapter(this, PcComponentLists.PowerSupplyList,PcComponent.PowerSupply));
+        adapters.add(new ShopAdapter(this, PcComponentLists.DiskList,PcComponent.Disk));
     }
 
     private void updateCart(){
@@ -120,7 +122,6 @@ public class MainShopActivity extends AppCompatActivity {
     private ArrayList<PcComponent> componentArrayList = new ArrayList<>();
 
     private void logic(){
-
         //add item to cart
         ItemClickSupport.addTo(main).setOnItemClickListener((recyclerView, position, v) -> {
             if(main.getAdapter() == baseAdapter){
@@ -200,6 +201,10 @@ public class MainShopActivity extends AppCompatActivity {
                             }
                             case PcComponent.PowerSupply:{
                                 playerData.PowerSupplyList = StringArrayWork.add(playerData.PowerSupplyList,pcComponent.Name);
+                                break;
+                            }
+                            case PcComponent.Disk:{
+                                playerData.DiskSoftList = StringArrayWork.add(playerData.DiskSoftList,pcComponent.Name);
                                 break;
                             }
                         }

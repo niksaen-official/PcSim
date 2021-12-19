@@ -18,6 +18,7 @@ public class PcComponent {
     public final static String GPU = "Graphics card";
     public final static String StorageDevice = "Storage device";
     public final static String PowerSupply = "Power supply";
+    public final static String Disk = "Disk";
 
     public String Type;
     public String Name;

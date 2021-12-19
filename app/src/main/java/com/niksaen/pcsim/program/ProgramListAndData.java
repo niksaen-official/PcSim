@@ -99,6 +99,7 @@ public class ProgramListAndData {
         programIcon.put("GStore",R.drawable.icon_gamestore);
         programIcon.put("Application description page",R.drawable.icon_gamestore);
         programIcon.put("Confirm Purchase",R.drawable.icon_gamestore);
+        programIcon.put("CMD",R.drawable.icon_default);
 
         //вес програм и игр
         programSize.put("Benchmark",2f);
@@ -122,6 +123,8 @@ public class ProgramListAndData {
         programSize.put("Calculator",0.2f);
         programSize.put( "Tic Tac Toe",3f);
         programSize.put("GStore",0.1f);
+        programSize.put("OS Installer",8f);
+        programSize.put("OS",32f);
     }
 
     /** классы программ*/
