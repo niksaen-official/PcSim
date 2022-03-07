@@ -9,11 +9,10 @@ import android.widget.TextView;
 
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activites.MainActivity;
-import com.niksaen.pcsim.classes.ErrorCodeList;
 import com.niksaen.pcsim.program.Program;
 
 public class ErrorWindow extends Program {
-    private String ErrorCode;
+    private String Text;
     private View.OnClickListener buttonOkClick = v -> { };
 
     public void setButtonOkClick(View.OnClickListener buttonOkClick) {
@@ -24,8 +23,8 @@ public class ErrorWindow extends Program {
     public void setOkButtonText(String okButtonText) {
         this.okButtonText = okButtonText;
     }
-    public void setErrorCode(String ErrorCode) {
-        this.ErrorCode = ErrorCode;
+    public void setMessage(String message) {
+        this.Text = message;
     }
 
     public ErrorWindow(MainActivity activity) {
@@ -45,7 +44,7 @@ public class ErrorWindow extends Program {
         style();
         super.initProgram();
 
-        titleTextView.setText("Error code: "+ErrorCode);
+        titleTextView.setText("Error");
         ok.setOnClickListener(buttonOkClick);
         buttonClose.setClickable(false);
         buttonRollUp.setClickable(false);
@@ -55,9 +54,7 @@ public class ErrorWindow extends Program {
         mainWindow.setZ(100f);
         buttonFullscreenMode.setBackgroundResource(activity.styleSave.FullScreenMode1ImageRes);
 
-        if(ErrorCode.contains("CL")){
-            message.setText("В работе программы произошёл сбой!!!\nОшибка: "+ ErrorCodeList.ErrorCodeText.get(ErrorCode) +"\nКод ошибки: "+ErrorCode);
-        }
+        message.setText(Text);
         ok.setText(okButtonText);
         cancel.setVisibility(View.GONE);
     }

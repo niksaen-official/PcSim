@@ -119,7 +119,7 @@ public class MainShopActivity extends AppCompatActivity {
         moneyView.setText(playerData.Money+"R");
     }
 
-    private ArrayList<PcComponent> componentArrayList = new ArrayList<>();
+    private final ArrayList<PcComponent> componentArrayList = new ArrayList<>();
 
     private void logic(){
         //add item to cart
@@ -196,7 +196,7 @@ public class MainShopActivity extends AppCompatActivity {
                                 break;
                             }
                             case PcComponent.StorageDevice:{
-                                playerData.StorageDeviceList = StringArrayWork.add(playerData.GraphicsCardList,pcComponent.Name);
+                                playerData.StorageDeviceList = StringArrayWork.add(playerData.StorageDeviceList,pcComponent.Name);
                                 break;
                             }
                             case PcComponent.PowerSupply:{

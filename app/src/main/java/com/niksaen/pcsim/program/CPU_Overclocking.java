@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
+import com.niksaen.pcsim.program.window.WarningWindow;
 
 public class CPU_Overclocking extends Program {
 
@@ -59,8 +61,15 @@ public class CPU_Overclocking extends Program {
 
     @Override
     public void openProgram() {
-        if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.DriversPrefix+"CPU_PRO")) {
+        if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForCPU+activity.pcParametersSave.Cpu+"\n"+DriverInstaller.EXTENDED_TYPE)) {
             super.openProgram();
+        }else{
+            if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForCPU+activity.pcParametersSave.Cpu)){
+                WarningWindow window = new WarningWindow(activity);
+                window.setMessageText(activity.words.get("An error has occurred in the program")+"\n"+activity.words.get("Installed drivers are not compatible with this program"));
+                window.setButtonOkClick(v->window.closeProgram(1));
+                window.openProgram();
+            }
         }
     }
 
@@ -94,46 +103,52 @@ public class CPU_Overclocking extends Program {
                             activity.words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
                                     activity.words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
                                     activity.words.get("Energy consumption") + ": " + (int) power + "W");
+                }else{
+                    WarningWindow window = new WarningWindow(activity);
+                    window.setMessageText(activity.words.get("An error has occurred in the program")+" "+activity.words.get(Title)+"\n"+activity.words.get("Error code:")+ "0xCC1001\n");
+                    window.setButtonOkClick(v->window.closeProgram(1));
+                    window.openProgram();
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (activity.pcParametersSave.CPU.get("Возможность разгона").equals("+")) {
+                    if (seekBar.getProgress() < 1000) {
+                        seekBar.setProgress(1000);
+                        frequency.setText(activity.words.get("Frequency") + ": " + 1000 + "MHz");
+                        current_frequency = 1000;
+                        power = (1000 * 0.025);
+                        current_temperature = 1000 * 0.016f - (Double.parseDouble(activity.pcParametersSave.COOLER.get("TDP")) - Integer.parseInt(activity.pcParametersSave.CPU.get("TDP"))) / 8;
+                        temperature.setText(
+                                activity.words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
+                                        activity.words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
+                                        activity.words.get("Energy consumption") + ": " + (int) power + "W");
                     }
                 }
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    if (activity.pcParametersSave.CPU.get("Возможность разгона").equals("+")) {
-                        if (seekBar.getProgress() < 1000) {
-                            seekBar.setProgress(1000);
-                            frequency.setText(activity.words.get("Frequency") + ": " + 1000 + "MHz");
-                            current_frequency = 1000;
-                            power = (1000 * 0.025);
-                            current_temperature = 1000 * 0.016f - (Double.parseDouble(activity.pcParametersSave.COOLER.get("TDP")) - Integer.parseInt(activity.pcParametersSave.CPU.get("TDP"))) / 8;
-                            temperature.setText(
-                                    activity.words.get("CPU temperature") + ": " + (int) current_temperature + "C\n" +
-                                            activity.words.get("Maximum cpu temperature") + ": " + (int) max_temperature + "C\n" +
-                                            activity.words.get("Energy consumption") + ": " + (int) power + "W");
-                        }
-                    }
-                }
-            });
-            save.setOnClickListener(v -> {
-                activity.pcParametersSave.CPU.put("Частота", String.valueOf(current_frequency));
-                activity.pcParametersSave.setCpu(activity.pcParametersSave.Cpu, activity.pcParametersSave.CPU);
-                if (current_temperature > max_temperature && !activity.pcParametersSave.psuEnoughPower()) {
-                    activity.pcParametersSave.setCpu(activity.pcParametersSave.Cpu + "[Сломано]", null);
+            }
+        });
+        save.setOnClickListener(v -> {
+            activity.pcParametersSave.CPU.put("Частота", String.valueOf(current_frequency));
+            activity.pcParametersSave.setCpu(activity.pcParametersSave.Cpu, activity.pcParametersSave.CPU);
+            if (current_temperature > max_temperature + 20) {
+                activity.pcParametersSave.setCpu(activity.pcParametersSave.Cpu + "[Сломано]", null);
+                activity.pcParametersSave.setCooler(activity.pcParametersSave.Cooler + "[Сломано]", null);
+                activity.blackDeadScreen(new String[]{activity.words.get("The cooler is damaged"), activity.words.get("Processor overheating")});
+            }
+            else if (current_temperature > max_temperature && !activity.pcParametersSave.psuEnoughPower()) {
+                activity.pcParametersSave.setCpu(activity.pcParametersSave.Cpu + "[Сломано]", null);
+                if(activity.pcParametersSave.PSU.get("Защита").equals("-")) {
                     activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]", null);
-                    activity.blackDeadScreen(new String[]{"0xAA0001", "0xBB0004"});
-                } else if (current_temperature > max_temperature) {
-                    activity.pcParametersSave.setCpu(activity.pcParametersSave.Cpu + "[Сломано]", null);
-                    activity.blackDeadScreen(new String[]{"0xAA0001"});
-                } else if (current_temperature > max_temperature + 20) {
-                    activity.pcParametersSave.setCpu(activity.pcParametersSave.Cpu + "[Сломано]", null);
-                    activity.pcParametersSave.setCooler(activity.pcParametersSave.Cooler + "[Сломано]", null);
-                    activity.blackDeadScreen(new String[]{"0xAA0001", "0xBB0004"});
                 }
-            });
-            super.initProgram();
+                activity.blackDeadScreen(new String[]{activity.words.get("Processor overheating"), activity.words.get("The power supply is overloaded")});
+            } else if (current_temperature > max_temperature) {
+                activity.pcParametersSave.setCpu(activity.pcParametersSave.Cpu + "[Сломано]", null);
+                activity.blackDeadScreen(new String[]{activity.words.get("Processor overheating")});
+            }
+        });
+        super.initProgram();
     }
 }

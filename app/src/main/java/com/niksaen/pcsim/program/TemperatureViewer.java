@@ -5,7 +5,9 @@ import android.widget.ListView;
 
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.CustomListViewAdapter;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 
 import java.util.ArrayList;
 
@@ -29,32 +31,34 @@ public class TemperatureViewer extends Program {
     }
 
     CustomListViewAdapter adapter;
-    private void initAdapter(){
+    private void initAdapter() {
         /* получение температуры железа*/
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add(activity.words.get("CPU") +": "+activity.pcParametersSave.Cpu +"\n"+
-                activity.words.get("Temperature") +": "+activity.pcParametersSave.currentCpuTemperature()+"C");
-        if(activity.pcParametersSave.RAM1 != null){
+        if (StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForCPU + activity.pcParametersSave.Cpu)) {
+            arrayList.add(activity.words.get("CPU") + ": " + activity.pcParametersSave.Cpu
+                    + "\n" + activity.words.get("Temperature") + ": " + activity.pcParametersSave.currentCpuTemperature() + "C");
+        }
+        if(activity.pcParametersSave.RAM1 != null && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM + activity.pcParametersSave.Ram1)){
             arrayList.add(activity.words.get("RAM") +"("+activity.words.get("Slot")+" 1) : "+activity.pcParametersSave.Ram1
                     +"\n"+ activity.words.get("Temperature") +": "+activity.pcParametersSave.currentRamTemperature(activity.pcParametersSave.RAM1)+"C");
         }
-        if(activity.pcParametersSave.RAM2 != null){
+        if(activity.pcParametersSave.RAM2 != null && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM + activity.pcParametersSave.Ram2)){
             arrayList.add(activity.words.get("RAM") +"("+activity.words.get("Slot")+" 2) : "+activity.pcParametersSave.Ram2
                     +"\n"+ activity.words.get("Temperature") +": "+activity.pcParametersSave.currentRamTemperature(activity.pcParametersSave.RAM2)+"C");
         }
-        if(activity.pcParametersSave.RAM3 != null){
+        if(activity.pcParametersSave.RAM3 != null && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM + activity.pcParametersSave.Ram3)){
             arrayList.add(activity.words.get("RAM") +"("+activity.words.get("Slot")+" 3) : "+activity.pcParametersSave.Ram3
                     +"\n"+ activity.words.get("Temperature") +": "+activity.pcParametersSave.currentRamTemperature(activity.pcParametersSave.RAM3)+"C");
         }
-        if(activity.pcParametersSave.RAM4 != null){
+        if(activity.pcParametersSave.RAM4 != null  && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM + activity.pcParametersSave.Ram4)){
             arrayList.add(activity.words.get("RAM") +"("+activity.words.get("Slot")+" 4) : "+activity.pcParametersSave.Ram4
                     +"\n"+ activity.words.get("Temperature") +": "+activity.pcParametersSave.currentRamTemperature(activity.pcParametersSave.RAM4)+"C");
         }
-        if(activity.pcParametersSave.GPU1 != null){
+        if(activity.pcParametersSave.GPU1 != null && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForGPU + activity.pcParametersSave.Gpu1)){
             arrayList.add(activity.words.get("Graphics card") +" : "+activity.pcParametersSave.Gpu1
                     +"\n"+ activity.words.get("Temperature") +": "+activity.pcParametersSave.currentGpuTemperature(activity.pcParametersSave.GPU1)+"C");
         }
-        if(activity.pcParametersSave.GPU2 != null){
+        if(activity.pcParametersSave.GPU2 != null && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForGPU + activity.pcParametersSave.Gpu1)){
             arrayList.add(activity.words.get("Graphics card") +"("+activity.words.get("Slot")+" 2) : "+activity.pcParametersSave.Gpu2
                     +"\n"+ activity.words.get("Temperature") +": "+activity.pcParametersSave.currentGpuTemperature(activity.pcParametersSave.GPU2)+"C");
         }

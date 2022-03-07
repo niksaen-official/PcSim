@@ -15,6 +15,7 @@ import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.CustomListViewAdapter;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
 
 public class PrepareForInstall extends Program {
@@ -49,11 +50,11 @@ public class PrepareForInstall extends Program {
         initView();
         viewStyle();
 
-        text.setText("Выберите диск для установки и необходимые опции");
-        next.setText("Далее >");
+        text.setText(activity.words.get("Select the drive to install and the required options"));
+        next.setText(activity.words.get("Next"+" >"));
         cancel.setText(activity.words.get("Cancel"));
-        addToDesktop.setText("Добавить иконку на рабочий стол");
-        installAdditionalSoft.setText("Установить необходимое дополнительное ПО");
+        addToDesktop.setText(activity.words.get("Add an icon to the desktop"));
+        installAdditionalSoft.setText(activity.words.get("Install the required additional software"));
 
         changeDisk.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -122,23 +123,29 @@ public class PrepareForInstall extends Program {
         changeDisk.setAdapter(adapter);
     }
     private String[] getDiskList(){
-        String[] diskList = new String[]{"Выберите диск:"};
-        if(activity.pcParametersSave.DATA1 != null){
+        String[] diskList = new String[]{activity.words.get("Select drive:")};
+        if(activity.pcParametersSave.DATA1 != null
+                && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForStorageDevices+activity.pcParametersSave.Data1)){
             diskList = StringArrayWork.add(diskList,activity.pcParametersSave.DATA1.get("name"));
         }
-        if(activity.pcParametersSave.DATA2 != null){
+        if(activity.pcParametersSave.DATA2 != null
+                && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForStorageDevices+activity.pcParametersSave.Data2)){
             diskList = StringArrayWork.add(diskList,activity.pcParametersSave.DATA2.get("name"));
         }
-        if(activity.pcParametersSave.DATA3 != null){
+        if(activity.pcParametersSave.DATA3 != null
+                && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForStorageDevices+activity.pcParametersSave.Data3)){
             diskList = StringArrayWork.add(diskList,activity.pcParametersSave.DATA3.get("name"));
         }
-        if(activity.pcParametersSave.DATA4 != null){
+        if(activity.pcParametersSave.DATA4 != null
+                && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForStorageDevices+activity.pcParametersSave.Data4)){
             diskList = StringArrayWork.add(diskList,activity.pcParametersSave.DATA4.get("name"));
         }
-        if(activity.pcParametersSave.DATA5 != null){
+        if(activity.pcParametersSave.DATA5 != null
+                && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForStorageDevices+activity.pcParametersSave.Data5)){
             diskList = StringArrayWork.add(diskList,activity.pcParametersSave.DATA5.get("name"));
         }
-        if(activity.pcParametersSave.DATA6 != null){
+        if(activity.pcParametersSave.DATA6 != null
+                && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForStorageDevices+activity.pcParametersSave.Data6)){
             diskList = StringArrayWork.add(diskList,activity.pcParametersSave.DATA6.get("name"));
         }
         return diskList;

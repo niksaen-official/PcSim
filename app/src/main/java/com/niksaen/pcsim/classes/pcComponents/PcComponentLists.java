@@ -1,6 +1,10 @@
 package com.niksaen.pcsim.classes.pcComponents;
 
+import com.niksaen.pcsim.os.LiriOS;
+import com.niksaen.pcsim.os.NapiOS;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PcComponentLists {
     public static ArrayList<String> CaseList = new ArrayList<>();
@@ -12,6 +16,7 @@ public class PcComponentLists {
     public static ArrayList<String> DataStorageList = new ArrayList<>();
     public static ArrayList<String> PowerSupplyList = new ArrayList<>();
     public static ArrayList<String> DiskList = new ArrayList<>();
+
     static {
         setCaseList();
         setMoboList();
@@ -100,6 +105,9 @@ public class PcComponentLists {
         PowerSupplyList.add("Office 700W12");
     }
     private static void setDiskList(){
-        DiskList.add("OS Installer");
+        DiskList.add(NapiOS.TITLE+" Installer");
+        DiskList.add(NapiOS.TITLE+" Installer Simplified");
+        DiskList.add(LiriOS.TITLE+" Installer");
+        DiskList.add(LiriOS.TITLE+" Installer Simplified");
     }
 }

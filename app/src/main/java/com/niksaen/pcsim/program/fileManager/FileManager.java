@@ -12,6 +12,7 @@ import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.fileWorkLib.FileUtil;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
 
 import java.util.ArrayList;
@@ -72,11 +73,11 @@ public class FileManager extends Program {
                 FileUtil.listDir(files.get(position), files);
                 ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
             } else if (files.get(position).endsWith(".txt")) {
-                if(StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: Text Viewer")) {
+                if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: Text Viewer")) {
                     new TextViewer(activity).openProgram(FileUtil.readFile(files.get(position)));
                 }
             } else if (files.get(position).endsWith(".png") || files.get(position).endsWith(".jpg")) {
-                if(StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: Image Viewer")) {
+                if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: Image Viewer")) {
                     new ImageViewer(activity).openProgram(files.get(position));
                 }
             }

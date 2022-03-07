@@ -13,7 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activites.MainActivity;
-import com.niksaen.pcsim.program.ProgramListAndData;
+import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.classes.ProgramListAndData;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,28 +38,25 @@ public class ToolbarAdapter  extends  RecyclerView.Adapter<ToolbarAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        if(activity.programArrayList.get(position).status == 0) {
-            if(activity.styleSave.ToolbarAppIconVisible) {
+        if (!activity.programArrayList.get(position).Type.equals(Program.BACKGROUND) && activity.programArrayList.get(position).status == 0) {
+            if (activity.styleSave.ToolbarAppIconVisible) {
                 holder.app_icon.setImageResource(ProgramListAndData.programIcon.get(activity.programArrayList.get(position).Title));
-            }else{
+            } else {
                 holder.app_icon.setVisibility(View.GONE);
             }
-
-            if(activity.styleSave.ToolbarAppNameVisible) {
+            if (activity.styleSave.ToolbarAppNameVisible) {
                 holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
                 holder.app_name.setText(activity.words.get(activity.programArrayList.get(position).Title));
                 holder.app_name.setTextColor(activity.styleSave.ToolbarTextColor);
-            }else{
+            } else {
                 holder.app_name.setVisibility(View.GONE);
             }
-                holder.itemView.setOnClickListener(v -> {
-                    activity.programArrayList.get(position).rollUpProgram(0);
-                });
-        }else{
+            holder.itemView.setOnClickListener(v -> activity.programArrayList.get(position).rollUpProgram());
+        } else {
             holder.app_icon.setVisibility(View.GONE);
             holder.app_name.setVisibility(View.GONE);
             holder.itemView.setVisibility(View.GONE);
-            holder.itemView.setPadding(0,0,0,0);
+            holder.itemView.setPadding(0, 0, 0, 0);
         }
     }
 

@@ -18,8 +18,8 @@ import java.util.List;
 
 public class CustomListViewAdapter extends ArrayAdapter<String> {
 
-    private  Context context;
-    private String[] strings;
+    private final Context context;
+    private final String[] strings;
 
     public CustomListViewAdapter(@NonNull Context context, int resource, @NonNull String[] objects) {
         super(context, resource, objects);

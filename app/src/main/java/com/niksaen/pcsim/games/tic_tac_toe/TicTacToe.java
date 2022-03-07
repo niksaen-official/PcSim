@@ -37,21 +37,21 @@ public class TicTacToe extends Program {
         });
         sideMenu.setOnItemClickListener((parent, view, position, id) -> {
             if(position == 1){
-                adapter = new Adapter(activity);
-                adapter.Type = "PvP";
+                fieldAdapter = new Field(activity);
+                fieldAdapter.Type = "PvP";
                 lastType = "PvP";
-                adapter.textView = textView;
-                field.setAdapter(adapter);
-                adapter.reset = reset;
+                fieldAdapter.textView = textView;
+                field.setAdapter(fieldAdapter);
+                fieldAdapter.reset = reset;
                 textView.setText("");
                 reset.setVisibility(View.GONE);
             }
             if(position == 2){
-                adapter = new Adapter(activity);
-                adapter.textView = textView;
-                field.setAdapter(adapter);
+                fieldAdapter = new Field(activity);
+                fieldAdapter.textView = textView;
+                field.setAdapter(fieldAdapter);
                 lastType = "PvE";
-                adapter.reset = reset;
+                fieldAdapter.reset = reset;
                 textView.setText("");
                 reset.setVisibility(View.GONE);
             }
@@ -60,11 +60,11 @@ public class TicTacToe extends Program {
             }
         });
         reset.setOnClickListener(v->{
-            adapter = new Adapter(activity);
-            adapter.Type = lastType;
-            adapter.textView = textView;
-            adapter.reset = reset;
-            field.setAdapter(adapter);
+            fieldAdapter = new Field(activity);
+            fieldAdapter.Type = lastType;
+            fieldAdapter.textView = textView;
+            fieldAdapter.reset = reset;
+            field.setAdapter(fieldAdapter);
             textView.setText("");
             reset.setVisibility(View.GONE);
         });
@@ -73,7 +73,7 @@ public class TicTacToe extends Program {
     TextView textView;
     ListView sideMenu;
     RecyclerView field;
-    Adapter adapter;
+    Field fieldAdapter;
     Button pause;
     Button reset;
     private void initView(){
@@ -98,12 +98,12 @@ public class TicTacToe extends Program {
         sideMenuAdapter.TextSize = 40;
         sideMenuAdapter.TextStyle = BOLD;
         sideMenu.setAdapter(sideMenuAdapter);
-        adapter = new Adapter(activity);
-        adapter.textView = textView;
+        fieldAdapter = new Field(activity);
+        fieldAdapter.textView = textView;
         lastType = "PvE";
-        adapter.reset = reset;
+        fieldAdapter.reset = reset;
         field.setLayoutManager(new GridLayoutManager(activity,3));
-        field.setAdapter(adapter);
+        field.setAdapter(fieldAdapter);
     }
 
     @Override

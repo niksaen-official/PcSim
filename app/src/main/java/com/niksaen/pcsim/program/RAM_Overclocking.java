@@ -15,6 +15,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
+import com.niksaen.pcsim.program.window.WarningWindow;
 
 import java.util.HashMap;
 
@@ -80,9 +82,7 @@ public class RAM_Overclocking extends Program {
 
     @Override
     public void openProgram() {
-        if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.DriversPrefix+"CPU_PRO")) {
-            super.openProgram();
-        }
+        super.openProgram();
     }
 
     public void initProgram(){
@@ -90,48 +90,79 @@ public class RAM_Overclocking extends Program {
         initView();
         style();
 
-        if (activity.pcParametersSave.RAM1 != null) {
+        if (activity.pcParametersSave.RAM1 != null && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM+activity.pcParametersSave.Ram1)) {
             ram1.setVisibility(View.VISIBLE);
             ram1.setOnClickListener(v -> {
-                ram_model.setVisibility(View.VISIBLE);
-                parameters.setVisibility(View.VISIBLE);
-                seekBar.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-                ram_model.setText(activity.pcParametersSave.Ram1);
-                ram_overclocking(activity.pcParametersSave.RAM1, 1);
+                if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM+activity.pcParametersSave.Ram1+"\n"+DriverInstaller.EXTENDED_TYPE)) {
+                    ram_model.setVisibility(View.VISIBLE);
+                    parameters.setVisibility(View.VISIBLE);
+                    seekBar.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                    ram_model.setText(activity.pcParametersSave.Ram1);
+                    ram_overclocking(activity.pcParametersSave.RAM1, 1);
+                }else{
+                    WarningWindow window = new WarningWindow(activity);
+                    window.setMessageText(activity.words.get("An error has occurred in the program")+"\n"+activity.words.get("Installed drivers are not compatible with this program"));
+                    window.setButtonOkClick(v1->window.closeProgram(1));
+                    window.openProgram();
+                }
             });
         }
-        if (activity.pcParametersSave.RAM2 != null) {
+        if (activity.pcParametersSave.RAM2 != null && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM+activity.pcParametersSave.Ram2)) {
             ram2.setVisibility(View.VISIBLE);
             ram2.setOnClickListener(v -> {
-                ram_model.setVisibility(View.VISIBLE);
-                parameters.setVisibility(View.VISIBLE);
-                seekBar.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-                ram_model.setText(activity.pcParametersSave.Ram2);
-                ram_overclocking(activity.pcParametersSave.RAM2, 2);
+                if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM+activity.pcParametersSave.Ram2+"\n"+DriverInstaller.EXTENDED_TYPE)) {
+                    ram_model.setVisibility(View.VISIBLE);
+                    parameters.setVisibility(View.VISIBLE);
+                    seekBar.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                    ram_model.setText(activity.pcParametersSave.Ram2);
+                    ram_overclocking(activity.pcParametersSave.RAM2, 2);
+                }
+                else{
+                    WarningWindow window = new WarningWindow(activity);
+                    window.setMessageText(activity.words.get("An error has occurred in the program")+"\n"+activity.words.get("Installed drivers are not compatible with this program"));
+                    window.setButtonOkClick(v1->window.closeProgram(1));
+                    window.openProgram();
+                }
             });
         }
-        if (activity.pcParametersSave.RAM3 != null && (Integer.parseInt(activity.pcParametersSave.MOBO.get("Кол-во слотов")) >= 3)) {
+        if (activity.pcParametersSave.RAM3 != null && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM+activity.pcParametersSave.Ram3)) {
             ram3.setVisibility(View.VISIBLE);
             ram3.setOnClickListener(v -> {
-                ram_model.setVisibility(View.VISIBLE);
-                parameters.setVisibility(View.VISIBLE);
-                seekBar.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-                ram_model.setText(activity.pcParametersSave.Ram3);
-                ram_overclocking(activity.pcParametersSave.RAM3, 3);
+                if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM+activity.pcParametersSave.Ram3+"\n"+DriverInstaller.EXTENDED_TYPE)) {
+                    ram_model.setVisibility(View.VISIBLE);
+                    parameters.setVisibility(View.VISIBLE);
+                    seekBar.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                    ram_model.setText(activity.pcParametersSave.Ram3);
+                    ram_overclocking(activity.pcParametersSave.RAM3, 3);
+                }
+                else{
+                    WarningWindow window = new WarningWindow(activity);
+                    window.setMessageText(activity.words.get("An error has occurred in the program")+"\n"+activity.words.get("Installed drivers are not compatible with this program"));
+                    window.setButtonOkClick(v1->window.closeProgram(1));
+                    window.openProgram();
+                }
             });
         }
-        if (activity.pcParametersSave.RAM4 != null && (Integer.parseInt(activity.pcParametersSave.MOBO.get("Кол-во слотов")) >= 4)) {
+        if (activity.pcParametersSave.RAM4 != null && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM+activity.pcParametersSave.Ram4)) {
             ram4.setVisibility(View.VISIBLE);
             ram4.setOnClickListener(v -> {
-                ram_model.setVisibility(View.VISIBLE);
-                parameters.setVisibility(View.VISIBLE);
-                seekBar.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-                ram_model.setText(activity.pcParametersSave.Ram4);
-                ram_overclocking(activity.pcParametersSave.RAM4, 4);
+                if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForRAM+activity.pcParametersSave.Ram4+"\n"+DriverInstaller.EXTENDED_TYPE)) {
+                    ram_model.setVisibility(View.VISIBLE);
+                    parameters.setVisibility(View.VISIBLE);
+                    seekBar.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                    ram_model.setText(activity.pcParametersSave.Ram4);
+                    ram_overclocking(activity.pcParametersSave.RAM4, 4);
+                }
+                else{
+                    WarningWindow window = new WarningWindow(activity);
+                    window.setMessageText(activity.words.get("An error has occurred in the program")+"\n"+activity.words.get("Installed drivers are not compatible with this program"));
+                    window.setButtonOkClick(v1->window.closeProgram(1));
+                    window.openProgram();
+                }
             });
         }
        super.initProgram();
@@ -218,10 +249,10 @@ public class RAM_Overclocking extends Program {
                 }
                 else{
                     if(frequency>activity.pcParametersSave.maxRamFrequency){
-                        activity.blackDeadScreen(new String[]{"0xAA0004"});
+                        activity.blackDeadScreen(new String[]{activity.words.get("This RAM frequency is not supported by your PC")});
                     }
                     else if(frequency<activity.pcParametersSave.minRamFrequency){
-                        activity.blackDeadScreen(new String[]{"0xAA0005"});
+                        activity.blackDeadScreen(new String[]{activity.words.get("This RAM frequency is not supported by your PC")});
                     }
                 }
             }
@@ -232,7 +263,7 @@ public class RAM_Overclocking extends Program {
                     case 3:{activity.pcParametersSave.setRam3(activity.pcParametersSave.Ram3 +"[Сломано]",null);break;}
                     case 4:{activity.pcParametersSave.setRam4(activity.pcParametersSave.Ram4 +"[Сломано]",null);break;}
                 }
-                activity.blackDeadScreen(new String[]{"0xAA0003"});
+                activity.blackDeadScreen(new String[]{activity.words.get("Overheating of RAM")});
             }
         });
     }

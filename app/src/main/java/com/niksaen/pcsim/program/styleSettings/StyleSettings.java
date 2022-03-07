@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.StringArrayWork;
+import com.niksaen.pcsim.os.NapiOS;
 import com.niksaen.pcsim.program.Program;
 
 public class StyleSettings extends Program {
@@ -91,22 +93,21 @@ public class StyleSettings extends Program {
         menuAdapter = new MenuAdapter(activity.getBaseContext());
 
         backgroundResourceColorAdapter = new BackgroundResourceColorAdapter(activity.getBaseContext(),testBackground);
-        backgroundResourceGradientAdapter = new BackgroundResourceGradientAdapter(activity.getBaseContext(),testBackground);
-        backgroundResourceImageAdapter = new BackgroundResourceImageAdapter(activity.getBaseContext(),testBackground);
-        windowBackColor = new ColorAdapter(activity.getBaseContext(),testWindow,activity.styleSave,0);
-        windowButtonColorAdapter = new ButtonColorAdapter(activity.getBaseContext(),new Button[]{testCloseButton,testFullscreenModeButton,testRollUpButton},activity.styleSave);
-        titleTextColorAdapter = new TextColorAdapter(activity.getBaseContext(),testTitle,activity.styleSave,0);
-        textColorAdapter = new TextColorAdapter(activity.getBaseContext(),testText,activity.styleSave,1);
-        buttonTextColorAdapter = new TextColorAdapter(activity.getBaseContext(),testButton,activity.styleSave);
-        themeAdapter = new ThemeAdapter(activity.getBaseContext(),new View[]{testContent,testButton},activity.styleSave);
-        launchBackColor = new ColorAdapter(activity.getBaseContext(),testLaunch,activity.styleSave,1);
-        toolbarBackColor = new ColorAdapter(activity.getBaseContext(),testToolbar,activity.styleSave,2);
-        progressBarColorAdapter = new ProgressBarColorAdapter(activity.getBaseContext(),testProgressBar,activity.styleSave);
-        seekBarColorAdapter = new SeekBarColorAdapter(activity.getBaseContext(),testSeekBar,activity.styleSave,0);
-        seekThumbColorAdapter = new SeekBarColorAdapter(activity.getBaseContext(),testSeekBar,activity.styleSave,1);
-        greetingTextColorAdapter = new TextColorAdapter(activity.getBaseContext(),testGreeting,activity.styleSave,2);
-        editTextAdapter = new EditTextAdapter(activity.getBaseContext(),activity.styleSave);
-
+        backgroundResourceGradientAdapter = new BackgroundResourceGradientAdapter(activity.getBaseContext(), testBackground);
+        backgroundResourceImageAdapter = new BackgroundResourceImageAdapter(activity.getBaseContext(), testBackground);
+        windowBackColor = new ColorAdapter(activity.getBaseContext(), testWindow, activity.styleSave, 0);
+        windowButtonColorAdapter = new ButtonColorAdapter(activity.getBaseContext(), new Button[]{testCloseButton, testFullscreenModeButton, testRollUpButton}, activity.styleSave);
+        titleTextColorAdapter = new TextColorAdapter(activity.getBaseContext(), testTitle, activity.styleSave, 0);
+        textColorAdapter = new TextColorAdapter(activity.getBaseContext(), testText, activity.styleSave, 1);
+        buttonTextColorAdapter = new TextColorAdapter(activity.getBaseContext(), testButton, activity.styleSave);
+        themeAdapter = new ThemeAdapter(activity.getBaseContext(), new View[]{testContent, testButton}, activity.styleSave);
+        launchBackColor = new ColorAdapter(activity.getBaseContext(), testLaunch, activity.styleSave, 1);
+        toolbarBackColor = new ColorAdapter(activity.getBaseContext(), testToolbar, activity.styleSave, 2);
+        progressBarColorAdapter = new ProgressBarColorAdapter(activity.getBaseContext(), testProgressBar, activity.styleSave);
+        seekBarColorAdapter = new SeekBarColorAdapter(activity.getBaseContext(), testSeekBar, activity.styleSave, 0);
+        seekThumbColorAdapter = new SeekBarColorAdapter(activity.getBaseContext(), testSeekBar, activity.styleSave, 1);
+        greetingTextColorAdapter = new TextColorAdapter(activity.getBaseContext(), testGreeting, activity.styleSave, 2);
+        editTextAdapter = new EditTextAdapter(activity.getBaseContext(), activity.styleSave);
         gridLayoutManager = new GridLayoutManager(activity.getBaseContext(),10);
         linearLayoutManager = new LinearLayoutManager(activity.getBaseContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -345,50 +346,51 @@ public class StyleSettings extends Program {
                     }
                 }
             }
-            //window settings save
-            activity.styleSave.ColorWindow = windowBackColor.currentColor;
-            activity.styleSave.CloseButtonImageRes = windowButtonColorAdapter.currentCloseButtonImageRes;
-            activity.styleSave.FullScreenMode1ImageRes = windowButtonColorAdapter.currentFullscreen1ButtonImageRes;
-            activity.styleSave.FullScreenMode2ImageRes = windowButtonColorAdapter.currentFullscreen2ButtonImageRes;
-            activity.styleSave.RollUpButtonImageRes = windowButtonColorAdapter.currentRollUpButtonImageRes;
-            activity.styleSave.TitleColor = titleTextColorAdapter.currentTextColor;
-            //theme settings save
-            activity.styleSave.ThemeColor1 = themeAdapter.ColorTheme1;
-            activity.styleSave.ThemeColor2 = themeAdapter.ColorTheme2;
-            activity.styleSave.ThemeColor3 = themeAdapter.ColorTheme3;
-            activity.styleSave.PauseButtonRes = themeAdapter.PauseButtonRes;
-            activity.styleSave.PlayButtonImage = themeAdapter.PlayButtonImage;
-            activity.styleSave.PrevOrNextImageRes = themeAdapter.PrevOrNextImageRes;
-            activity.styleSave.ArrowButtonImage = themeAdapter.ArrowButtonImage;
+            if(StringArrayWork.ArrayListToString(activity.apps).contains(NapiOS.TITLE+",")) {
+                //window settings save
+                activity.styleSave.ColorWindow = windowBackColor.currentColor;
+                activity.styleSave.CloseButtonImageRes = windowButtonColorAdapter.currentCloseButtonImageRes;
+                activity.styleSave.FullScreenMode1ImageRes = windowButtonColorAdapter.currentFullscreen1ButtonImageRes;
+                activity.styleSave.FullScreenMode2ImageRes = windowButtonColorAdapter.currentFullscreen2ButtonImageRes;
+                activity.styleSave.RollUpButtonImageRes = windowButtonColorAdapter.currentRollUpButtonImageRes;
+                activity.styleSave.TitleColor = titleTextColorAdapter.currentTextColor;
+                //theme settings save
+                activity.styleSave.ThemeColor1 = themeAdapter.ColorTheme1;
+                activity.styleSave.ThemeColor2 = themeAdapter.ColorTheme2;
+                activity.styleSave.ThemeColor3 = themeAdapter.ColorTheme3;
+                activity.styleSave.PauseButtonRes = themeAdapter.PauseButtonRes;
+                activity.styleSave.PlayButtonImage = themeAdapter.PlayButtonImage;
+                activity.styleSave.PrevOrNextImageRes = themeAdapter.PrevOrNextImageRes;
+                activity.styleSave.ArrowButtonImage = themeAdapter.ArrowButtonImage;
 
-            //text color save
-            activity.styleSave.TextColor = textColorAdapter.currentTextColor;
-            activity.styleSave.TextButtonColor = buttonTextColorAdapter.currentTextColor;
+                //text color save
+                activity.styleSave.TextColor = textColorAdapter.currentTextColor;
+                activity.styleSave.TextButtonColor = buttonTextColorAdapter.currentTextColor;
 
-            //launch settings save
-            activity.styleSave.StartMenuColor = launchBackColor.currentColor;
+                //launch settings save
+                activity.styleSave.StartMenuColor = launchBackColor.currentColor;
 
-            //toolbar settings save
-            activity.styleSave.ToolbarColor = toolbarBackColor.currentColor;
-            activity.toolbar.setBackgroundColor(toolbarBackColor.currentColor);
+                //toolbar settings save
+                activity.styleSave.ToolbarColor = toolbarBackColor.currentColor;
+                activity.toolbar.setBackgroundColor(toolbarBackColor.currentColor);
 
-            //progressBar save
-            activity.styleSave.ProgressBarResource = progressBarColorAdapter.currentDrawableResource;
+                //progressBar save
+                activity.styleSave.ProgressBarResource = progressBarColorAdapter.currentDrawableResource;
 
-            //seekBar settings save
-            activity.styleSave.SeekBarProgressResource = seekBarColorAdapter.currentDrawableResource;
-            activity.styleSave.SeekBarThumbResource = seekThumbColorAdapter.currentDrawableResource;
+                //seekBar settings save
+                activity.styleSave.SeekBarProgressResource = seekBarColorAdapter.currentDrawableResource;
+                activity.styleSave.SeekBarThumbResource = seekThumbColorAdapter.currentDrawableResource;
 
-            //greeting settings save
-            activity.styleSave.Greeting = editTextAdapter.getCurrentText();
-            activity.styleSave.GreetingColor = greetingTextColorAdapter.currentTextColor;
+                //greeting settings save
+                activity.styleSave.Greeting = editTextAdapter.getCurrentText();
+                activity.styleSave.GreetingColor = greetingTextColorAdapter.currentTextColor;
 
-            secondMenu.setAdapter(null);
-            secondTitle.setVisibility(View.GONE);
-            testWindow.setVisibility(View.GONE);
-            testLaunch.setVisibility(View.GONE);
-            testGreeting.setVisibility(View.GONE);
-
+                secondMenu.setAdapter(null);
+                secondTitle.setVisibility(View.GONE);
+                testWindow.setVisibility(View.GONE);
+                testLaunch.setVisibility(View.GONE);
+                testGreeting.setVisibility(View.GONE);
+            }
             activity.styleSave.setStyle();
             style();
         });

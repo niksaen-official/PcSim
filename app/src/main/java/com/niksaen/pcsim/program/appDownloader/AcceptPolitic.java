@@ -11,7 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.program.Program;
-import com.niksaen.pcsim.program.ProgramListAndData;
+import com.niksaen.pcsim.classes.ProgramListAndData;
 
 public class AcceptPolitic extends Program {
 
@@ -41,11 +41,11 @@ public class AcceptPolitic extends Program {
         initView();
         style();
         appIcon.setImageResource(ProgramListAndData.programIcon.get(programForSetup));
-        programName.setText("Вас приветствует мастер установки "+"\""+activity.words.get(programForSetup)+"\"");
+        programName.setText(activity.words.get("Welcome to the installation wizard")+" \""+activity.words.get(programForSetup)+"\"");
 
-        continueButton.setText("Далее >");
+        continueButton.setText(activity.words.get("Next"+" >"));
         cancelButton.setText(activity.words.get("Cancel"));
-        text.setText("Программа установит "+"\""+activity.words.get(programForSetup) +"\""+" на ваш компьютер.\n\nРекомендуется закрыть все прочие программы перед тем, как продолжитью.\n\nНажмите \"Далее\" чтобы продолжить, или нажмите \"Отмена\" для выхода.");
+        text.setText(activity.words.get("The program will install")+" \""+activity.words.get(programForSetup) +"\" "+activity.words.get("to your computer. \n\nIt is recommended that you close all other programs before continuing. \n\nClick \"Next\"to continue, or click \"Cancel\"to exit."));
 
         continueButton.setOnClickListener(v -> {
             prepareForInstall.setProgramForSetup(programForSetup);

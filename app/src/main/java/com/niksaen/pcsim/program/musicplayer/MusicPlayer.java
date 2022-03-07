@@ -20,6 +20,7 @@ import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.fileWorkLib.FileUtil;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.notepad.NotepadSpinnerAdapter;
 
@@ -256,7 +257,7 @@ public class MusicPlayer extends Program {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 1) {
-                    if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: OpenLibs")) {
+                    if (StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: OpenLibs")) {
                         new MusicPlayerOpenFile(activity).openProgram();
                         closeProgram(1);
                     }
@@ -279,7 +280,7 @@ public class MusicPlayer extends Program {
             timeText.setText("00:00");
         }
     }
-    private String convertTime(int milliSeconds){
+    public static String convertTime(int milliSeconds){
         int second = milliSeconds/1000;
         int minute = second/60;
         int hour = minute/60;

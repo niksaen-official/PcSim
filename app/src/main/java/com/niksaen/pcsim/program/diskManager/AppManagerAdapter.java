@@ -15,7 +15,8 @@ import androidx.annotation.Nullable;
 
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activites.MainActivity;
-import com.niksaen.pcsim.program.ProgramListAndData;
+import com.niksaen.pcsim.classes.ProgramListAndData;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 
 public class AppManagerAdapter extends ArrayAdapter<String> {
 
@@ -46,13 +47,27 @@ public class AppManagerAdapter extends ArrayAdapter<String> {
         item.setBackgroundColor(BackgroundColor);
         appName.setTextColor(TextColor);
         useSpace.setTextColor(TextColor);
-        try {
+        if(getItem(position).startsWith(DriverInstaller.AdditionalSoftPrefix)){
+            item.setPadding(0,0,0,0);
+            item.setVisibility(View.GONE);
+        }
+        else if(getItem(position).startsWith(DriverInstaller.DriversPrefix)){
+            appIcon.setVisibility(View.GONE);
+            appName.setText(
+                    getItem(position)
+                    .replace(DriverInstaller.DriverForMotherboard,activity.words.get(DriverInstaller.DriverForMotherboard))
+                    .replace(DriverInstaller.DriverForCPU,activity.words.get(DriverInstaller.DriverForCPU))
+                    .replace(DriverInstaller.DriverForRAM,activity.words.get(DriverInstaller.DriverForRAM))
+                    .replace(DriverInstaller.DriverForStorageDevices,activity.words.get(DriverInstaller.DriverForStorageDevices))
+                    .replace(DriverInstaller.DriverForGPU,activity.words.get(DriverInstaller.DriverForGPU))
+                    .replace(DriverInstaller.EXTENDED_TYPE,activity.words.get(DriverInstaller.EXTENDED_TYPE))
+                    .replace(DriverInstaller.BASE_TYPE,activity.words.get(DriverInstaller.BASE_TYPE)));
+            useSpace.setVisibility(View.GONE);
+        }
+        else {
             appIcon.setImageResource(ProgramListAndData.programIcon.get(getItem(position)));
             appName.setText(activity.words.get(getItem(position)));
             useSpace.setText(ProgramListAndData.programSize.get(getItem(position)) + "Gb");
-        }catch (Exception e){
-            item.setVisibility(View.GONE);
-            System.out.println("not found: "+getItem(position));
         }
         return item;
     }

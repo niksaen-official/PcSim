@@ -14,13 +14,13 @@ import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.Program;
-import com.niksaen.pcsim.program.ProgramListAndData;
+import com.niksaen.pcsim.classes.ProgramListAndData;
 import com.niksaen.pcsim.program.appDownloader.PrepareForInstall;
 import com.niksaen.pcsim.save.PlayerData;
 
 public class AppDescriptionPage extends Program {
     public String ProgramForInstall;
-    private PlayerData data;
+    private final PlayerData data;
     public AppDescriptionPage(MainActivity activity) {
         super(activity);
         Title = "Application description page";
@@ -47,14 +47,16 @@ public class AppDescriptionPage extends Program {
                                 + "У вас на счету: " + data.Money + "R\n\n\n\n"
                                 + "Внимание: Это единоразовая покупка при следующей установке вам не надо покупать её снова!!!");
                 forBuy.setButtonOkClick(v1 -> {
-                    data.Money = data.Money - ProgramListAndData.programPrice.get(ProgramForInstall);
-                    data.ListPurchasedPrograms = StringArrayWork.add(data.ListPurchasedPrograms, ProgramForInstall);
-                    data.setAllData();
-                    forBuy.closeProgram(1);
-                    next.setText(activity.words.get("Install"));
-                    PrepareForInstall prepareForInstall = new PrepareForInstall(activity);
-                    prepareForInstall.setProgramForSetup(ProgramForInstall);
-                    prepareForInstall.openProgram();
+                    if(data.Money - ProgramListAndData.programPrice.get(ProgramForInstall)>0) {
+                        data.Money = data.Money - ProgramListAndData.programPrice.get(ProgramForInstall);
+                        data.ListPurchasedPrograms = StringArrayWork.add(data.ListPurchasedPrograms, ProgramForInstall);
+                        data.setAllData();
+                        forBuy.closeProgram(1);
+                        next.setText(activity.words.get("Install"));
+                        GStorePrepareForInstall prepareForInstall = new GStorePrepareForInstall(activity);
+                        prepareForInstall.setProgramForSetup(ProgramForInstall);
+                        prepareForInstall.openProgram();
+                    }
                 });
                 forBuy.openProgram();
             });
@@ -62,7 +64,7 @@ public class AppDescriptionPage extends Program {
             next.setText(activity.words.get("Install"));
             next.setOnClickListener(v->{
                 if(next.getText().toString().equals(activity.words.get("Install"))) {
-                    PrepareForInstall prepareForInstall = new PrepareForInstall(activity);
+                    GStorePrepareForInstall prepareForInstall = new GStorePrepareForInstall(activity);
                     prepareForInstall.setProgramForSetup(ProgramForInstall);
                     prepareForInstall.openProgram();
                 }
@@ -119,7 +121,7 @@ public class AppDescriptionPage extends Program {
                 buttonClicks = 0;
             }
         });
-        buttonRollUp.setOnClickListener(v->rollUpProgram(1));
+        buttonRollUp.setOnClickListener(v->rollUpProgram());
 
         appName.setTypeface(activity.font, Typeface.BOLD);
         appDescription.setTypeface(activity.font);

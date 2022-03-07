@@ -156,7 +156,6 @@
                 android:id="@+id/menu"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/logo_os"
                 android:onClick="StartMenu"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:padding="5dp"

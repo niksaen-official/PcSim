@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -25,7 +24,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
-import com.niksaen.pcsim.classes.ErrorCodeList;
 import com.niksaen.pcsim.classes.PopuListView.PopupListView;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.DesktopAdapter;
@@ -33,9 +31,11 @@ import com.niksaen.pcsim.classes.adapters.DiskChangeAdapter;
 import com.niksaen.pcsim.classes.adapters.DrawerAdapter;
 import com.niksaen.pcsim.classes.adapters.StartMenuAdapter;
 import com.niksaen.pcsim.classes.adapters.ToolbarAdapter;
+import com.niksaen.pcsim.os.LiriOS;
+import com.niksaen.pcsim.os.NapiOS;
 import com.niksaen.pcsim.program.Program;
-import com.niksaen.pcsim.program.ProgramListAndData;
-import com.niksaen.pcsim.program.cmd.CMD;
+import com.niksaen.pcsim.classes.ProgramListAndData;
+import com.niksaen.pcsim.os.cmd.CMD;
 import com.niksaen.pcsim.program.taskManager.TaskManager;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
@@ -44,6 +44,7 @@ import com.niksaen.pcsim.save.Settings;
 import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -53,19 +54,19 @@ public class MainActivity extends AppCompatActivity{
     Button powerButton;
     public LinearLayout toolbar;
     public LinearLayout startMenu;
-    TextView greeting,startMenuTitle;
-    RecyclerView desktop;
-    RecyclerView appList;
-    ListView allAppList;
+    public TextView greeting,startMenuTitle;
+    public RecyclerView desktop;
+    public RecyclerView appList;
+    public ListView allAppList;
     private View caseView;
-    Button startMenuOpener;
+    public Button startMenuOpener;
 
     public PcParametersSave pcParametersSave;
     public StyleSave styleSave;
     public ConstraintLayout layout;
     public String DiskInDrive;
 
-    private MediaPlayer player;
+    public MediaPlayer player;
     public Typeface font;
     int style = Typeface.BOLD;
 
@@ -153,11 +154,11 @@ public class MainActivity extends AppCompatActivity{
         drawer.setAdapter(drawerAdapter);
 
         drawer.setOnItemClickListener((parent, view, position, id) -> {
-           if(position == 1){
-               intent = new Intent(MainActivity.this, MainShopActivity.class);
-               player.pause();
-               startActivity(intent);
-           }
+            if(position == 1){
+                intent = new Intent(MainActivity.this, MainShopActivity.class);
+                player.pause();
+                startActivity(intent);
+            }
             if(position == 2){
                 intent = new Intent(MainActivity.this,IronActivity.class);
                 startActivity(intent);
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public String[] apps;
-    public void updateAppList(){
+    public void getContentOfAllDrives(){
         String[][] allDiskAppList = new String[0][];
         if(pcParametersSave.DATA1 != null){
             allDiskAppList = StringArrayWork.add(allDiskAppList,pcParametersSave.DATA1.get("Содержимое").split(","));
@@ -197,7 +198,7 @@ public class MainActivity extends AppCompatActivity{
     }
     public void StartMenu(View view){
         if(startMenu.getVisibility() == View.GONE){
-            updateAppList();
+            getContentOfAllDrives();
             startMenu.setVisibility(View.VISIBLE);
             updateStartMenu();
         }
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity{
             startMenu.setVisibility(View.GONE);
         }
     }
-    private void updateStartMenu(){
+    public void updateStartMenu(){
         ProgramListAndData program = new ProgramListAndData();
         program.initHashMap(this);
         startMenu.setBackgroundColor(styleSave.StartMenuColor);
@@ -236,30 +237,24 @@ public class MainActivity extends AppCompatActivity{
                 if (pcParametersSave.getPcWork()) {
                     if (pcParametersSave.currentCpuTemperature() <= pcParametersSave.maxCpuTemperature()) {
                         if (pcParametersSave.psuEnoughPower()) {
-                            powerButton.setForeground(getDrawable(R.drawable.on));
                             pcWorkOn();
                         } else {
                             if(pcParametersSave.PSU != null) {
                                 if (pcParametersSave.PSU.get("Защита").equals("-")) {
                                     pcParametersSave.setPsu(pcParametersSave.Psu + "[Сломано]", null);
-                                    blackDeadScreen(new String[]{"0xBB0004"});
                                 }
                             }
-                            powerButton.setForeground(getDrawable(R.drawable.off));
+                            blackDeadScreen(new String[]{words.get("The power supply is overloaded")});
                         }
                     }
                     else{
                         pcParametersSave.setCpu(pcParametersSave.Cpu+"[Сломано]",null);
-                        blackDeadScreen(new String[]{"0xBB0002"});
-                        powerButton.setForeground(getDrawable(R.drawable.off));
+                        blackDeadScreen(new String[]{words.get("Processor overheating")});
                     }
                 }
                 else{
-                    if(pcParametersSave.Cooler == null){
-                        blackDeadScreen(new String[]{"0xBB0003"});
-                    }
-                    if(pcParametersSave.Cooler != null && pcParametersSave.Cooler.contains("[Сломано]")){
-                        blackDeadScreen(new String[]{"0xBB0004"});
+                    if(pcParametersSave.COOLER == null){
+                        blackDeadScreen(new String[]{words.get("There is no cooler")});
                     }
                 }
             }
@@ -270,7 +265,9 @@ public class MainActivity extends AppCompatActivity{
     }
     // выключение пк
     public void pcWorkOff(){
+        powerButton.setClickable(false);
         player.stop();
+        player.release();
         player = MediaPlayer.create(this, R.raw.pc_work_end_sound);
         player.setLooping(false);
         player.start();
@@ -280,19 +277,20 @@ public class MainActivity extends AppCompatActivity{
             public void run() {
                 runOnUiThread(() ->{
                     PcWorkStatus = 0;
-                    powerButton.setForeground(getDrawable(R.drawable.off));
-                    layout.setBackgroundColor(Color.BLACK);
-                    toolbar.setVisibility(View.GONE);
-                    desktop.setVisibility(View.GONE);
-                    startMenu.setVisibility(View.GONE);
-                    greeting.setVisibility(View.GONE);
-                    for(Program program:programArrayList){
-                        if(program.status != -1) {
-                            program.closeProgram(0);
-                        }
+                    if(DeadScreen != null){
+                        DeadScreen.setVisibility(View.GONE);
+                    }
+
+                    for(int i = programArrayList.size()-1;i>=0;i--){
+                        Program program = programArrayList.get(i);
+                        program.closeProgram(0);
                     }
                     programArrayList.clear();
-                } );
+                    powerButton.setForeground(getDrawable(R.drawable.off));
+                    powerButton.setClickable(true);
+                    player.stop();
+                    player.release();
+                });
             }
         };
         if(pcParametersSave.getMainDiskType().equals("SSD")){
@@ -309,40 +307,24 @@ public class MainActivity extends AppCompatActivity{
         player.setLooping(false);
         player.start();
 
-        PcWorkStatus = 1;
-        styleSave.getStyle();
-        greeting.setVisibility(View.VISIBLE);
-        greeting.setTextColor(styleSave.GreetingColor);
-        greeting.setText(styleSave.Greeting);
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(() -> {
-                    updateAppList();
-                    if(StringArrayWork.ArrayListToString(apps).contains("OS,")) {
-                        greeting.setVisibility(View.GONE);
-                        layout.setBackgroundResource(styleSave.BackgroundResource);
-                        desktop.setVisibility(View.VISIBLE);
-                        toolbar.setBackgroundColor(styleSave.ToolbarColor);
-                        toolbar.setVisibility(View.VISIBLE);
-                        updateDesktop();
-                    }else{
-                        CMD cmd = new CMD(MainActivity.this);
-                        cmd.openProgram();
-                    }
-                    pcWorkSound();
-                });
-            }
-        };
-        if(pcParametersSave.getMainDiskType().equals("SSD")){
-            timer.schedule(timerTask,1500);
+        pcParametersSave.setAllRamFrequency();
+        getContentOfAllDrives();
+        if(StringArrayWork.ArrayListToString(apps).contains("NapiOS,")){
+            NapiOS os = new NapiOS(this);
+            os.openProgram();
+        }else if(StringArrayWork.ArrayListToString(apps).contains("LiriOS,")){
+            LiriOS os = new LiriOS(this);
+            os.openProgram();
         }
         else{
-            timer.schedule(timerTask,3000);
+            CMD cmd = new CMD(this);
+            cmd.openProgram();
         }
+        pcWorkSound();
+        PcWorkStatus = 1;
+        powerButton.setForeground(getDrawable(R.drawable.on));
     }
-    private void pcWorkSound(){
+    public void pcWorkSound(){
         player.stop();
         player = MediaPlayer.create(this, R.raw.pc_work_sound);
         player.setLooping(true);
@@ -362,36 +344,32 @@ public class MainActivity extends AppCompatActivity{
         listView.show();
     }
     // экран смерти
+    public TextView DeadScreen;
     public void blackDeadScreen(String[] errorCode){
-        pcWorkOff();
+        greeting.setVisibility(View.GONE);
         int count = 1;
-        TextView textView = new TextView(this);
-        textView.setPadding(30, 30, 30, 30);
-        textView.setTextSize(27);
-        textView.setTextColor(Color.WHITE);
-        textView.setTypeface(font);
-        textView.setGravity(-1);
+        DeadScreen = new TextView(this);
+        DeadScreen.setPadding(30, 30, 30, 30);
+        DeadScreen.setTextSize(27);
+        DeadScreen.setTextColor(Color.WHITE);
+        DeadScreen.setTypeface(font);
+        DeadScreen.setGravity(-1);
 
-        if(errorCode.length>1) {
-            StringBuilder text = new StringBuilder("Fatal error\n");
-            StringBuilder text2 = new StringBuilder("Error code\n");
+        if(errorCode.length>=1) {
+            StringBuilder text2 = new StringBuilder();
             for (String code : errorCode) {
-                text.append(count).append(". ").append(ErrorCodeList.ErrorCodeText.get(code)).append("\n");
                 text2.append(count).append(". ").append(code).append("\n");
                 count++;
             }
-            String str = text.toString() + text2.toString();
-            textView.setText(str);
+            String str =  text2.toString();
+            DeadScreen.setText(str);
         }
-        else{
-
-        }
-        layout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        new Handler().postDelayed(() -> textView.setVisibility(View.GONE),1200);
+        layout.addView(DeadScreen, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     }
     //перезагрузка пк
     public void reloadPc(){
         pcWorkOff();
+        player.release();
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
@@ -414,9 +392,14 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onStop() {
-        if(player.isPlaying()){
+        if(player != null){
             player.stop();
         }
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

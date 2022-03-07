@@ -52,44 +52,42 @@ public class DeviceManager extends Program {
         };
 
         //характеристики проца
-        if(activity.pcParametersSave.CPU != null) {
-            if(activity.pcParametersSave.CPU.get("Графическое ядро").equals("+")) {
-                cpuParameters = new String[]{
-                        activity.words.get("Processor specifications")+": ",
-                        " " + activity.words.get("Model") + ": " + activity.pcParametersSave.Cpu,
-                        " " + activity.words.get("Number of cores") + ": " + activity.pcParametersSave.CPU.get("Кол-во ядер"),
-                        " " + activity.words.get("Number of threads") + ": " + activity.pcParametersSave.CPU.get("Кол-во потоков"),
-                        " " + activity.words.get("Cache") + ": " + activity.pcParametersSave.CPU.get("Кэш") + "Mb",
-                        " " + activity.words.get("Frequency") + ": " + activity.pcParametersSave.CPU.get("Частота") + "MHz",
-                        " " + activity.words.get("Overclocking capability") + ": " + activity.pcParametersSave.CPU.get("Возможность разгона"),
-                        activity.words.get("RAM characteristics")+": ",
-                        "    " + activity.words.get("Memory type") + ": " + activity.pcParametersSave.CPU.get("Тип памяти"),
-                        "    " + activity.words.get("Maximum volume") + ": " + activity.pcParametersSave.CPU.get("Макс. объём") + "Gb",
-                        "    " + activity.words.get("Number of channels") + ": " + activity.pcParametersSave.CPU.get("Кол-во каналов"),
-                        "    " + activity.words.get("Minimum frequency") + ": " + activity.pcParametersSave.CPU.get("Мин. частота") + "MHz",
-                        "    " + activity.words.get("Maximum frequency") + ": " + activity.pcParametersSave.CPU.get("Макс. частота") + "MHz",
-                        activity.words.get("Integrated graphics core")+": " + activity.pcParametersSave.CPU.get("Графическое ядро"),
-                        "    " + activity.words.get("Model") + ": " + activity.pcParametersSave.CPU.get("Модель"),
-                        "    " + activity.words.get("Frequency") + ": " + activity.pcParametersSave.CPU.get("Частота Graphics card") + "MHz",
-                };
-            }else{
-                cpuParameters = new String[]{
-                        activity.words.get("Processor specifications")+": ",
-                        " " + activity.words.get("Model") + ": " + activity.pcParametersSave.Cpu,
-                        " " + activity.words.get("Number of cores") + ": " + activity.pcParametersSave.CPU.get("Кол-во ядер"),
-                        " " + activity.words.get("Number of threads") + ": " + activity.pcParametersSave.CPU.get("Кол-во потоков"),
-                        " " + activity.words.get("Cache") + ": " + activity.pcParametersSave.CPU.get("Кэш") + "Mb",
-                        " " + activity.words.get("Frequency") + ": " + activity.pcParametersSave.CPU.get("Частота") + "MHz",
-                        " " + activity.words.get("Overclocking capability") + ": " + activity.pcParametersSave.CPU.get("Возможность разгона"),
-                        activity.words.get("RAM characteristics")+": ",
-                        "    " + activity.words.get("Memory type") + ": " + activity.pcParametersSave.CPU.get("Тип памяти"),
-                        "    " + activity.words.get("Maximum volume") + ": " + activity.pcParametersSave.CPU.get("Макс. объём") + "Gb",
-                        "    " + activity.words.get("Number of channels") + ": " + activity.pcParametersSave.CPU.get("Кол-во каналов"),
-                        "    " + activity.words.get("Minimum frequency") + ": " + activity.pcParametersSave.CPU.get("Мин. частота") + "MHz",
-                        "    " + activity.words.get("Maximum frequency") + ": " + activity.pcParametersSave.CPU.get("Макс. частота") + "MHz",
-                        activity.words.get("Integrated graphics core")+": " + activity.pcParametersSave.CPU.get("Графическое ядро")
-                };
-            }
+        if(activity.pcParametersSave.CPU.get("Графическое ядро").equals("+")) {
+            cpuParameters = new String[]{
+                    activity.words.get("Processor specifications")+": ",
+                    " " + activity.words.get("Model") + ": " + activity.pcParametersSave.Cpu,
+                    " " + activity.words.get("Number of cores") + ": " + activity.pcParametersSave.CPU.get("Кол-во ядер"),
+                    " " + activity.words.get("Number of threads") + ": " + activity.pcParametersSave.CPU.get("Кол-во потоков"),
+                    " " + activity.words.get("Cache") + ": " + activity.pcParametersSave.CPU.get("Кэш") + "Mb",
+                    " " + activity.words.get("Frequency") + ": " + activity.pcParametersSave.CPU.get("Частота") + "MHz",
+                    " " + activity.words.get("Overclocking capability") + ": " + activity.pcParametersSave.CPU.get("Возможность разгона"),
+                    activity.words.get("RAM characteristics")+": ",
+                    "    " + activity.words.get("Memory type") + ": " + activity.pcParametersSave.CPU.get("Тип памяти"),
+                    "    " + activity.words.get("Maximum volume") + ": " + activity.pcParametersSave.CPU.get("Макс. объём") + "Gb",
+                    "    " + activity.words.get("Number of channels") + ": " + activity.pcParametersSave.CPU.get("Кол-во каналов"),
+                    "    " + activity.words.get("Minimum frequency") + ": " + activity.pcParametersSave.CPU.get("Мин. частота") + "MHz",
+                    "    " + activity.words.get("Maximum frequency") + ": " + activity.pcParametersSave.CPU.get("Макс. частота") + "MHz",
+                    activity.words.get("Integrated graphics core")+": " + activity.pcParametersSave.CPU.get("Графическое ядро"),
+                    "    " + activity.words.get("Model") + ": " + activity.pcParametersSave.CPU.get("Модель"),
+                    "    " + activity.words.get("Frequency") + ": " + activity.pcParametersSave.CPU.get("Частота Graphics card") + "MHz",
+            };
+        }else{
+            cpuParameters = new String[]{
+                    activity.words.get("Processor specifications")+": ",
+                    " " + activity.words.get("Model") + ": " + activity.pcParametersSave.Cpu,
+                    " " + activity.words.get("Number of cores") + ": " + activity.pcParametersSave.CPU.get("Кол-во ядер"),
+                    " " + activity.words.get("Number of threads") + ": " + activity.pcParametersSave.CPU.get("Кол-во потоков"),
+                    " " + activity.words.get("Cache") + ": " + activity.pcParametersSave.CPU.get("Кэш") + "Mb",
+                    " " + activity.words.get("Frequency") + ": " + activity.pcParametersSave.CPU.get("Частота") + "MHz",
+                    " " + activity.words.get("Overclocking capability") + ": " + activity.pcParametersSave.CPU.get("Возможность разгона"),
+                    activity.words.get("RAM characteristics")+": ",
+                    "    " + activity.words.get("Memory type") + ": " + activity.pcParametersSave.CPU.get("Тип памяти"),
+                    "    " + activity.words.get("Maximum volume") + ": " + activity.pcParametersSave.CPU.get("Макс. объём") + "Gb",
+                    "    " + activity.words.get("Number of channels") + ": " + activity.pcParametersSave.CPU.get("Кол-во каналов"),
+                    "    " + activity.words.get("Minimum frequency") + ": " + activity.pcParametersSave.CPU.get("Мин. частота") + "MHz",
+                    "    " + activity.words.get("Maximum frequency") + ": " + activity.pcParametersSave.CPU.get("Макс. частота") + "MHz",
+                    activity.words.get("Integrated graphics core")+": " + activity.pcParametersSave.CPU.get("Графическое ядро")
+            };
         }
         //характеристики оперативки
         String[] ram4 = new String[0],ram3 = new String[0];

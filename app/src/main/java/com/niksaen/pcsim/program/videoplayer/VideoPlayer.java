@@ -21,7 +21,9 @@ import androidx.annotation.NonNull;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.musicplayer.MusicPlayer;
 import com.niksaen.pcsim.program.notepad.NotepadSpinnerAdapter;
 
 import java.io.IOException;
@@ -92,7 +94,7 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 1){
-                    if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: OpenLibs")) {
+                    if (StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: OpenLibs")) {
                         closeProgram(1);
                         new VideoOpenFile(activity).openProgram();
                     }
@@ -122,7 +124,7 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
             taskBar.setVisibility(View.VISIBLE);
             menu.setVisibility(View.VISIBLE);
             seekBarTime.setProgress(mediaPlayer.getCurrentPosition());
-            timeText.setText(convertTime(mediaPlayer.getCurrentPosition()));
+            timeText.setText(MusicPlayer.convertTime(mediaPlayer.getCurrentPosition()));
             new Handler().postDelayed(() -> {taskBar.setVisibility(View.GONE);menu.setVisibility(View.GONE);},1500);
         });
 
@@ -184,33 +186,6 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
             mediaPlayer = null;
         }
     }
-
-    private String convertTime(int milliSeconds){
-        int second = milliSeconds/1000;
-        int minute = second/60;
-        int hour = minute/60;
-        String strSecond = String.valueOf(second%60);
-        if(strSecond.length() == 1){
-            strSecond = "0"+strSecond;
-        }
-
-        String strMinute = String.valueOf(minute%60);
-        if(strMinute.length() == 1){
-            strMinute = "0"+strMinute;
-        }
-        String strHour = "00";
-        if(hour > 0) {
-            strHour = String.valueOf(hour);
-            if(strHour.length()==1){
-                strHour = "0"+strHour;
-            }
-            return strHour + ":" + strMinute + ":" + strSecond;
-        }
-        else{
-            return strMinute + ":" + strSecond;
-        }
-    }
-
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
         mediaPlayer = new MediaPlayer();

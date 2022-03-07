@@ -75,5 +75,6 @@ public class WarningWindow extends Program {
         message.setTypeface(activity.font, Typeface.BOLD);
         ok.setTextColor(activity.styleSave.TextButtonColor);
         cancel.setTextColor(activity.styleSave.TextButtonColor);
+        message.setTextColor(activity.styleSave.TextColor);
     }
 }

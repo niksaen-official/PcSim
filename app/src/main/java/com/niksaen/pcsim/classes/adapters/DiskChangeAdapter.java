@@ -33,7 +33,7 @@ public class DiskChangeAdapter extends ArrayAdapter<String> {
         v.setBackgroundResource(R.color.background2);
         ImageView imageView = v.findViewById(R.id.image);
         TextView textView = v.findViewById(R.id.text);
-        imageView.setImageDrawable(new AssetFile(getContext()).getImage("pc_component/images/"+ PcComponent.Disk +"/" + strings[position] + ".png"));
+        imageView.setImageDrawable(new AssetFile(getContext()).getImage("pc_component/images/"+ PcComponent.Disk +"/" + strings[position] + "_disk.png"));
         textView.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/pixelFont.ttf"), Typeface.BOLD);
         textView.setText(strings[position]);
         return v;

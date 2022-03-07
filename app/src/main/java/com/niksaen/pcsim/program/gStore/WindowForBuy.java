@@ -68,7 +68,7 @@ public class WindowForBuy extends Program {
                 buttonClicks = 0;
             }
         });
-        buttonRollUp.setOnClickListener(v->rollUpProgram(1));
+        buttonRollUp.setOnClickListener(v->rollUpProgram());
     }
     private void initView(){
         titleTextView = mainWindow.findViewById(R.id.title);

@@ -15,7 +15,8 @@ import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.Program;
-import com.niksaen.pcsim.program.ProgramListAndData;
+import com.niksaen.pcsim.classes.ProgramListAndData;
+import com.niksaen.pcsim.program.window.WarningWindow;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -46,19 +47,28 @@ public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull DesktopAdapter.ViewHolder holder, int position) {
-        if(!(apps[position].startsWith(Program.DriversPrefix) || apps[position].startsWith(Program.AdditionalSoftPrefix) || apps[position].startsWith("OS") || apps[position].startsWith("CMD"))) {
-            holder.app_icon.setImageResource(ProgramListAndData.programIcon.get(apps[position]));
-            holder.app_name.setText(activity.words.get(apps[position]));
-            holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
-            holder.itemView.setOnClickListener(v -> {
+        holder.app_icon.setImageResource(ProgramListAndData.programIcon.get(apps[position]));
+        holder.app_name.setText(activity.words.get(apps[position]));
+        holder.app_name.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"));
+        holder.itemView.setOnClickListener(v -> {
+            if(StringArrayWork.ArrayListToString(activity.apps).contains(apps[position])) {
                 Program program = programHashMap.get(apps[position]);
                 program.openProgram();
-                System.out.println(StringArrayWork.ArrayListToString(activity.apps));
+            }
+        });
+        holder.itemView.setOnLongClickListener(v -> {
+            WarningWindow window = new WarningWindow(activity);
+            window.setMessageText(activity.words.get("Are you sure you want to remove this shortcut?"));
+            window.setCancelButtonText(activity.words.get("Cancel"));
+            window.setOkButtonText(activity.words.get("Remove"));
+            window.setButtonOkClick(v1 -> {
+                activity.styleSave.setDesktopProgramList(activity.styleSave.getDesktopProgramList().replaceFirst(apps[position]+",",""));
+                activity.updateDesktop();
+                window.closeProgram(1);
             });
-        }
-        else {
-            holder.itemView.setVisibility(View.GONE);
-        }
+            window.openProgram();
+            return true;
+        });
     }
 
     @Override

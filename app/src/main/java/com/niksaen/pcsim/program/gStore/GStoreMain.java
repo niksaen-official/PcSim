@@ -77,6 +77,6 @@ public class GStoreMain extends Program {
                 buttonClicks = 0;
             }
         });
-        buttonRollUp.setOnClickListener(v->rollUpProgram(1));
+        buttonRollUp.setOnClickListener(v->rollUpProgram());
     }
 }

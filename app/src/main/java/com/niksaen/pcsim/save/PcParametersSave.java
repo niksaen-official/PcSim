@@ -5,11 +5,15 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.classes.StringArrayWork;
+import com.niksaen.pcsim.classes.adapters.CartAdapters;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
-import com.niksaen.pcsim.program.ProgramListAndData;
+import com.niksaen.pcsim.classes.ProgramListAndData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -27,13 +31,13 @@ public class PcParametersSave {
     public double moboPower = 0,cpuPower = 0, coolerPower = 0, ram1Power = 0, ram2Power = 0, ram3Power = 0, ram4Power = 0, gpu1Power = 0, gpu2Power = 0, data1Power = 0, data2Power = 0, data3Power = 0, data4Power = 0, data5Power = 0, data6Power = 0, psuPower = 0,AllPcPower=0;
     TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
 
+
     SharedPreferences preferences;
 
     public PcParametersSave(Context context){
         preferences = context.getSharedPreferences("PcParametersSave",Context.MODE_PRIVATE);
         getAllPcParameters();
     }
-
     void getAllPcParameters(){
         pcWork = preferences.getBoolean("pcwork",false);
         Case = preferences.getString("Case",null);
@@ -172,36 +176,48 @@ public class PcParametersSave {
     public void setData1(String Data1,HashMap<String,String> DATA1){
         this.Data1 = Data1;
         this.DATA1 = DATA1;
+        if(this.DATA1 != null && !this.DATA1.containsKey("rename"))
+            this.DATA1.put("name","A:");
         preferences.edit().putString("Data1",Data1).apply();
         preferences.edit().putString("DATA1",new Gson().toJson(DATA1)).apply();
     }
     public void setData2(String Data2,HashMap<String,String> DATA2){
         this.Data2 = Data2;
         this.DATA2 = DATA2;
+        if(this.DATA2 != null && !this.DATA2.containsKey("rename"))
+            this.DATA2.put("name","B:");
         preferences.edit().putString("Data2",Data2).apply();
         preferences.edit().putString("DATA2",new Gson().toJson(DATA2)).apply();
     }
     public void setData3(String Data3,HashMap<String,String> DATA3){
         this.Data3 = Data3;
         this.DATA3 = DATA3;
+        if(this.DATA3 != null && !this.DATA3.containsKey("rename"))
+            this.DATA3.put("name","C:");
         preferences.edit().putString("Data3",Data3).apply();
         preferences.edit().putString("DATA3",new Gson().toJson(DATA3)).apply();
     }
     public void setData4(String Data4,HashMap<String,String> DATA4){
         this.Data4 = Data4;
         this.DATA4 = DATA4;
+        if(this.DATA4 != null && !this.DATA4.containsKey("rename"))
+            this.DATA4.put("name","D:");
         preferences.edit().putString("Data4",Data4).apply();
         preferences.edit().putString("DATA4",new Gson().toJson(DATA4)).apply();
     }
     public void setData5(String Data5,HashMap<String,String> DATA5){
         this.Data5 = Data5;
         this.DATA5 = DATA5;
+        if(this.DATA5 != null && !this.DATA5.containsKey("rename"))
+            this.DATA5.put("name","E:");
         preferences.edit().putString("Data5",Data5).apply();
         preferences.edit().putString("DATA5",new Gson().toJson(DATA5)).apply();
     }
     public void setData6(String Data6,HashMap<String,String> DATA6){
         this.Data6 = Data6;
         this.DATA6 = DATA6;
+        if(this.DATA6 != null && !this.DATA6.containsKey("rename"))
+            this.DATA6.put("name","F:");
         preferences.edit().putString("Data6",Data6).apply();
         preferences.edit().putString("DATA6",new Gson().toJson(DATA6)).apply();
     }
@@ -309,8 +325,6 @@ public class PcParametersSave {
                     switch (slot) {
                         case 1: {
                             if (Integer.parseInt(RAM.get("Частота")) > maxRamFrequency) {
-
-                                System.out.println("RAM 1 is work");
                                 float k = Float.parseFloat(Objects.requireNonNull(RAM.get("Частота"))) / Float.parseFloat(Objects.requireNonNull(RAM.get("Пропускная способность")));
                                 RAM.put("Частота", String.valueOf(maxRamFrequency));
                                 RAM.put("Пропускная способность", String.valueOf((int) Math.round(maxRamFrequency / k)));
@@ -367,17 +381,16 @@ public class PcParametersSave {
     //получение свободной оперативки в MB
     public int getEmptyRam(ArrayList<Program> programs){
         int allRam = 0;
-        if(RAM1 != null){
-            allRam+= Integer.valueOf(RAM1.get("Объём"));
-        }
-        if(RAM2 != null){
-            allRam+= Integer.valueOf(RAM2.get("Объём"));
-        }
-        if(RAM3 != null){
-            allRam+= Integer.valueOf(RAM3.get("Объём"));
-        }
-        if(RAM4 != null){
-            allRam+= Integer.valueOf(RAM4.get("Объём"));
+        HashMap<String,String>[] ramList = new HashMap[]{
+                this.RAM1,
+                this.RAM2,
+                this.RAM3,
+                this.RAM4
+        };
+        for(HashMap<String,String> ram:ramList) {
+            if (ram != null) {
+                allRam += Integer.parseInt(ram.get("Объём"));
+            }
         }
         allRam = allRam*1024;
         if(CPU.get("Графическое ядро").equals("+")){
@@ -387,12 +400,53 @@ public class PcParametersSave {
         for(Program program:programs){
             allRam -= program.CurrentRamUse;
         }
-        //выделение оперативки под операционку
-        allRam -= 455;
 
         return allRam;
     }
-
+    //получение всей оперативки в MB
+    public int getAllRam(){
+        int allRam = 0;
+        HashMap<String,String>[] ramList = new HashMap[]{
+                this.RAM1,
+                this.RAM2,
+                this.RAM3,
+                this.RAM4
+        };
+        for(HashMap<String,String> ram:ramList) {
+            if (ram != null) {
+                allRam += Integer.parseInt(ram.get("Объём"));
+            }
+        }
+        return allRam*1024;
+    }
+    public void setAllRamFrequency(){
+        int ram1=10000,ram2=10000,ram3=10000,ram4=10000;
+        if(RAM1 != null){
+            ram1 = Integer.parseInt(RAM1.get("Частота"));
+        }
+        if(RAM2 != null){
+            ram2 = Integer.parseInt(RAM1.get("Частота"));
+        }
+        if(RAM3 != null){
+            ram3 = Integer.parseInt(RAM1.get("Частота"));
+        }
+        if(RAM4 != null){
+            ram4 = Integer.parseInt(RAM1.get("Частота"));
+        }
+        String fr = String.valueOf(Math.min(Math.min(ram1,ram2),Math.min(ram3,ram4)));
+        if(RAM1 != null){
+            RAM1.put("Частота",fr);
+        }
+        if(RAM2 != null){
+            RAM2.put("Частота",fr);
+        }
+        if(RAM3 != null){
+            RAM3.put("Частота",fr);
+        }
+        if(RAM4 != null){
+            RAM4.put("Частота",fr);
+        }
+    }
     //проверка блока питания на мощность
     public boolean psuEnoughPower(){
         if(MOBO!=null) {
@@ -571,10 +625,9 @@ public class PcParametersSave {
     public float getEmptyStorageSpace(HashMap<String,String> disk){
         if(!disk.get("Содержимое").equals("")) {
             String[] program = disk.get("Содержимое").split(",");
-
             float allSpace = Float.parseFloat(disk.get("Свободно"))*1024;// in Mb
             for (String item : program) {
-                if (item.startsWith(Program.DriversPrefix) || item.startsWith(Program.AdditionalSoftPrefix)) {
+                if (item.startsWith(DriverInstaller.DriversPrefix) || item.startsWith(DriverInstaller.AdditionalSoftPrefix)) {
                     continue;
                 }
                 allSpace -= ProgramListAndData.programSize.get(item) * 1024;
@@ -596,54 +649,57 @@ public class PcParametersSave {
         }
         return type;
     }
-    // установка главного диска
-    public void setMainDisk(int diskId){
-        switch (diskId){
-            case 1:{
-                if(DATA1 != null){
-                    DATA1.put("MainDisk","true");
-                    setData1(Data1,DATA1);
-                }
-                break;
-            }
-            case 2:{
-                if(DATA2 != null){
-                    DATA2.put("MainDisk","true");
-                    setData2(Data2,DATA2);
-                }
-                break;
-            }
-            case 3:{
-                if(DATA3 != null){
-                    DATA3.put("MainDisk","true");
-                    setData3(Data3,DATA3);
-                }
-                break;
-            }
-            case 4:{
-                if(DATA4 != null){
-                    DATA4.put("MainDisk","true");
-                    setData4(Data4,DATA4);
-                }
-                break;
-            }
-            case 5:{
-                if(DATA5 != null){
-                    DATA5.put("MainDisk","true");
-                    setData5(Data5,DATA5);
-                }
-                break;
-            }
-            case 6:{
-                if(DATA6 != null){
-                    DATA6.put("MainDisk","true");
-                    setData6(Data6,DATA6);
-                }
-                break;
-            }
+    public String[] getContentOfAllDrives(){
+        String[][] allDiskAppList = new String[0][];
+        if(this.DATA1 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,this.DATA1.get("Содержимое").split(","));
         }
+        if(this.DATA2 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,this.DATA2.get("Содержимое").split(","));
+        }
+        if(this.DATA3 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,this.DATA3.get("Содержимое").split(","));
+        }
+        if(this.DATA4 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,this.DATA4.get("Содержимое").split(","));
+        }
+        if(this.DATA5 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,this.DATA5.get("Содержимое").split(","));
+        }
+        if(this.DATA6 != null){
+            allDiskAppList = StringArrayWork.add(allDiskAppList,this.DATA6.get("Содержимое").split(","));
+        }
+        return StringArrayWork.concatAll(allDiskAppList);
     }
-
+    // получение списка накопителей
+    public String[] getDiskList(){
+        String[] diskList = new String[0];
+        if(DATA1 != null
+                && StringArrayWork.ArrayListToString(getContentOfAllDrives()).contains(DriverInstaller.DriverForStorageDevices+Data1)){
+            diskList = StringArrayWork.add(diskList,DATA1.get("name"));
+        }
+        if(DATA2 != null
+                && StringArrayWork.ArrayListToString(getContentOfAllDrives()).contains(DriverInstaller.DriverForStorageDevices+Data2)){
+            diskList = StringArrayWork.add(diskList,DATA2.get("name"));
+        }
+        if(DATA3 != null
+                && StringArrayWork.ArrayListToString(getContentOfAllDrives()).contains(DriverInstaller.DriverForStorageDevices+Data3)){
+            diskList = StringArrayWork.add(diskList,DATA3.get("name"));
+        }
+        if(DATA4 != null
+                && StringArrayWork.ArrayListToString(getContentOfAllDrives()).contains(DriverInstaller.DriverForStorageDevices+Data4)){
+            diskList = StringArrayWork.add(diskList,DATA4.get("name"));
+        }
+        if(DATA5 != null
+                && StringArrayWork.ArrayListToString(getContentOfAllDrives()).contains(DriverInstaller.DriverForStorageDevices+Data5)){
+            diskList = StringArrayWork.add(diskList,DATA5.get("name"));
+        }
+        if(DATA6 != null
+                && StringArrayWork.ArrayListToString(getContentOfAllDrives()).contains(DriverInstaller.DriverForStorageDevices+Data6)){
+            diskList = StringArrayWork.add(diskList,DATA6.get("name"));
+        }
+        return diskList;
+    }
     //получение свободной видео памяти в MB
     public int getEmptyVideoMemory(ArrayList<Program> programs){
         int allVideoMemory = 0;
@@ -662,4 +718,169 @@ public class PcParametersSave {
         }
         return allVideoMemory;
     }
+    public int getAllVideoMemory(){
+        int allVideoMemory = 0;
+        if(CPU.get("Графическое ядро").equals("+")){
+            allVideoMemory += 1024;
+        }
+        if(GPU1 != null){
+            allVideoMemory += Integer.parseInt(GPU1.get("Объём видеопамяти"))*1024;
+        }
+        if(GPU2 != null){
+            allVideoMemory += Integer.parseInt(GPU2.get("Объём видеопамяти"))*1024;
+        }
+        return allVideoMemory;
+    }
+
+    //проверки на наличие необходимых драйверов
+    public boolean ramDriverValid(){
+        String[] ramList = {Ram1,Ram2,Ram3,Ram4};
+        for(String ram:ramList){
+            if(ram != null){
+                if(StringArrayWork.ArrayListToString(getContentOfAllDrives()).contains(DriverInstaller.DriverForRAM+ram)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean driveDriverValid(){
+        String[] driveList = {Data1,Data2,Data3,Data4,Data5,Data6};
+        for(String drive:driveList){
+            if(drive != null){
+                if(StringArrayWork.ArrayListToString(getContentOfAllDrives()).contains(DriverInstaller.DriverForStorageDevices+drive)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean gpuDriverValid(){
+        String[] gpuList = {Gpu1,Gpu2};
+        for(String gpu:gpuList){
+            if(gpu != null){
+                if(StringArrayWork.ArrayListToString(getContentOfAllDrives()).contains(DriverInstaller.DriverForGPU+gpu)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public HashMap<String, String> getRam(int position) {
+        switch (position){
+            case 0:{
+                return RAM1;
+            }
+            case 1:{
+                return RAM2;
+            }
+            case 2:{
+                return RAM3;
+            }
+            case 3:{
+                return RAM4;
+            }
+            default: return null;
+        }
+    }
+
+    public void setRam(int position, HashMap<String, String> ram) {
+        switch (position){
+            case 0:{
+                setRam1(ram.get("Name"),ram);
+                break;
+            }
+            case 1:{
+                setRam2(ram.get("Name"),ram);
+                break;
+            }
+            case 2:{
+                setRam3(ram.get("Name"),ram);
+                break;
+            }
+            case 3:{
+                setRam4(ram.get("Name"),ram);
+                break;
+            }
+        }
+    }
+
+    public HashMap<String, String> getGpu(int position) {
+        switch (position){
+            case 0:{
+                return GPU1;
+            }
+            case 1:{
+                return GPU2;
+            }
+            default: return null;
+        }
+    }
+
+    public void setGpu(int position, HashMap<String, String> gpu) {
+        switch (position){
+            case 0:{
+                setGpu1(gpu.get("Name"),gpu);
+                break;
+            }
+            case 1:{
+                setGpu2(gpu.get("Name"),gpu);
+                break;
+            }
+        }
+    }
+    public HashMap<String, String> getDrive(int position) {
+        switch (position){
+            case 0:{
+                return DATA1;
+            }
+            case 1:{
+                return DATA2;
+            }
+            case 2:{
+                return DATA3;
+            }
+            case 3:{
+                return DATA4;
+            }
+            case 4:{
+                return DATA5;
+            }
+            case 5:{
+                return DATA6;
+            }
+            default: return null;
+        }
+    }
+
+    public void setDrive(int position, HashMap<String, String> drive) {
+        switch (position){
+            case 0:{
+                setData1(drive.get("Name"),drive);
+                break;
+            }
+            case 1:{
+                setData2(drive.get("Name"),drive);
+                break;
+            }
+            case 2:{
+                setData3(drive.get("Name"),drive);
+                break;
+            }
+            case 3:{
+                setData4(drive.get("Name"),drive);
+                break;
+            }
+            case 4:{
+                setData5(drive.get("Name"),drive);
+                break;
+            }
+            case 5:{
+                setData6(drive.get("Name"),drive);
+                break;
+            }
+        }
+    }
+
 }

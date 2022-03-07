@@ -3,6 +3,18 @@ package com.niksaen.pcsim.classes;
 import java.util.ArrayList;
 
 public class StringArrayWork {
+    public static String[] add(String string,String[] strings){
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = -1;i< strings.length;i++){
+            if(i == -1){
+                list.add(string);
+            }
+            else{
+                list.add(strings[i]);
+            }
+        }
+        return StringArrayWork.ArrayListToArray(list);
+    }
     public static String[][] add(String[][] array,String[] strings){
         String[][] res = new String[array.length+1][];
         for(int i = 0;i< res.length;i++){
@@ -82,5 +94,9 @@ public class StringArrayWork {
             res.append(",");
         }
         return res.toString();
+    }
+
+    public static String[] clearEmpty(String[] array) {
+        return ArrayListToString(array).replaceAll("null","").replaceAll(",,",",").split(",");
     }
 }

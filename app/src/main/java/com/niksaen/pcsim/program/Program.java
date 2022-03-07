@@ -12,13 +12,12 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.os.cmd.CMD;
 
 /*
 * Базовый класс для создания программ
 * */
 public class Program {
-    public static String AdditionalSoftPrefix = "SOFT: ";
-    public static String DriversPrefix = "DRIVER: ";
 
     /** @param  CurrentRamUse - показывает сколько программа использует оперативной памяти в мб*/
     public int CurrentRamUse;
@@ -45,6 +44,8 @@ public class Program {
      *1 - означает что программа свёрнута*/
     public int status = -1;
 
+    public static String BACKGROUND = "BACKGROUND";
+    public String Type = "FOREGROUND";
     public Program(MainActivity activity){
         this.activity = activity;
     }
@@ -75,19 +76,14 @@ public class Program {
                 } else {
                     mainWindow.setScaleX(1);
                     mainWindow.setScaleY(1);
-                    mainWindow.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            return false;
-                        }
-                    });
+                    mainWindow.setOnTouchListener((v1, event) -> false);
                     mainWindow.setX(0);
                     mainWindow.setY(0);
                     v.setBackgroundResource(activity.styleSave.FullScreenMode2ImageRes);
                     buttonClicks = 0;
                 }
         });
-        buttonRollUp.setOnClickListener(v->rollUpProgram(1));
+        buttonRollUp.setOnClickListener(v->rollUpProgram());
 
         //настройка базовой части стиля программы
         mainWindow.setBackgroundColor(activity.styleSave.ColorWindow);
@@ -107,18 +103,31 @@ public class Program {
         CurrentVideoMemoryUse = Others.random(ValueVideoMemory[0],ValueVideoMemory[1]);
         if(activity.pcParametersSave.getEmptyRam(activity.programArrayList) > CurrentRamUse) {
             if(activity.pcParametersSave.getEmptyVideoMemory(activity.programArrayList)>CurrentVideoMemoryUse) {
-                if (status == -1) {
-                    status = 0;
-                    activity.programArrayList.add(this);
-                    activity.updateToolbar();
-                    activity.taskManager.update();
-                    if (mainWindow.getParent() == null) {
-                        activity.layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                    } else {
-                        mainWindow.setVisibility(View.VISIBLE);
-                    }
+                status = 0;
+                activity.programArrayList.add(this);
+                activity.updateToolbar();
+                activity.taskManager.update();
+                if (mainWindow.getParent() == null) {
+                    activity.layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                } else {
+                    mainWindow.setVisibility(View.VISIBLE);
                 }
             }
+            else {
+                CMD cmd = new CMD(activity);
+                cmd.commandList = new String[] {
+                        "#cmd.error:"+activity.words.get("Not enough video memory"),
+                };
+                cmd.setType(CMD.AUTO);
+                cmd.openProgram();
+            }
+        }else {
+            CMD cmd = new CMD(activity);
+            cmd.commandList = new String[] {
+                    "#cmd.error:"+activity.words.get("Not enough RAM"),
+            };
+            cmd.setType(CMD.AUTO);
+            cmd.openProgram();
         }
     }
 
@@ -133,21 +142,17 @@ public class Program {
             activity.updateToolbar();
             activity.taskManager.update();
             mainWindow.setVisibility(View.GONE);
-        }else if(status == 0){
+        }else if(mode == 0) {
             mainWindow.setVisibility(View.GONE);
             status = -1;
         }
     }
 
-    /** сворачивание программы
-     * @param mode
-     * в значении 1 используется для сворачивания
-     * в значении 0 используется для развертывания*/
-    public void rollUpProgram(int mode){
-        if(mode == 1){
+    /** сворачивание программы*/
+    public void rollUpProgram(){
+        if(mainWindow.getVisibility() == View.VISIBLE){
             mainWindow.setVisibility(View.GONE);
-        }
-        else{
+        }else {
             mainWindow.setVisibility(View.VISIBLE);
         }
     }

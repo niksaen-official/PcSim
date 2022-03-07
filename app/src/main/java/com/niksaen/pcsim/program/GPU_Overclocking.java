@@ -14,6 +14,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
+import com.niksaen.pcsim.program.window.WarningWindow;
 
 import java.util.HashMap;
 
@@ -68,38 +70,49 @@ public class GPU_Overclocking extends Program {
 
     @Override
     public void openProgram() {
-        if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.DriversPrefix+"GPU_PRO")) {
-            super.openProgram();
-        }
+        super.openProgram();
     }
 
     public void initProgram(){
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_gpu_overclocking,null);
         initView();
         style();
-        if (activity.pcParametersSave.GPU1 != null) {
+        if (activity.pcParametersSave.GPU1 != null && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForGPU+activity.pcParametersSave.Gpu1)) {
             gpu1.setVisibility(View.VISIBLE);
             gpu1.setOnClickListener(v -> {
-                gpu_model.setVisibility(View.VISIBLE);
-                parameters.setVisibility(View.VISIBLE);
-                seekBar.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-                gpu_model.setText(activity.pcParametersSave.Gpu1);
-                overclocking(activity.pcParametersSave.GPU1, 1);
+                if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForGPU+activity.pcParametersSave.Gpu1+"\n"+DriverInstaller.EXTENDED_TYPE)) {
+                    gpu_model.setVisibility(View.VISIBLE);
+                    parameters.setVisibility(View.VISIBLE);
+                    seekBar.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                    gpu_model.setText(activity.pcParametersSave.Gpu1);
+                    overclocking(activity.pcParametersSave.GPU1, 1);
+                }else{
+                    WarningWindow window = new WarningWindow(activity);
+                    window.setMessageText(activity.words.get("An error has occurred in the program")+"\n"+activity.words.get("Installed drivers are not compatible with this program"));
+                    window.setButtonOkClick(v1->window.closeProgram(1));
+                    window.openProgram();
+                }
             });
         }
-        if (Integer.parseInt(activity.pcParametersSave.MOBO.get("Слотов PCI")) >= 2) {
-            if (activity.pcParametersSave.GPU2 != null) {
-                gpu2.setVisibility(View.VISIBLE);
-                gpu2.setOnClickListener(v -> {
+        if (activity.pcParametersSave.GPU2 != null && StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForGPU+activity.pcParametersSave.Gpu2)) {
+            gpu2.setVisibility(View.VISIBLE);
+            gpu2.setOnClickListener(v -> {
+                if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForGPU+activity.pcParametersSave.Gpu2+"\n"+DriverInstaller.EXTENDED_TYPE)) {
                     gpu_model.setVisibility(View.VISIBLE);
                     parameters.setVisibility(View.VISIBLE);
                     seekBar.setVisibility(View.VISIBLE);
                     save.setVisibility(View.VISIBLE);
                     gpu_model.setText(activity.pcParametersSave.Gpu2);
                     overclocking(activity.pcParametersSave.GPU2, 2);
-                });
-            }
+                }
+                else{
+                    WarningWindow window = new WarningWindow(activity);
+                    window.setMessageText(activity.words.get("An error has occurred in the program")+"\n"+activity.words.get("Installed drivers are not compatible with this program"));
+                    window.setButtonOkClick(v1->window.closeProgram(1));
+                    window.openProgram();
+                }
+            });
         }
         super.initProgram();
     }
@@ -174,13 +187,13 @@ public class GPU_Overclocking extends Program {
                     if(activity.pcParametersSave.PSU.get("Защита").equals("-")) {
                         activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]", null);
                     }
-                    activity.blackDeadScreen(new String[]{"0xAA0002","0xBB0004"});
+                    activity.blackDeadScreen(new String[]{"0x0003","0x0005"});
                 }
                 else if(!activity.pcParametersSave.psuEnoughPower()){
                     if(activity.pcParametersSave.PSU.get("Защита").equals("-")) {
                         activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]", null);
                     }
-                    activity.blackDeadScreen(new String[]{"0xAA0002"});
+                    activity.blackDeadScreen(new String[]{"0x0005"});
                 }
             }
             if (slot == 2) {
@@ -192,13 +205,13 @@ public class GPU_Overclocking extends Program {
                     if(activity.pcParametersSave.PSU.get("Защита").equals("-")) {
                         activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]", null);
                     }
-                    activity.blackDeadScreen(new String[]{"0xAA0002","0xBB0004"});
+                    activity.blackDeadScreen(new String[]{activity.words.get("Video chip overheating"),activity.words.get("The power supply is overloaded")});
                 }
                 else if(!activity.pcParametersSave.psuEnoughPower()){
                     if(activity.pcParametersSave.PSU.get("Защита").equals("-")) {
                         activity.pcParametersSave.setPsu(activity.pcParametersSave.Psu + "[Сломано]", null);
                     }
-                    activity.blackDeadScreen(new String[]{"0xAA0002"});
+                    activity.blackDeadScreen(new String[]{activity.words.get("The power supply is overloaded")});
                 }
             }
         });

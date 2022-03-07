@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.notepad.NotepadSpinnerAdapter;
 
@@ -94,11 +95,11 @@ public class Paint extends Program {
                 if (position == 1) {
                     paintCanvas.reset();
                 } else if (position == 2) {
-                    if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: SaveLibs")) {
+                    if (StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: SaveLibs")) {
                         new PaintSaveFile(activity).openProgram(paintCanvas);
                     }
                 } else if (position == 3) {
-                    if (StringArrayWork.ArrayListToString(activity.apps).contains(Program.AdditionalSoftPrefix + "File manager: OpenLibs")) {
+                    if (StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: OpenLibs")) {
                         closeProgram(1);
                         new PaintOpenFile(activity).openProgram();
                     }

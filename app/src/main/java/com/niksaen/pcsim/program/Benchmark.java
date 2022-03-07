@@ -98,7 +98,7 @@ public class Benchmark extends Program{
         double gpu1_bench=0,gpu2_bench=0,gpu_i_bench=0;
         if(Objects.equals(activity.pcParametersSave.CPU.get("Графическое ядро"), "+")){
             int model=gpu(activity.pcParametersSave.CPU.get("Модель"));
-            int frequency = Integer.parseInt(activity.pcParametersSave.CPU.get("Частота Graphics card"));
+            int frequency = Integer.parseInt(activity.pcParametersSave.CPU.get("Частота"));
             gpu_i_bench = (int) (model+(frequency*1.5));
         }
         if(activity.pcParametersSave.GPU1 != null){
@@ -106,7 +106,7 @@ public class Benchmark extends Program{
             int count_chips = Integer.parseInt(activity.pcParametersSave.GPU1.get("Кол-во видеочипов"));
             int frequency = Integer.parseInt(activity.pcParametersSave.GPU1.get("Частота"));
             int volume = Integer.parseInt(activity.pcParametersSave.GPU1.get("Объём видеопамяти"));
-            Double throughput = Double.parseDouble(activity.pcParametersSave.GPU1.get("Пропускная способность"));
+            double throughput = Double.parseDouble(activity.pcParametersSave.GPU1.get("Пропускная способность"));
             gpu1_bench = count_chips*frequency*volume*(throughput/4)+(model*2)/4;
         }
         if(activity.pcParametersSave.GPU2 != null){

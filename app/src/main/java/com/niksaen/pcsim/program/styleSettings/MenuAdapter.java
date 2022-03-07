@@ -67,9 +67,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
         return listGroup[groupPosition];
     }
 
-    public String getChild(int groupPosition, int childPosition) {
-        return listChild.get(listGroup[groupPosition])[childPosition];
-    }
+    public String getChild(int groupPosition, int childPosition) { return listChild.get(listGroup[groupPosition])[childPosition]; }
 
     public long getGroupId(int groupPosition) {
         return groupPosition;

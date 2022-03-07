@@ -46,13 +46,13 @@ public class Calculator extends Program {
             }catch (Exception e){
                 ErrorWindow errorWindow = new ErrorWindow(activity);
                 if(e.toString().contains("ArrayIndexOutOfBoundsException")){
-                    errorWindow.setErrorCode("0xCL0001");
+                    errorWindow.setMessage(activity.words.get("An example must not start with an arithmetic sign, except for a minus sign."));
                 }
                 else if(e.toString().contains("IndexOutOfBoundsException")){
-                    errorWindow.setErrorCode("0xCL0002");
+                    errorWindow.setMessage(activity.words.get("The example must not end with an arithmetic sign."));
                 }
                 else  if(e.toString().contains("NumberFormatException")){
-                    errorWindow.setErrorCode("0xCL0003");
+                    errorWindow.setMessage(activity.words.get("Invalid number format."));
                 }else{
                     outputField.setText(e.toString());
                 }

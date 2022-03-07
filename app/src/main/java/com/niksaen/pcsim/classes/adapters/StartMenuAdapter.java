@@ -14,8 +14,8 @@ import androidx.annotation.Nullable;
 
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.program.Program;
-import com.niksaen.pcsim.program.ProgramListAndData;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
+import com.niksaen.pcsim.classes.ProgramListAndData;
 
 public class StartMenuAdapter extends  ArrayAdapter<String> {
 
@@ -37,7 +37,10 @@ public class StartMenuAdapter extends  ArrayAdapter<String> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View item = LayoutInflater.from(getContext()).inflate(R.layout.item_start_menu,null);
-        if(!(getItem(position).startsWith(Program.DriversPrefix) || getItem(position).startsWith(Program.AdditionalSoftPrefix) || getItem(position).startsWith("OS") || getItem(position).startsWith("CMD"))) {
+        if(!(getItem(position).startsWith(DriverInstaller.DriversPrefix)
+                || getItem(position).startsWith(DriverInstaller.AdditionalSoftPrefix)
+                || getItem(position).contains("OS")
+                || getItem(position).startsWith("CMD"))) {
             item.setBackgroundColor(activity.styleSave.StartMenuColor);
             TextView programName = item.findViewById(R.id.app_name);
             ImageView programIcon = item.findViewById(R.id.app_icon);

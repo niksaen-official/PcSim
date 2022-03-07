@@ -16,6 +16,10 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.program.notepad.NotepadSpinnerAdapter;
 
 public class Language {
+
+    public static String EN = "EN";
+    public static String RU = "RU";
+
     private static void setLanguage(Context context,String langCode){
         SharedPreferences sharedPreferences = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
         sharedPreferences.edit().putString("lang",langCode).apply();
@@ -34,7 +38,7 @@ public class Language {
         save.setBackgroundColor(context.getColor(R.color.buttonColor));
         save.setTextColor(Color.parseColor("#ffffff"));
 
-        String[] langList = new String[]{"RU","EN"};
+        String[] langList = new String[]{RU,EN};
         String[] langListUser = new String[]{"Русский","English"};
 
         NotepadSpinnerAdapter adapter = new NotepadSpinnerAdapter(context,0,langListUser);
@@ -42,7 +46,7 @@ public class Language {
         adapter.TextColor = context.getColor(R.color.color17);
         lang.setAdapter(adapter);
 
-        final String[] buff = {"RU"};
+        final String[] buff = {RU};
         lang.setAdapter(adapter);
         lang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -61,12 +65,9 @@ public class Language {
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setLanguage(context,buff[0]);
-                dialog.dismiss();
-            }
+        save.setOnClickListener(v -> {
+            setLanguage(context,buff[0]);
+            dialog.dismiss();
         });
         dialog.show();
     }
