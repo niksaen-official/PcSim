@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +27,8 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.Others;
-import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.CustomListViewAdapter;
-import com.niksaen.pcsim.classes.dialogs.Dialog;
 import com.niksaen.pcsim.classes.pcComponents.PcComponent;
 import com.niksaen.pcsim.pcView.MotherBoardView;
 import com.niksaen.pcsim.save.PcParametersSave;
@@ -84,9 +83,10 @@ public class IronActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iron);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         font = Typeface.createFromAsset(getAssets(), "fonts/pixelFont.ttf");
-
+        
         parametersSave = new PcParametersSave(this);
         playerData = new PlayerData(this);
         getLanguage();
@@ -541,6 +541,13 @@ public class IronActivity extends AppCompatActivity {
         }
 
         //style
+        title.setTypeface(font);
+        title.setTextSize(45);
+        title.setTextColor(Color.parseColor("#FFFFFF"));
+        title.setText(words.get("Choose a slot:"));
+        title.setPadding(8,8,8,24);
+        title.setGravity(Gravity.CENTER_HORIZONTAL);
+
         CustomListViewAdapter adapter = new CustomListViewAdapter(this,0,slotList);
         adapter.TextColor = Color.parseColor("#FFFFFF");
         adapter.BackgroundColor2 = Color.parseColor("#121212");
@@ -548,9 +555,11 @@ public class IronActivity extends AppCompatActivity {
         adapter.TextSize = 40;
         slots.setAdapter(adapter);
 
+        main.setOrientation(LinearLayout.VERTICAL);
         main.setBackgroundColor(Color.parseColor("#121212"));
         main.setPadding(16,16,16,16);
 
+        main.addView(title,LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         main.addView(slots,LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         builder.setView(main);
         dialog = builder.create();
@@ -560,7 +569,6 @@ public class IronActivity extends AppCompatActivity {
             if (typeForInstall != null) {
                 if (typeForInstall.equals("RAM") && moboInstall) {
                     if (parametersSave.getRam(position) != null) ramList.add(parametersSave.getRam(position).get("Model"));
-
                     ramView.get(position).setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.RAM+"/" + nameForInstall + "_top.png"));
                     HashMap<String,String >ram = new Gson().fromJson(assetFile.getText("pc_component/parameters/"+PcComponent.RAM+"/" + nameForInstall + ".json"), typeToken.getType());
                     if (!moboParameters.get("Тип памяти").equals(ram.get("Тип памяти"))) {
@@ -573,7 +581,6 @@ public class IronActivity extends AppCompatActivity {
                 }
                 if (typeForInstall.equals("GPU") && moboInstall) {
                     if (parametersSave.getGpu(position) != null) gpuList.add(parametersSave.getGpu(position).get("Model"));
-
                     gpuView.get(position).setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.GPU+"/" + nameForInstall + "_horizontal.png"));
                     HashMap<String,String> gpu = new Gson().fromJson(assetFile.getText("pc_component/parameters/"+PcComponent.GPU+"/" + nameForInstall + ".json"), typeToken.getType());
                     parametersSave.setGpu(position, gpu);
@@ -581,8 +588,7 @@ public class IronActivity extends AppCompatActivity {
                     gpuInstall = true;
                 }
                 if (typeForInstall.equals("DATA") && caseInstall) {
-                    if (parametersSave.getDrive(position) != null) dataList.add(parametersSave.getDrive(position).get("Name"));
-
+                    if (parametersSave.getDrive(position) != null) dataList.add(parametersSave.getDrive(position).get("Model"));
                     driveView.get(position).setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.StorageDevice+"/" + nameForInstall + "_h.png"));
                     HashMap<String,String> drive = new Gson().fromJson(assetFile.getText("pc_component/parameters/"+PcComponent.StorageDevice+"/" + nameForInstall + ".json"), typeToken.getType());
                     if(parametersSave.getDrive(position).get("Содержимое").contains("OS")){
