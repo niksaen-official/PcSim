@@ -788,19 +788,19 @@ public class PcParametersSave {
     public void setRam(int position, HashMap<String, String> ram) {
         switch (position){
             case 0:{
-                setRam1(ram.get("Name"),ram);
+                setRam1(ram.get("Model"),ram);
                 break;
             }
             case 1:{
-                setRam2(ram.get("Name"),ram);
+                setRam2(ram.get("Model"),ram);
                 break;
             }
             case 2:{
-                setRam3(ram.get("Name"),ram);
+                setRam3(ram.get("Model"),ram);
                 break;
             }
             case 3:{
-                setRam4(ram.get("Name"),ram);
+                setRam4(ram.get("Model"),ram);
                 break;
             }
         }
@@ -821,11 +821,11 @@ public class PcParametersSave {
     public void setGpu(int position, HashMap<String, String> gpu) {
         switch (position){
             case 0:{
-                setGpu1(gpu.get("Name"),gpu);
+                setGpu1(gpu.get("Model"),gpu);
                 break;
             }
             case 1:{
-                setGpu2(gpu.get("Name"),gpu);
+                setGpu2(gpu.get("Model"),gpu);
                 break;
             }
         }
@@ -857,27 +857,27 @@ public class PcParametersSave {
     public void setDrive(int position, HashMap<String, String> drive) {
         switch (position){
             case 0:{
-                setData1(drive.get("Name"),drive);
+                setData1(drive.get("Model"),drive);
                 break;
             }
             case 1:{
-                setData2(drive.get("Name"),drive);
+                setData2(drive.get("Model"),drive);
                 break;
             }
             case 2:{
-                setData3(drive.get("Name"),drive);
+                setData3(drive.get("Model"),drive);
                 break;
             }
             case 3:{
-                setData4(drive.get("Name"),drive);
+                setData4(drive.get("Model"),drive);
                 break;
             }
             case 4:{
-                setData5(drive.get("Name"),drive);
+                setData5(drive.get("Model"),drive);
                 break;
             }
             case 5:{
-                setData6(drive.get("Name"),drive);
+                setData6(drive.get("Model"),drive);
                 break;
             }
         }

@@ -3,6 +3,7 @@ package com.niksaen.pcsim.classes;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.games.mines.Minesweeper;
+import com.niksaen.pcsim.games.snake.SnakeGame;
 import com.niksaen.pcsim.games.tic_tac_toe.TicTacToe;
 import com.niksaen.pcsim.os.LiriOS;
 import com.niksaen.pcsim.os.NapiOS;
@@ -58,7 +59,8 @@ public class ProgramListAndData {
             "Benchmark",
             "Miner",
             "Driver installer",
-            "Minesweeper"
+            "Minesweeper",
+            "Snake"
     };
 
     public static HashMap<String,String> programType = new HashMap<>();
@@ -75,6 +77,7 @@ public class ProgramListAndData {
         programPrice.put("Miner",200);
         programPrice.put("Driver installer",1000);
         programPrice.put("Minesweeper",2500);
+        programPrice.put("Snake",2399);
         //установка типа приложения, только для платных
         programType.put("Tic Tac Toe","Game");
         programType.put("Minesweeper","Game");
@@ -84,6 +87,7 @@ public class ProgramListAndData {
         programType.put("Benchmark","Program");
         programType.put("Miner","Program");
         programType.put("Driver installer","Program");
+        programType.put("Snake","Game");
 
         // иконки программ и игр
         programIcon.put("Benchmark", R.drawable.icon_benchmark);
@@ -122,6 +126,7 @@ public class ProgramListAndData {
         programIcon.put(LiriOS.TITLE,R.drawable.liri_os_logo);
         programIcon.put("Driver installer",R.drawable.icon_downloader);
         programIcon.put("Minesweeper",R.drawable.icon_default);
+        programIcon.put("Snake",R.drawable.icon_default);
 
         //вес програм и игр
         programSize.put("Benchmark",2f);
@@ -151,6 +156,7 @@ public class ProgramListAndData {
         programSize.put("LiriOS",20f);
         programSize.put("Driver installer",0.2f);
         programSize.put("Minesweeper",4.2f);
+        programSize.put("Snake",2.4f);
     }
 
     /** классы программ*/
@@ -179,5 +185,6 @@ public class ProgramListAndData {
         programHashMap.put("GStore",new GStoreMain(activity));
         programHashMap.put("Driver installer",new DriverInstaller(activity));
         programHashMap.put("Minesweeper",new Minesweeper(activity));
+        programHashMap.put("Snake",new SnakeGame(activity));
     }
 }

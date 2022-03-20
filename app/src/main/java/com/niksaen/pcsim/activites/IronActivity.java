@@ -591,9 +591,11 @@ public class IronActivity extends AppCompatActivity {
                     if (parametersSave.getDrive(position) != null) dataList.add(parametersSave.getDrive(position).get("Model"));
                     driveView.get(position).setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.StorageDevice+"/" + nameForInstall + "_h.png"));
                     HashMap<String,String> drive = new Gson().fromJson(assetFile.getText("pc_component/parameters/"+PcComponent.StorageDevice+"/" + nameForInstall + ".json"), typeToken.getType());
-                    if(parametersSave.getDrive(position).get("Содержимое").contains("OS")){
-                        StyleSave styleSave = new StyleSave(IronActivity.this);
-                        styleSave.resetAllStyle();
+                    if(parametersSave.getDrive(position)!= null){
+                        if(parametersSave.getDrive(position).get("Содержимое").contains("OS")){
+                            StyleSave styleSave = new StyleSave(IronActivity.this);
+                            styleSave.resetAllStyle();
+                        }
                     }
                     drive.put("MainDisk","true");
                     drive.put("name","A:");
