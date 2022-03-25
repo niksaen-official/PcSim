@@ -32,6 +32,7 @@ public class TicTacToe extends Program {
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.game_tictactoe,null);
         initView();
         style();
+        activity.toolbar.setVisibility(View.GONE);
         pause.setOnClickListener(v->{
             layout.openDrawer(sideMenu);
         });
@@ -113,5 +114,10 @@ public class TicTacToe extends Program {
                 super.openProgram();
             }
         }
+    }
+    @Override
+    public void closeProgram(int mode) {
+        super.closeProgram(mode);
+        activity.toolbar.setVisibility(View.VISIBLE);
     }
 }

@@ -12,34 +12,28 @@
 
         <FrameLayout
             android:id="@+id/field"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="#FFFFFF"
-            android:orientation="vertical"
-            android:padding="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="#FFFFFF"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.36" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Score"
-            android:textSize="55sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline6"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_horizontal"
+            android:textSize="45sp"
+            app:layout_constraintBottom_toTopOf="@+id/up"
+            app:layout_constraintEnd_toEndOf="@+id/right"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pause" />
 
@@ -57,36 +51,46 @@
             android:id="@+id/bottom"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:foreground="@drawable/arrow_color18"
             android:rotation="-90"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline6"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/left" />
 
         <Button
-            android:foreground="@drawable/arrow_color18"
-            android:id="@+id/left"
+            android:visibility="gone"
+            android:id="@+id/reset"
             android:layout_width="64dp"
             android:layout_height="64dp"
             app:layout_constraintBottom_toTopOf="@+id/bottom"
-            app:layout_constraintEnd_toStartOf="@+id/bottom" />
+            app:layout_constraintEnd_toStartOf="@+id/right"
+            app:layout_constraintStart_toEndOf="@+id/left"
+            app:layout_constraintTop_toBottomOf="@+id/up" />
 
         <Button
+            android:id="@+id/left"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="32dp"
             android:foreground="@drawable/arrow_color18"
-            android:rotation="90"
+            app:layout_constraintBottom_toTopOf="@+id/bottom"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
             android:id="@+id/up"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:foreground="@drawable/arrow_color18"
+            android:rotation="90"
             app:layout_constraintBottom_toTopOf="@+id/left"
             app:layout_constraintStart_toEndOf="@+id/left" />
 
         <Button
-            android:foreground="@drawable/arrow_color18"
-            android:rotation="180"
             android:id="@+id/right"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:foreground="@drawable/arrow_color18"
+            android:rotation="180"
             app:layout_constraintBottom_toTopOf="@+id/bottom"
             app:layout_constraintStart_toEndOf="@+id/bottom" />
 

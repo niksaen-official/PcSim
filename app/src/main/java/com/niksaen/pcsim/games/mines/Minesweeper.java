@@ -39,6 +39,7 @@ public class Minesweeper extends Program {
     @Override
     public void initProgram() {
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.game_minesweeper,null);
+        activity.toolbar.setVisibility(View.GONE);
         initView();
         style();
         fieldGenerator(bombCount);
@@ -283,5 +284,10 @@ public class Minesweeper extends Program {
                 view.setVisibility(View.GONE);
             }
         }
+    }
+    @Override
+    public void closeProgram(int mode) {
+        super.closeProgram(mode);
+        activity.toolbar.setVisibility(View.VISIBLE);
     }
 }
