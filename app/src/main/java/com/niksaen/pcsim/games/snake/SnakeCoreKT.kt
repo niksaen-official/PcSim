@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
 import com.niksaen.pcsim.R
 
 class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
@@ -17,10 +18,22 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
     var CellsCount:Int = 15;
 
     private var head:View;
-    private var eat:View;
-    var headTexture:Drawable?=activity.getDrawable(android.R.color.holo_blue_light);
-    var tailTexture:Drawable?=activity.getDrawable(android.R.color.holo_blue_dark);
-    var eatTexture:Drawable?=activity.getDrawable(android.R.color.holo_green_light);
+    private var eat:ImageView;
+    private var headTexture:Drawable?=activity.getDrawable(android.R.color.holo_blue_light);
+    private var tailTexture:Drawable?=activity.getDrawable(android.R.color.holo_blue_dark);
+    private var eatTexture:Drawable?=activity.getDrawable(android.R.color.holo_green_light);
+
+    fun setHeadTexture(newHeadTexture:Drawable){
+        this.head.background = newHeadTexture;
+        this.headTexture = newHeadTexture;
+    }
+    fun setEatTexture(newEatTexture:Drawable){
+        eat.setImageDrawable(newEatTexture);
+        this.eatTexture = newEatTexture;
+    }
+    fun setTailTexture(newTailTexture:Drawable){
+        this.tailTexture = newTailTexture;
+    }
 
     var isPlaying:Boolean = true;
     var isLose:Boolean = false;
@@ -32,8 +45,8 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
         head.background = headTexture;
         head.layoutParams = FrameLayout.LayoutParams(Size,Size);
 
-        eat = View(activity);
-        eat.background =  eatTexture;
+        eat = ImageView(activity);
+        eat.setImageDrawable(eatTexture);
         eat.layoutParams = FrameLayout.LayoutParams(Size,Size);
 
         field.addView(head);
@@ -67,8 +80,8 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
                 }
             }
         }
-        thread.start();
     }
+    fun start(){thread.start()}
     fun move(direction: Direction){
         if(partOfTails.size > 0) {
             if (direction == Direction.UP && currentDirection != Direction.BOTTOM ||
@@ -99,15 +112,23 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
         return false;
     }
 
+    private var c = 1;
     private fun generateEatCoordinate():Coordinate{
         val coordinate = Coordinate(0,0);
         coordinate.top = (0 until CellsCount).random()*Size;
         coordinate.left = (0 until CellsCount).random()*Size;
         for(partTail in partOfTails){
             if(partTail.coordinate.left == coordinate.left && partTail.coordinate.left == coordinate.left){
+                if(c == 9){
+                    coordinate.top = (1 until CellsCount-1).random()*Size;
+                    coordinate.left = (1 until CellsCount-1).random()*Size;
+                    return coordinate
+                }
+                c++;
                 return generateEatCoordinate();
             }
         }
+        c = 1;
         return coordinate;
     }
     private fun generateNewEat() {
@@ -119,11 +140,11 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
         field.addView(eat);
     }
 
-    fun addPartOfTail(top:Int,left:Int){
+    private fun addPartOfTail(top:Int, left:Int){
         val tailPart = drawPartOfTail(top,left);
         partOfTails.add(PartOfTail(Coordinate(top, left),tailPart));
     }
-    fun drawPartOfTail(top:Int,left:Int): View {
+    private fun drawPartOfTail(top:Int, left:Int): View {
         val tailImage = View(activity);
         tailImage.background = tailTexture;
         tailImage.layoutParams = FrameLayout.LayoutParams(Size,Size);
@@ -132,7 +153,7 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
         field.addView(tailImage);
         return tailImage;
     }
-    fun makeTailMove(headTop:Int,headLeft:Int){
+    private fun makeTailMove(headTop:Int, headLeft:Int){
         var tempPart:PartOfTail? = null;
         for (index in 0 until partOfTails.size){
             val tailPart = partOfTails[index];
@@ -156,7 +177,7 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
         head.background = headTexture;
         head.layoutParams = FrameLayout.LayoutParams(Size,Size);
 
-        eat = View(activity);
+        eat = ImageView(activity);
         eat.background =  eatTexture;
         eat.layoutParams = FrameLayout.LayoutParams(Size,Size);
         generateNewEat();

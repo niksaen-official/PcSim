@@ -126,7 +126,7 @@ public class ProgramListAndData {
         programIcon.put(LiriOS.TITLE,R.drawable.liri_os_logo);
         programIcon.put("Driver installer",R.drawable.icon_downloader);
         programIcon.put("Minesweeper",R.drawable.icon_default);
-        programIcon.put("Snake",R.drawable.icon_default);
+        programIcon.put("Snake",R.drawable.snake_icon);
 
         //вес програм и игр
         programSize.put("Benchmark",2f);

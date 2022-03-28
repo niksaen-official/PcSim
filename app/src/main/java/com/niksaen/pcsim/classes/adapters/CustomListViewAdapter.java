@@ -50,13 +50,15 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
     public int TextColor = Color.parseColor("#000000");
     public int TextSize = 27;
     public int TextStyle = Typeface.NORMAL;
+    public boolean isFirstElementOtherStyle = false;
+    public int FirstElementTextStyle = Typeface.BOLD;
 
     // for spinner
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull @NotNull ViewGroup parent) {
         TextView textView = new TextView(context);
         textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"),TextStyle);
-        textView.setTextSize(TextSize);
+        textView.setTextColor(TextColor);
         textView.setPadding(12,12,12,12);
         textView.setTextColor(TextColor);
         textView.setBackgroundColor(BackgroundColor1);
@@ -68,12 +70,16 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull @NotNull ViewGroup parent) {
         TextView textView = new TextView(context);
-        textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"),TextStyle);
-        textView.setTextSize(TextSize);
-        textView.setPadding(12,12,12,12);
+        if(isFirstElementOtherStyle && position == 0){
+            textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"),FirstElementTextStyle);
+        }else {
+            textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"),TextStyle);
+        }
         textView.setTextColor(TextColor);
         textView.setText(strings[position]);
         textView.setBackgroundColor(BackgroundColor2);
+        textView.setPadding(12,12,12,12);
+        textView.setTextSize(TextSize);
         return textView;
     }
 

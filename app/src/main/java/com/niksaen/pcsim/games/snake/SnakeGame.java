@@ -1,6 +1,7 @@
 package com.niksaen.pcsim.games.snake;
 
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,12 +41,13 @@ public class SnakeGame extends Program {
     public void initProgram() {
         mainWindow = binding.getRoot();
         activity.toolbar.setVisibility(View.GONE);
-        style();
         if(core != null){
             core.restart();
         }else {
             core = new SnakeCoreKT(activity, binding.field);
         }
+        style();
+        core.start();
 
         binding.up.setOnClickListener(v ->core.move(SnakeCoreKT.Direction.UP));
         binding.right.setOnClickListener(v -> core.move(SnakeCoreKT.Direction.RIGHT));
@@ -97,6 +99,10 @@ public class SnakeGame extends Program {
     }
 
     private void style(){
+        core.setHeadTexture(activity.getDrawable(R.drawable.snake_head));
+        core.setEatTexture(activity.getDrawable(R.drawable.snake_eat));
+        core.setTailTexture(activity.getDrawable(R.drawable.snake_tail));
+        binding.field.setBackground(activity.getDrawable(R.color.bg_snake));
         menuList.add(activity.words.get("Menu")+":");
         menuList.add(activity.words.get("Resume"));
         menuList.add(activity.words.get("New Game"));
@@ -104,7 +110,7 @@ public class SnakeGame extends Program {
 
         CustomListViewAdapter adapter = new CustomListViewAdapter(activity,0,menuList);
         adapter.TextSize = 35;
-        adapter.TextStyle = Typeface.BOLD;
+        adapter.isFirstElementOtherStyle = true;
         binding.sideMenu.setAdapter(adapter);
 
         binding.score.setTypeface(activity.font);

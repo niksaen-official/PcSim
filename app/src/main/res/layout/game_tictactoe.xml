@@ -21,16 +21,14 @@
             app:layout_constraintStart_toStartOf="@+id/guideline6"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <ImageView
             android:padding="8dp"
             android:background="@color/color22"
-            android:foreground="@drawable/pause_color18"
+            android:src="@drawable/pause_color18"
             android:gravity="center"
-            android:id="@+id/button5"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:id="@+id/pause"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,7 +56,7 @@
             android:textSize="35sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button5" />
+            app:layout_constraintTop_toBottomOf="@+id/pause" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline6"

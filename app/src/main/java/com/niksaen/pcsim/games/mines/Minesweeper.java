@@ -1,7 +1,9 @@
 package com.niksaen.pcsim.games.mines;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.adapters.CustomListViewAdapter;
+import com.niksaen.pcsim.databinding.GameMinesweeperBinding;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.musicplayer.MusicPlayer;
 
@@ -29,140 +32,86 @@ import java.util.TimerTask;
 public class Minesweeper extends Program {
 
     private int bombCount = 12;
+    GameMinesweeperBinding binding;
+    Timer timer = new Timer();
+    int[] cellsIcon = {R.drawable.empty_cell, R.drawable.c1_cell, R.drawable.c2_cell, R.drawable.c3_cell, R.drawable.c4_cell,};
+    View[][] cells;
+    TimerTask task;
+    boolean isPlaying = true;
+    Runnable runnable;
+
+    private int timeSec = 0;
+    private boolean isFirstClick = true;
+
+    private int bombsFound = 0;
+    int[][] mines; // минное поле если в ячейке есть мина то значение равно 1
+    boolean[][] flags; // поле для флагов если флаг установлен то значение true
+    boolean[][] revealed; // открытые клетки в значении true если открыта
 
     public Minesweeper(MainActivity activity) {
         super(activity);
         Title = "Minesweeper";
         ValueRam = new int[]{1980,2024};
         ValueVideoMemory = new int[]{940,960};
+        binding = GameMinesweeperBinding.inflate(activity.getLayoutInflater());
     }
     @Override
     public void initProgram() {
-        mainWindow = LayoutInflater.from(activity).inflate(R.layout.game_minesweeper,null);
+        mainWindow = binding.getRoot();
         activity.toolbar.setVisibility(View.GONE);
-        initView();
         style();
         fieldGenerator(bombCount);
 
-        reset.setOnClickListener(v -> {
-            timer.cancel();
-            fieldClear();
-            timeSec = 0;
-            clock.setText("");
-            reset.setVisibility(View.VISIBLE);
-            isFirstClick = true;
-            bombsFound = 0;
-            fieldGenerator(bombCount);
+        runnable = () -> activity.runOnUiThread(() -> {if(isPlaying) binding.clock.setText(MusicPlayer.convertTime(timeSec++ * 1000));});
+
+        timer = new Timer();
+        task = new TimerTask() {@Override public void run(){runnable.run();}};
+
+        binding.reset.setOnClickListener(v -> restart());
+        binding.pause.setOnClickListener(v -> {
+            binding.getRoot().openDrawer(Gravity.LEFT);
+            binding.getRoot().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN,Gravity.LEFT);
+            isPlaying = !isPlaying;
+            ((DrawerLayout)mainWindow).openDrawer(binding.sideMenu);
         });
-        imageView.setOnClickListener(v -> {
-            ((DrawerLayout)mainWindow).openDrawer(sideMenu);
-        });
-        sideMenu.setOnItemClickListener((parent, view, position, id) -> {
+        binding.sideMenu.setOnItemClickListener((parent, view, position, id) -> {
+            binding.getRoot().closeDrawer(Gravity.LEFT);
             switch (position){
-                case 1:{
-                    timer.cancel();
-                    fieldClear();
-                    timeSec = 0;
-                    clock.setText("");
-                    reset.setVisibility(View.VISIBLE);
-                    isFirstClick = true;
-                    bombsFound = 0;
-                    fieldGenerator(bombCount);
-                    break;
-                }
-                case 2:{
-                    bombCount = 6;
-                    timer.cancel();
-                    fieldClear();
-                    timeSec = 0;
-                    clock.setText("");
-                    reset.setVisibility(View.VISIBLE);
-                    isFirstClick = true;
-                    bombsFound = 0;
-                    fieldGenerator(bombCount);
-                    break;
-                }
-                case 3:{
-                    bombCount = 12;
-                    timer.cancel();
-                    fieldClear();
-                    timeSec = 0;
-                    clock.setText("");
-                    reset.setVisibility(View.VISIBLE);
-                    isFirstClick = true;
-                    bombsFound = 0;
-                    fieldGenerator(bombCount);
-                    break;
-                }
-                case 4:{
-                    bombCount = 18;
-                    timer.cancel();
-                    fieldClear();
-                    timeSec = 0;
-                    clock.setText("");
-                    reset.setVisibility(View.VISIBLE);
-                    isFirstClick = true;
-                    bombsFound = 0;
-                    fieldGenerator(bombCount);
-                    break;
-                }
-                case 5:{
-                    closeProgram(1);
-                    break;
-                }
+                case 1:{ isPlaying = !isPlaying;break;}
+                case 2:{ restart();break; }
+                case 3:{ bombCount = 6;restart();break; }
+                case 4:{ bombCount = 12;restart();break; }
+                case 5:{ bombCount = 18;restart();break; }
+                case 6:{ closeProgram(1);break; }
             }
         });
     }
-    LinearLayout field;
-    ImageView imageView;
-    TextView clock;
-    Button reset;
-    ListView sideMenu;
-
-    private void initView(){
-        field = mainWindow.findViewById(R.id.field);
-        imageView = mainWindow.findViewById(R.id.pause);
-        clock = mainWindow.findViewById(R.id.clock);
-        reset = mainWindow.findViewById(R.id.reset);
-        sideMenu = mainWindow.findViewById(R.id.side_menu);
-    }
     private void style(){
-        clock.setTypeface(activity.font);
-        reset.setTypeface(activity.font, Typeface.BOLD);
-        reset.setVisibility(View.GONE);
-        reset.setText(activity.words.get("New Game"));
+        binding.clock.setTypeface(activity.font);
+        binding.reset.setTypeface(activity.font, Typeface.BOLD);
+        binding.reset.setVisibility(View.GONE);
+        binding.reset.setText(activity.words.get("New Game"));
 
         String[] strings = {
-                activity.words.get("Menu"),
+                activity.words.get("Menu")+":",
+                activity.words.get("Resume"),
                 activity.words.get("New Game"),
-                activity.words.get("New Game")+" (Легкий)",
-                activity.words.get("New Game")+" (Средний)",
-                activity.words.get("New Game")+" (Сложный)",
+                activity.words.get("New Game")+" ("+activity.words.get("Easy")+")",
+                activity.words.get("New Game")+" ("+activity.words.get("Middle")+")",
+                activity.words.get("New Game")+" ("+activity.words.get("Hard")+")",
                 activity.words.get("Exit")
         };
         CustomListViewAdapter adapter = new CustomListViewAdapter(activity,0,strings);
-        adapter.BackgroundColor2 = R.color.color23;
+        adapter.BackgroundColor2 = Color.parseColor("#888888");
+        adapter.isFirstElementOtherStyle = true;
         adapter.TextSize = 40;
-        adapter.BackgroundColor1 = R.color.color23;
-        adapter.TextColor = R.color.color31;
-        sideMenu.setAdapter(adapter);
+        adapter.TextColor = Color.parseColor("#000000");
+        binding.sideMenu.setAdapter(adapter);
+        binding.sideMenu.setBackgroundColor(Color.parseColor("#888888"));
     }
 
     // основная логика игры
-    Timer timer = new Timer();
-    int[] cellsIcon = {
-            R.drawable.empty_cell,
-            R.drawable.c1_cell,
-            R.drawable.c2_cell,
-            R.drawable.c3_cell,
-            R.drawable.c4_cell,
-    };
-    View[][] cells;
-
-    private int timeSec = 0;
-    private boolean isFirstClick = true;
-
-    private int bombsFound = 0;
+    //генерация поля
     private void fieldGenerator(int bombCount){
         final int width = 10;
         final int height = 10;
@@ -191,13 +140,6 @@ public class Minesweeper extends Program {
                 int finalY = y;
                 cells[x][y].setOnClickListener(v -> {
                     if(isFirstClick){
-                        timer = new Timer();
-                        TimerTask task = new TimerTask() {
-                            @Override
-                            public void run() {
-                                activity.runOnUiThread(() -> clock.setText(MusicPlayer.convertTime(timeSec++*1000)));
-                            }
-                        };
                         timer.scheduleAtFixedRate(task,0,1000);
                         isFirstClick = false;
                     }
@@ -205,8 +147,8 @@ public class Minesweeper extends Program {
                         endGame();
                         cells[finalX][finalY].setBackgroundResource(R.drawable.mine_activate_cell);
                         timer.cancel();
-                        reset.setVisibility(View.VISIBLE);
-                        clock.setText(clock.getText().toString()+"\n"+activity.words.get("You lose"));
+                        binding.reset.setVisibility(View.VISIBLE);
+                        binding.clock.setText(binding.clock.getText().toString()+"\n"+activity.words.get("You lose"));
                     }else {
                         reveal(finalX, finalY);
                     }
@@ -219,8 +161,8 @@ public class Minesweeper extends Program {
                             bombsFound++;
                             if (bombsFound == bombCount) {
                                 timer.cancel();
-                                reset.setVisibility(View.VISIBLE);
-                                clock.setText(clock.getText().toString() + "\n"+activity.words.get("You win"));
+                                binding.reset.setVisibility(View.VISIBLE);
+                                binding.clock.setText(binding.clock.getText().toString() + "\n"+activity.words.get("You win"));
                             }
                         }
                     }
@@ -228,12 +170,9 @@ public class Minesweeper extends Program {
                 });
                 lineBuff.addView(cells[x][y],cellSize,cellSize);
             }
-            field.addView(lineBuff);
+            binding.field.addView(lineBuff);
         }
     }
-    int[][] mines; // минное поле если в ячейке есть мина то значение равно 1
-    boolean[][] flags; // поле для флагов если флаг установлен то значение true
-    boolean[][] revealed; // открытые клетки в значении true если открыта
     boolean outBounds(int x,int y){ return x<0||y<0||x>=10||y>=10; }
 
     int calcNear(int x, int y) {
@@ -284,6 +223,20 @@ public class Minesweeper extends Program {
                 view.setVisibility(View.GONE);
             }
         }
+    }
+    // рестарт игры
+    private void restart(){
+        isPlaying = true;
+        timer.cancel();
+        fieldClear();
+        timeSec = 0;
+        binding.clock.setText("");
+        binding.reset.setVisibility(View.GONE);
+        isFirstClick = true;
+        bombsFound = 0;
+        fieldGenerator(bombCount);
+        timer = new Timer();
+        task = new TimerTask() {@Override public void run(){runnable.run();}};
     }
     @Override
     public void closeProgram(int mode) {

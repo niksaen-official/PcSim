@@ -15,7 +15,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
             android:background="#FFFFFF"
             android:orientation="vertical"
@@ -49,8 +48,8 @@
 
         <Button
             android:id="@+id/bottom"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginBottom="8dp"
             android:foreground="@drawable/arrow_color18"
             android:rotation="-90"
@@ -60,8 +59,8 @@
         <Button
             android:visibility="gone"
             android:id="@+id/reset"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             app:layout_constraintBottom_toTopOf="@+id/bottom"
             app:layout_constraintEnd_toStartOf="@+id/right"
             app:layout_constraintStart_toEndOf="@+id/left"
@@ -69,8 +68,8 @@
 
         <Button
             android:id="@+id/left"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginStart="32dp"
             android:foreground="@drawable/arrow_color18"
             app:layout_constraintBottom_toTopOf="@+id/bottom"
@@ -78,8 +77,8 @@
 
         <Button
             android:id="@+id/up"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:foreground="@drawable/arrow_color18"
             android:rotation="90"
             app:layout_constraintBottom_toTopOf="@+id/left"
@@ -87,8 +86,8 @@
 
         <Button
             android:id="@+id/right"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:foreground="@drawable/arrow_color18"
             android:rotation="180"
             app:layout_constraintBottom_toTopOf="@+id/bottom"

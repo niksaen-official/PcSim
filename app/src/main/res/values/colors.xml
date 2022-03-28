@@ -48,4 +48,9 @@
     <color name = "color29">#222222</color>
     <color name = "color30">#111111</color>
     <color name = "color31">#000000</color>
+
+    <color name = "head_snake">#005F26</color>
+    <color name = "eat_snake">#FF0000</color>
+    <color name = "tail_snake">#008033</color>
+    <color name = "bg_snake">#25B800</color>
 </resources>
