@@ -57,6 +57,11 @@ public class CMD extends Program {
     public void initProgram() {
         outputCommand.add(CMD.SUCCESS+"CMD is start");
         switch (Type) {
+            case OS:
+                mainWindow = LayoutInflater.from(activity).inflate(R.layout.os_console, null);
+                ValueRam = new int[]{0,0};
+                ValueVideoMemory = new int[]{0,0};
+                break;
             case WINDOW:
                 mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_cmd, null);
                 super.initProgram();
@@ -134,7 +139,6 @@ public class CMD extends Program {
         Timer timer = new Timer();
         timer.schedule(task,500);
     }
-
     @Override
     public void closeProgram(int mode) {
         super.closeProgram(mode);

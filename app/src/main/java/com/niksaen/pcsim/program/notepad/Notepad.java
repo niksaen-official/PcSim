@@ -1,5 +1,7 @@
 package com.niksaen.pcsim.program.notepad;
 
+import android.content.Intent;
+import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +29,28 @@ public class Notepad extends Program {
     LinearLayout toolbar;
 
     NotepadSpinnerAdapter notepadSpinnerAdapter;
+
+    AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (position == 1) {
+                editText.setText("");
+            } else if (position == 2) {
+                if (StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: SaveLibs")) {
+                    new NotepadFileSave(activity).openProgram(editText.getText().toString());
+                }
+            } else if (position == 3) {
+                if (StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: OpenLibs")) {
+                    closeProgram(1);
+                    new NotepadFileOpen(activity).openProgram();
+                }
+            } else if (position == 4) {
+                closeProgram(1);
+            }
+        }
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) { }
+    };
 
     private void initView(){
         mainWindow = LayoutInflater.from(activity.getBaseContext()).inflate(R.layout.program_notepad,null);
@@ -57,27 +81,7 @@ public class Notepad extends Program {
         initView();
         style();
         editText.setText(text);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1) {
-                    editText.setText("");
-                } else if (position == 2) {
-                    if (StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: SaveLibs")) {
-                        new NotepadFileSave(activity).openProgram(editText.getText().toString());
-                    }
-                } else if (position == 3) {
-                    if (StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: OpenLibs")) {
-                        closeProgram(1);
-                        new NotepadFileOpen(activity).openProgram();
-                    }
-                } else if (position == 4) {
-                    closeProgram(1);
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
+        spinner.setOnItemSelectedListener(onItemSelectedListener);
         initProgram();
         super.openProgram();
     }
@@ -85,23 +89,7 @@ public class Notepad extends Program {
     public void openProgram(){
         initView();
         style();
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1) {
-                    editText.setText("");
-                } else if (position == 2) {
-                    new NotepadFileSave(activity).openProgram(editText.getText().toString());
-                } else if (position == 3) {
-                    closeProgram(1);
-                    new NotepadFileOpen(activity).openProgram();
-                } else if (position == 4) {
-                    closeProgram(1);
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
+        spinner.setOnItemSelectedListener(onItemSelectedListener);
         initProgram();
         super.openProgram();
     }

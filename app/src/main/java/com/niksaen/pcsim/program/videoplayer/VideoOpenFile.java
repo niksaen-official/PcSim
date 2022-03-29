@@ -57,17 +57,19 @@ public class VideoOpenFile extends Program {
         initView();
         style();
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            if (FileUtil.isDirectory(folders.get(position))) {
-                buffPathOpen = folders.get(position);
-                FileUtil.listDir(folders.get(position), folders);
-                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-                if (buffView != null) {
-                    buffView.setBackgroundColor(activity.styleSave.ThemeColor1);
+            if(!folders.get(position).endsWith("/Android")) {
+                if (FileUtil.isDirectory(folders.get(position))) {
+                    buffPathOpen = folders.get(position);
+                    FileUtil.listDir(folders.get(position), folders);
+                    ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+                    if (buffView != null) {
+                        buffView.setBackgroundColor(activity.styleSave.ThemeColor1);
+                    }
+                } else if (folders.get(position).endsWith(".mp4")) {
+                    view.setBackgroundColor(activity.styleSave.ThemeColor2);
+                    buffView = view;
+                    buffPathOpen = folders.get(position);
                 }
-            } else if (folders.get(position).endsWith(".mp4")) {
-                view.setBackgroundColor(activity.styleSave.ThemeColor2);
-                buffView = view;
-                buffPathOpen = folders.get(position);
             }
         });
         pageDown.setOnClickListener(v -> {

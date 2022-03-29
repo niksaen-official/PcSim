@@ -17,6 +17,7 @@ import com.niksaen.pcsim.fileWorkLib.FileUtil;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.fileManager.FileManagerListViewAdapter;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,7 +46,6 @@ public class NotepadFileSave extends Program {
 
     FileManagerListViewAdapter listViewAdapter;
     ArrayList<String> folders;
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void style(){
         fileName.setTypeface(activity.font,Typeface.BOLD);
         saveButton.setTypeface(activity.font,Typeface.BOLD);
@@ -57,6 +57,9 @@ public class NotepadFileSave extends Program {
         pageDown.setBackgroundResource(activity.styleSave.ArrowButtonImage);
 
         folders = new ArrayList<>();
+        for(File file: activity.getExternalFilesDirs("")){
+            folders.add(file.getPath());
+        }
         listViewAdapter = new FileManagerListViewAdapter(activity.getBaseContext(),R.layout.item_textview,folders);
         listViewAdapter.ColorBackground = activity.styleSave.ThemeColor1;
         listViewAdapter.ColorText = activity.styleSave.TextColor;
@@ -73,19 +76,21 @@ public class NotepadFileSave extends Program {
         initView();
         style();
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            if (FileUtil.isDirectory(folders.get(position))) {
-                buffPath = folders.get(position);
-                buffPath2 = folders.get(position) + "/";
-                FileUtil.listDir(folders.get(position), folders);
-                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-            } else if (folders.get(position).endsWith(".txt")) {
-                if (buff != null) {
-                    buff.setBackgroundColor(activity.styleSave.ThemeColor1);
+            if(!folders.get(position).endsWith("/Android")) {
+                if (FileUtil.isDirectory(folders.get(position))) {
+                    buffPath = folders.get(position);
+                    buffPath2 = folders.get(position) + "/";
+                    FileUtil.listDir(folders.get(position), folders);
+                    ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+                } else if (folders.get(position).endsWith(".txt")) {
+                    if (buff != null) {
+                        buff.setBackgroundColor(activity.styleSave.ThemeColor1);
+                    }
+                    view.setBackgroundColor(activity.styleSave.ThemeColor2);
+                    buff = view;
+                    buffPath = folders.get(position);
+                    fileName.setText(buffPath.substring(buffPath.lastIndexOf("/") + 1).replace(".txt", ""));
                 }
-                view.setBackgroundColor(activity.styleSave.ThemeColor2);
-                buff = view;
-                buffPath = folders.get(position);
-                fileName.setText(buffPath.substring(buffPath.lastIndexOf("/") + 1).replace(".txt", ""));
             }
         });
 
@@ -107,12 +112,14 @@ public class NotepadFileSave extends Program {
             }
         });
         pageDown.setOnClickListener(v -> {
-            if (buffPath2.contains( "//storage/emulated/0/") && buffPath2 !=  "//storage/emulated/0/") {
-                v.setVisibility(View.VISIBLE);
-                buffPath2 = buffPath2.substring(0, buffPath2.lastIndexOf("/"));
-                FileUtil.listDir(buffPath2, folders);
-                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-            }
+            try {
+                if (buffPath2.contains( "//storage/emulated/0/") && buffPath2 !=  "//storage/emulated/0/") {
+                    v.setVisibility(View.VISIBLE);
+                    buffPath2 = buffPath2.substring(0, buffPath2.lastIndexOf("/"));
+                    FileUtil.listDir(buffPath2, folders);
+                    ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+                }
+            }catch (Exception ignored){}
         });
         initProgram();
         super.openProgram();
@@ -130,6 +137,5 @@ public class NotepadFileSave extends Program {
 
             System.out.println(ex.getMessage());
         }
-        System.out.println("The file has been written");
     }
 }

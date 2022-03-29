@@ -269,6 +269,7 @@ public class MainActivity extends AppCompatActivity{
         player.stop();
         player.release();
         player = MediaPlayer.create(this, R.raw.pc_work_end_sound);
+        player.setVolume(0.1f,0.1f);
         player.setLooping(false);
         player.start();
         Timer timer = new Timer();
@@ -327,6 +328,7 @@ public class MainActivity extends AppCompatActivity{
     public void pcWorkSound(){
         player.stop();
         player = MediaPlayer.create(this, R.raw.pc_work_sound);
+        player.setVolume(0.1f,0.1f);
         player.setLooping(true);
         player.start();
     }
@@ -392,9 +394,6 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onStop() {
-        if(player != null){
-            player.stop();
-        }
         super.onStop();
     }
 

@@ -2,6 +2,7 @@ package com.niksaen.pcsim.program.fileManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -14,7 +15,9 @@ import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.fileWorkLib.FileUtil;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.window.WarningWindow;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class FileManager extends Program {
@@ -45,7 +48,7 @@ public class FileManager extends Program {
     ArrayList<String> files;
     private void initAdapter(){
         files = new ArrayList<>();
-        FileUtil.listDir("//storage/emulated/0/",files);
+        FileUtil.listDir("/storage/emulated/0/",files);
         fileManagerListViewAdapter = new FileManagerListViewAdapter(activity.getBaseContext(),R.layout.item_for_filemanager,files);
     }
     private void style(){
@@ -53,7 +56,6 @@ public class FileManager extends Program {
         fileManagerListViewAdapter.ColorText = activity.styleSave.TextColor;
         folderName.setTextColor(activity.styleSave.TextColor);
         folderName.setTypeface(activity.font);
-        folderName.setText("/storage/emulated/0");
         pageDown.setBackgroundResource(activity.styleSave.ArrowButtonImage);
         container.setBackgroundColor(activity.styleSave.ThemeColor1);
         mainWindow.setBackgroundColor(activity.styleSave.ColorWindow);
@@ -67,22 +69,40 @@ public class FileManager extends Program {
         initAdapter();
         style();
         listViewFiles.setOnItemClickListener((parent, view, position, id) -> {
-            if (FileUtil.isDirectory(files.get(position))) {
-                folderName.setText(files.get(position));
-                path = files.get(position);
-                FileUtil.listDir(files.get(position), files);
-                ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
-            } else if (files.get(position).endsWith(".txt")) {
-                if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: Text Viewer")) {
-                    new TextViewer(activity).openProgram(FileUtil.readFile(files.get(position)));
-                }
-            } else if (files.get(position).endsWith(".png") || files.get(position).endsWith(".jpg")) {
-                if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: Image Viewer")) {
-                    new ImageViewer(activity).openProgram(files.get(position));
+            if(!files.get(position).endsWith("/Android")) {
+                if (FileUtil.isDirectory(files.get(position))) {
+                    folderName.setText(files.get(position));
+                    path = files.get(position);
+                    FileUtil.listDir(files.get(position), files);
+                    ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
+                } else if (files.get(position).endsWith(".txt")) {
+                    if (StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: Text Viewer")) {
+                        new TextViewer(activity).openProgram(FileUtil.readFile(files.get(position)));
+                    }
+                } else if (files.get(position).endsWith(".png") || files.get(position).endsWith(".jpg")) {
+                    if (StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.AdditionalSoftPrefix + "File manager: Image Viewer")) {
+                        new ImageViewer(activity).openProgram(files.get(position));
+                    }
                 }
             }
         });
-
+        listViewFiles.setOnItemLongClickListener((parent, view, position, id) -> {
+            WarningWindow window = new WarningWindow(activity);
+            if (FileUtil.isDirectory(files.get(position))) {
+                window.setMessageText("Вы хотите удалить эту папку?");
+            } else {
+                window.setMessageText("Вы хотите удалить этот файл?");
+            }
+            window.setCancelButtonText(activity.words.get("Cancel"));
+            window.setOkButtonText(activity.words.get("Remove"));
+            window.setButtonOkClick(v1 -> {
+                FileUtil.deleteFile(files.get(position));
+                ((BaseAdapter) listViewFiles.getAdapter()).notifyDataSetChanged();
+                window.closeProgram(1);
+            });
+            window.openProgram();
+            return true;
+        });
         pageDown.setOnClickListener(v -> {
             if (path.contains("/storage/emulated/0/") && path != "/storage/emulated/0/") {
                 v.setVisibility(View.VISIBLE);

@@ -30,12 +30,14 @@ import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.CustomListViewAdapter;
 import com.niksaen.pcsim.classes.pcComponents.PcComponent;
+import com.niksaen.pcsim.fileWorkLib.FileUtil;
 import com.niksaen.pcsim.pcView.MotherBoardView;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.PlayerData;
 import com.niksaen.pcsim.save.Settings;
 import com.niksaen.pcsim.save.StyleSave;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -86,7 +88,6 @@ public class IronActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         font = Typeface.createFromAsset(getAssets(), "fonts/pixelFont.ttf");
-        
         parametersSave = new PcParametersSave(this);
         playerData = new PlayerData(this);
         getLanguage();
@@ -571,11 +572,6 @@ public class IronActivity extends AppCompatActivity {
                     if (parametersSave.getRam(position) != null) ramList.add(parametersSave.getRam(position).get("Model"));
                     ramView.get(position).setImageDrawable(assetFile.getImage("pc_component/images/"+PcComponent.RAM+"/" + nameForInstall + "_top.png"));
                     HashMap<String,String >ram = new Gson().fromJson(assetFile.getText("pc_component/parameters/"+PcComponent.RAM+"/" + nameForInstall + ".json"), typeToken.getType());
-                    if (!moboParameters.get("Тип памяти").equals(ram.get("Тип памяти"))) {
-                        String name = ram.get("Model");
-                        ram.clear();
-                        ram.put("Model", name);
-                    }
                     parametersSave.setRam(position, ram);
                     ramList.remove(nameForInstall);
                 }
@@ -598,7 +594,7 @@ public class IronActivity extends AppCompatActivity {
                         }
                     }
                     drive.put("MainDisk","true");
-                    drive.put("name","A:");
+                    drive.put("name",(char)(65+position)+":");
                     parametersSave.setDrive(position, drive);
                     dataList.remove(nameForInstall);
                 }

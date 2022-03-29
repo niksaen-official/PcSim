@@ -388,7 +388,7 @@ public class PcParametersSave {
                 this.RAM4
         };
         for(HashMap<String,String> ram:ramList) {
-            if (ram != null) {
+            if (ram != null && ramValid(ram)) {
                 allRam += Integer.parseInt(ram.get("Объём"));
             }
         }
@@ -413,7 +413,7 @@ public class PcParametersSave {
                 this.RAM4
         };
         for(HashMap<String,String> ram:ramList) {
-            if (ram != null) {
+            if (ram != null && ramValid(ram)) {
                 allRam += Integer.parseInt(ram.get("Объём"));
             }
         }
@@ -504,9 +504,14 @@ public class PcParametersSave {
 
     //энерго потребление различного железа
     public double ramPower(HashMap<String,String> RAM){
-        double k =  Integer.parseInt(RAM.get("Частота"))/Double.parseDouble(RAM.get("Пропускная способность"));
-        return  Integer.parseInt(RAM.get("Частота"))*(k/100);
+        if(ramDriverValid()) {
+            double k = Integer.parseInt(RAM.get("Частота")) / Double.parseDouble(RAM.get("Пропускная способность"));
+            return Integer.parseInt(RAM.get("Частота")) * (k / 100);
+        }else {
+            return 0;
+        }
     }
+    // не трогать вообще!!!
     public static float RamPower(HashMap<String,String> RAM){
         double k =  Integer.parseInt(RAM.get("Частота"))/Double.parseDouble(RAM.get("Пропускная способность"));
         return (float) (Integer.parseInt(RAM.get("Частота"))*(k/100));

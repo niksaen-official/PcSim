@@ -59,18 +59,20 @@ public class MusicPlayerOpenFile extends Program {
         initView();
         style();
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            if (FileUtil.isDirectory(folders.get(position))) {
-                buffPathOpen = folders.get(position);
-                pathFolder = folders.get(position);
-                FileUtil.listDir(folders.get(position), folders);
-                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-            } else if (folders.get(position).endsWith(".mp3")) {
-                if (buff != null) {
-                    buff.setBackgroundColor(activity.styleSave.ThemeColor1);
+            if(!folders.get(position).endsWith("/Android")) {
+                if (FileUtil.isDirectory(folders.get(position))) {
+                    buffPathOpen = folders.get(position);
+                    pathFolder = folders.get(position);
+                    FileUtil.listDir(folders.get(position), folders);
+                    ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+                } else if (folders.get(position).endsWith(".mp3")) {
+                    if (buff != null) {
+                        buff.setBackgroundColor(activity.styleSave.ThemeColor1);
+                    }
+                    view.setBackgroundColor(activity.styleSave.ThemeColor2);
+                    buff = view;
+                    buffPathOpen = folders.get(position);
                 }
-                view.setBackgroundColor(activity.styleSave.ThemeColor2);
-                buff = view;
-                buffPathOpen = folders.get(position);
             }
         });
         pageDown.setOnClickListener(v -> {

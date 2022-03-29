@@ -44,6 +44,7 @@ public class ProgramListAndData {
             "Video player",
             "Personalization",
             "Paint",
+            "Notepad",
             "Task Manager",
             "App Downloader",
             "Disk manager",
@@ -125,7 +126,7 @@ public class ProgramListAndData {
         programIcon.put(NapiOS.TITLE,R.drawable.napi_os_logo);
         programIcon.put(LiriOS.TITLE,R.drawable.liri_os_logo);
         programIcon.put("Driver installer",R.drawable.icon_downloader);
-        programIcon.put("Minesweeper",R.drawable.icon_default);
+        programIcon.put("Minesweeper",R.drawable.mine_cell);
         programIcon.put("Snake",R.drawable.snake_icon);
 
         //вес програм и игр
