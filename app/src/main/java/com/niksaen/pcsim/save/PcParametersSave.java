@@ -136,30 +136,28 @@ public class PcParametersSave {
         preferences.edit().putString("COOLER",new Gson().toJson(COOLER)).apply();
     }
     public void setRam1(String Ram1,HashMap<String,String> RAM1){
-            this.Ram1 = Ram1;
-            this.RAM1 = RAM1;
-            preferences.edit().putString("Ram1", Ram1).apply();
-            preferences.edit().putString("RAM1", new Gson().toJson(RAM1)).apply();
+        this.Ram1 = Ram1;
+        this.RAM1 = RAM1;
+        preferences.edit().putString("Ram1", Ram1).apply();
+        preferences.edit().putString("RAM1", new Gson().toJson(RAM1)).apply();
     }
     public void setRam2(String Ram2,HashMap<String,String> RAM2){
-            this.Ram2 = Ram2;
-            this.RAM2 = RAM2;
-            preferences.edit().putString("Ram2", Ram2).apply();
-            preferences.edit().putString("RAM2", new Gson().toJson(RAM2)).apply();
-
+        this.Ram2 = Ram2;
+        this.RAM2 = RAM2;
+        preferences.edit().putString("Ram2", Ram2).apply();
+        preferences.edit().putString("RAM2", new Gson().toJson(RAM2)).apply();
     }
     public void setRam3(String Ram3,HashMap<String,String> RAM3){
-            this.Ram3 = Ram3;
-            this.RAM3 = RAM3;
-            preferences.edit().putString("Ram3", Ram3).apply();
-            preferences.edit().putString("RAM3", new Gson().toJson(RAM3)).apply();
-
+        this.Ram3 = Ram3;
+        this.RAM3 = RAM3;
+        preferences.edit().putString("Ram3", Ram3).apply();
+        preferences.edit().putString("RAM3", new Gson().toJson(RAM3)).apply();
     }
     public void setRam4(String Ram4,HashMap<String,String> RAM4){
-            this.Ram4 = Ram4;
-            this.RAM4 = RAM4;
-            preferences.edit().putString("Ram4", Ram4).apply();
-            preferences.edit().putString("RAM4", new Gson().toJson(RAM4)).apply();
+        this.Ram4 = Ram4;
+        this.RAM4 = RAM4;
+        preferences.edit().putString("Ram4", Ram4).apply();
+        preferences.edit().putString("RAM4", new Gson().toJson(RAM4)).apply();
     }
     public void setGpu1(String Gpu1,HashMap<String,String> GPU1){
         this.Gpu1 = Gpu1;

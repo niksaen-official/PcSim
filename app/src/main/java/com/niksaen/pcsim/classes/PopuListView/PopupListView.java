@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.view.Gravity;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -34,19 +35,17 @@ public class PopupListView {
         textView.setTextSize(30);
         textView.setBackgroundColor(Color.parseColor("#111111"));
         textView.setTextColor(Color.parseColor("#FFFFFF"));
-        textView.setPadding(8,8,8,8);
         textView.setText(TextView.getText().toString());
 
         listView = new ListView(context);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
         listView.setBackgroundColor(Color.parseColor("#111111"));
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(onItemClickListener);
+        listView.setPadding(0,16,0,0);
 
         LinearLayout main = new LinearLayout(context);
         main.setOrientation(LinearLayout.VERTICAL);
-        main.setPadding(12,12,12,12);
+        main.setPadding(24,24,24,24);
         main.setBackgroundColor(Color.parseColor("#111111"));
 
         main.addView(textView,LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);

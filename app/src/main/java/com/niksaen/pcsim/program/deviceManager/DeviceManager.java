@@ -137,7 +137,7 @@ public class DeviceManager extends Program {
         }
         String[] ram2 = new String[]{activity.words.get("RAM")+" ("+activity.words.get("Slot")+" 2): "+activity.words.get("Out")};
         String[] ram1 = new String[]{activity.words.get("RAM")+" ("+activity.words.get("Slot")+" 1): "+activity.words.get("Out")};
-        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Ram1) && activity.pcParametersSave.RAM1 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM1,1)) {
+        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Ram1) && activity.pcParametersSave.RAM1 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM1)) {
             ram1 = new String[]{
                     activity.words.get("RAM characteristics")+": ("+activity.words.get("Slot")+" 1):",
                     " "+activity.words.get("Model")+": "+activity.pcParametersSave.Ram1,
@@ -147,7 +147,7 @@ public class DeviceManager extends Program {
                     " " + activity.words.get("Throughput") + ": "+activity.pcParametersSave.RAM1.get("Пропускная способность")+"PC"
             };
         }
-        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Ram2) && activity.pcParametersSave.RAM2 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM2,2)) {
+        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Ram2) && activity.pcParametersSave.RAM2 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM2)) {
             ram2 = new String[]{
                     activity.words.get("RAM characteristics")+": ("+activity.words.get("Slot")+" 2):",
                     " "+activity.words.get("Model")+": "+activity.pcParametersSave.Ram2,
@@ -157,7 +157,7 @@ public class DeviceManager extends Program {
                     " " + activity.words.get("Throughput") + ": "+activity.pcParametersSave.RAM2.get("Пропускная способность")+"PC"
             };
         }
-        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Ram3) && activity.pcParametersSave.RAM3 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM3,3)) {
+        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Ram3) && activity.pcParametersSave.RAM3 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM3)) {
             ram3 = new String[]{
                     activity.words.get("RAM characteristics")+": ("+activity.words.get("Slot")+" 3):",
                     " "+activity.words.get("Model")+": "+activity.pcParametersSave.Ram3,
@@ -167,7 +167,7 @@ public class DeviceManager extends Program {
                     " " + activity.words.get("Throughput") + ": "+activity.pcParametersSave.RAM3.get("Пропускная способность")+"PC"
             };
         }
-        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Ram4) && activity.pcParametersSave.RAM4 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM4,4)) {
+        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Ram4) && activity.pcParametersSave.RAM4 != null && activity.pcParametersSave.ramValid(activity.pcParametersSave.RAM4)) {
             ram4 = new String[]{
                     activity.words.get("RAM characteristics")+": ("+activity.words.get("Slot")+" 4):",
                     " "+activity.words.get("Model")+": "+activity.pcParametersSave.Ram4,

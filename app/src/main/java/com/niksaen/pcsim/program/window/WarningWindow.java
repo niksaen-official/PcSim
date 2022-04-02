@@ -54,7 +54,7 @@ public class WarningWindow extends Program {
         buttonFullscreenMode.setClickable(false);
         mainWindow.setScaleX(0.6f);
         mainWindow.setScaleY(0.6f);
-        PortableView portableView = new PortableView(mainWindow);
+        new PortableView(mainWindow);
         buttonFullscreenMode.setBackgroundResource(activity.styleSave.FullScreenMode1ImageRes);
 
         ok.setText(okButtonText);

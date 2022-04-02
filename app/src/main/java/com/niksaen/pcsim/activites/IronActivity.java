@@ -214,8 +214,8 @@ public class IronActivity extends AppCompatActivity {
                         parametersSave.setCooler(null,null);
                         coolerInstall = false;
                     }
-                    Others.clearEmpty(coolerList);
-                    Others.clearEmpty(cpuList);
+                    coolerList = Others.clearEmpty(coolerList);
+                    cpuList = Others.clearEmpty(cpuList);
                     coolerAdapter.notifyDataSetChanged();
                     cpuAdapter.notifyDataSetChanged();
                 }
@@ -273,42 +273,34 @@ public class IronActivity extends AppCompatActivity {
         };
 
         caseButton.setOnClickListener(v->{
-            System.out.println(Arrays.toString(playerData.PcCaseList));
             PopupWindow popupWindow = popupWindow(caseAdapter, caseOnItemClickListener);
             popupWindow.showAsDropDown(v, -5, 0);
         });
         moboButton.setOnClickListener(v->{
-            System.out.println(Arrays.toString(playerData.MotherboardList));
             PopupWindow popupWindow = popupWindow(moboAdapter, moboOnItemClickListener);
             popupWindow.showAsDropDown(v, -5, 0);
         });
         cpuButton.setOnClickListener(v->{
-            System.out.println(Arrays.toString(playerData.CpuList));
             PopupWindow popupWindow = popupWindow(cpuAdapter,cpuOnItemClickListener);
             popupWindow.showAsDropDown(v,-5,0);
         });
         coolerButton.setOnClickListener(v->{
-            System.out.println(Arrays.toString(playerData.CoolerList));
             PopupWindow popupWindow = popupWindow(coolerAdapter,coolerOnItemClickListener);
             popupWindow.showAsDropDown(v,-5,0);
         });
         ramButton.setOnClickListener(v->{
-            System.out.println(Arrays.toString(playerData.RamList));
             PopupWindow popupWindow = popupWindow(ramAdapter,ramOnItemClickListener);
             popupWindow.showAsDropDown(v,-5,0);
         });
         gpuButton.setOnClickListener(v->{
-            System.out.println(Arrays.toString(playerData.GraphicsCardList));
             PopupWindow popupWindow = popupWindow(gpuAdapter,gpuOnItemClickListener);
             popupWindow.showAsDropDown(ramButton,-5,0);
         });
         dataButton.setOnClickListener(v->{
-            System.out.println(Arrays.toString(playerData.StorageDeviceList));
             PopupWindow popupWindow = popupWindow(dataAdapter,dataOnItemClickListener);
             popupWindow.showAsDropDown(ramButton,-5,0);
         });
         psuButton.setOnClickListener(v->{
-            System.out.println(Arrays.toString(playerData.PowerSupplyList));
             PopupWindow popupWindow = popupWindow(psuAdapter,psuOnItemClickListener);
             popupWindow.showAsDropDown(ramButton,-5,0);
         });
@@ -456,13 +448,13 @@ public class IronActivity extends AppCompatActivity {
         driveView.get(5).setImageDrawable(null);
         psuView.setImageDrawable(null);
 
-        Others.clearEmpty(moboList);
-        Others.clearEmpty(cpuList);
-        Others.clearEmpty(coolerList);
-        Others.clearEmpty(ramList);
-        Others.clearEmpty(gpuList);
-        Others.clearEmpty(dataList);
-        Others.clearEmpty(psuList);
+        moboList = Others.clearEmpty(moboList);
+        cpuList = Others.clearEmpty(cpuList);
+        coolerList = Others.clearEmpty(coolerList);
+        ramList = Others.clearEmpty(ramList);
+        gpuList = Others.clearEmpty(gpuList);
+        dataList = Others.clearEmpty(dataList);
+        psuList = Others.clearEmpty(psuList);
     }
 
     public ArrayAdapter<String> CustomSpinnerPc(final ArrayList<String> array, final String text) {
@@ -471,12 +463,16 @@ public class IronActivity extends AppCompatActivity {
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater layoutInflater = LayoutInflater.from(IronActivity.this);
                 View v = layoutInflater.inflate(R.layout.item_pc_component,null);
-                v.setBackgroundResource(R.color.background2);
-                ImageView imageView = v.findViewById(R.id.image);
-                imageView.setImageDrawable(assetFile.getImage("pc_component/images/" + text + "/" + array.get(position) + ".png"));
-                TextView textView = v.findViewById(R.id.text);
-                textView.setTypeface(font, Typeface.BOLD);
-                textView.setText(array.get(position));
+                if(!array.get(position).equals("") && !array.get(position).equals(null)){
+                    v.setBackgroundResource(R.color.background2);
+                    ImageView imageView = v.findViewById(R.id.image);
+                    imageView.setImageDrawable(assetFile.getImage("pc_component/images/" + text + "/" + array.get(position) + ".png"));
+                    TextView textView = v.findViewById(R.id.text);
+                    textView.setTypeface(font, Typeface.BOLD);
+                    textView.setText(array.get(position));
+                }else{
+                    return new View(IronActivity.this);
+                }
                 return v;
             }
         };
@@ -600,6 +596,7 @@ public class IronActivity extends AppCompatActivity {
                 }
                 typeForInstall = "";
                 nameForInstall = "";
+                adapter.notifyDataSetChanged();
             }
             dialog.dismiss();
         });

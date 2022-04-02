@@ -1,5 +1,6 @@
 package com.niksaen.pcsim.activites;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -223,6 +224,9 @@ public class MainShopActivity extends AppCompatActivity {
     }
 
     public void BackButton(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
         this.onBackPressed();
     }
     @Override
@@ -230,6 +234,9 @@ public class MainShopActivity extends AppCompatActivity {
         if(main.getAdapter() != baseAdapter){
             main.setAdapter(baseAdapter);
         }else {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
             super.onBackPressed();
         }
     }

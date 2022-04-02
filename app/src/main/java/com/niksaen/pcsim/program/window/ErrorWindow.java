@@ -20,10 +20,10 @@ public class ErrorWindow extends Program {
     }
 
     private String okButtonText;
-    public void setOkButtonText(String okButtonText) {
+    public void setButtonOkText(String okButtonText) {
         this.okButtonText = okButtonText;
     }
-    public void setMessage(String message) {
+    public void setMessageText(String message) {
         this.Text = message;
     }
 
@@ -49,8 +49,8 @@ public class ErrorWindow extends Program {
         buttonClose.setClickable(false);
         buttonRollUp.setClickable(false);
         buttonFullscreenMode.setClickable(false);
-        mainWindow.setScaleX(0.6f);
-        mainWindow.setScaleY(0.6f);
+        mainWindow.setScaleX(0.5f);
+        mainWindow.setScaleY(0.5f);
         mainWindow.setZ(100f);
         buttonFullscreenMode.setBackgroundResource(activity.styleSave.FullScreenMode1ImageRes);
 
@@ -73,5 +73,6 @@ public class ErrorWindow extends Program {
         message.setTypeface(activity.font, Typeface.BOLD);
         ok.setTextColor(activity.styleSave.TextButtonColor);
         cancel.setTextColor(activity.styleSave.TextButtonColor);
+        message.setTextColor(activity.styleSave.TextColor);
     }
 }

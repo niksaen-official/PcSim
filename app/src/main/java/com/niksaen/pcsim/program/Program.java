@@ -156,4 +156,12 @@ public class Program {
             mainWindow.setVisibility(View.VISIBLE);
         }
     }
+    public boolean programIsOpen(){
+        for(Program program:activity.programArrayList){
+            if (program.Title.equals(Title)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

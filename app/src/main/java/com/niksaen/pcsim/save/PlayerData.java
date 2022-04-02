@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.niksaen.pcsim.classes.Others;
+import com.niksaen.pcsim.classes.StringArrayWork;
+import com.niksaen.pcsim.os.cmd.libs.Pc;
 
 public class PlayerData {
     public String[] PcCaseList;
@@ -24,17 +26,17 @@ public class PlayerData {
         getAllData();
     }
     private void getAllData(){
-        PcCaseList = preferences.getString("PcCaseList","").split(",");
-        MotherboardList = preferences.getString("MotherboardList","").split(",");
-        CpuList = preferences.getString("CpuList","").split(",");
-        CoolerList = preferences.getString("CoolerList","").split(",");
-        RamList = preferences.getString("RamList","").split(",");
-        GraphicsCardList = preferences.getString("GraphicsCardList","").split(",");
-        StorageDeviceList = preferences.getString("StorageDeviceList","").split(",");
-        PowerSupplyList = preferences.getString("PowerSupplyList","").split(",");
+        PcCaseList = StringArrayWork.clearEmpty(preferences.getString("PcCaseList","").split(","));
+        MotherboardList = StringArrayWork.clearEmpty(preferences.getString("MotherboardList","").split(","));
+        CpuList = StringArrayWork.clearEmpty(preferences.getString("CpuList","").split(","));
+        CoolerList = StringArrayWork.clearEmpty(preferences.getString("CoolerList","").split(","));
+        RamList = StringArrayWork.clearEmpty(preferences.getString("RamList","").split(","));
+        GraphicsCardList = StringArrayWork.clearEmpty(preferences.getString("GraphicsCardList","").split(","));
+        StorageDeviceList = StringArrayWork.clearEmpty(preferences.getString("StorageDeviceList","").split(","));
+        PowerSupplyList = StringArrayWork.clearEmpty(preferences.getString("PowerSupplyList","").split(","));
         Money = preferences.getInt("Money",17500);
-        ListPurchasedPrograms = preferences.getString("ListPurchasedPrograms","").split(",");
-        DiskSoftList = preferences.getString("DiskSoftList","").split(",");
+        ListPurchasedPrograms = StringArrayWork.clearEmpty(preferences.getString("ListPurchasedPrograms","").split(","));
+        DiskSoftList = StringArrayWork.clearEmpty(preferences.getString("DiskSoftList","").split(","));
     }
     public void setAllData(){
         preferences.edit().putString("PcCaseList", Others.ArrayToString(PcCaseList)).apply();

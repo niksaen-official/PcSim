@@ -46,13 +46,13 @@ public class Calculator extends Program {
             }catch (Exception e){
                 ErrorWindow errorWindow = new ErrorWindow(activity);
                 if(e.toString().contains("ArrayIndexOutOfBoundsException")){
-                    errorWindow.setMessage(activity.words.get("An example must not start with an arithmetic sign, except for a minus sign."));
+                    errorWindow.setMessageText(activity.words.get("An example must not start with an arithmetic sign, except for a minus sign."));
                 }
                 else if(e.toString().contains("IndexOutOfBoundsException")){
-                    errorWindow.setMessage(activity.words.get("The example must not end with an arithmetic sign."));
+                    errorWindow.setMessageText(activity.words.get("The example must not end with an arithmetic sign."));
                 }
                 else  if(e.toString().contains("NumberFormatException")){
-                    errorWindow.setMessage(activity.words.get("Invalid number format."));
+                    errorWindow.setMessageText(activity.words.get("Invalid number format."));
                 }else{
                     outputField.setText(e.toString());
                 }
@@ -60,7 +60,7 @@ public class Calculator extends Program {
                     closeProgram(1);
                     errorWindow.closeProgram(1);
                 });
-                errorWindow.setOkButtonText(activity.words.get("Close program"));
+                errorWindow.setButtonOkText(activity.words.get("Close program"));
                 errorWindow.openProgram();
             }
         });

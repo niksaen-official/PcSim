@@ -9,13 +9,13 @@ import android.widget.ImageView
 import com.niksaen.pcsim.R
 
 class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
-    enum class Direction{UP,RIGHT,BOTTOM,LEFT;}
+    enum class Direction{UP,RIGHT,BOTTOM,LEFT}
     private var currentDirection:Direction = Direction.BOTTOM;
 
-    var Delay:Long = 250;
-    var Difference:Int = 50;
-    var Size:Int = 50;
-    var CellsCount:Int = 15;
+    var delay:Long = 250;
+    var difference:Int = 50;
+    var size:Int = 50;
+    var cellsCount:Int = 15;
 
     private var head:View;
     private var eat:ImageView;
@@ -43,21 +43,21 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
     init {
         head = View(activity);
         head.background = headTexture;
-        head.layoutParams = FrameLayout.LayoutParams(Size,Size);
+        head.layoutParams = FrameLayout.LayoutParams(size,size);
 
         eat = ImageView(activity);
         eat.setImageDrawable(eatTexture);
-        eat.layoutParams = FrameLayout.LayoutParams(Size,Size);
+        eat.layoutParams = FrameLayout.LayoutParams(size,size);
 
         field.addView(head);
-        field.layoutParams.height = CellsCount*Size;
-        field.layoutParams.width = CellsCount*Size;
+        field.layoutParams.height = cellsCount*size;
+        field.layoutParams.width = cellsCount*size;
 
         generateNewEat();
 
         thread = Thread{
             while (true){
-                Thread.sleep(Delay);
+                Thread.sleep(delay);
                 activity.runOnUiThread {
                     if(checkIfSnakeSmash(head)){
                         isLose = true;
@@ -68,10 +68,10 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
                         val layoutParams:FrameLayout.LayoutParams = head.layoutParams as FrameLayout.LayoutParams;
                         makeTailMove(layoutParams.topMargin,layoutParams.leftMargin);
                         when(currentDirection){
-                            Direction.UP->layoutParams.topMargin -= Difference;
-                            Direction.LEFT->layoutParams.leftMargin -= Difference;
-                            Direction.RIGHT->layoutParams.leftMargin += Difference;
-                            Direction.BOTTOM->layoutParams.topMargin += Difference;
+                            Direction.UP->layoutParams.topMargin -= difference;
+                            Direction.LEFT->layoutParams.leftMargin -= difference;
+                            Direction.RIGHT->layoutParams.leftMargin += difference;
+                            Direction.BOTTOM->layoutParams.topMargin += difference;
                         }
                         checkIfSnakeEat();
                         field.removeView(head);
@@ -106,7 +106,7 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
                 return true;
             }
         }
-        if(head.top<0 || head.left<0 || head.top>= Size*CellsCount || head.left >= Size*CellsCount){
+        if(head.top<0 || head.left<0 || head.top>= size*cellsCount || head.left >= size*cellsCount){
             return true;
         }
         return false;
@@ -115,13 +115,13 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
     private var c = 1;
     private fun generateEatCoordinate():Coordinate{
         val coordinate = Coordinate(0,0);
-        coordinate.top = (0 until CellsCount).random()*Size;
-        coordinate.left = (0 until CellsCount).random()*Size;
+        coordinate.top = (0 until cellsCount).random()*size;
+        coordinate.left = (0 until cellsCount).random()*size;
         for(partTail in partOfTails){
             if(partTail.coordinate.left == coordinate.left && partTail.coordinate.left == coordinate.left){
                 if(c == 9){
-                    coordinate.top = (1 until CellsCount-1).random()*Size;
-                    coordinate.left = (1 until CellsCount-1).random()*Size;
+                    coordinate.top = (1 until cellsCount-1).random()*size;
+                    coordinate.left = (1 until cellsCount-1).random()*size;
                     return coordinate
                 }
                 c++;
@@ -147,7 +147,7 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
     private fun drawPartOfTail(top:Int, left:Int): View {
         val tailImage = View(activity);
         tailImage.background = tailTexture;
-        tailImage.layoutParams = FrameLayout.LayoutParams(Size,Size);
+        tailImage.layoutParams = FrameLayout.LayoutParams(size,size);
         (tailImage.layoutParams as FrameLayout.LayoutParams).topMargin = top;
         (tailImage.layoutParams as FrameLayout.LayoutParams).leftMargin = left;
         field.addView(tailImage);
@@ -175,11 +175,11 @@ class SnakeCoreKT(val activity: Activity, val field: FrameLayout) {
         field.removeAllViews();
         head = View(activity);
         head.background = headTexture;
-        head.layoutParams = FrameLayout.LayoutParams(Size,Size);
+        head.layoutParams = FrameLayout.LayoutParams(size,size);
 
         eat = ImageView(activity);
         eat.background =  eatTexture;
-        eat.layoutParams = FrameLayout.LayoutParams(Size,Size);
+        eat.layoutParams = FrameLayout.LayoutParams(size,size);
         generateNewEat();
 
         field.addView(head);

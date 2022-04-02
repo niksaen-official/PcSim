@@ -14,12 +14,12 @@ public class Settings {
     }
 
     private void getSettings(){
-        getLanguage();
+         Language = getLanguage();
     }
 
     //настройки языка
     private String getLanguage(){
-        return sharedPreferences.getString("lang","");
+        return sharedPreferences.getString("lang", com.niksaen.pcsim.save.Language.RU);
     }
     public void setLanguage(String langCode){
         sharedPreferences.edit().putString("lang",langCode).apply();

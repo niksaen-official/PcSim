@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.niksaen.pcsim.activites.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.window.ErrorWindow;
+import com.niksaen.pcsim.program.window.WarningWindow;
 import com.niksaen.pcsim.save.PlayerData;
 
 import java.util.Timer;
@@ -116,7 +118,14 @@ public class Miner extends Program {
     @Override
     public void openProgram() {
         if(activity.pcParametersSave.GPU1 != null || activity.pcParametersSave.GPU2 != null) {
-            super.openProgram();
+            if(!programIsOpen()) super.openProgram();
+            else {
+                ErrorWindow window = new ErrorWindow(activity);
+                window.setMessageText("Данная программа уже запущена!");
+                window.setButtonOkClick(v -> window.closeProgram(1));
+                window.setButtonOkText("Ok");
+                window.openProgram();
+            }
         }
     }
 

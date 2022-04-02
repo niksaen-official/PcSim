@@ -156,8 +156,8 @@ public class MainActivity extends AppCompatActivity{
         drawer.setOnItemClickListener((parent, view, position, id) -> {
             if(position == 1){
                 intent = new Intent(MainActivity.this, MainShopActivity.class);
-                player.pause();
                 startActivity(intent);
+                finish();
             }
             if(position == 2){
                 intent = new Intent(MainActivity.this,IronActivity.class);
@@ -216,7 +216,10 @@ public class MainActivity extends AppCompatActivity{
         StartMenuAdapter menuAdapter = new StartMenuAdapter(this, 0, apps);
         menuAdapter.setMainActivity(this);
         allAppList.setAdapter(menuAdapter);
-        allAppList.setOnItemClickListener((parent, view, position, id) -> program.programHashMap.get(menuAdapter.getItem(position)).openProgram());
+        allAppList.setOnItemClickListener((parent, view, position, id) -> {
+            Program program1 = program.programHashMap.get(menuAdapter.getItem(position));
+            program1.openProgram();
+        });
     }
     public void updateToolbar(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -281,7 +284,6 @@ public class MainActivity extends AppCompatActivity{
                     if(DeadScreen != null){
                         DeadScreen.setVisibility(View.GONE);
                     }
-
                     for(int i = programArrayList.size()-1;i>=0;i--){
                         Program program = programArrayList.get(i);
                         program.closeProgram(0);
@@ -333,16 +335,25 @@ public class MainActivity extends AppCompatActivity{
         player.start();
     }
 
+    String[] diskList;
     //выбор диска
     public void changeCD(View view){
-        String[] strings = new PlayerData(this).DiskSoftList;
-        ((TextView)view).setText(words.get("Change disk"));
+        DiskChangeAdapter adapter;
+        diskList = new PlayerData(this).DiskSoftList;
+        if(diskList.length == 0){
+            diskList = StringArrayWork.add(diskList,words.get("You have not purchased any discs"));
+            adapter = new DiskChangeAdapter(this,diskList);
+            adapter.imageEnabled = false;
+        }else {
+            adapter = new DiskChangeAdapter(this,diskList);
+        }
+        ((TextView)view).setText(words.get("Change disk")+":");
         PopupListView listView = new PopupListView((TextView) view,MainActivity.this);
         listView.setOnItemClickListener((parent, view1, position, id) -> {
-            DiskInDrive = strings[position];
+            DiskInDrive = diskList[position];
             listView.dismiss();
         });
-        listView.setAdapter(new DiskChangeAdapter(this,strings));
+        listView.setAdapter(adapter);
         listView.show();
     }
     // экран смерти
@@ -385,20 +396,10 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
-    protected void onResume() {
-        if(player != null){
-            player.start();
-        }
-        super.onResume();
-    }
-
-    @Override
     protected void onStop() {
+        if(player.isPlaying()){
+            player.stop();
+        }
         super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

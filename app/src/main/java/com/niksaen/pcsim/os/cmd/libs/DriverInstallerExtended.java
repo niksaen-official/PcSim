@@ -158,16 +158,18 @@ public class DriverInstallerExtended {
                     for (int i = 0;i<ramList.length;i++) {
                         if (ramList[i] != null) {
                             delay += 100;
-                            String driver = DriverInstaller.DriverForRAM + ramList[i];
-                            if (extended) {
-                                driver += "\n" + DriverInstaller.EXTENDED_TYPE;
-                            } else {
-                                driver += "\n" + DriverInstaller.BASE_TYPE;
-                            }
-                            if (!StorageDeviceList[finalStoragePos].get("Содержимое").contains(driver + ",")) {
-                                StorageDeviceList[finalStoragePos].put("Содержимое", StorageDeviceList[finalStoragePos].get("Содержимое") + driver + ",");
-                            } else {
-                                cmd.output(activity.words.get("Drivers for RAM [slot n] are already installed").replace("n", String.valueOf(i+1)));
+                            if(activity.pcParametersSave.ramValid(activity.pcParametersSave.getRam(i))) {
+                                String driver = DriverInstaller.DriverForRAM + ramList[i];
+                                if (extended) {
+                                    driver += "\n" + DriverInstaller.EXTENDED_TYPE;
+                                } else {
+                                    driver += "\n" + DriverInstaller.BASE_TYPE;
+                                }
+                                if (!StorageDeviceList[finalStoragePos].get("Содержимое").contains(driver + ",")) {
+                                    StorageDeviceList[finalStoragePos].put("Содержимое", StorageDeviceList[finalStoragePos].get("Содержимое") + driver + ",");
+                                } else {
+                                    cmd.output(activity.words.get("Drivers for RAM [slot n] are already installed").replace("n", String.valueOf(i + 1)));
+                                }
                             }
                         }
                     }
