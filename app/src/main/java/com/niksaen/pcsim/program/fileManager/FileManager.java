@@ -2,14 +2,13 @@ package com.niksaen.pcsim.program.fileManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.fileWorkLib.FileUtil;
@@ -17,7 +16,6 @@ import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.window.WarningWindow;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class FileManager extends Program {

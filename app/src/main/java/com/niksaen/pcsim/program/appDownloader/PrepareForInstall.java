@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.CustomListViewAdapter;
@@ -51,7 +51,7 @@ public class PrepareForInstall extends Program {
         viewStyle();
 
         text.setText(activity.words.get("Select the drive to install and the required options"));
-        next.setText(activity.words.get("Next"+" >"));
+        next.setText(activity.words.get("Next")+" >");
         cancel.setText(activity.words.get("Cancel"));
         addToDesktop.setText(activity.words.get("Add an icon to the desktop"));
         installAdditionalSoft.setText(activity.words.get("Install the required additional software"));

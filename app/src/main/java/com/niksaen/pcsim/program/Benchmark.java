@@ -11,8 +11,9 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.HashMap;
@@ -97,12 +98,12 @@ public class Benchmark extends Program{
     private int getGpuBench(){
         double gpu1_bench=0,gpu2_bench=0,gpu_i_bench=0;
         if(Objects.equals(activity.pcParametersSave.CPU.get("Графическое ядро"), "+")){
-            int model=gpu(activity.pcParametersSave.CPU.get("Модель"));
+            int model= PcParametersSave.gpuPerformance(activity.pcParametersSave.CPU.get("Модель"),activity);
             int frequency = Integer.parseInt(activity.pcParametersSave.CPU.get("Частота"));
             gpu_i_bench = (int) (model+(frequency*1.5));
         }
         if(activity.pcParametersSave.GPU1 != null){
-            int model = gpu(activity.pcParametersSave.GPU1.get( "Графический процессор"));
+            int model = PcParametersSave.gpuPerformance(activity.pcParametersSave.GPU1.get( "Графический процессор"),activity);
             int count_chips = Integer.parseInt(activity.pcParametersSave.GPU1.get("Кол-во видеочипов"));
             int frequency = Integer.parseInt(activity.pcParametersSave.GPU1.get("Частота"));
             int volume = Integer.parseInt(activity.pcParametersSave.GPU1.get("Объём видеопамяти"));
@@ -110,7 +111,7 @@ public class Benchmark extends Program{
             gpu1_bench = count_chips*frequency*volume*(throughput/4)+(model*2)/4;
         }
         if(activity.pcParametersSave.GPU2 != null){
-            int model = gpu(activity.pcParametersSave.GPU2.get( "Графический процессор"));
+            int model = PcParametersSave.gpuPerformance(activity.pcParametersSave.GPU2.get( "Графический процессор"),activity);
             int count_chips = Integer.parseInt(activity.pcParametersSave.GPU2.get("Кол-во видеочипов"));
             int frequency = Integer.parseInt(activity.pcParametersSave.GPU2.get("Частота"));
             int volume = Integer.parseInt(activity.pcParametersSave.GPU2.get("Объём видеопамяти"));
@@ -118,19 +119,6 @@ public class Benchmark extends Program{
             gpu2_bench = count_chips*frequency*volume*(throughput/4)+(model*2)/4;
         }
         return (int)(gpu1_bench+gpu2_bench+gpu_i_bench);
-    }
-    private int gpu(String gpuName){
-        switch (gpuName){
-            case "Heforce GT 710": return 7143;
-            case "Sadeon HD5450": return 4345;
-            case "Sadeon S7": return 5690;
-            case "Sadeon S5": return 4902;
-            case "Jntel HD Graphics 610": return 3420;
-            case "Jntel HD Graphics 630": return 4205;
-            case "Jntel HD Graphics 510": return 2403;
-            case "Jntel HD Graphics 530": return 3023;
-            default: return 0;
-        }
     }
     private int getDataBench(){
         HashMap<String,String>[] data = new HashMap[]{activity.pcParametersSave.DATA1, activity.pcParametersSave.DATA2, activity.pcParametersSave.DATA3, activity.pcParametersSave.DATA4, activity.pcParametersSave.DATA5, activity.pcParametersSave.DATA6};

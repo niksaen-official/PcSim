@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
 
 import org.jetbrains.annotations.NotNull;

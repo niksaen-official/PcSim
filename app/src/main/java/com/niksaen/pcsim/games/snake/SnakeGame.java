@@ -1,28 +1,19 @@
 package com.niksaen.pcsim.games.snake;
 
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.viewbinding.ViewBinding;
 
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.adapters.CustomListViewAdapter;
 import com.niksaen.pcsim.databinding.SnakeGameBinding;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.save.PcParametersSave;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class SnakeGame extends Program {
 
@@ -35,12 +26,12 @@ public class SnakeGame extends Program {
         ValueRam = new int[]{2400,2524};
         ValueVideoMemory = new int[]{940,960};
         binding = SnakeGameBinding.inflate(activity.getLayoutInflater());
+        HidesTaskbar = true;
     }
 
     @Override
     public void initProgram() {
         mainWindow = binding.getRoot();
-        activity.toolbar.setVisibility(View.GONE);
         if(core != null){
             core.restart();
         }else {
@@ -98,6 +89,17 @@ public class SnakeGame extends Program {
         });
     }
 
+    @Override
+    public void openProgram() {
+        if(
+                PcParametersSave.gpuPerformance(activity.pcParametersSave.GPU1.get("Графический процессор"),activity) >= PcParametersSave.gpuPerformance("HeForce GT 710",activity) ||
+                PcParametersSave.gpuPerformance(activity.pcParametersSave.GPU2.get("Графический процессор"),activity) >= PcParametersSave.gpuPerformance("HeForce GT 710",activity) ||
+                PcParametersSave.gpuPerformance(activity.pcParametersSave.CPU.get("Модель"),activity) >= PcParametersSave.gpuPerformance("HeForce GT 710",activity))
+        {
+            super.openProgram();
+        }
+    }
+
     private void style(){
         core.setHeadTexture(activity.getDrawable(R.drawable.snake_head));
         core.setEatTexture(activity.getDrawable(R.drawable.snake_eat));
@@ -115,12 +117,8 @@ public class SnakeGame extends Program {
 
         binding.score.setTypeface(activity.font);
     }
-
     @Override
     public void closeProgram(int mode) {
-        super.closeProgram(mode);
-        activity.toolbar.setVisibility(View.VISIBLE);
         menuList.clear();
-
     }
 }

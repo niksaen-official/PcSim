@@ -58,23 +58,14 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ShopAdapter.ViewHolder holder, int position) {
-        setStyle(holder);
         holder.text.setTypeface(font,Typeface.BOLD);
+        holder.text.setTextColor(Color.WHITE);
         if(type != "icon") {
             holder.text.setText(strings.get(position));
             holder.icon.setImageDrawable(new AssetFile(context).getImage("pc_component/images/" + type + "/" + strings.get(position) + ".png"));
         }else{
             holder.text.setText(words.get(getItem(position)));
-            holder.icon.setImageDrawable(new AssetFile(context).getImage("icons/shop/" +new Settings(context).Theme+ "/" + strings.get(position) + ".png"));
-        }
-    }
-
-    private void setStyle(ShopAdapter.ViewHolder holder){
-        if(new Settings(context).Theme == "Dark"){
-            holder.text.setTextColor(Color.WHITE);
-        }
-        else {
-            holder.text.setTextColor(Color.BLACK);
+            holder.icon.setImageDrawable(new AssetFile(context).getImage("icons/shop/" + strings.get(position) + ".png"));
         }
     }
     @Override

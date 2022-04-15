@@ -1,4 +1,4 @@
-package com.niksaen.pcsim.activites;
+package com.niksaen.pcsim.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -30,14 +30,12 @@ import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.CustomListViewAdapter;
 import com.niksaen.pcsim.classes.pcComponents.PcComponent;
-import com.niksaen.pcsim.fileWorkLib.FileUtil;
 import com.niksaen.pcsim.pcView.MotherBoardView;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.PlayerData;
 import com.niksaen.pcsim.save.Settings;
 import com.niksaen.pcsim.save.StyleSave;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -161,6 +159,7 @@ public class IronActivity extends AppCompatActivity {
         psuButton.setTypeface(font,style);
     }
 
+    PopupWindow popupWindow;
     //вся логика сборки пк здесь ->
     AdapterView.OnItemClickListener
             caseOnItemClickListener,
@@ -182,6 +181,7 @@ public class IronActivity extends AppCompatActivity {
             caseList.remove(position);
             caseInstall = true;
             caseAdapter.notifyDataSetChanged();
+            popupWindow.dismiss();
         };
         moboOnItemClickListener = (parent, view, position, id) -> {
             if (caseInstall) {
@@ -195,6 +195,7 @@ public class IronActivity extends AppCompatActivity {
                 moboInstall = true;
                 Others.clearEmpty(moboList);
                 moboAdapter.notifyDataSetChanged();
+                popupWindow.dismiss();
             }
         };
         cpuOnItemClickListener = (parent, view, position, id) -> {
@@ -218,6 +219,7 @@ public class IronActivity extends AppCompatActivity {
                     cpuList = Others.clearEmpty(cpuList);
                     coolerAdapter.notifyDataSetChanged();
                     cpuAdapter.notifyDataSetChanged();
+                    popupWindow.dismiss();
                 }
             };
         coolerOnItemClickListener = (parent, view, position, id) -> {
@@ -230,6 +232,7 @@ public class IronActivity extends AppCompatActivity {
                 coolerInstall = true;
                 Others.clearEmpty(coolerList);
                 coolerAdapter.notifyDataSetChanged();
+                popupWindow.dismiss();
             }
         };
         ramOnItemClickListener = (parent, view, position, id) -> {
@@ -253,6 +256,7 @@ public class IronActivity extends AppCompatActivity {
                         gpuInstall = true;
                         gpuList = Others.clearEmpty(gpuList);
                         gpuAdapter.notifyDataSetChanged();
+                        popupWindow.dismiss();
                     }
                 }
             };
@@ -270,38 +274,39 @@ public class IronActivity extends AppCompatActivity {
             psuInstall = true;
             Others.clearEmpty(psuList);
             psuAdapter.notifyDataSetChanged();
+            popupWindow.dismiss();
         };
 
         caseButton.setOnClickListener(v->{
-            PopupWindow popupWindow = popupWindow(caseAdapter, caseOnItemClickListener);
+            popupWindow = popupWindow(caseAdapter, caseOnItemClickListener);
             popupWindow.showAsDropDown(v, -5, 0);
         });
         moboButton.setOnClickListener(v->{
-            PopupWindow popupWindow = popupWindow(moboAdapter, moboOnItemClickListener);
+            popupWindow = popupWindow(moboAdapter, moboOnItemClickListener);
             popupWindow.showAsDropDown(v, -5, 0);
         });
         cpuButton.setOnClickListener(v->{
-            PopupWindow popupWindow = popupWindow(cpuAdapter,cpuOnItemClickListener);
+            popupWindow = popupWindow(cpuAdapter,cpuOnItemClickListener);
             popupWindow.showAsDropDown(v,-5,0);
         });
         coolerButton.setOnClickListener(v->{
-            PopupWindow popupWindow = popupWindow(coolerAdapter,coolerOnItemClickListener);
+            popupWindow = popupWindow(coolerAdapter,coolerOnItemClickListener);
             popupWindow.showAsDropDown(v,-5,0);
         });
         ramButton.setOnClickListener(v->{
-            PopupWindow popupWindow = popupWindow(ramAdapter,ramOnItemClickListener);
+            popupWindow = popupWindow(ramAdapter,ramOnItemClickListener);
             popupWindow.showAsDropDown(v,-5,0);
         });
         gpuButton.setOnClickListener(v->{
-            PopupWindow popupWindow = popupWindow(gpuAdapter,gpuOnItemClickListener);
+            popupWindow = popupWindow(gpuAdapter,gpuOnItemClickListener);
             popupWindow.showAsDropDown(ramButton,-5,0);
         });
         dataButton.setOnClickListener(v->{
-            PopupWindow popupWindow = popupWindow(dataAdapter,dataOnItemClickListener);
+            popupWindow = popupWindow(dataAdapter,dataOnItemClickListener);
             popupWindow.showAsDropDown(ramButton,-5,0);
         });
         psuButton.setOnClickListener(v->{
-            PopupWindow popupWindow = popupWindow(psuAdapter,psuOnItemClickListener);
+            popupWindow = popupWindow(psuAdapter,psuOnItemClickListener);
             popupWindow.showAsDropDown(ramButton,-5,0);
         });
     }
@@ -463,17 +468,21 @@ public class IronActivity extends AppCompatActivity {
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater layoutInflater = LayoutInflater.from(IronActivity.this);
                 View v = layoutInflater.inflate(R.layout.item_pc_component,null);
-                if(!array.get(position).equals("") && !array.get(position).equals(null)){
-                    v.setBackgroundResource(R.color.background2);
-                    ImageView imageView = v.findViewById(R.id.image);
-                    imageView.setImageDrawable(assetFile.getImage("pc_component/images/" + text + "/" + array.get(position) + ".png"));
-                    TextView textView = v.findViewById(R.id.text);
-                    textView.setTypeface(font, Typeface.BOLD);
-                    textView.setText(array.get(position));
-                }else{
+                try {
+                    if (!array.get(position).equals("") && !array.get(position).equals(null)) {
+                        v.setBackgroundResource(R.color.background2);
+                        ImageView imageView = v.findViewById(R.id.image);
+                        imageView.setImageDrawable(assetFile.getImage("pc_component/images/" + text + "/" + array.get(position) + ".png"));
+                        TextView textView = v.findViewById(R.id.text);
+                        textView.setTypeface(font, Typeface.BOLD);
+                        textView.setText(array.get(position));
+                        return v;
+                    } else {
+                        return new View(IronActivity.this);
+                    }
+                }catch (Exception ignored){
                     return new View(IronActivity.this);
                 }
-                return v;
             }
         };
         return adapter;
@@ -599,6 +608,7 @@ public class IronActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
             dialog.dismiss();
+            popupWindow.dismiss();
         });
         dialog.setCancelable(false);
         dialog.show();

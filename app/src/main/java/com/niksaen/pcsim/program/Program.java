@@ -2,14 +2,13 @@ package com.niksaen.pcsim.program;
 
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.os.cmd.CMD;
@@ -45,7 +44,10 @@ public class Program {
     public int status = -1;
 
     public static String BACKGROUND = "BACKGROUND";
-    public String Type = "FOREGROUND";
+    public static String FOREGROUND = "FOREGROUND";
+    public String Type = FOREGROUND;
+
+    public boolean HidesTaskbar = false;
     public Program(MainActivity activity){
         this.activity = activity;
     }
@@ -107,6 +109,7 @@ public class Program {
                 activity.programArrayList.add(this);
                 activity.updateToolbar();
                 activity.taskManager.update();
+                if(HidesTaskbar) activity.toolbar.setVisibility(View.GONE);
                 if (mainWindow.getParent() == null) {
                     activity.layout.addView(mainWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
                 } else {
@@ -146,6 +149,7 @@ public class Program {
             mainWindow.setVisibility(View.GONE);
             status = -1;
         }
+        if(HidesTaskbar) activity.toolbar.setVisibility(View.VISIBLE);
     }
 
     /** сворачивание программы*/

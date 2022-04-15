@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.widget.ListView;
 
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.program.Program;
 

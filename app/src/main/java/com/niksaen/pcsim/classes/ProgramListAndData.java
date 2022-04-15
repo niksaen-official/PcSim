@@ -1,7 +1,7 @@
 package com.niksaen.pcsim.classes;
 
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.games.mines.Minesweeper;
 import com.niksaen.pcsim.games.snake.SnakeGame;
 import com.niksaen.pcsim.games.tic_tac_toe.TicTacToe;
@@ -122,11 +122,11 @@ public class ProgramListAndData {
         programIcon.put("GStore",R.drawable.icon_gamestore);
         programIcon.put("Application description page",R.drawable.icon_gamestore);
         programIcon.put("Confirm Purchase",R.drawable.icon_gamestore);
-        programIcon.put("CMD",R.drawable.icon_default);
+        programIcon.put("CMD",R.drawable.cmd_icon);
         programIcon.put(NapiOS.TITLE,R.drawable.napi_os_logo);
         programIcon.put(LiriOS.TITLE,R.drawable.liri_os_logo);
         programIcon.put("Driver installer",R.drawable.icon_downloader);
-        programIcon.put("Minesweeper",R.drawable.mine_cell);
+        programIcon.put("Minesweeper",R.drawable.minersweeper_icon);
         programIcon.put("Snake",R.drawable.snake_icon);
 
         //вес програм и игр

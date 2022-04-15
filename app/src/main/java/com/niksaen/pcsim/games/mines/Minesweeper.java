@@ -2,30 +2,20 @@ package com.niksaen.pcsim.games.mines;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Handler;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.gridlayout.widget.GridLayout;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.adapters.CustomListViewAdapter;
 import com.niksaen.pcsim.databinding.GameMinesweeperBinding;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.musicplayer.MusicPlayer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -54,6 +44,7 @@ public class Minesweeper extends Program {
         ValueRam = new int[]{1980,2024};
         ValueVideoMemory = new int[]{940,960};
         binding = GameMinesweeperBinding.inflate(activity.getLayoutInflater());
+        HidesTaskbar = true;
     }
     @Override
     public void initProgram() {
@@ -237,10 +228,5 @@ public class Minesweeper extends Program {
         fieldGenerator(bombCount);
         timer = new Timer();
         task = new TimerTask() {@Override public void run(){runnable.run();}};
-    }
-    @Override
-    public void closeProgram(int mode) {
-        super.closeProgram(mode);
-        activity.toolbar.setVisibility(View.VISIBLE);
     }
 }

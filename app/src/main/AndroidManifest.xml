@@ -14,21 +14,15 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".activites.IronActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".activites.MainShopActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".activites.MainActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".activites.LoadingActivity"
-            android:screenOrientation="landscape">
+        <activity android:name=".activities.SettingsActivity" android:screenOrientation="landscape" />
+        <activity android:name=".activities.TutorialActivity" android:screenOrientation="landscape" />
+        <activity android:name=".activities.AboutMeActivity"  android:screenOrientation="landscape" />
+        <activity android:name=".activities.IronActivity" android:screenOrientation="landscape" />
+        <activity android:name=".activities.MainShopActivity" android:screenOrientation="landscape" />
+        <activity android:name=".activities.MainActivity" android:screenOrientation="landscape" />
+        <activity android:name=".activities.LoadingActivity" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -1,13 +1,15 @@
-package com.niksaen.pcsim.activites;
+package com.niksaen.pcsim.activities;
 
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -25,17 +27,18 @@ import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.PopuListView.PopupListView;
+import com.niksaen.pcsim.classes.ProgramListAndData;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.DesktopAdapter;
 import com.niksaen.pcsim.classes.adapters.DiskChangeAdapter;
 import com.niksaen.pcsim.classes.adapters.DrawerAdapter;
 import com.niksaen.pcsim.classes.adapters.StartMenuAdapter;
 import com.niksaen.pcsim.classes.adapters.ToolbarAdapter;
+import com.niksaen.pcsim.databinding.ActivityMainBinding;
 import com.niksaen.pcsim.os.LiriOS;
 import com.niksaen.pcsim.os.NapiOS;
-import com.niksaen.pcsim.program.Program;
-import com.niksaen.pcsim.classes.ProgramListAndData;
 import com.niksaen.pcsim.os.cmd.CMD;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.taskManager.TaskManager;
 import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
@@ -44,7 +47,6 @@ import com.niksaen.pcsim.save.Settings;
 import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity{
     public ListView allAppList;
     private View caseView;
     public Button startMenuOpener;
+    ListView drawer;
 
     public PcParametersSave pcParametersSave;
     public StyleSave styleSave;
@@ -75,18 +78,11 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                1);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         font = Typeface.createFromAsset(getAssets(), "fonts/pixelFont.ttf");
 
-        if(new Settings(this).Language.equals("")){
-            Language.ChangeLanguage(this);
-        }else {
-            getLanguage();
-        }
-        //init classes
+        getTranslate();
         pcParametersSave = new PcParametersSave(this);
         styleSave = new StyleSave(this);
 
@@ -122,7 +118,6 @@ public class MainActivity extends AppCompatActivity{
 
     void viewStyle(){
         greeting.setTypeface(font,style);
-
         //case color
         if(pcParametersSave.CASE != null) {
             caseView.setBackgroundColor(Color.parseColor(pcParametersSave.CASE.get("Color")));
@@ -133,7 +128,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public HashMap<String,String> words;
-    private void getLanguage(){
+    private void getTranslate(){
         TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
         words = new Gson().fromJson(new AssetFile(this).getText("language/"+ new Settings(this).Language+".json"),typeToken.getType());
     }
@@ -145,24 +140,47 @@ public class MainActivity extends AppCompatActivity{
                 words.get("Shop"),
                 words.get("PC assembly"),
                 words.get("Settings"),
+                words.get("Tutorial"),
                 words.get("About me")
         };
-        ListView drawer = findViewById(R.id.drawer);
+        drawer = findViewById(R.id.drawer);
         DrawerAdapter drawerAdapter = new DrawerAdapter(this,menuList);
         drawerAdapter.BackgroundColor = Color.parseColor("#111111");
         drawerAdapter.TextColor = Color.parseColor("#FFFFFF");
         drawer.setAdapter(drawerAdapter);
 
         drawer.setOnItemClickListener((parent, view, position, id) -> {
-            if(position == 1){
-                intent = new Intent(MainActivity.this, MainShopActivity.class);
-                startActivity(intent);
-                finish();
-            }
-            if(position == 2){
-                intent = new Intent(MainActivity.this,IronActivity.class);
-                startActivity(intent);
-                finish();
+            switch (position){
+                case 1:{
+                    intent = new Intent(MainActivity.this, MainShopActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
+                case 2:{
+                    intent = new Intent(MainActivity.this,IronActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
+                case 3:{
+                    intent = new Intent(MainActivity.this,SettingsActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
+                case 4:{
+                    intent = new Intent(MainActivity.this,TutorialActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
+                case 5:{
+                    intent = new Intent(MainActivity.this,AboutMeActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
             }
         });
     }
@@ -292,15 +310,13 @@ public class MainActivity extends AppCompatActivity{
                     powerButton.setForeground(getDrawable(R.drawable.off));
                     powerButton.setClickable(true);
                     player.stop();
-                    player.release();
                 });
             }
         };
-        if(pcParametersSave.getMainDiskType().equals("SSD")){
-            timer.schedule(timerTask,1500);
-        }
-        else{
-            timer.schedule(timerTask,3000);
+        if (pcParametersSave.getMainDiskType().equals("SSD")) {
+            timer.schedule(timerTask, 1500);
+        } else {
+            timer.schedule(timerTask, 3000);
         }
     }
     // включение пк
@@ -368,15 +384,13 @@ public class MainActivity extends AppCompatActivity{
         DeadScreen.setTypeface(font);
         DeadScreen.setGravity(-1);
 
-        if(errorCode.length>=1) {
-            StringBuilder text2 = new StringBuilder();
-            for (String code : errorCode) {
-                text2.append(count).append(". ").append(code).append("\n");
-                count++;
-            }
-            String str =  text2.toString();
-            DeadScreen.setText(str);
+        StringBuilder text2 = new StringBuilder();
+        for (String code : errorCode) {
+            text2.append(count).append(". ").append(code).append("\n");
+            count++;
         }
+        String str =  text2.toString();
+        DeadScreen.setText(str);
         layout.addView(DeadScreen, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     }
     //перезагрузка пк
@@ -397,9 +411,26 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onStop() {
-        if(player.isPlaying()){
-            player.stop();
+        if(player != null) {
+            if (player.isPlaying()) {
+                player.stop();
+            }
         }
         super.onStop();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PcWorkStatus = 0;
+        if(DeadScreen != null){
+            DeadScreen.setVisibility(View.GONE);
+        }
+        for(int i = programArrayList.size()-1;i>=0;i--){
+            Program program = programArrayList.get(i);
+            program.closeProgram(0);
+        }
+        programArrayList.clear();
+        powerButton.setForeground(getDrawable(R.drawable.off));
+        powerButton.setClickable(true);
     }
 }

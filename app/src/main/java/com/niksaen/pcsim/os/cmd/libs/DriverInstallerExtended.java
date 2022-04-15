@@ -1,6 +1,6 @@
 package com.niksaen.pcsim.os.cmd.libs;
 
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.os.cmd.CMD;
 

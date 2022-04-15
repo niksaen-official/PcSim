@@ -10,12 +10,11 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.classes.ProgramListAndData;
-import com.niksaen.pcsim.program.appDownloader.PrepareForInstall;
 import com.niksaen.pcsim.save.PlayerData;
 
 public class AppDescriptionPage extends Program {

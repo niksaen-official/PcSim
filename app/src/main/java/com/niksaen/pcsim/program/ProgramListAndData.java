@@ -1,7 +1,7 @@
 package com.niksaen.pcsim.program;
 
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.games.tic_tac_toe.TicTacToe;
 import com.niksaen.pcsim.program.appDownloader.AppDownloader;
 import com.niksaen.pcsim.program.calculator.Calculator;

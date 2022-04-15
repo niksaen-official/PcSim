@@ -54,20 +54,10 @@ public class CartAdapters extends RecyclerView.Adapter<CartAdapters.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull CartAdapters.ViewHolder holder, int position) {
-        setStyle(holder);
         holder.text.setTypeface(font,Typeface.BOLD);
+        holder.text.setTextColor(Color.WHITE);
         holder.text.setText(pcComponents.get(position).Name);
         holder.icon.setImageDrawable(pcComponents.get(position).Textures);
-    }
-
-    private void setStyle(CartAdapters.ViewHolder holder){
-        if(new Settings(context).Theme == "Dark"){
-            holder.text.setTextColor(Color.WHITE);
-            holder.itemView.setBackgroundColor(Color.parseColor("#111111"));
-        }
-        else {
-            holder.text.setTextColor(Color.BLACK);
-        }
     }
     @Override
     public int getItemCount() {

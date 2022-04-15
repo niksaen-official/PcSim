@@ -1,11 +1,10 @@
 package com.niksaen.pcsim.os;
 
 import android.graphics.Color;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;

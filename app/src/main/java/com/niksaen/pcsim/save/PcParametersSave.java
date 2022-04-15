@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.CartAdapters;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
@@ -885,5 +886,13 @@ public class PcParametersSave {
             }
         }
     }
-
+    public static int gpuPerformance(String gpuName, Context context){
+        TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
+        HashMap<String,String> gpuList = new Gson().fromJson(new AssetFile(context).getText("pc_component/performance_graphics_chip.json"),typeToken.getType());
+        if(gpuList.get(gpuName) != null) {
+            return Integer.parseInt(gpuList.get(gpuName));
+        }else {
+            return 0;
+        }
+    }
 }

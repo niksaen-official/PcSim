@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.classes.ProgramListAndData;
 import com.niksaen.pcsim.os.cmd.CMD;
@@ -226,9 +226,6 @@ public class GStoreSetupWindow extends Program {
                         }
                         case 100:{
                             setupStatus.setText(activity.words.get("Installation completed"));
-                            break;
-                        }
-                        case 101:{
                             timer.cancel();
                             break;
                         }

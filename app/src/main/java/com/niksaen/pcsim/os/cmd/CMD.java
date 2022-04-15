@@ -3,13 +3,12 @@ package com.niksaen.pcsim.os.cmd;
 import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.adapters.CMD_Adapter;
 import com.niksaen.pcsim.os.cmd.libs.Task;
 import com.niksaen.pcsim.program.Program;
@@ -18,7 +17,6 @@ import com.niksaen.pcsim.os.cmd.libs.Drive;
 import com.niksaen.pcsim.os.cmd.libs.DriverInstallerExtended;
 import com.niksaen.pcsim.os.cmd.libs.InstallerFromDrive;
 import com.niksaen.pcsim.os.cmd.libs.Pc;
-import com.niksaen.pcsim.save.Language;
 
 import java.util.ArrayList;
 import java.util.Timer;

@@ -1,23 +1,14 @@
 package com.niksaen.pcsim.games.tic_tac_toe;
 
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.adapters.CustomListViewAdapter;
 import com.niksaen.pcsim.databinding.GameTictactoeBinding;
 import com.niksaen.pcsim.program.Program;
-
-import static android.graphics.Typeface.BOLD;
 
 public class TicTacToe extends Program {
     String lastType = "PvE";
@@ -28,6 +19,7 @@ public class TicTacToe extends Program {
         ValueRam = new int[]{1025,1224};
         ValueVideoMemory = new int[]{400,500};
         binding = GameTictactoeBinding.inflate(activity.getLayoutInflater());
+        HidesTaskbar = true;
     }
 
     @Override
@@ -94,10 +86,5 @@ public class TicTacToe extends Program {
                 super.openProgram();
             }
         }
-    }
-    @Override
-    public void closeProgram(int mode) {
-        super.closeProgram(mode);
-        activity.toolbar.setVisibility(View.VISIBLE);
     }
 }

@@ -1,16 +1,12 @@
 package com.niksaen.pcsim.os.cmd.libs;
 
-import android.content.Context;
-import android.graphics.Color;
-
 import com.niksaen.pcsim.R;
-import com.niksaen.pcsim.activites.MainActivity;
+import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.os.LiriOS;
 import com.niksaen.pcsim.os.NapiOS;
 import com.niksaen.pcsim.classes.ProgramListAndData;
 import com.niksaen.pcsim.os.cmd.CMD;
-import com.niksaen.pcsim.save.Language;
 
 import java.util.HashMap;
 import java.util.Timer;

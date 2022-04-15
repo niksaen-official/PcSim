@@ -60,17 +60,13 @@ public class ShopDialog {
         ButtonBuy.setText(words.get("Add to cart"));
         ButtonCancel.setText(words.get("Cancel"));
 
-        Settings settings = new Settings(context);
-        if(settings.Theme == "Dark"){
-            main.setBackgroundColor(Color.parseColor("#111111"));
-            Title.setTextColor(Color.WHITE);
-            Text.setTextColor(Color.WHITE);
-            ButtonBuy.setTextColor(Color.WHITE);
-            ButtonBuy.setBackgroundColor(Color.parseColor("#1C1C1C"));
-            ButtonCancel.setTextColor(Color.WHITE);
-            ButtonCancel.setBackgroundColor(Color.parseColor("#1C1C1C"));
-        }
-
+        main.setBackgroundColor(Color.parseColor("#111111"));
+        Title.setTextColor(Color.WHITE);
+        Text.setTextColor(Color.WHITE);
+        ButtonBuy.setTextColor(Color.WHITE);
+        ButtonBuy.setBackgroundColor(Color.parseColor("#1C1C1C"));
+        ButtonCancel.setTextColor(Color.WHITE);
+        ButtonCancel.setBackgroundColor(Color.parseColor("#1C1C1C"));
         builder.setView(main);
         builder.setCancelable(false);
     }
