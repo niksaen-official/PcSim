@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,7 +39,6 @@ import com.niksaen.pcsim.os.NapiOS;
 import com.niksaen.pcsim.os.cmd.CMD;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.taskManager.TaskManager;
-import com.niksaen.pcsim.save.Language;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.PlayerData;
 import com.niksaen.pcsim.save.Settings;
@@ -51,9 +49,10 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import me.toptas.fancyshowcase.FancyShowCaseView;
+
 public class MainActivity extends AppCompatActivity{
 
-    Button powerButton;
     public LinearLayout toolbar;
     public LinearLayout startMenu;
     public TextView greeting,startMenuTitle;
@@ -62,21 +61,23 @@ public class MainActivity extends AppCompatActivity{
     public ListView allAppList;
     private View caseView;
     public Button startMenuOpener;
-    ListView drawer;
 
     public PcParametersSave pcParametersSave;
     public StyleSave styleSave;
     public ConstraintLayout layout;
     public String DiskInDrive;
+    public PlayerData playerData;
 
     public MediaPlayer player;
     public Typeface font;
     int style = Typeface.BOLD;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -85,11 +86,23 @@ public class MainActivity extends AppCompatActivity{
         getTranslate();
         pcParametersSave = new PcParametersSave(this);
         styleSave = new StyleSave(this);
+        playerData = new PlayerData(this);
 
         initView();
         viewStyle();
         initDrawer();
-
+        if(!playerData.tutorialComplete){
+            new FancyShowCaseView.Builder(this)
+                    .focusOn(binding.drawer)
+                    .title("This is side menu. Swipe right for open.")
+                    .titleSize(45,2)
+                    .typeface(font)
+                    .backgroundColor(Color.parseColor("#43FFFFFF"))
+                    .build()
+                    .show();
+            playerData.tutorialComplete = true;
+            playerData.setAllData();
+        }
         player = new MediaPlayer();
         buttonPC();
 
@@ -102,7 +115,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     void initView(){
-        powerButton = findViewById(R.id.on_off);
         layout = findViewById(R.id.monitor);
         toolbar =findViewById(R.id.toolbar);
         greeting = findViewById(R.id.greeting);
@@ -123,7 +135,7 @@ public class MainActivity extends AppCompatActivity{
             caseView.setBackgroundColor(Color.parseColor(pcParametersSave.CASE.get("Color")));
         }else{
             caseView.setVisibility(View.INVISIBLE);
-            powerButton.setClickable(false);
+            binding.onOff.setClickable(false);
         }
     }
 
@@ -143,13 +155,12 @@ public class MainActivity extends AppCompatActivity{
                 words.get("Tutorial"),
                 words.get("About me")
         };
-        drawer = findViewById(R.id.drawer);
         DrawerAdapter drawerAdapter = new DrawerAdapter(this,menuList);
         drawerAdapter.BackgroundColor = Color.parseColor("#111111");
         drawerAdapter.TextColor = Color.parseColor("#FFFFFF");
-        drawer.setAdapter(drawerAdapter);
+        binding.drawer.setAdapter(drawerAdapter);
 
-        drawer.setOnItemClickListener((parent, view, position, id) -> {
+        binding.drawer.setOnItemClickListener((parent, view, position, id) -> {
             switch (position){
                 case 1:{
                     intent = new Intent(MainActivity.this, MainShopActivity.class);
@@ -253,7 +264,7 @@ public class MainActivity extends AppCompatActivity{
     //кнопка питания пк
     private int PcWorkStatus = 0;
     private void buttonPC(){
-        powerButton.setOnClickListener(v -> {
+        binding.onOff.setOnClickListener(v -> {
             if(PcWorkStatus == 0) {
                 if (pcParametersSave.getPcWork()) {
                     if (pcParametersSave.currentCpuTemperature() <= pcParametersSave.maxCpuTemperature()) {
@@ -286,7 +297,7 @@ public class MainActivity extends AppCompatActivity{
     }
     // выключение пк
     public void pcWorkOff(){
-        powerButton.setClickable(false);
+        binding.onOff.setClickable(false);
         player.stop();
         player.release();
         player = MediaPlayer.create(this, R.raw.pc_work_end_sound);
@@ -307,8 +318,8 @@ public class MainActivity extends AppCompatActivity{
                         program.closeProgram(0);
                     }
                     programArrayList.clear();
-                    powerButton.setForeground(getDrawable(R.drawable.off));
-                    powerButton.setClickable(true);
+                    binding.onOff.setForeground(getDrawable(R.drawable.off));
+                    binding.onOff.setClickable(true);
                     player.stop();
                 });
             }
@@ -341,7 +352,7 @@ public class MainActivity extends AppCompatActivity{
         }
         pcWorkSound();
         PcWorkStatus = 1;
-        powerButton.setForeground(getDrawable(R.drawable.on));
+        binding.onOff.setForeground(getDrawable(R.drawable.on));
     }
     public void pcWorkSound(){
         player.stop();
@@ -355,7 +366,7 @@ public class MainActivity extends AppCompatActivity{
     //выбор диска
     public void changeCD(View view){
         DiskChangeAdapter adapter;
-        diskList = new PlayerData(this).DiskSoftList;
+        diskList = playerData.DiskSoftList;
         if(diskList.length == 0){
             diskList = StringArrayWork.add(diskList,words.get("You have not purchased any discs"));
             adapter = new DiskChangeAdapter(this,diskList);
@@ -430,7 +441,7 @@ public class MainActivity extends AppCompatActivity{
             program.closeProgram(0);
         }
         programArrayList.clear();
-        powerButton.setForeground(getDrawable(R.drawable.off));
-        powerButton.setClickable(true);
+        binding.onOff.setForeground(getDrawable(R.drawable.off));
+        binding.onOff.setClickable(true);
     }
 }

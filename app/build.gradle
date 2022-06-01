@@ -3,15 +3,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.niksaen.pcsim"
         minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 19
-        versionName "1.0.0"
+        targetSdkVersion 32
+        versionCode 20
+        versionName "1.0.1"
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -46,6 +46,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation "androidx.core:core-ktx:1.6.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.github.faruktoptas:FancyShowCaseView:1.3.9'
 }
 repositories {
     mavenCentral()

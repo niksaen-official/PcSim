@@ -309,7 +309,7 @@
   "To begin": "To begin",
   "Stop": "Stop",
   "Withdraw": "Withdraw",
-  "Choose a slot:": "\"Choose a slot:",
+  "Choose a slot:": "Choose a slot:",
   "Snake": "Snake",
   "Resume": "Resume",
   "Easy": "Easy",
@@ -326,5 +326,6 @@
   "Initial PC setup": "Initial PC setup",
   "Making money": "Making money",
   "Game Guides": "Game Guides",
-  "Change of language": "Change of language"
+  "Change of language": "Change of language",
+  "Memory:Description": "The game \"Memory\" is a field on which cards with pictures are located. The cards are in random order, and each of them is presented on the field 2 times. Initially, the cards are closed and you can open them by clicking the mouse. only two cards can be opened at a time (not counting the pairs already found), so the location of the pictures must be remembered.If the open pictures match, the found pairs remain on the field in an open form.The goal of the game is to sequentially open the entire field.\nSystem requirements:\nProcessor:\n  Number of threads: more than 2\n  Frequency: 3000 or more\nRAM: 2 Gb or more\nVideo memory: from 1Gb"
 }

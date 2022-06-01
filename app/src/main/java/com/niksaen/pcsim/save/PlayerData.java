@@ -19,6 +19,7 @@ public class PlayerData {
     public int Money;
     public String[] ListPurchasedPrograms;
     public String[] DiskSoftList;
+    public boolean tutorialComplete;
 
     private SharedPreferences preferences;
     public PlayerData(Context context){
@@ -37,6 +38,7 @@ public class PlayerData {
         Money = preferences.getInt("Money",17500);
         ListPurchasedPrograms = StringArrayWork.clearEmpty(preferences.getString("ListPurchasedPrograms","").split(","));
         DiskSoftList = StringArrayWork.clearEmpty(preferences.getString("DiskSoftList","").split(","));
+        tutorialComplete = preferences.getBoolean("tutorialComplete",false);
     }
     public void setAllData(){
         preferences.edit().putString("PcCaseList", Others.ArrayToString(PcCaseList)).apply();
@@ -50,5 +52,6 @@ public class PlayerData {
         preferences.edit().putInt("Money",Money).apply();
         preferences.edit().putString("ListPurchasedPrograms", Others.ArrayToString(ListPurchasedPrograms)).apply();
         preferences.edit().putString("DiskSoftList",Others.ArrayToString(DiskSoftList)).apply();
+        preferences.edit().putBoolean("tutorialComplete",tutorialComplete).apply();
     }
 }

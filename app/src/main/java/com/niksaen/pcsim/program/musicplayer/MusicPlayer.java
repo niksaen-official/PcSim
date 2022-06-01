@@ -293,7 +293,7 @@ public class MusicPlayer extends Program {
         if(strMinute.length() == 1){
             strMinute = "0"+strMinute;
         }
-        String strHour = "00";
+        String strHour;
         if(hour > 0) {
             strHour = String.valueOf(hour);
             if(strHour.length()==1){

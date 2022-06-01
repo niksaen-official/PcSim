@@ -2,6 +2,7 @@ package com.niksaen.pcsim.classes;
 
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activities.MainActivity;
+import com.niksaen.pcsim.games.memory.MemoryGame;
 import com.niksaen.pcsim.games.mines.Minesweeper;
 import com.niksaen.pcsim.games.snake.SnakeGame;
 import com.niksaen.pcsim.games.tic_tac_toe.TicTacToe;
@@ -30,6 +31,7 @@ import com.niksaen.pcsim.program.styleSettings.StyleSettings;
 import com.niksaen.pcsim.program.videoplayer.VideoPlayer;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class ProgramListAndData {
 
@@ -49,7 +51,8 @@ public class ProgramListAndData {
             "App Downloader",
             "Disk manager",
             "Calculator",
-            "GStore"
+            "GStore",
+            "Memory"
     };
     /*список платных программ*/
     public static String[] DontFreeAppList = {
@@ -128,6 +131,7 @@ public class ProgramListAndData {
         programIcon.put("Driver installer",R.drawable.icon_downloader);
         programIcon.put("Minesweeper",R.drawable.minersweeper_icon);
         programIcon.put("Snake",R.drawable.snake_icon);
+        programIcon.put("Memory",R.drawable.icon_default);
 
         //вес програм и игр
         programSize.put("Benchmark",2f);
@@ -158,6 +162,7 @@ public class ProgramListAndData {
         programSize.put("Driver installer",0.2f);
         programSize.put("Minesweeper",4.2f);
         programSize.put("Snake",2.4f);
+        programSize.put("Memory",1f);
     }
 
     /** классы программ*/
@@ -187,5 +192,6 @@ public class ProgramListAndData {
         programHashMap.put("Driver installer",new DriverInstaller(activity));
         programHashMap.put("Minesweeper",new Minesweeper(activity));
         programHashMap.put("Snake",new SnakeGame(activity));
+        programHashMap.put("Memory",new MemoryGame(activity));
     }
 }
