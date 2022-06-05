@@ -9,6 +9,7 @@
     <color name="black_overlay">#222222</color>
     <color name="buttonColor">#393939</color>
     <color name="transparent">#00000000</color>
+    <color name="tutorialBack">#CB000000</color>
 
     <color name="window">#0D47A1</color>
 

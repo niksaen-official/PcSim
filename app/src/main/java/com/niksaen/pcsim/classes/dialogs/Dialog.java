@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.niksaen.pcsim.R;
 
 public class Dialog {
-    private Context context;
+    private final Context context;
     public Dialog(Context context){
         this.context = context;
     }
@@ -22,20 +22,20 @@ public class Dialog {
 
     private boolean TitleVisible = false;
     private String TitleText = "Title";
-    private TextView TitleView;
+
     public void setTitleVisible(boolean titleVisible) { TitleVisible = titleVisible; }
     public void setTitleText(String titleText) { TitleText = titleText; }
 
     private boolean ButtonOkVisible = false,ButtonCancelVisible = false;
     private String ButtonOkText = "Ok",ButtonCancelText = "Cancel";
-    private Button ButtonOk,ButtonCancel;
+
     public void setButtonOkVisible(boolean ButtonOkVisible) { this.ButtonOkVisible = ButtonOkVisible; }
     public void setButtonCancelVisible(boolean ButtonCancelVisible) { this.ButtonCancelVisible = ButtonCancelVisible; }
     public void setButtonCancelText(String buttonCancelText) { ButtonCancelText = buttonCancelText; }
     public void setButtonOkText(String buttonOkText) { ButtonOkText = buttonOkText; }
 
     private String Text;
-    private TextView TextView;
+
     public void setText(String text){ this.Text = text; }
 
     private boolean Cancelable = true;
@@ -53,38 +53,38 @@ public class Dialog {
     private AlertDialog dialog;
     public void create(){
         View main = LayoutInflater.from(context).inflate(R.layout.dialog_base,null);
-        TitleView = main.findViewById(R.id.titleView);
-        TextView = main.findViewById(R.id.textView);
-        ButtonOk = main.findViewById(R.id.ok);
-        ButtonCancel = main.findViewById(R.id.cancel);
+        android.widget.TextView titleView = main.findViewById(R.id.titleView);
+        android.widget.TextView textView = main.findViewById(R.id.textView);
+        Button buttonOk = main.findViewById(R.id.ok);
+        Button buttonCancel = main.findViewById(R.id.cancel);
 
-        TextView.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf"));
-        TitleView.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf"),Typeface.BOLD);
-        TextView.setText(Text);
-        ButtonOk.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf"),Typeface.BOLD);
-        ButtonCancel.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf"),Typeface.BOLD);
+        textView.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf"));
+        titleView.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf"),Typeface.BOLD);
+        textView.setText(Text);
+        buttonOk.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf"),Typeface.BOLD);
+        buttonCancel.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/pixelFont.ttf"),Typeface.BOLD);
 
         if(TitleVisible){
-            TitleView.setVisibility(View.VISIBLE);
-            TitleView.setText(TitleText);
+            titleView.setVisibility(View.VISIBLE);
+            titleView.setText(TitleText);
         }
         if(ButtonCancelVisible){
-            ButtonCancel.setVisibility(View.VISIBLE);
-            ButtonCancel.setText(ButtonCancelText);
+            buttonCancel.setVisibility(View.VISIBLE);
+            buttonCancel.setText(ButtonCancelText);
         }
         if(ButtonOkVisible){
-            ButtonOk.setVisibility(View.VISIBLE);
-            ButtonOk.setText(ButtonOkText);
+            buttonOk.setVisibility(View.VISIBLE);
+            buttonOk.setText(ButtonOkText);
         }
         if(ButtonCancelOnClick != null){
-            ButtonCancel.setOnClickListener(ButtonCancelOnClick);
+            buttonCancel.setOnClickListener(ButtonCancelOnClick);
         } else{
-            ButtonCancel.setOnClickListener(v -> dialog.dismiss());
+            buttonCancel.setOnClickListener(v -> dialog.dismiss());
         }
         if(ButtonOkOnClick != null){
-            ButtonOk.setOnClickListener(ButtonOkOnClick);
+            buttonOk.setOnClickListener(ButtonOkOnClick);
         }else {
-            ButtonOk.setOnClickListener(v -> dialog.dismiss());
+            buttonOk.setOnClickListener(v -> dialog.dismiss());
         }
 
         switch (Type){
@@ -103,10 +103,10 @@ public class Dialog {
             default:{break;}
         }
 
-        TitleView.setTextColor(TextColor);
-        TextView.setTextColor(TextColor);
-        ButtonOk.setTextColor(TextColor);
-        ButtonCancel.setTextColor(TextColor);
+        titleView.setTextColor(TextColor);
+        textView.setTextColor(TextColor);
+        buttonOk.setTextColor(TextColor);
+        buttonCancel.setTextColor(TextColor);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(Cancelable);

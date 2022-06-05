@@ -327,5 +327,20 @@
   "Making money": "Making money",
   "Game Guides": "Game Guides",
   "Change of language": "Change of language",
-  "Memory:Description": "The game \"Memory\" is a field on which cards with pictures are located. The cards are in random order, and each of them is presented on the field 2 times. Initially, the cards are closed and you can open them by clicking the mouse. only two cards can be opened at a time (not counting the pairs already found), so the location of the pictures must be remembered.If the open pictures match, the found pairs remain on the field in an open form.The goal of the game is to sequentially open the entire field.\nSystem requirements:\nProcessor:\n  Number of threads: more than 2\n  Frequency: 3000 or more\nRAM: 2 Gb or more\nVideo memory: from 1Gb"
+  "Memory:Description": "The game \"Memory\" is a field on which cards with pictures are located. The cards are in random order, and each of them is presented on the field 2 times. Initially, the cards are closed and you can open them by clicking the mouse. only two cards can be opened at a time (not counting the pairs already found), so the location of the pictures must be remembered.If the open pictures match, the found pairs remain on the field in an open form.The goal of the game is to sequentially open the entire field.\nSystem requirements:\nProcessor:\n  Number of threads: more than 2\n  Frequency: 3000 or more\nRAM: 2 Gb or more\nVideo memory: from 1Gb",
+  "There is a side menu here.\nTo open it, drag to the right.": "There is a side menu here.\nTo open it, drag to the right.",
+  "This is a PC parts store.": "This is a PC parts store.",
+  "Here you can build a PC.": "Here you can build a PC.",
+  "Additional guides for the game can be found here.": "Additional guides for the game can be found here.",
+  "Click here to go to the store.": "Click here to go to the store.",
+  "This was a basic guide to the game.\nHave a good game!": "This was a basic guide to the game.\nHave a good game!",
+  "The store is divided into sections.\nTo go to any section, click on its icon\nLet's go to the section with PC cases": "The store is divided into sections.\nTo go to any section, click on its icon\nLet's go to the section with PC cases",
+  "Choose any case. And add it to your shopping cart": "Choose any case. And add it to your shopping cart",
+  "Your shopping cart is here.\n Swipe right to open it.": "Your shopping cart is here.\n Swipe right to open it.",
+  "To remove an item from the cart, click on it.\n To buy everything\n in the cart, click the bottom button.": "To remove an item from the cart, click on it.\n To buy everything\n in the cart, click the bottom button.",
+  "This displays the amount of your money.": "This displays the amount of your money.",
+  "You can use this button or the back button on your phone to go back to the main section of the store.": "You can use this button or the back button on your phone to go back to the main section of the store.",
+  "Performing this action again will return you to the main screen of the game.": "Performing this action again will return you to the main screen of the game.",
+  "Education": "Education",
+  "Skip tutorial?": "Skip tutorial?"
 }

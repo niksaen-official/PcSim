@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -33,6 +34,7 @@ import com.niksaen.pcsim.classes.adapters.DiskChangeAdapter;
 import com.niksaen.pcsim.classes.adapters.DrawerAdapter;
 import com.niksaen.pcsim.classes.adapters.StartMenuAdapter;
 import com.niksaen.pcsim.classes.adapters.ToolbarAdapter;
+import com.niksaen.pcsim.classes.dialogs.Dialog;
 import com.niksaen.pcsim.databinding.ActivityMainBinding;
 import com.niksaen.pcsim.os.LiriOS;
 import com.niksaen.pcsim.os.NapiOS;
@@ -50,6 +52,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import me.toptas.fancyshowcase.FancyShowCaseView;
+import me.toptas.fancyshowcase.FocusShape;
+import me.toptas.fancyshowcase.listener.DismissListener;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -91,20 +95,172 @@ public class MainActivity extends AppCompatActivity{
         initView();
         viewStyle();
         initDrawer();
-        if(!playerData.tutorialComplete){
-            new FancyShowCaseView.Builder(this)
-                    .focusOn(binding.drawer)
-                    .title("This is side menu. Swipe right for open.")
-                    .titleSize(45,2)
-                    .typeface(font)
-                    .backgroundColor(Color.parseColor("#43FFFFFF"))
-                    .build()
-                    .show();
-            playerData.tutorialComplete = true;
-            playerData.setAllData();
-        }
         player = new MediaPlayer();
         buttonPC();
+        if(!playerData.tutorialComplete){
+            Dialog dialog = new Dialog(this);
+            dialog.setTitleVisible(true);
+            dialog.setTitleText(words.get("Education"));
+            dialog.setText(words.get("Skip tutorial?"));
+            dialog.setCancelable(false);
+            dialog.setButtonOkVisible(true);
+            dialog.setButtonCancelVisible(true);
+            dialog.setButtonOkText(words.get("Yes"));
+            dialog.setButtonCancelText(words.get("No"));
+            dialog.setButtonCancelOnClick(view -> {
+                new FancyShowCaseView.Builder(MainActivity.this)
+                    .focusOn(binding.drawer)
+                    .title(words.get("There is a side menu here.\nTo open it, drag to the right."))
+                    .titleSize(35,2)
+                    .typeface(font)
+                    .backgroundColor(getColor(R.color.tutorialBack))
+                    .dismissListener(new DismissListener() {
+                        @Override
+                        public void onDismiss(@Nullable String s) {
+                            binding.getRoot().openDrawer(binding.drawer);
+                            new FancyShowCaseView.Builder(MainActivity.this)
+                                    .delay(100)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .focusCircleAtPosition(
+                                            binding.drawer.getChildAt(1).getLeft()+binding.drawer.getChildAt(1).getWidth()/3,
+                                            binding.drawer.getChildAt(1).getTop()+binding.drawer.getChildAt(1).getHeight()/2,
+                                            100
+                                    )
+                                    .title(words.get("This is a PC parts store."))
+                                    .titleSize(35,2)
+                                    .typeface(font)
+                                    .backgroundColor(getColor(R.color.tutorialBack))
+                                    .dismissListener(new DismissListener() {
+                                        @Override
+                                        public void onDismiss(@Nullable String s) {
+                                            new FancyShowCaseView.Builder(MainActivity.this)
+                                                    .delay(100)
+                                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                                    .focusCircleAtPosition(
+                                                            binding.drawer.getChildAt(2).getLeft()+binding.drawer.getChildAt(2).getWidth()/3,
+                                                            binding.drawer.getChildAt(2).getTop()+binding.drawer.getChildAt(2).getHeight()/2,
+                                                            100
+                                                    )
+                                                    .title(words.get("Here you can build a PC."))
+                                                    .titleSize(35,2)
+                                                    .typeface(font)
+                                                    .backgroundColor(getColor(R.color.tutorialBack))
+                                                    .dismissListener(new DismissListener() {
+                                                        @Override
+                                                        public void onDismiss(@Nullable String s) {
+                                                            new FancyShowCaseView.Builder(MainActivity.this)
+                                                                    .delay(100)
+                                                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                                                    .focusCircleAtPosition(
+                                                                            binding.drawer.getChildAt(4).getLeft()+binding.drawer.getChildAt(4).getWidth()/3,
+                                                                            binding.drawer.getChildAt(4).getTop()+binding.drawer.getChildAt(4).getHeight()/2,
+                                                                            100
+                                                                    )
+                                                                    .title(words.get("Additional guides for the game can be found here."))
+                                                                    .titleSize(35,2)
+                                                                    .typeface(font)
+                                                                    .backgroundColor(getColor(R.color.tutorialBack))
+                                                                    .dismissListener(new DismissListener() {
+                                                                        @Override
+                                                                        public void onDismiss(@Nullable String s) {
+                                                                            new FancyShowCaseView.Builder(MainActivity.this)
+                                                                                    .delay(100)
+                                                                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                                                                    .focusCircleAtPosition(
+                                                                                            binding.drawer.getChildAt(1).getLeft()+binding.drawer.getChildAt(1).getWidth()/3,
+                                                                                            binding.drawer.getChildAt(1).getTop()+binding.drawer.getChildAt(1).getHeight()/2,
+                                                                                            100
+                                                                                    )
+                                                                                    .title(words.get("Click here to go to the store."))
+                                                                                    .titleSize(35,2)
+                                                                                    .typeface(font)
+                                                                                    .backgroundColor(getColor(R.color.tutorialBack))
+                                                                                    .dismissListener(new DismissListener() {
+                                                                                        @Override
+                                                                                        public void onDismiss(@Nullable String s) {
+                                                                                            playerData.tutorialComplete = true;
+                                                                                            playerData.setAllData();
+                                                                                            Intent intent = new Intent(MainActivity.this, MainShopActivity.class);
+                                                                                            startActivity(intent);
+                                                                                            finish();
+                                                                                        }
+
+                                                                                        @Override
+                                                                                        public void onSkipped(@Nullable String s) {
+
+                                                                                        }
+                                                                                    })
+                                                                                    .build()
+                                                                                    .show();
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onSkipped(@Nullable String s) {
+
+                                                                        }
+                                                                    })
+                                                                    .build()
+                                                                    .show();
+                                                        }
+
+                                                        @Override
+                                                        public void onSkipped(@Nullable String s) {
+
+                                                        }
+                                                    })
+                                                    .build()
+                                                    .show();
+                                        }
+
+                                        @Override
+                                        public void onSkipped(@Nullable String s) {
+
+                                        }
+                                    })
+                                    .build()
+                                    .show();
+                        }
+
+                        @Override
+                        public void onSkipped(@Nullable String s) {
+
+                        }
+                    })
+                    .build()
+                    .show();
+                dialog.dismiss();
+            });
+            dialog.setButtonOkOnClick(view -> {
+                playerData.tutorialComplete = true;
+                playerData.tutorialShopComplete = true;
+                playerData.tutorialEnd = true;
+                dialog.dismiss();
+            });
+            dialog.create();
+            dialog.show();
+        }
+        if(playerData.tutorialShopComplete && playerData.tutorialComplete && !playerData.tutorialEnd){
+            new FancyShowCaseView.Builder(MainActivity.this)
+                    .delay(100)
+                    .title(words.get("This was a basic guide to the game.\nHave a good game!"))
+                    .titleSize(35,2)
+                    .typeface(font)
+                    .backgroundColor(getColor(R.color.tutorialBack))
+                    .dismissListener(new DismissListener() {
+                        @Override
+                        public void onDismiss(@Nullable String s) {
+                            playerData.tutorialEnd = true;
+                            playerData.setAllData();
+                        }
+
+                        @Override
+                        public void onSkipped(@Nullable String s) {
+
+                        }
+                    })
+                    .build()
+                    .show();
+        }
 
         startMenuOpener.setOnLongClickListener(v -> {
             CMD cmd = new CMD(MainActivity.this);

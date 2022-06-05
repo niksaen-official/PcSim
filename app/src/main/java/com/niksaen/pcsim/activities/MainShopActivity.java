@@ -1,14 +1,19 @@
 package com.niksaen.pcsim.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +24,7 @@ import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.ItemClickSupport;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.classes.adapters.CartAdapters;
+import com.niksaen.pcsim.classes.adapters.DrawerAdapter;
 import com.niksaen.pcsim.classes.adapters.ShopAdapter;
 import com.niksaen.pcsim.classes.dialogs.Dialog;
 import com.niksaen.pcsim.classes.dialogs.DialogCheque;
@@ -30,6 +36,10 @@ import com.niksaen.pcsim.save.Settings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import me.toptas.fancyshowcase.FancyShowCaseView;
+import me.toptas.fancyshowcase.listener.DismissListener;
+import me.toptas.fancyshowcase.listener.OnViewInflateListener;
 
 public class MainShopActivity extends AppCompatActivity {
 
@@ -54,6 +64,141 @@ public class MainShopActivity extends AppCompatActivity {
         style();
         logic();
         updateMoneyView();
+        if(!playerData.tutorialShopComplete){
+            new FancyShowCaseView.Builder(this)
+                    .title(words.get("The store is divided into sections.\nTo go to any section, click on its icon\nLet's go to the section with PC cases"))
+                    .titleSize(35,2)
+                    .typeface(font)
+                    .backgroundColor(getColor(R.color.tutorialBack))
+                    .dismissListener(new DismissListener() {
+                        @Override
+                        public void onDismiss(@Nullable String s) {
+                            main.setAdapter(adapters.get(0));
+                            new FancyShowCaseView.Builder(MainShopActivity.this)
+                                    .delay(100)
+                                    .title(words.get("Choose any case. And add it to your shopping cart"))
+                                    .titleSize(35,2)
+                                    .typeface(font)
+                                    .backgroundColor(getColor(R.color.tutorialBack))
+                                    .dismissListener(new DismissListener() {
+                                        @Override
+                                        public void onDismiss(@Nullable String s) {
+                                            new FancyShowCaseView.Builder(MainShopActivity.this)
+                                                    .delay(2000)
+                                                    .focusOn(cartView)
+                                                    .title(words.get("Your shopping cart is here.\n Swipe right to open it."))
+                                                    .titleSize(35,2)
+                                                    .typeface(font)
+                                                    .backgroundColor(getColor(R.color.tutorialBack))
+                                                    .dismissListener(new DismissListener() {
+                                                        @Override
+                                                        public void onDismiss(@Nullable String s) {
+                                                            ((DrawerLayout)findViewById(R.id.drawerLayout)).openDrawer(Gravity.LEFT);
+                                                            new FancyShowCaseView.Builder(MainShopActivity.this)
+                                                                    .title(words.get("To remove an item from the cart, click on it.\n To buy everything\n in the cart, click the bottom button."))
+                                                                    .titleSize(35,2)
+                                                                    .typeface(font)
+                                                                    .backgroundColor(getColor(R.color.tutorialBack))
+                                                                    .dismissListener(new DismissListener() {
+                                                                        @Override
+                                                                        public void onDismiss(@Nullable String s) {
+                                                                            ((DrawerLayout)findViewById(R.id.drawerLayout)).closeDrawer(Gravity.LEFT);
+                                                                            new FancyShowCaseView.Builder(MainShopActivity.this)
+                                                                                    .focusOn(moneyView)
+                                                                                    .title(words.get("This displays the amount of your money."))
+                                                                                    .titleSize(35,2)
+                                                                                    .typeface(font)
+                                                                                    .backgroundColor(getColor(R.color.tutorialBack))
+                                                                                    .dismissListener(new DismissListener() {
+                                                                                        @Override
+                                                                                        public void onDismiss(@Nullable String s) {
+                                                                                            new FancyShowCaseView.Builder(MainShopActivity.this)
+                                                                                                    .focusOn(back)
+                                                                                                    .title(words.get("You can use this button or the back button on your phone to go back to the main section of the store."))
+                                                                                                    .titleSize(35,2)
+                                                                                                    .typeface(font)
+                                                                                                    .backgroundColor(getColor(R.color.tutorialBack))
+                                                                                                    .dismissListener(new DismissListener() {
+                                                                                                        @Override
+                                                                                                        public void onDismiss(@Nullable String s) {
+                                                                                                            main.setAdapter(baseAdapter);
+                                                                                                            new FancyShowCaseView.Builder(MainShopActivity.this)
+                                                                                                                    .focusOn(back)
+                                                                                                                    .title(words.get("Performing this action again will return you to the main screen of the game."))
+                                                                                                                    .titleSize(35,2)
+                                                                                                                    .typeface(font)
+                                                                                                                    .backgroundColor(getColor(R.color.tutorialBack))
+                                                                                                                    .dismissListener(new DismissListener() {
+                                                                                                                        @Override
+                                                                                                                        public void onDismiss(@Nullable String s) {
+                                                                                                                            playerData.tutorialShopComplete = true;
+                                                                                                                            playerData.setAllData();
+                                                                                                                            Intent intent = new Intent(MainShopActivity.this,MainActivity.class);
+                                                                                                                            startActivity(intent);
+                                                                                                                            finish();
+                                                                                                                        }
+
+                                                                                                                        @Override
+                                                                                                                        public void onSkipped(@Nullable String s) {
+
+                                                                                                                        }
+                                                                                                                    })
+                                                                                                                    .build()
+                                                                                                                    .show();
+                                                                                                        }
+
+                                                                                                        @Override
+                                                                                                        public void onSkipped(@Nullable String s) {
+
+                                                                                                        }
+                                                                                                    })
+                                                                                                    .build()
+                                                                                                    .show();
+                                                                                        }
+
+                                                                                        @Override
+                                                                                        public void onSkipped(@Nullable String s) {
+
+                                                                                        }
+                                                                                    })
+                                                                                    .build()
+                                                                                    .show();
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onSkipped(@Nullable String s) {
+
+                                                                        }
+                                                                    })
+                                                                    .build()
+                                                                    .show();
+                                                        }
+
+                                                        @Override
+                                                        public void onSkipped(@Nullable String s) {}
+                                                    })
+                                                    .build()
+                                                    .show();
+                                        }
+
+                                        @Override
+                                        public void onSkipped(@Nullable String s) {
+
+                                        }
+                                    })
+                                    .build()
+                                    .show();
+                        }
+
+                        @Override
+                        public void onSkipped(@Nullable String s) {
+
+                        }
+                    })
+                    .build()
+                    .show();
+        }
+
     }
     public HashMap<String,String> words;
     private void getLanguage(){
