@@ -37,6 +37,7 @@ import com.niksaen.pcsim.classes.adapters.ToolbarAdapter;
 import com.niksaen.pcsim.classes.dialogs.Dialog;
 import com.niksaen.pcsim.databinding.ActivityMainBinding;
 import com.niksaen.pcsim.os.LiriOS;
+import com.niksaen.pcsim.os.MakOS;
 import com.niksaen.pcsim.os.NapiOS;
 import com.niksaen.pcsim.os.cmd.CMD;
 import com.niksaen.pcsim.program.Program;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity{
     public Typeface font;
     int style = Typeface.BOLD;
     ActivityMainBinding binding;
+    private boolean isWork = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,6 +236,7 @@ public class MainActivity extends AppCompatActivity{
                 playerData.tutorialComplete = true;
                 playerData.tutorialShopComplete = true;
                 playerData.tutorialEnd = true;
+                playerData.setAllData();
                 dialog.dismiss();
             });
             dialog.create();
@@ -477,6 +480,7 @@ public class MainActivity extends AppCompatActivity{
                     binding.onOff.setForeground(getDrawable(R.drawable.off));
                     binding.onOff.setClickable(true);
                     player.stop();
+                    isWork = false;
                 });
             }
         };
@@ -495,12 +499,16 @@ public class MainActivity extends AppCompatActivity{
 
         pcParametersSave.setAllRamFrequency();
         getContentOfAllDrives();
+        isWork = true;
         if(StringArrayWork.ArrayListToString(apps).contains("NapiOS,")){
             NapiOS os = new NapiOS(this);
             os.openProgram();
         }else if(StringArrayWork.ArrayListToString(apps).contains("LiriOS,")){
             LiriOS os = new LiriOS(this);
             os.openProgram();
+        }else if(StringArrayWork.ArrayListToString(apps).contains(MakOS.TITLE+",")){
+            MakOS makOS = new MakOS(this);
+            makOS.openProgram();
         }
         else{
             CMD cmd = new CMD(this);
@@ -535,6 +543,39 @@ public class MainActivity extends AppCompatActivity{
         listView.setOnItemClickListener((parent, view1, position, id) -> {
             DiskInDrive = diskList[position];
             listView.dismiss();
+            if(DiskInDrive.startsWith(MakOS.TITLE)) {
+                if (isWork) {
+                    programArrayList.get(0).closeProgram(0);
+                    CMD cmd = new CMD(this);
+                    cmd.setType(CMD.SEMI_AUTO_OS);
+                    cmd.commandList = new String[]{"cmd.print: test"};
+                    if (pcParametersSave.Cpu.startsWith("Jntel")) {
+                        int drivePos = 0;
+                        for (int i = 0; i < 6; i++) {
+                            HashMap<String, String> disk = pcParametersSave.getDrive(i);
+                            if (disk != null) {
+                                drivePos = i;
+                                break;
+                            }
+                        }
+                        cmd.commandList = new String[]{
+                                "pc.storage.clear:"+drivePos,
+                                "driver.prepare.select_storage_slot:" + drivePos,
+                                "driver.install.all",
+                                "ifd.prepare.get_disk",
+                                "ifd.prepare.select_storage_slot:"+drivePos,
+                                "ifd.install",
+                                "installer.prepare.select_storage_slot:"+drivePos,
+                                "installer.install: App Downloader"
+                        };
+                    } else {
+                        cmd.commandList = new String[]{
+                                "cmd.error: "+words.get("You current CPU is not supported")
+                        };
+                    }
+                    cmd.openProgram();
+                }
+            }
         });
         listView.setAdapter(adapter);
         listView.show();

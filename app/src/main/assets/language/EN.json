@@ -342,5 +342,7 @@
   "You can use this button or the back button on your phone to go back to the main section of the store.": "You can use this button or the back button on your phone to go back to the main section of the store.",
   "Performing this action again will return you to the main screen of the game.": "Performing this action again will return you to the main screen of the game.",
   "Education": "Education",
-  "Skip tutorial?": "Skip tutorial?"
+  "Skip tutorial?": "Skip tutorial?",
+  "You current CPU is not supported": "You current CPU is not supported",
+  "MakOS Installer:Description": "MakOS operating system installation disk.\nIts main feature is a fully automatic installation, you just need to turn on the PC and insert the disc. Another feature is that it only supports Jntel processors. And the third feature is the auto-updating of drivers, but it only happens when it is necessary for the performance of your PC.\nAttention: During installation, the selected drive will be completely cleaned!!!"
 }

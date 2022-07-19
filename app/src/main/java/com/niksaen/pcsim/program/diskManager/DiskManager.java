@@ -10,6 +10,7 @@ import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,23 +67,13 @@ public class DiskManager extends Program {
     }
     private ArrayList<HashMap<String,String>> getAllDisk(){
         ArrayList<HashMap<String,String>> diskList = new ArrayList<>();
-        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Data1) && activity.pcParametersSave.DATA1!=null){
-            diskList.add(activity.pcParametersSave.DATA1);
-        }
-        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Data2) && activity.pcParametersSave.DATA2!=null){
-            diskList.add(activity.pcParametersSave.DATA2);
-        }
-        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Data3) && activity.pcParametersSave.DATA3!=null){
-            diskList.add(activity.pcParametersSave.DATA3);
-        }
-        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Data4) && activity.pcParametersSave.DATA4!=null){
-            diskList.add(activity.pcParametersSave.DATA4);
-        }
-        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Data5) && activity.pcParametersSave.DATA5!=null){
-            diskList.add(activity.pcParametersSave.DATA5);
-        }
-        if(StringArrayWork.ArrayListToString(activity.apps).contains(activity.pcParametersSave.Data6) && activity.pcParametersSave.DATA6!=null){
-            diskList.add(activity.pcParametersSave.DATA6);
+
+        for (int i = 0; i < 6; i++) {
+            if(activity.pcParametersSave.getDrive(i) != null){
+                if(StringArrayWork.ArrayListToString(activity.apps).contains(DriverInstaller.DriverForStorageDevices+activity.pcParametersSave.getDrive(i).get("Model"))){
+                    diskList.add(activity.pcParametersSave.getDrive(i));
+                }
+            }
         }
         return diskList;
     }

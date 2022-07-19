@@ -26,14 +26,6 @@ public class PcComponent {
     public HashMap<String,String> Parameters;
     public Drawable Textures;
 
-    public PcComponent(String name, String type, HashMap<String,String> parameters, Drawable textures){
-        this.Name = name;
-        this.Type = type;
-        this.Parameters = parameters;
-        this.Textures = textures;
-
-        this.Price = Integer.parseInt(parameters.get("Цена"));
-    }
     public PcComponent(Context context, String name, String type){
         this.Name = name;
         this.Type = type;

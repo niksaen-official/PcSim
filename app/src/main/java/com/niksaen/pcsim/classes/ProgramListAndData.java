@@ -7,6 +7,7 @@ import com.niksaen.pcsim.games.mines.Minesweeper;
 import com.niksaen.pcsim.games.snake.SnakeGame;
 import com.niksaen.pcsim.games.tic_tac_toe.TicTacToe;
 import com.niksaen.pcsim.os.LiriOS;
+import com.niksaen.pcsim.os.MakOS;
 import com.niksaen.pcsim.os.NapiOS;
 import com.niksaen.pcsim.program.Benchmark;
 import com.niksaen.pcsim.program.Browser;
@@ -51,8 +52,7 @@ public class ProgramListAndData {
             "App Downloader",
             "Disk manager",
             "Calculator",
-            "GStore",
-            "Memory"
+            "GStore"
     };
     /*список платных программ*/
     public static String[] DontFreeAppList = {
@@ -64,7 +64,8 @@ public class ProgramListAndData {
             "Miner",
             "Driver installer",
             "Minesweeper",
-            "Snake"
+            "Snake",
+            "Memory"
     };
 
     public static HashMap<String,String> programType = new HashMap<>();
@@ -82,6 +83,7 @@ public class ProgramListAndData {
         programPrice.put("Driver installer",1000);
         programPrice.put("Minesweeper",2500);
         programPrice.put("Snake",2399);
+        programPrice.put("Memory",1599);
         //установка типа приложения, только для платных
         programType.put("Tic Tac Toe","Game");
         programType.put("Minesweeper","Game");
@@ -92,6 +94,7 @@ public class ProgramListAndData {
         programType.put("Miner","Program");
         programType.put("Driver installer","Program");
         programType.put("Snake","Game");
+        programType.put("Memory","Game");
 
         // иконки программ и игр
         programIcon.put("Benchmark", R.drawable.icon_benchmark);
@@ -128,10 +131,11 @@ public class ProgramListAndData {
         programIcon.put("CMD",R.drawable.cmd_icon);
         programIcon.put(NapiOS.TITLE,R.drawable.napi_os_logo);
         programIcon.put(LiriOS.TITLE,R.drawable.liri_os_logo);
+        programIcon.put(MakOS.TITLE,R.drawable.mak_os_logo);
         programIcon.put("Driver installer",R.drawable.icon_downloader);
         programIcon.put("Minesweeper",R.drawable.minersweeper_icon);
         programIcon.put("Snake",R.drawable.snake_icon);
-        programIcon.put("Memory",R.drawable.icon_default);
+        programIcon.put("Memory",R.drawable.memory_icon);
 
         //вес програм и игр
         programSize.put("Benchmark",2f);
@@ -163,6 +167,8 @@ public class ProgramListAndData {
         programSize.put("Minesweeper",4.2f);
         programSize.put("Snake",2.4f);
         programSize.put("Memory",1f);
+        programSize.put("MakOS Installer", 6f);
+        programSize.put("MakOS",24f);
     }
 
     /** классы программ*/

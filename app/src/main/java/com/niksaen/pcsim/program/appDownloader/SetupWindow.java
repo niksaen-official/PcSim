@@ -164,7 +164,7 @@ public class SetupWindow extends Program {
                     if(installAdditionalSoftProgress == 1){
                         setupText += activity.words.get("Installed")+": " + installAdditionalSoftProgress + "%\n";
                     }else {
-                        setupText = setupText.replace( "Установлено: " +(installAdditionalSoftProgress - 1) + "%\n",   "Установлено: " +installAdditionalSoftProgress + "%\n");
+                        setupText = setupText.replace( activity.words.get("Installed") +(installAdditionalSoftProgress - 1) + "%\n",   activity.words.get("Installed") +installAdditionalSoftProgress + "%\n");
                     }
                     if(installAdditionalSoftProgress%10 == 0){
                         setupProgress++;

@@ -1,6 +1,7 @@
 package com.niksaen.pcsim.program;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.PortableView;
+import com.niksaen.pcsim.os.MakOS;
 import com.niksaen.pcsim.os.cmd.CMD;
 
 /*
@@ -88,10 +90,10 @@ public class Program {
         buttonRollUp.setOnClickListener(v->rollUpProgram());
 
         //настройка базовой части стиля программы
-        mainWindow.setBackgroundColor(activity.styleSave.ColorWindow);
         titleTextView.setText(activity.words.get(Title));
         titleTextView.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"), Typeface.BOLD);
         titleTextView.setTextColor(activity.styleSave.TitleColor);
+        mainWindow.setBackgroundColor(activity.styleSave.ColorWindow);
         buttonClose.setBackgroundResource(activity.styleSave.CloseButtonImageRes);
         buttonFullscreenMode.setBackgroundResource(activity.styleSave.FullScreenMode1ImageRes);
         buttonRollUp.setBackgroundResource(activity.styleSave.RollUpButtonImageRes);

@@ -1,6 +1,7 @@
 package com.niksaen.pcsim.classes.pcComponents;
 
 import com.niksaen.pcsim.os.LiriOS;
+import com.niksaen.pcsim.os.MakOS;
 import com.niksaen.pcsim.os.NapiOS;
 
 import java.util.ArrayList;
@@ -109,5 +110,6 @@ public class PcComponentLists {
         DiskList.add(NapiOS.TITLE+" Installer Simplified");
         DiskList.add(LiriOS.TITLE+" Installer");
         DiskList.add(LiriOS.TITLE+" Installer Simplified");
+        DiskList.add(MakOS.TITLE+" Installer");
     }
 }

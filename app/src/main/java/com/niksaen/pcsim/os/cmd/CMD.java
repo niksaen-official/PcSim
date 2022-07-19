@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.adapters.CMD_Adapter;
+import com.niksaen.pcsim.os.cmd.libs.Installer;
 import com.niksaen.pcsim.os.cmd.libs.Task;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.os.cmd.libs.Base;
@@ -129,6 +130,7 @@ public class CMD extends Program {
                     else if (finalCommand.startsWith("ifd.")) InstallerFromDrive.start(activity,CMD.this, finalCommand);
                     else if (finalCommand.startsWith("driver.")) DriverInstallerExtended.start(activity,CMD.this, finalCommand);
                     else if (finalCommand.startsWith("task.")) Task.start(finalCommand, CMD.this);
+                    else if (finalCommand.startsWith("installer.")) Installer.start(activity, CMD.this, finalCommand);
                     else error("The package will not find");
                     adapter.notifyDataSetChanged();
                 });

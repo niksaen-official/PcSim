@@ -1,10 +1,12 @@
 package com.niksaen.pcsim.program.appDownloader;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ListView;
 
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activities.MainActivity;
+import com.niksaen.pcsim.os.MakOS;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.classes.ProgramListAndData;
 
