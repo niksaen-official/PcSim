@@ -1,15 +1,20 @@
 package com.niksaen.pcsim.os.cmd.libs;
 
+import android.os.Handler;
+
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.os.cmd.CMD;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Pc {
     public static void start(MainActivity activity,CMD cmd, String command) {
         command = command.replace("#","");
         command = command.replace("pc.","");
+        int storagePos = 0;
         String[] StorageDeviceModelList = {
                 activity.pcParametersSave.Data1,
                 activity.pcParametersSave.Data2,
@@ -26,11 +31,22 @@ public class Pc {
                 activity.pcParametersSave.DATA5,
                 activity.pcParametersSave.DATA6
         };
-        if (command.startsWith("off")) {
-            activity.pcWorkOff();
-        }
-        else if (command.startsWith("reload")) {
-            activity.reloadPc();
+        if(command.startsWith("power.")){
+            command = command.replace("power.","");
+            if (command.equals("turn_off")) activity.pcWorkOff();
+            else if (command.equals("reload")) activity.reloadPc();
+            else if (command.startsWith("reload:")) {
+                long time = (long) (Float.parseFloat(command.replace("reload:",""))*1000);
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {@Override public void run() {activity.reloadPc();}};
+                timer.schedule(task,time);
+            }else if(command.startsWith("turn_off:")){
+                long time = (long) (Float.parseFloat(command.replace("turn_off:",""))*1000);
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {@Override public void run() {activity.pcWorkOff();}};
+                timer.schedule(task,time);
+            }
+            else cmd.error(activity.words.get("The command was entered incorrectly"));
         }
         else if(command.startsWith("parameters.")) {
             command = command.replace("parameters.","");
@@ -72,50 +88,53 @@ public class Pc {
                         "\n    " + activity.words.get("Maximum frequency") + ": " + activity.pcParametersSave.MOBO.get("Макс. частота") + "MHz" +
                         "\n    " + activity.words.get("Maximum volume") + ": " + activity.pcParametersSave.MOBO.get("Макс. объём") + "Gb");
             }
-            else if (command.equals("storage")) {
-                for (int i = 0; i < StorageDeviceList.length; i++) {
-                    HashMap<String, String> buff = StorageDeviceList[i];
-                    if (buff != null) {
-                        cmd.success(activity.words.get("Drive characteristics") + " (" + activity.words.get("Slot") + " " + i + "):");
-                        cmd.output("\n " + activity.words.get("Model") + ": " + StorageDeviceModelList[i] +
-                                "\n " + activity.words.get("Volume") + ": " + buff.get("Объём") + "Gb" +
-                                "\n " + activity.words.get("Type") + ": " + buff.get("Тип") +
-                                "\n" + activity.words.get("Available") + ": " + activity.pcParametersSave.getEmptyStorageSpace(buff) + "Mb || " + activity.pcParametersSave.getEmptyStorageSpace(buff) / 1024 + "Gb\n" +
-                                "\n" + activity.words.get("Total") + ": " + Integer.parseInt(buff.get("Объём")) * 1024 + "Mb || " + buff.get("Объём") + "Gb");
-                    }
-                }
-            }
-            else if (command.startsWith("storage.id:")) {
-                command = command.replace("storage.id:", "");
-                for (int i = 0; i < StorageDeviceList.length; i++) {
-                    HashMap<String, String> buff = StorageDeviceList[i];
-                    if (buff != null) {
-                        if (command.equals(buff.get("name"))) {
-                            cmd.success(activity.words.get("Drive characteristics") + " (" + activity.words.get("ID") + " " + command + "):");
-                            cmd.output(activity.words.get("Slot") + " " + i +
-                                    "\n " + activity.words.get("Model") + ": " + StorageDeviceModelList[i] +
+            else if (command.startsWith("storage.")) {
+                command = command.replace("storage.","");
+                if(command.equals("all")) {
+                    for (int i = 0; i < StorageDeviceList.length; i++) {
+                        HashMap<String, String> buff = StorageDeviceList[i];
+                        if (buff != null) {
+                            cmd.success(activity.words.get("Drive characteristics") + " (" + activity.words.get("Slot") + " " + i + "):");
+                            cmd.output("\n " + activity.words.get("Model") + ": " + StorageDeviceModelList[i] +
                                     "\n " + activity.words.get("Volume") + ": " + buff.get("Объём") + "Gb" +
                                     "\n " + activity.words.get("Type") + ": " + buff.get("Тип") +
                                     "\n" + activity.words.get("Available") + ": " + activity.pcParametersSave.getEmptyStorageSpace(buff) + "Mb || " + activity.pcParametersSave.getEmptyStorageSpace(buff) / 1024 + "Gb\n" +
                                     "\n" + activity.words.get("Total") + ": " + Integer.parseInt(buff.get("Объём")) * 1024 + "Mb || " + buff.get("Объём") + "Gb");
-                            break;
-                        } else cmd.error(activity.words.get("Drive not found"));
+                        }
                     }
                 }
-            }
-            else if (command.startsWith("storage.slot:")) {
-                command = command.replace("storage.slot:", "");
-                int slot = Integer.parseInt(command);
-                HashMap<String, String> buff = StorageDeviceList[slot];
-                if (buff != null) {
-                    cmd.success(activity.words.get("Drive characteristics") + " (" + activity.words.get("Slot") + " " + slot + "):");
-                    cmd.output(activity.words.get("ID") + " " + buff.get("name") +
-                            "\n " + activity.words.get("Model") + ": " + StorageDeviceModelList[slot] +
-                            "\n " + activity.words.get("Volume") + ": " + buff.get("Объём") + "Gb" +
-                            "\n " + activity.words.get("Type") + ": " + buff.get("Тип") +
-                            "\n" + activity.words.get("Available") + ": " + activity.pcParametersSave.getEmptyStorageSpace(buff) + "Mb || " + activity.pcParametersSave.getEmptyStorageSpace(buff) / 1024 + "Gb\n" +
-                            "\n" + activity.words.get("Total") + ": " + Integer.parseInt(buff.get("Объём")) * 1024 + "Mb || " + buff.get("Объём") + "Gb");
-                } else cmd.error(activity.words.get("Drive not found"));
+                else if (command.startsWith("id:")) {
+                    command = command.replace("storage.id:", "");
+                    for (int i = 0; i < StorageDeviceList.length; i++) {
+                        HashMap<String, String> buff = StorageDeviceList[i];
+                        if (buff != null) {
+                            if (command.equals(buff.get("name"))) {
+                                cmd.success(activity.words.get("Drive characteristics") + " (" + activity.words.get("ID") + " " + command + "):");
+                                cmd.output(activity.words.get("Slot") + " " + i +
+                                        "\n " + activity.words.get("Model") + ": " + StorageDeviceModelList[i] +
+                                        "\n " + activity.words.get("Volume") + ": " + buff.get("Объём") + "Gb" +
+                                        "\n " + activity.words.get("Type") + ": " + buff.get("Тип") +
+                                        "\n" + activity.words.get("Available") + ": " + activity.pcParametersSave.getEmptyStorageSpace(buff) + "Mb || " + activity.pcParametersSave.getEmptyStorageSpace(buff) / 1024 + "Gb\n" +
+                                        "\n" + activity.words.get("Total") + ": " + Integer.parseInt(buff.get("Объём")) * 1024 + "Mb || " + buff.get("Объём") + "Gb");
+                                break;
+                            } else cmd.error(activity.words.get("Drive not found"));
+                        }
+                    }
+                }
+                else if (command.startsWith("slot:")) {
+                    command = command.replace("storage.slot:", "");
+                    int slot = Integer.parseInt(command);
+                    HashMap<String, String> buff = StorageDeviceList[slot];
+                    if (buff != null) {
+                        cmd.success(activity.words.get("Drive characteristics") + " (" + activity.words.get("Slot") + " " + slot + "):");
+                        cmd.output(activity.words.get("ID") + " " + buff.get("name") +
+                                "\n " + activity.words.get("Model") + ": " + StorageDeviceModelList[slot] +
+                                "\n " + activity.words.get("Volume") + ": " + buff.get("Объём") + "Gb" +
+                                "\n " + activity.words.get("Type") + ": " + buff.get("Тип") +
+                                "\n" + activity.words.get("Available") + ": " + activity.pcParametersSave.getEmptyStorageSpace(buff) + "Mb || " + activity.pcParametersSave.getEmptyStorageSpace(buff) / 1024 + "Gb\n" +
+                                "\n" + activity.words.get("Total") + ": " + Integer.parseInt(buff.get("Объём")) * 1024 + "Mb || " + buff.get("Объём") + "Gb");
+                    } else cmd.error(activity.words.get("Drive not found"));
+                }
             }
         }
         else if(command.startsWith("storage.")) {
@@ -157,13 +176,39 @@ public class Pc {
             }
             else if (command.startsWith("clear:")) {
                 int finalStoragePos = Integer.parseInt(command.replace("clear:", ""));
-                StorageDeviceList[finalStoragePos].put("Содержимое", "");
-                activity.pcParametersSave.setData(StorageDeviceList[finalStoragePos].get("name"), StorageDeviceList[finalStoragePos]);
-                if (StorageDeviceList[finalStoragePos].get("MainDisk") == "true") {
-                    activity.styleSave.resetAllStyle();
+                if(StorageDeviceList[finalStoragePos] != null) {
+                    StorageDeviceList[finalStoragePos].put("Содержимое", "");
+                    activity.pcParametersSave.setData(StorageDeviceList[finalStoragePos].get("name"), StorageDeviceList[finalStoragePos]);
+                    if (StorageDeviceList[finalStoragePos].get("MainDisk") == "true") {
+                        activity.styleSave.resetAllStyle();
+                    }
+                    cmd.success(activity.words.get("Drive cleaned"));
+                }else{
+                    cmd.error(activity.words.get("Drive not found"));
                 }
-                cmd.success(activity.words.get("Drive cleaned"));
             }
+            else if (command.startsWith("remove:")) {
+                String programRemove = command.replace("remove:", "");
+                if(StorageDeviceList[storagePos].get("Содержимое").contains(Installer.getProgramsId(activity).get(programRemove)+",")) {
+                    StorageDeviceList[storagePos]
+                            .put("Содержимое",
+                                    StorageDeviceList[storagePos]
+                                            .get("Содержимое")
+                                            .replace(Installer.getProgramsId(activity).get(programRemove) + ",", ""));
+                    cmd.success("Program removed from drive");
+                }else {
+                    cmd.error(activity.words.get("Program not found"));
+                }
+            }
+            else if (command.startsWith("select_slot:")) {
+                storagePos = Integer.parseInt(command.replace("select_storage_slot:", ""));
+                if (StorageDeviceList[storagePos] != null) {
+                    cmd.success(activity.words.get("Drive selected"));
+                } else {
+                    cmd.error(activity.words.get("Drive not found"));
+                }
+            }
+            else cmd.error(activity.words.get("The command was entered incorrectly"));
         }
         else if(command.startsWith("resource.")){
             command = command.replace("resource.","");
@@ -180,8 +225,6 @@ public class Pc {
                 cmd.output(activity.words.get("Free")+": "+activity.pcParametersSave.getEmptyVideoMemory(activity.programArrayList)+"Mb");
             }
         }
-        else {
-            cmd.error(activity.words.get("The command was entered incorrectly"));
-        }
+        else cmd.error(activity.words.get("The package will not find"));
     }
 }

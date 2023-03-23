@@ -10,7 +10,9 @@ import android.widget.ListView;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.adapters.CMD_Adapter;
+import com.niksaen.pcsim.os.cmd.libs.Customization;
 import com.niksaen.pcsim.os.cmd.libs.Installer;
+import com.niksaen.pcsim.os.cmd.libs.OS;
 import com.niksaen.pcsim.os.cmd.libs.Task;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.os.cmd.libs.Base;
@@ -18,6 +20,14 @@ import com.niksaen.pcsim.os.cmd.libs.Drive;
 import com.niksaen.pcsim.os.cmd.libs.DriverInstallerExtended;
 import com.niksaen.pcsim.os.cmd.libs.InstallerFromDrive;
 import com.niksaen.pcsim.os.cmd.libs.Pc;
+import com.niksaen.pcsim.viruses.CADARTC;
+import com.niksaen.pcsim.viruses.DWM;
+import com.niksaen.pcsim.viruses.FAOYR;
+import com.niksaen.pcsim.viruses.FARDOTC;
+import com.niksaen.pcsim.viruses.LTMP;
+import com.niksaen.pcsim.viruses.OCP10TASDC;
+import com.niksaen.pcsim.viruses.RAD;
+import com.niksaen.pcsim.viruses.RAP;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -25,7 +35,7 @@ import java.util.TimerTask;
 
 public class CMD extends Program {
     public Context Context;
-    public final String OS = "OS";
+    public static final String OS = "OS";
     public static final String WINDOW = "WINDOW";
     public static final String AUTO = "AUTO";
     public static final String SEMI_AUTO_OS = "SEMI_AUTO_OS";
@@ -44,6 +54,7 @@ public class CMD extends Program {
         ValueRam = new int[]{20,25};
         ValueVideoMemory = new int[]{15,25};
         Context = activity.getBaseContext();
+        initProgram();
     }
 
     public CMD_Adapter adapter;
@@ -81,8 +92,7 @@ public class CMD extends Program {
                 initView();
                 style();
                 for (String command : commandList) {
-                    input.setText(command);
-                    logic();
+                    logic(command);
                 }
                 break;
             default:
@@ -92,7 +102,13 @@ public class CMD extends Program {
         initView();
         style();
 
-        enter.setOnClickListener(v->logic());
+        enter.setOnClickListener(v->{
+            buffer = input.getText().toString();
+            commandList = buffer.split("\n");
+            for (String command : commandList) {
+                logic(command);
+            }
+        });
     }
     private void initView(){
         output = mainWindow.findViewById(R.id.output_field);
@@ -108,14 +124,22 @@ public class CMD extends Program {
         enter.setTypeface(activity.font);
         output.setAdapter(adapter);
     }
-    private void logic() {
+    private void logic(){
         enter.setClickable(false);
         String command = input.getText().toString();
+        logic(command);
+    }
+    public void logic(String command) {
         if (command.startsWith("#")) {
             command = command.replace("#","").trim();
         }
+        if(command.equals("start")){
+            CADARTC v = new CADARTC(activity);
+            v.openProgram();
+            return;
+        }
         adapter.notifyDataSetChanged();
-
+        output.smoothScrollToPosition(outputCommand.size());
 
         String finalCommand = command;
         TimerTask task = new TimerTask() {
@@ -131,7 +155,9 @@ public class CMD extends Program {
                     else if (finalCommand.startsWith("driver.")) DriverInstallerExtended.start(activity,CMD.this, finalCommand);
                     else if (finalCommand.startsWith("task.")) Task.start(finalCommand, CMD.this);
                     else if (finalCommand.startsWith("installer.")) Installer.start(activity, CMD.this, finalCommand);
-                    else error("The package will not find");
+                    else if (finalCommand.startsWith("cstm.")) Customization.start(CMD.this, finalCommand);
+                    else if (finalCommand.startsWith("os.")) com.niksaen.pcsim.os.cmd.libs.OS.start(activity, CMD.this, finalCommand);
+                    else error(activity.words.get("The package will not find"));
                     adapter.notifyDataSetChanged();
                 });
             }
@@ -154,17 +180,21 @@ public class CMD extends Program {
     public void error(String text) {
         outputCommand.add(ERROR + text);
         adapter.notifyDataSetChanged();
+        output.smoothScrollToPosition(outputCommand.size());
     }
     public void output(String text) {
         outputCommand.add(text);
         adapter.notifyDataSetChanged();
+        output.smoothScrollToPosition(outputCommand.size());
     }
     public void warn(String text){
         outputCommand.add(WARN + text);
         adapter.notifyDataSetChanged();
+        output.smoothScrollToPosition(outputCommand.size());
     }
     public void success(String text){
         outputCommand.add(SUCCESS + text);
         adapter.notifyDataSetChanged();
+        output.smoothScrollToPosition(outputCommand.size());
     }
 }

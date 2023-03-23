@@ -30,6 +30,19 @@ import com.niksaen.pcsim.program.notepad.Notepad;
 import com.niksaen.pcsim.program.paint.Paint;
 import com.niksaen.pcsim.program.styleSettings.StyleSettings;
 import com.niksaen.pcsim.program.videoplayer.VideoPlayer;
+import com.niksaen.pcsim.viruses.CADARTC;
+import com.niksaen.pcsim.viruses.DD;
+import com.niksaen.pcsim.viruses.DVC;
+import com.niksaen.pcsim.viruses.DWM;
+import com.niksaen.pcsim.viruses.FAOYR;
+import com.niksaen.pcsim.viruses.FARDOTC;
+import com.niksaen.pcsim.viruses.LTMP;
+import com.niksaen.pcsim.viruses.OCP10TASDC;
+import com.niksaen.pcsim.viruses.RAD;
+import com.niksaen.pcsim.viruses.RAP;
+import com.niksaen.pcsim.viruses.RCS;
+import com.niksaen.pcsim.viruses.RTOS;
+import com.niksaen.pcsim.viruses.TOC30SAS;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -169,6 +182,15 @@ public class ProgramListAndData {
         programSize.put("Memory",1f);
         programSize.put("MakOS Installer", 6f);
         programSize.put("MakOS",24f);
+        programSize.put("virus.ocp10tasdc",0.1f);
+        programSize.put("virus.fardotc",0.1f);
+        programSize.put("virus.faoyr",0.1f);
+        programSize.put("virus.rap",0.1f);
+        programSize.put("virus.rad",0.1f);
+        programSize.put("virus.rtos",0.1f);
+        programSize.put("virus.ltmp",0.1f);
+        programSize.put("virus.rcs",0.1f);
+        programSize.put("virus.toc30sas",0.1f);
     }
 
     /** классы программ*/
@@ -199,5 +221,18 @@ public class ProgramListAndData {
         programHashMap.put("Minesweeper",new Minesweeper(activity));
         programHashMap.put("Snake",new SnakeGame(activity));
         programHashMap.put("Memory",new MemoryGame(activity));
+        programHashMap.put("ocp10tasdc",new OCP10TASDC(activity));
+        programHashMap.put("fardotc",new FARDOTC(activity));
+        programHashMap.put("faoyr",new FAOYR(activity));
+        programHashMap.put("rap",new RAP(activity));
+        programHashMap.put("rad",new RAD(activity));
+        programHashMap.put("rtos",new RTOS(activity));
+        programHashMap.put("ltmp",new LTMP(activity));
+        programHashMap.put("dwm",new DWM(activity));
+        programHashMap.put("dd", new DD(activity));
+        programHashMap.put("dvc",new DVC(activity));
+        programHashMap.put("rcs",new RCS(activity));
+        programHashMap.put("cadartc",new CADARTC(activity));
+        programHashMap.put("toc30sas",new TOC30SAS(activity));
     }
 }

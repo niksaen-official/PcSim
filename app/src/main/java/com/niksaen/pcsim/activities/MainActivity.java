@@ -479,7 +479,9 @@ public class MainActivity extends AppCompatActivity{
                     programArrayList.clear();
                     binding.onOff.setForeground(getDrawable(R.drawable.off));
                     binding.onOff.setClickable(true);
-                    player.stop();
+                    try{
+                        player.stop();
+                    }catch (Exception ignore){}
                     isWork = false;
                 });
             }
@@ -614,7 +616,7 @@ public class MainActivity extends AppCompatActivity{
                 });
             }
         };
-        timer.schedule(task,1000);
+        timer.schedule(task,3000);
     }
 
     @Override

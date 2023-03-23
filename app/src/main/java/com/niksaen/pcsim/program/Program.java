@@ -100,7 +100,6 @@ public class Program {
     }
 
     /** открытие программы*/
-    // сначала необходимо инициализировать программу
     public void openProgram(){
         initProgram();
         CurrentRamUse = Others.random(ValueRam[0],ValueRam[1]);

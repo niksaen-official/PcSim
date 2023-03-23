@@ -1,6 +1,11 @@
 package com.niksaen.pcsim.classes;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import kotlin.jvm.internal.markers.KMutableList;
 
 public class StringArrayWork {
     public static String[] add(String string,String[] strings){
@@ -98,5 +103,15 @@ public class StringArrayWork {
 
     public static String[] clearEmpty(String[] array) {
         return ArrayListToString(array).replaceAll("null","").replaceAll(",,",",").split(",");
+    }
+
+    @Nullable
+    public static String MutableListToString(@Nullable List<String> buff) {
+        StringBuilder res = new StringBuilder();
+        for(String item:buff){
+            res.append(item);
+            res.append(",");
+        }
+        return res.toString();
     }
 }

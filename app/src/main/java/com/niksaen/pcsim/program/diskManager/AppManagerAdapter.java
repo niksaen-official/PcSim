@@ -63,8 +63,9 @@ public class AppManagerAdapter extends ArrayAdapter<String> {
                     .replace(DriverInstaller.EXTENDED_TYPE,activity.words.get(DriverInstaller.EXTENDED_TYPE))
                     .replace(DriverInstaller.BASE_TYPE,activity.words.get(DriverInstaller.BASE_TYPE)));
             useSpace.setVisibility(View.GONE);
-        }
-        else {
+        } else if (getItem(position).startsWith("virus.")) {
+            item.setVisibility(View.GONE);
+        } else {
             appIcon.setImageResource(ProgramListAndData.programIcon.get(getItem(position)));
             appName.setText(activity.words.get(getItem(position)));
             useSpace.setText(ProgramListAndData.programSize.get(getItem(position)) + "Gb");

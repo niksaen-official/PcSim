@@ -344,5 +344,16 @@
   "Education": "Education",
   "Skip tutorial?": "Skip tutorial?",
   "You current CPU is not supported": "You current CPU is not supported",
-  "MakOS Installer:Description": "MakOS operating system installation disk.\nIts main feature is a fully automatic installation, you just need to turn on the PC and insert the disc. Another feature is that it only supports Jntel processors. And the third feature is the auto-updating of drivers, but it only happens when it is necessary for the performance of your PC.\nAttention: During installation, the selected drive will be completely cleaned!!!"
+  "MakOS Installer:Description": "MakOS operating system installation disk.\nIts main feature is a fully automatic installation, you just need to turn on the PC and insert the disc. Another feature is that it only supports Jntel processors. And the third feature is the auto-updating of drivers, but it only happens when it is necessary for the performance of your PC.\nAttention: During installation, the selected drive will be completely cleaned!!!",
+  "Operating system styles reset": "Operating system styles reset",
+  "Download package not found": "Download package not found",
+  "Operating system not found": "Operating system not found",
+  "Runtime package not found or not installed": "Runtime package not found or not installed",
+  "Your operating system does not support autorun program": "Your operating system does not support autorun program",
+  "Program added to autorun": "Program added to autorun",
+  "List of auto-startup programs cleared": "List of auto-startup programs cleared",
+  "Program removed from startup": "Program removed from startup",
+  "Program removed from drive": "Program removed from drive",
+  "Program not found": "Program not found",
+  "The program is already in the startup list": "The program is already in the startup list"
 }

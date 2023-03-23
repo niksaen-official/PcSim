@@ -10,14 +10,18 @@ import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.os.cmd.CMD;
+import com.niksaen.pcsim.save.OSSettings;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class LiriOS extends Program {
     public static String TITLE = "LiriOS";
+    public OSSettings settings;
+    private CMD cmd;
     public LiriOS(MainActivity activity) {
         super(activity);
+        settings = new OSSettings(activity);
         Title = TITLE;
         Type = Program.BACKGROUND;
         ValueRam = new int[]{650,700};
@@ -31,9 +35,9 @@ public class LiriOS extends Program {
 
     @Override
     public void openProgram() {
-        mainWindow = new View(activity);
-        CMD cmd = new CMD(activity);
+        cmd = new CMD(activity);
         cmd.setType(CMD.SEMI_AUTO_OS);
+        mainWindow = new View(activity);
         style();
         activity.greeting.setVisibility(View.VISIBLE);
         activity.greeting.setTextColor(activity.styleSave.GreetingColor);
@@ -62,6 +66,7 @@ public class LiriOS extends Program {
                                                 activity.taskManager.update();
                                                 activity.updateDesktop();
                                                 activity.startMenuOpener.setBackgroundResource(R.drawable.liri_os_logo);
+                                                autoRunPrograms();
                                             }else {
                                                 cmd.commandList = new String[] {
                                                         "#cmd.write:"+activity.words.get("No video card drivers found"),
@@ -157,5 +162,12 @@ public class LiriOS extends Program {
         activity.styleSave.StartMenuAppIconVisible = false;
         activity.styleSave.Greeting = activity.words.get("Welcome");
         activity.styleSave.GreetingColor = activity.styleSave.TitleColor;
+    }
+    private void autoRunPrograms(){
+        if(!settings.getAutoRunList().isEmpty()){
+            for(String programId:settings.getAutoRunList()){
+                cmd.logic("os.start:"+programId);
+            }
+        }
     }
 }

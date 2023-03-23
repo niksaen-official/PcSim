@@ -1,8 +1,15 @@
 package com.niksaen.pcsim.os.cmd.libs;
 
+import android.content.Context;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.activities.MainActivity;
+import com.niksaen.pcsim.classes.AssetFile;
 import com.niksaen.pcsim.classes.ProgramListAndData;
+import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.os.cmd.CMD;
+import com.niksaen.pcsim.save.Settings;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -33,58 +40,66 @@ public class Installer {
         }
         if(command.startsWith("install:")){
             cmd.output("Preparing to install ...");
-            String program = command.replace("install:","").trim();
-            final int[] progress = {0,0};
-            if(activity.pcParametersSave.getEmptyStorageSpace(storage.get(storagePos))>= ProgramListAndData.programSize.get(program)){
-                cmd.success(activity.words.get("Enough space for installation"));
-                progress[0] +=2;
-            }
-            else {
-                cmd.error(activity.words.get("Not enough space for installation"));
+            String programId = command.replace("install:","").trim();
+            if(programId.startsWith("gstore.")){
+                cmd.error(activity.words.get("Download package not found"));
                 return;
             }
-            Timer timer = new Timer();
-            Timer timer1 = new Timer();
-            TimerTask unpacking = new TimerTask() {
-                @Override
-                public void run() {
-                    activity.runOnUiThread(() -> {
-                        progress[0]++;
-                        cmd.output(activity.words.get("Unpacked")+":"+progress[0]+"%");
-                        cmd.adapter.notifyDataSetChanged();
-                        if(progress[0] == 100){
-                            cmd.output(activity.words.get("Archives unpacked"));
-                            storage.get(storagePos).put("Содержимое", storage.get(storagePos).get(("Содержимое")) + program +",");
-                            activity.pcParametersSave.setData(storage.get(storagePos).get("name"),storage.get(storagePos));
-                            cmd.success(activity.words.get("Installation completed"));
-                            timer1.cancel();
-                        }
-                    });
+            String program = getProgramsId(activity).get(programId);
+            if(!StringArrayWork.ArrayListToString(activity.apps).contains(program)) {
+                final int[] progress = {0, 0};
+                if (activity.pcParametersSave.getEmptyStorageSpace(storage.get(storagePos)) >= ProgramListAndData.programSize.get(program)) {
+                    cmd.success(activity.words.get("Enough space for installation"));
+                    progress[0] += 2;
+                } else {
+                    cmd.error(activity.words.get("Not enough space for installation"));
+                    return;
                 }
-            };
-            TimerTask download = new TimerTask() {
-                @Override
-                public void run() {
-                    activity.runOnUiThread(()->{
-                        progress[1]++;
-                        cmd.output(activity.words.get("Uploaded")+":"+progress[1]+"%");
-                        if (progress[1] == 100){
-                            cmd.output(activity.words.get("Archives loaded"));
-                            timer.cancel();
-                            if(storage.get(storagePos).get("Тип").equals("HDD")) {
-                                timer1.scheduleAtFixedRate(unpacking, 0, (long) ((ProgramListAndData.programSize.get(program) * 700)));
-                            }else {
-                                timer1.scheduleAtFixedRate(unpacking, 0, (long) ((ProgramListAndData.programSize.get(program) * 490)));
+                Timer timer = new Timer();
+                Timer timer1 = new Timer();
+                TimerTask unpacking = new TimerTask() {
+                    @Override
+                    public void run() {
+                        activity.runOnUiThread(() -> {
+                            progress[0]++;
+                            cmd.output(activity.words.get("Unpacked") + ":" + progress[0] + "%");
+                            cmd.adapter.notifyDataSetChanged();
+                            if (progress[0] == 100) {
+                                cmd.output(activity.words.get("Archives unpacked"));
+                                storage.get(storagePos).put("Содержимое", storage.get(storagePos).get(("Содержимое")) + program + ",");
+                                activity.pcParametersSave.setData(storage.get(storagePos).get("name"), storage.get(storagePos));
+                                cmd.success(activity.words.get("Installation completed"));
+                                timer1.cancel();
                             }
-                        }
-                    });
-                }
-            };
+                        });
+                    }
+                };
+                TimerTask download = new TimerTask() {
+                    @Override
+                    public void run() {
+                        activity.runOnUiThread(() -> {
+                            progress[1]++;
+                            cmd.output(activity.words.get("Uploaded") + ":" + progress[1] + "%");
+                            if (progress[1] == 100) {
+                                cmd.output(activity.words.get("Archives loaded"));
+                                timer.cancel();
+                                if (storage.get(storagePos).get("Тип").equals("HDD")) {
+                                    timer1.scheduleAtFixedRate(unpacking, 0, (long) ((ProgramListAndData.programSize.get(program) * 700)));
+                                } else {
+                                    timer1.scheduleAtFixedRate(unpacking, 0, (long) ((ProgramListAndData.programSize.get(program) * 490)));
+                                }
+                            }
+                        });
+                    }
+                };
 
-            if(storage.get(storagePos).get("Тип").equals("HDD")) {
-                timer.scheduleAtFixedRate(download, 0, (long) ((ProgramListAndData.programSize.get(program) * 300)));
-            }else {
-                timer.scheduleAtFixedRate(download, 0, (long) ((ProgramListAndData.programSize.get(program) * 210)));
+                if (storage.get(storagePos).get("Тип").equals("HDD")) {
+                    timer.scheduleAtFixedRate(download, 0, (long) ((ProgramListAndData.programSize.get(program) * 300)));
+                } else {
+                    timer.scheduleAtFixedRate(download, 0, (long) ((ProgramListAndData.programSize.get(program) * 210)));
+                }
+            }else{
+                cmd.error(activity.words.get("The program is already installed on your PC"));
             }
         }
         if(command.startsWith("prepare.")) {
@@ -118,5 +133,9 @@ public class Installer {
                 }
             } else cmd.error(activity.words.get("The command was entered incorrectly"));
         }
+    }
+    public static HashMap<String,String> getProgramsId(Context context){
+        TypeToken<HashMap<String,String>> typeToken = new TypeToken<HashMap<String,String>>(){};
+        return new Gson().fromJson(new AssetFile(context).getText("program/program_ids.json"),typeToken.getType());
     }
 }

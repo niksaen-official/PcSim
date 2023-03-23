@@ -77,24 +77,7 @@ public class Miner extends Program {
         }
 
         startMining.setOnClickListener(v -> {
-            timer = new Timer();
-            task = new TimerTask() {
-                @Override
-                public void run() {
-                    activity.runOnUiThread(() -> {
-                        if(activity.pcParametersSave.CPU.get("Графическое ядро").equals("-")) {
-                            buffMoney += CurrentVideoMemoryUse / 64;
-                        }
-                        else{
-                            buffMoney += (CurrentVideoMemoryUse-1024) / 64;
-                        }
-                        consoleView.setText(activity.words.get("Accumulated:")+buffMoney+"R");
-                    });
-                }
-            };
-            timer.scheduleAtFixedRate(task,0,delay);
-            startMining.setVisibility(View.GONE);
-            if(activity.player.isPlaying()) activity.player.setVolume(0.25f,0.25f);
+            startMining();
         });
         stopMining.setOnClickListener(v->{
             timer.cancel();
@@ -104,6 +87,7 @@ public class Miner extends Program {
         getMoney.setOnClickListener(v->{
             if(activity.player.isPlaying()) activity.player.setVolume(0.1f,0.1f);
             timer.cancel();
+            startMining.setVisibility(View.VISIBLE);
             PlayerData playerData = new PlayerData(activity);
             playerData.Money+=buffMoney;
             playerData.setAllData();
@@ -117,7 +101,10 @@ public class Miner extends Program {
     @Override
     public void openProgram() {
         if(activity.pcParametersSave.GPU1 != null || activity.pcParametersSave.GPU2 != null) {
-            if(!programIsOpen()) super.openProgram();
+            if(!programIsOpen()){
+                super.openProgram();
+                startMining();
+            }
             else {
                 ErrorWindow window = new ErrorWindow(activity);
                 window.setMessageText("Данная программа уже запущена!");
@@ -133,5 +120,25 @@ public class Miner extends Program {
         super.closeProgram(mode);
         mainWindow.setVisibility(View.GONE);
         if(activity.player!=null && activity.player.isPlaying()) activity.player.setVolume(0.1f,0.1f);
+    }
+    private void startMining(){
+        timer = new Timer();
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                activity.runOnUiThread(() -> {
+                    if(activity.pcParametersSave.CPU.get("Графическое ядро").equals("-")) {
+                        buffMoney += CurrentVideoMemoryUse / 64;
+                    }
+                    else{
+                        buffMoney += (CurrentVideoMemoryUse-1024) / 64;
+                    }
+                    consoleView.setText(activity.words.get("Accumulated:")+buffMoney+"R");
+                });
+            }
+        };
+        timer.scheduleAtFixedRate(task,0,delay);
+        startMining.setVisibility(View.GONE);
+        if(activity.player.isPlaying()) activity.player.setVolume(0.25f,0.25f);
     }
 }

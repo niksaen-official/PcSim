@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class CMD_Adapter extends ArrayAdapter<String> {
-    private  Context context;
+    private final Context context;
     public ArrayList<String> strings;
 
     public CMD_Adapter(Context context, ArrayList<String> objects) {

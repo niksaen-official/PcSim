@@ -29,7 +29,7 @@ public class DeviceManager extends Program {
         binding = ProgramCheckironBinding.inflate(activity.getLayoutInflater());
     }
     private void style(){
-        content.setBackgroundColor(activity.styleSave.ThemeColor1);
+        binding.content.setBackgroundColor(activity.styleSave.ThemeColor1);
 
         motherboardAdapter = new SpinnerAdapter(activity.getBaseContext(),0,motherboardParameters,activity.words.get("Motherboard"),"Motherboard");
         cpuAdapter = new SpinnerAdapter(activity.getBaseContext(),0,cpuParameters,activity.words.get("CPU"),"CPU");
@@ -62,12 +62,12 @@ public class DeviceManager extends Program {
         gpuAdapter.TextColor_DropDownView = activity.styleSave.TextColor;
         gpuAdapter.TextColor_View = activity.styleSave.TextColor;
 
-        mobo.setAdapter(motherboardAdapter);
-        cpu.setAdapter(cpuAdapter);
-        ram.setAdapter(ramAdapter);
-        gpu.setAdapter(gpuAdapter);
-        data.setAdapter(dataAdapter);
-        psu.setAdapter(psuAdapter);
+        binding.motherboard.setAdapter(motherboardAdapter);
+        binding.cpu.setAdapter(cpuAdapter);
+        binding.ram.setAdapter(ramAdapter);
+        binding.gpu.setAdapter(gpuAdapter);
+        binding.data.setAdapter(dataAdapter);
+        binding.psu.setAdapter(psuAdapter);
     }
     public void initProgram(){
         mainWindow = binding.getRoot();

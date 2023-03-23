@@ -41,23 +41,23 @@ public class PcParametersSave {
     }
     void getAllPcParameters(){
         pcWork = preferences.getBoolean("pcwork",false);
-        Case = preferences.getString("Case",null);
-        Mobo = preferences.getString("Mobo",null);
-        Cpu = preferences.getString("Cpu",null);
-        Cooler = preferences.getString("Cooler",null);
-        Ram1  = preferences.getString("Ram1",null);
-        Ram2  = preferences.getString("Ram2",null);
-        Ram3  = preferences.getString("Ram3",null);
-        Ram4  = preferences.getString("Ram4",null);
-        Gpu1  = preferences.getString("Gpu1",null);
-        Gpu2  = preferences.getString("Gpu2",null);
-        Data1 = preferences.getString("Data1",null);
-        Data2 = preferences.getString("Data2",null);
-        Data3 = preferences.getString("Data3",null);
-        Data4 = preferences.getString("Data4",null);
-        Data5 = preferences.getString("Data5",null);
-        Data6 = preferences.getString("Data6",null);
-        Psu = preferences.getString("Psu",null);
+        Case = preferences.getString("Case","Case");
+        Mobo = preferences.getString("Mobo","Mobo");
+        Cpu = preferences.getString("Cpu","Cpu");
+        Cooler = preferences.getString("Cooler","Cooler");
+        Ram1  = preferences.getString("Ram1","Ram");
+        Ram2  = preferences.getString("Ram2","Ram");
+        Ram3  = preferences.getString("Ram3","Ram");
+        Ram4  = preferences.getString("Ram4","Ram");
+        Gpu1  = preferences.getString("Gpu1","Gpu");
+        Gpu2  = preferences.getString("Gpu2","Gpu");
+        Data1 = preferences.getString("Data1","Data");
+        Data2 = preferences.getString("Data2","Data");
+        Data3 = preferences.getString("Data3","Data");
+        Data4 = preferences.getString("Data4","Data");
+        Data5 = preferences.getString("Data5","Data");
+        Data6 = preferences.getString("Data6","Data");
+        Psu = preferences.getString("Psu","Psu");
 
         if(Case != null){
             CASE = new Gson().fromJson(preferences.getString("CASE",""),typeToken.getType());
@@ -306,10 +306,9 @@ public class PcParametersSave {
     // валидация оперативки
     public boolean ramValid(HashMap<String,String> RAM) {
         if (RAM != null) {
-            boolean res = Integer.parseInt(Objects.requireNonNull(RAM.get("Частота"))) >= minRamFrequency &&
+            return Integer.parseInt(Objects.requireNonNull(RAM.get("Частота"))) >= minRamFrequency &&
                     Integer.parseInt(Objects.requireNonNull(RAM.get("Частота"))) <= maxRamFrequency &&
                     Objects.equals(RAM.get("Тип памяти"), CPU.get("Тип памяти"));
-            return res;
         }else {
             return false;
         }
@@ -639,6 +638,22 @@ public class PcParametersSave {
             return allSpace;
         }else {
             return Float.parseFloat(disk.get("Объём")) * 1024;
+        }
+    }
+    //получение занятого места на диске в MB
+    public float getUsedDiskSpace(HashMap<String,String> disk){
+        if(!disk.get("Содержимое").equals("")){
+            String[] program = disk.get("Содержимое").split(",");
+            float usedSpace = 0;
+            for(String item : program){
+                if (item.startsWith(DriverInstaller.DriversPrefix) || item.startsWith(DriverInstaller.AdditionalSoftPrefix)) {
+                    continue;
+                }
+                usedSpace += ProgramListAndData.programSize.get(item) * 1024;
+            }
+            return usedSpace;
+        }else {
+            return 0;
         }
     }
     // получение типа главного диска

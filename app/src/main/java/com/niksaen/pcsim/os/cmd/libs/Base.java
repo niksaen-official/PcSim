@@ -15,7 +15,7 @@ public class Base {
         }
         else if(command.equals("clear")){
             cmd.outputCommand.clear();
-        } else if(command.equals("close")||command.equals("exit")){
+        } else if(command.equals("close")){
             cmd.closeProgram(1);
         }
         else cmd.error(cmd.activity.words.get("The command was entered incorrectly"));

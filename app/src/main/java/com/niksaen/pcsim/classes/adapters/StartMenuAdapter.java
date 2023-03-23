@@ -40,7 +40,8 @@ public class StartMenuAdapter extends  ArrayAdapter<String> {
         if(!(getItem(position).startsWith(DriverInstaller.DriversPrefix)
                 || getItem(position).startsWith(DriverInstaller.AdditionalSoftPrefix)
                 || getItem(position).contains("OS")
-                || getItem(position).startsWith("CMD"))) {
+                || getItem(position).startsWith("CMD")
+                ||getItem(position).startsWith("virus."))) {
             item.setBackgroundColor(activity.styleSave.StartMenuColor);
             TextView programName = item.findViewById(R.id.app_name);
             ImageView programIcon = item.findViewById(R.id.app_icon);

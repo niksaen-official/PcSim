@@ -25,15 +25,18 @@
         app:layout_constraintVertical_bias="0.0">
 
         <ListView
-            android:padding="8dp"
             android:id="@+id/output_field"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:dividerHeight="-1dp"
+            android:padding="8dp"
+            android:rotation="0"
             android:textColor="@color/color17"
             android:textSize="25sp"
-            android:dividerHeight="-1dp"
             app:layout_constraintBottom_toTopOf="@+id/input_field"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText

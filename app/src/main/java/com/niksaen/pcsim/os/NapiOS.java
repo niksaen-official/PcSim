@@ -10,14 +10,18 @@ import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.os.cmd.CMD;
+import com.niksaen.pcsim.save.OSSettings;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class NapiOS extends Program {
     public static String TITLE = "NapiOS";
+    public OSSettings settings;
+    private CMD cmd;
     public NapiOS(MainActivity activity) {
         super(activity);
+        settings = new OSSettings(activity);
         Title = TITLE;
         Type = Program.BACKGROUND;
         ValueRam = new int[]{850,900};
@@ -26,12 +30,11 @@ public class NapiOS extends Program {
 
     @Override
     public void initProgram() {
-
+        cmd = new CMD(activity);
     }
 
     @Override
     public void openProgram() {
-        CMD cmd = new CMD(activity);
         cmd.setType(CMD.SEMI_AUTO_OS);
         activity.styleSave.getStyle();
         activity.greeting.setVisibility(View.VISIBLE);
@@ -61,6 +64,7 @@ public class NapiOS extends Program {
                                                 activity.taskManager.update();
                                                 activity.updateDesktop();
                                                 activity.startMenuOpener.setBackgroundResource(R.drawable.napi_os_logo);
+                                                autoRunPrograms();
                                             }else {
                                                 cmd.commandList = new String[] {
                                                         "#cmd.write:"+activity.words.get("No video card drivers found"),
@@ -131,5 +135,12 @@ public class NapiOS extends Program {
     @Override
     public void rollUpProgram() {
 
+    }
+    private void autoRunPrograms(){
+        if(!settings.getAutoRunList().isEmpty()){
+            for(String programId:settings.getAutoRunList()){
+                cmd.logic("os.start:"+programId);
+            }
+        }
     }
 }
