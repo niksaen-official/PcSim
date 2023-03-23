@@ -661,9 +661,11 @@ public class PcParametersSave {
         String type = null;
         HashMap<String,String>[] mainDiskId = new HashMap[]{DATA1, DATA2, DATA3, DATA4, DATA5, DATA6};
         for(HashMap<String,String> hashMap:mainDiskId){
-            if(hashMap.get("MainDisk").equals("true")){
-                type = hashMap.get("Тип");
-                break;
+            if(hashMap != null) {
+                if (hashMap.get("MainDisk").equals("true")) {
+                    type = hashMap.get("Тип");
+                    break;
+                }
             }
         }
         return type;

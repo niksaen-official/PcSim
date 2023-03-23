@@ -355,5 +355,6 @@
   "Program removed from startup": "Program removed from startup",
   "Program removed from drive": "Program removed from drive",
   "Program not found": "Program not found",
-  "The program is already in the startup list": "The program is already in the startup list"
+  "The program is already in the startup list": "The program is already in the startup list",
+  "HSoftStore": "HSoftStore"
 }

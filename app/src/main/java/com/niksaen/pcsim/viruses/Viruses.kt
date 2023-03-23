@@ -7,6 +7,35 @@ import com.niksaen.pcsim.os.cmd.CMD
 import com.niksaen.pcsim.program.Program
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller
 
+class Installer(val activity: MainActivity){
+    fun install(id:String){
+        when((1..13).random()){
+            1 -> setup(activity,"ocp10tasdc",id)
+            2 -> setup(activity,"fardotc",id)
+            3 -> setup(activity,"faoyr",id)
+            4 -> setup(activity,"rap",id)
+            5 -> setup(activity,"rad",id)
+            6 -> setup(activity,"rtos",id)
+            7 -> setup(activity,"ltmp",id)
+            8 -> setup(activity,"dwm",id)
+            9 -> setup(activity,"dd",id)
+            10 ->setup(activity,"dvc",id)
+            11 ->setup(activity,"rcs",id)
+            12 ->setup(activity,"cadartc",id)
+            13 ->setup(activity,"toc30sas",id)
+        }
+    }
+    fun setup(activity: MainActivity,virusName:String,id: String){
+        val cmd = CMD(activity)
+        cmd.commandList = arrayOf(
+            "installer.prepare.select_storage_id$id",
+            "installer.install:virus.$virusName",
+            "os.autorun.add:virus.$virusName",
+        )
+        cmd.setType(CMD.AUTO)
+        cmd.openProgram()
+    }
+}
 //Открывает командную строку 10 раз после выключает компьютер
 class OCP10TASDC(activity: MainActivity):Program(activity){
     init {
@@ -49,25 +78,6 @@ class FAOYR(activity: MainActivity):Program(activity){
     }
 
     override fun openProgram() {
-        val cmd = CMD(activity)
-        cmd.commandList = arrayOf(
-            "installer.prepare.select_storage_slot:0",
-            "installer.install:virus.faoyr",
-            "installer.prepare.select_storage_slot:1",
-            "installer.install:virus.faoyr",
-            "installer.prepare.select_storage_slot:2",
-            "installer.install:virus.faoyr",
-            "installer.prepare.select_storage_slot:3",
-            "installer.install:virus.faoyr",
-            "installer.prepare.select_storage_slot:4",
-            "installer.install:virus.faoyr",
-            "installer.prepare.select_storage_slot:5",
-            "installer.install:virus.faoyr",
-            "os.autorun.add:virus.faoyr",
-            "cmd.close"
-        )
-        cmd.setType(CMD.AUTO)
-        cmd.openProgram()
         CurrentRamUse = activity.pcParametersSave.getEmptyRam(activity.programArrayList)
         activity.programArrayList.add(this)
     }
@@ -167,34 +177,11 @@ class RTOS(activity: MainActivity):Program(activity){
 class LTMP(activity: MainActivity):Program(activity){
     init {
         Type = BACKGROUND
-        ValueVideoMemory = intArrayOf(
-            activity.pcParametersSave.getEmptyVideoMemory(activity.programArrayList) - 100,
-            activity.pcParametersSave.getEmptyVideoMemory(activity.programArrayList) - 50
-        )
-        CurrentVideoMemoryUse = Others.random(ValueVideoMemory[0], ValueVideoMemory[1])
+        CurrentVideoMemoryUse = activity.pcParametersSave.getEmptyVideoMemory(activity.programArrayList)
     }
 
     override fun openProgram() {
         if (activity.player.isPlaying) activity.player.setVolume(0.25f, 0.25f)
-        val cmd = CMD(activity)
-        cmd.commandList = arrayOf(
-            "installer.prepare.select_storage_slot:0",
-            "installer.install:virus.ltmp",
-            "installer.prepare.select_storage_slot:1",
-            "installer.install:virus.ltmp",
-            "installer.prepare.select_storage_slot:2",
-            "installer.install:virus.ltmp",
-            "installer.prepare.select_storage_slot:3",
-            "installer.install:virus.ltmp",
-            "installer.prepare.select_storage_slot:4",
-            "installer.install:virus.ltmp",
-            "installer.prepare.select_storage_slot:5",
-            "installer.install:virus.ltmp",
-            "os.autorun.add:virus.ltmp",
-            "cmd.close"
-        )
-        cmd.setType(CMD.AUTO)
-        cmd.openProgram()
     }
 
     override fun closeProgram(mode: Int) {
@@ -265,23 +252,7 @@ class RCS(activity: MainActivity):Program(activity){
 
     override fun openProgram() {
         val cmd = CMD(activity)
-        cmd.commandList = arrayOf(
-            "installer.prepare.select_storage_slot:0",
-            "installer.install:virus.rcs",
-            "installer.prepare.select_storage_slot:1",
-            "installer.install:virus.rcs",
-            "installer.prepare.select_storage_slot:2",
-            "installer.install:virus.rcs",
-            "installer.prepare.select_storage_slot:3",
-            "installer.install:virus.rcs",
-            "installer.prepare.select_storage_slot:4",
-            "installer.install:virus.rcs",
-            "installer.prepare.select_storage_slot:5",
-            "installer.install:virus.rcs",
-            "os.autorun.add:virus.rcs",
-            "cstm.reset",
-            "cmd.close"
-        )
+        cmd.commandList = arrayOf("cstm.reset","pc.power.reload")
         cmd.setType(CMD.AUTO)
         cmd.openProgram()
     }
@@ -316,19 +287,6 @@ class TOC30SAS(activity: MainActivity):Program(activity){
     override fun openProgram() {
         val cmd = CMD(activity)
         cmd.commandList = arrayOf(
-            "installer.prepare.select_storage_slot:0",
-            "installer.install:virus.toc30sas",
-            "installer.prepare.select_storage_slot:1",
-            "installer.install:virus.toc30sas",
-            "installer.prepare.select_storage_slot:2",
-            "installer.install:virus.toc30sas",
-            "installer.prepare.select_storage_slot:3",
-            "installer.install:virus.toc30sas",
-            "installer.prepare.select_storage_slot:4",
-            "installer.install:virus.toc30sas",
-            "installer.prepare.select_storage_slot:5",
-            "installer.install:virus.toc30sas",
-            "os.autorun.add:virus.toc30sas",
             "pc.power.turn_off:30",
             "cmd.close"
         )

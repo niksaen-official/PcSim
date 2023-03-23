@@ -24,6 +24,7 @@ import com.niksaen.pcsim.program.diskManager.DiskManager;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.fileManager.FileManager;
 import com.niksaen.pcsim.program.gStore.GStoreMain;
+import com.niksaen.pcsim.program.hSoftStore.HSoftStore;
 import com.niksaen.pcsim.program.miner.Miner;
 import com.niksaen.pcsim.program.musicplayer.MusicPlayer;
 import com.niksaen.pcsim.program.notepad.Notepad;
@@ -149,9 +150,11 @@ public class ProgramListAndData {
         programIcon.put("Minesweeper",R.drawable.minersweeper_icon);
         programIcon.put("Snake",R.drawable.snake_icon);
         programIcon.put("Memory",R.drawable.memory_icon);
+        programIcon.put("HSoftStore",R.drawable.icon_downloader);
 
         //вес програм и игр
         programSize.put("Benchmark",2f);
+        programSize.put("HSoftStore",0.2f);
         programSize.put("Browser",0.5f);
         programSize.put("CPU Overclocking",1f);
         programSize.put("RAM Overclocking",1f);
@@ -221,18 +224,19 @@ public class ProgramListAndData {
         programHashMap.put("Minesweeper",new Minesweeper(activity));
         programHashMap.put("Snake",new SnakeGame(activity));
         programHashMap.put("Memory",new MemoryGame(activity));
-        programHashMap.put("ocp10tasdc",new OCP10TASDC(activity));
-        programHashMap.put("fardotc",new FARDOTC(activity));
-        programHashMap.put("faoyr",new FAOYR(activity));
-        programHashMap.put("rap",new RAP(activity));
-        programHashMap.put("rad",new RAD(activity));
-        programHashMap.put("rtos",new RTOS(activity));
-        programHashMap.put("ltmp",new LTMP(activity));
-        programHashMap.put("dwm",new DWM(activity));
-        programHashMap.put("dd", new DD(activity));
-        programHashMap.put("dvc",new DVC(activity));
-        programHashMap.put("rcs",new RCS(activity));
-        programHashMap.put("cadartc",new CADARTC(activity));
-        programHashMap.put("toc30sas",new TOC30SAS(activity));
+        programHashMap.put("virus.ocp10tasdc",new OCP10TASDC(activity));
+        programHashMap.put("virus.fardotc",new FARDOTC(activity));
+        programHashMap.put("virus.faoyr",new FAOYR(activity));
+        programHashMap.put("virus.rap",new RAP(activity));
+        programHashMap.put("virus.rad",new RAD(activity));
+        programHashMap.put("virus.rtos",new RTOS(activity));
+        programHashMap.put("virus.ltmp",new LTMP(activity));
+        programHashMap.put("virus.dwm",new DWM(activity));
+        programHashMap.put("virus.dd", new DD(activity));
+        programHashMap.put("virus.dvc",new DVC(activity));
+        programHashMap.put("virus.rcs",new RCS(activity));
+        programHashMap.put("virus.cadartc",new CADARTC(activity));
+        programHashMap.put("virus.toc30sas",new TOC30SAS(activity));
+        programHashMap.put("HSoftStore",new HSoftStore(activity));
     }
 }

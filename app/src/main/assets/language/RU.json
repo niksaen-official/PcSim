@@ -355,5 +355,6 @@
   "Program removed from startup": "Программа удалена из автозапуска",
   "Program removed from drive": "Программа удалена с накопителя",
   "Program not found": "Программа не найдена",
-  "The program is already in the startup list": "Программа уже находится в списке автозапуска"
+  "The program is already in the startup list": "Программа уже находится в списке автозапуска",
+  "HSoftStore": "HSoftStore"
 }

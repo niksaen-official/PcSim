@@ -25,7 +25,7 @@ public class PrepareForInstall extends Program {
         this.programForSetup = programForSetup;
     }
 
-    private SetupWindow setupWindow;
+    private final SetupWindow setupWindow;
     public PrepareForInstall(MainActivity activity) {
         super(activity);
         Title = "Installation Wizard";

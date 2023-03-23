@@ -10,24 +10,16 @@ import android.widget.ListView;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.classes.adapters.CMD_Adapter;
-import com.niksaen.pcsim.os.cmd.libs.Customization;
-import com.niksaen.pcsim.os.cmd.libs.Installer;
-import com.niksaen.pcsim.os.cmd.libs.OS;
-import com.niksaen.pcsim.os.cmd.libs.Task;
-import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.os.cmd.libs.Base;
+import com.niksaen.pcsim.os.cmd.libs.Customization;
 import com.niksaen.pcsim.os.cmd.libs.Drive;
 import com.niksaen.pcsim.os.cmd.libs.DriverInstallerExtended;
+import com.niksaen.pcsim.os.cmd.libs.Installer;
 import com.niksaen.pcsim.os.cmd.libs.InstallerFromDrive;
 import com.niksaen.pcsim.os.cmd.libs.Pc;
+import com.niksaen.pcsim.os.cmd.libs.Task;
+import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.viruses.CADARTC;
-import com.niksaen.pcsim.viruses.DWM;
-import com.niksaen.pcsim.viruses.FAOYR;
-import com.niksaen.pcsim.viruses.FARDOTC;
-import com.niksaen.pcsim.viruses.LTMP;
-import com.niksaen.pcsim.viruses.OCP10TASDC;
-import com.niksaen.pcsim.viruses.RAD;
-import com.niksaen.pcsim.viruses.RAP;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -48,6 +40,7 @@ public class CMD extends Program {
 
     public String[] commandList = {};
     public String buffer;
+    public boolean isCompile = false;
     public CMD(MainActivity activity) {
         super(activity);
         Title = "CMD";
@@ -133,11 +126,6 @@ public class CMD extends Program {
         if (command.startsWith("#")) {
             command = command.replace("#","").trim();
         }
-        if(command.equals("start")){
-            CADARTC v = new CADARTC(activity);
-            v.openProgram();
-            return;
-        }
         adapter.notifyDataSetChanged();
         output.smoothScrollToPosition(outputCommand.size());
 
@@ -148,17 +136,22 @@ public class CMD extends Program {
                 activity.runOnUiThread(() -> {
                     input.setText("");
                     enter.setClickable(true);
-                    if (finalCommand.startsWith("cmd.")) Base.start(CMD.this, finalCommand);
-                    else if (finalCommand.startsWith("drive.")) Drive.start(activity,CMD.this, finalCommand);
-                    else if (finalCommand.startsWith("pc.")) Pc.start(activity,CMD.this, finalCommand);
-                    else if (finalCommand.startsWith("ifd.")) InstallerFromDrive.start(activity,CMD.this, finalCommand);
-                    else if (finalCommand.startsWith("driver.")) DriverInstallerExtended.start(activity,CMD.this, finalCommand);
-                    else if (finalCommand.startsWith("task.")) Task.start(finalCommand, CMD.this);
-                    else if (finalCommand.startsWith("installer.")) Installer.start(activity, CMD.this, finalCommand);
-                    else if (finalCommand.startsWith("cstm.")) Customization.start(CMD.this, finalCommand);
-                    else if (finalCommand.startsWith("os.")) com.niksaen.pcsim.os.cmd.libs.OS.start(activity, CMD.this, finalCommand);
-                    else error(activity.words.get("The package will not find"));
-                    adapter.notifyDataSetChanged();
+                    try {
+                        if (finalCommand.startsWith("cmd.")) Base.start(CMD.this, finalCommand);
+                        else if (finalCommand.startsWith("drive.")) Drive.start(activity,CMD.this, finalCommand);
+                        else if (finalCommand.startsWith("pc.")) Pc.start(activity,CMD.this, finalCommand);
+                        else if (finalCommand.startsWith("ifd.")) InstallerFromDrive.start(activity,CMD.this, finalCommand);
+                        else if (finalCommand.startsWith("driver.")) DriverInstallerExtended.start(activity,CMD.this, finalCommand);
+                        else if (finalCommand.startsWith("task.")) Task.start(finalCommand, CMD.this);
+                        else if (finalCommand.startsWith("installer.")) Installer.start(activity, CMD.this, finalCommand);
+                        else if (finalCommand.startsWith("cstm.")) Customization.start(CMD.this, finalCommand);
+                        else if (finalCommand.startsWith("os.")) com.niksaen.pcsim.os.cmd.libs.OS.start(activity, CMD.this, finalCommand);
+                        else error(activity.words.get("The package will not find"));
+                        adapter.notifyDataSetChanged();
+                    }catch (Exception e){
+                        error(finalCommand);
+                    }
+
                 });
             }
         };

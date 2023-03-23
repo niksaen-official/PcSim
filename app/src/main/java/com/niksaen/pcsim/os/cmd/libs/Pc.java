@@ -166,7 +166,11 @@ public class Pc {
                             str = str.replace(DriverInstaller.BASE_TYPE, activity.words.get(DriverInstaller.BASE_TYPE));
                             str = str.replace(DriverInstaller.EXTENDED_TYPE, activity.words.get(DriverInstaller.EXTENDED_TYPE));
                             cmd.output(str);
-                        } else {
+                        }
+                        else if(str.startsWith("virus.")){
+                            cmd.output(str);
+                        }
+                        else {
                             cmd.output(activity.words.get(str));
                         }
                     }

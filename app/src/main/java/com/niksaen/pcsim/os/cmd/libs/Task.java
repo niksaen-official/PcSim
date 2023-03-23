@@ -12,7 +12,7 @@ public class Task {
                 cmd.output("Program: "+cmd.activity.words.get(program.Title)+"\nRAM use: "+program.CurrentRamUse+"Mb"+"\nVRAM use: "+program.CurrentVideoMemoryUse+"Mb");
             }
         }else if(command.startsWith("close:")){
-            int pos = Integer.parseInt(command.replace("close_program:",""));
+            int pos = Integer.parseInt(command.replace("close:",""));
             cmd.activity.programArrayList.get(pos).closeProgram(1);
             cmd.activity.taskManager.update();
         }
