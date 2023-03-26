@@ -44,11 +44,11 @@ import me.toptas.fancyshowcase.listener.OnViewInflateListener;
 public class MainShopActivity extends AppCompatActivity {
 
     private Typeface font;
+    private PlayerData playerData;
     private TextView moneyView,cartTitle;
     private Button buy,back;
     private RecyclerView main;
     private RecyclerView cartView;
-    PlayerData playerData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,8 +217,8 @@ public class MainShopActivity extends AppCompatActivity {
     private void style(){
         moneyView.setTypeface(font,Typeface.BOLD);
         cartTitle.setTypeface(font,Typeface.BOLD);
-        buy.setTypeface(font,Typeface.BOLD);;
-        back.setTypeface(font,Typeface.BOLD);;
+        buy.setTypeface(font,Typeface.BOLD);
+        back.setTypeface(font,Typeface.BOLD);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);

@@ -80,7 +80,7 @@ public class ShopDialog {
         dialog.show();
     }
 
-    private String parser(HashMap<String,String> parameters,String type){
+    public String parser(HashMap<String,String> parameters,String type){
         String result = "";
         switch (type){
             case PcComponent.CASE:{

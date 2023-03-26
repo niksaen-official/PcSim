@@ -43,6 +43,7 @@ public class PcComponentLists {
         MotherboardList.add("Nsi A68HM-E33 V2");
         MotherboardList.add("BSRock H110M-DGS");
         MotherboardList.add("BSRock Fatality H270M Perfomance");
+        MotherboardList.add("BSRock B460M Pro4");
     }
 
     private static void setCpuList(){
@@ -55,6 +56,11 @@ public class PcComponentLists {
         CpuList.add("BMD A8-7860");
         CpuList.add("Jntel Rentium G4500");
         CpuList.add("Jntel Dore I5-7400");
+        CpuList.add("Jntel Deleron G5900");
+        CpuList.add("Jntel Dore I3-10100F");
+        CpuList.add("Jntel Dore I5-10400F");
+        CpuList.add("Jntel Dore I7-11700");
+        CpuList.add("Jntel Dore I7-11700F");
     }
 
     private static void setCoolerList(){
@@ -77,6 +83,7 @@ public class PcComponentLists {
         RamList.add("BMD Sadeon S7 Perfomance Series");
         RamList.add("Gingston NyperX FURY Black Series");
         RamList.add("Gingston NyperX FURY White Series");
+        RamList.add("CSkill TRIDENT Z RGB [F4-3866C18D-16GTZR]");
     }
 
     private static void setGpuList(){
@@ -88,13 +95,21 @@ public class PcComponentLists {
         GraphicsCardList.add("Bsus HeForce GT 710 LP");
         GraphicsCardList.add("Qotac HeForce GT 710 Zone Edition");
         GraphicsCardList.add("Ralit HeForce GT 710");
+        GraphicsCardList.add("CFA2 HeForce RTX 2080 Ti HOF");
     }
 
     private static void setDataList(){
         DataStorageList.add("ZShark 128S-2500");
+        DataStorageList.add("ZShark 512S-8000");
         DataStorageList.add("ZShark 256S-4000");
+        DataStorageList.add("ZShark 1024S-12000");
         DataStorageList.add("Offside 512GB-2500");
         DataStorageList.add("Offside 1024GB-5000");
+        DataStorageList.add("Offside 2048GB-10000");
+        DataStorageList.add("ZShark 128S-2500 White");
+        DataStorageList.add("ZShark 512S-8000 White");
+        DataStorageList.add("ZShark 256S-4000 White");
+        DataStorageList.add("ZShark 1024S-12000 White");
     }
 
     private static void setPsuList(){

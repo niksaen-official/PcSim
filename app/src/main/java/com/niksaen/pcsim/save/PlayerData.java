@@ -28,7 +28,7 @@ public class PlayerData {
         preferences = context.getSharedPreferences("PlayerData",Context.MODE_PRIVATE);
         getAllData();
     }
-    private void getAllData(){
+    public void getAllData(){
         PcCaseList = StringArrayWork.clearEmpty(preferences.getString("PcCaseList","").split(","));
         MotherboardList = StringArrayWork.clearEmpty(preferences.getString("MotherboardList","").split(","));
         CpuList = StringArrayWork.clearEmpty(preferences.getString("CpuList","").split(","));

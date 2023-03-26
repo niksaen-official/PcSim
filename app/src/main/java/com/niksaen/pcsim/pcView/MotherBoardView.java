@@ -154,6 +154,7 @@ public class MotherBoardView {
                 gpu2View.setVisibility(View.GONE);
                 break;
             }
+
             case "BSRock Fatality H270M Perfomance":{
                 cpuImage.setScaleX(1f);
                 cpuImage.setScaleY(1f);
@@ -184,6 +185,39 @@ public class MotherBoardView {
                 gpu1View.setX(7*dip);
                 gpu2View.setY(158*dip);
                 gpu2View.setX(7*dip);
+                gpu2View.setVisibility(View.VISIBLE);
+                break;
+            }
+            case "BSRock B460M Pro4":{
+                cpuImage.setScaleX(1f);
+                cpuImage.setScaleY(1f);
+                cpuImage.setX(64f*dip);
+                cpuImage.setY(50f*dip);
+
+                coolerImage.setScaleX(0.9f);
+                coolerImage.setScaleY(0.9f);
+                coolerImage.setX(50f*dip);
+                coolerImage.setY(37f*dip);
+
+                ram3View.setVisibility(View.VISIBLE);
+                ram4View.setVisibility(View.VISIBLE);
+                ram1View.setY(21*dip);
+                ram2View.setY(21*dip);
+                ram3View.setY(21*dip);
+                ram4View.setY(21*dip);
+                ram1View.setX(116*dip);
+                ram2View.setX(123*dip);
+                ram3View.setX(129*dip);
+                ram4View.setX(136*dip);
+                ram1View.setScaleY(0.8f);
+                ram2View.setScaleY(0.8f);
+                ram3View.setScaleY(0.8f);
+                ram4View.setScaleY(0.8f);
+
+                gpu1View.setY(123*dip);
+                gpu1View.setX(1*dip);
+                gpu2View.setY(162*dip);
+                gpu2View.setX(1*dip);
                 gpu2View.setVisibility(View.VISIBLE);
                 break;
             }

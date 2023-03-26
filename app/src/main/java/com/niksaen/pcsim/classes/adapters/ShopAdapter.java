@@ -22,10 +22,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
 
-    private ArrayList<String> strings;
+    private List<String> strings;
     private Context context;
     private String type;
     private Typeface font;
@@ -36,6 +37,13 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     public String getItem(int position){ return this.strings.get(position); }
 
     public ShopAdapter(Context context, ArrayList<String> strings,String type){
+        this.strings = strings;
+        this.context = context;
+        this.type = type;
+        font = Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf");
+        getLanguage();
+    }
+    public ShopAdapter(Context context, List<String> strings, String type){
         this.strings = strings;
         this.context = context;
         this.type = type;
@@ -60,10 +68,11 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull @NotNull ShopAdapter.ViewHolder holder, int position) {
         holder.text.setTypeface(font,Typeface.BOLD);
         holder.text.setTextColor(Color.WHITE);
-        if(type != "icon") {
+        if(!type.equals("icon")) {
             holder.text.setText(strings.get(position));
             holder.icon.setImageDrawable(new AssetFile(context).getImage("pc_component/images/" + type + "/" + strings.get(position) + ".png"));
-        }else{
+        }
+        else{
             holder.text.setText(words.get(getItem(position)));
             holder.icon.setImageDrawable(new AssetFile(context).getImage("icons/shop/" + strings.get(position) + ".png"));
         }

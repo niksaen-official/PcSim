@@ -309,6 +309,7 @@ public class MainActivity extends AppCompatActivity{
         String[] menuList = new String[]{
                 words.get("Menu")+":",
                 words.get("Shop"),
+                words.get("Sale"),
                 words.get("PC assembly"),
                 words.get("Settings"),
                 words.get("Tutorial"),
@@ -328,24 +329,30 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case 2:{
-                    intent = new Intent(MainActivity.this,IronActivity.class);
+                    intent = new Intent(MainActivity.this,SealingActivity.class);
                     startActivity(intent);
                     finish();
                     break;
                 }
                 case 3:{
-                    intent = new Intent(MainActivity.this,SettingsActivity.class);
+                    intent = new Intent(MainActivity.this,IronActivity.class);
                     startActivity(intent);
                     finish();
                     break;
                 }
                 case 4:{
-                    intent = new Intent(MainActivity.this,TutorialActivity.class);
+                    intent = new Intent(MainActivity.this,SettingsActivity.class);
                     startActivity(intent);
                     finish();
                     break;
                 }
                 case 5:{
+                    intent = new Intent(MainActivity.this,TutorialActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
+                case 6:{
                     intent = new Intent(MainActivity.this,AboutMeActivity.class);
                     startActivity(intent);
                     finish();

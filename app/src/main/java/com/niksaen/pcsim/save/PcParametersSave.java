@@ -41,23 +41,23 @@ public class PcParametersSave {
     }
     void getAllPcParameters(){
         pcWork = preferences.getBoolean("pcwork",false);
-        Case = preferences.getString("Case","Case");
-        Mobo = preferences.getString("Mobo","Mobo");
-        Cpu = preferences.getString("Cpu","Cpu");
-        Cooler = preferences.getString("Cooler","Cooler");
-        Ram1  = preferences.getString("Ram1","Ram");
-        Ram2  = preferences.getString("Ram2","Ram");
-        Ram3  = preferences.getString("Ram3","Ram");
-        Ram4  = preferences.getString("Ram4","Ram");
-        Gpu1  = preferences.getString("Gpu1","Gpu");
-        Gpu2  = preferences.getString("Gpu2","Gpu");
-        Data1 = preferences.getString("Data1","Data");
-        Data2 = preferences.getString("Data2","Data");
-        Data3 = preferences.getString("Data3","Data");
-        Data4 = preferences.getString("Data4","Data");
-        Data5 = preferences.getString("Data5","Data");
-        Data6 = preferences.getString("Data6","Data");
-        Psu = preferences.getString("Psu","Psu");
+        Case = preferences.getString("Case","");
+        Mobo = preferences.getString("Mobo","");
+        Cpu = preferences.getString("Cpu","");
+        Cooler = preferences.getString("Cooler","");
+        Ram1  = preferences.getString("Ram1","");
+        Ram2  = preferences.getString("Ram2","");
+        Ram3  = preferences.getString("Ram3","");
+        Ram4  = preferences.getString("Ram4","");
+        Gpu1  = preferences.getString("Gpu1","");
+        Gpu2  = preferences.getString("Gpu2","");
+        Data1 = preferences.getString("Data1","");
+        Data2 = preferences.getString("Data2","");
+        Data3 = preferences.getString("Data3","");
+        Data4 = preferences.getString("Data4","");
+        Data5 = preferences.getString("Data5","");
+        Data6 = preferences.getString("Data6","");
+        Psu = preferences.getString("Psu","");
 
         if(Case != null){
             CASE = new Gson().fromJson(preferences.getString("CASE",""),typeToken.getType());
@@ -115,26 +115,26 @@ public class PcParametersSave {
     public void setCase(String Case,HashMap<String,String> CASE){
         this.Case = Case;
         this.CASE = CASE;
-        preferences.edit().putString("Case",Case).apply();
-        preferences.edit().putString("CASE",new Gson().toJson(CASE)).apply();
+        preferences.edit().putString("Case", Case).apply();
+        preferences.edit().putString("CASE", new Gson().toJson(CASE)).apply();
     }
     public void setMobo(String Mobo,HashMap<String,String> MOBO){
         this.Mobo = Mobo;
         this.MOBO = MOBO;
-        preferences.edit().putString("Mobo",Mobo).apply();
-        preferences.edit().putString("MOBO",new Gson().toJson(MOBO)).apply();
+        preferences.edit().putString("Mobo", Mobo).apply();
+        preferences.edit().putString("MOBO", new Gson().toJson(MOBO)).apply();
     }
     public void setCpu(String Cpu,HashMap<String,String> CPU){
         this.Cpu = Cpu;
         this.CPU = CPU;
-        preferences.edit().putString("Cpu",Cpu).apply();
-        preferences.edit().putString("CPU",new Gson().toJson(CPU)).apply();
+        preferences.edit().putString("Cpu", Cpu).apply();
+        preferences.edit().putString("CPU", new Gson().toJson(CPU)).apply();
     }
     public void setCooler(String Cooler,HashMap<String,String> COOLER){
         this.Cooler = Cooler;
         this.COOLER = COOLER;
-        preferences.edit().putString("Cooler",Cooler).apply();
-        preferences.edit().putString("COOLER",new Gson().toJson(COOLER)).apply();
+        preferences.edit().putString("Cooler", Cooler).apply();
+        preferences.edit().putString("COOLER", new Gson().toJson(COOLER)).apply();
     }
     public void setRam1(String Ram1,HashMap<String,String> RAM1){
         this.Ram1 = Ram1;
@@ -163,62 +163,56 @@ public class PcParametersSave {
     public void setGpu1(String Gpu1,HashMap<String,String> GPU1){
         this.Gpu1 = Gpu1;
         this.GPU1 = GPU1;
-        preferences.edit().putString("Gpu1",Gpu1).apply();
-        preferences.edit().putString("GPU1",new Gson().toJson(GPU1)).apply();
+        preferences.edit().putString("Gpu1", Gpu1).apply();
+        preferences.edit().putString("GPU1", new Gson().toJson(GPU1)).apply();
     }
     public void setGpu2(String Gpu2,HashMap<String,String> GPU2){
         this.Gpu2 = Gpu2;
         this.GPU2 = GPU2;
-        preferences.edit().putString("Gpu2",Gpu2).apply();
-        preferences.edit().putString("GPU2",new Gson().toJson(GPU2)).apply();
+        preferences.edit().putString("Gpu2", Gpu2).apply();
+        preferences.edit().putString("GPU2", new Gson().toJson(GPU2)).apply();
     }
     public void setData1(String Data1,HashMap<String,String> DATA1){
         this.Data1 = Data1;
         this.DATA1 = DATA1;
-        if(this.DATA1 != null && !this.DATA1.containsKey("rename"))
-            this.DATA1.put("name","A:");
-        preferences.edit().putString("Data1",Data1).apply();
-        preferences.edit().putString("DATA1",new Gson().toJson(DATA1)).apply();
+        if (this.DATA1 != null && !this.DATA1.containsKey("rename")) this.DATA1.put("name", "A:");
+        preferences.edit().putString("Data1", Data1).apply();
+        preferences.edit().putString("DATA1", new Gson().toJson(DATA1)).apply();
     }
     public void setData2(String Data2,HashMap<String,String> DATA2){
         this.Data2 = Data2;
         this.DATA2 = DATA2;
-        if(this.DATA2 != null && !this.DATA2.containsKey("rename"))
-            this.DATA2.put("name","B:");
-        preferences.edit().putString("Data2",Data2).apply();
-        preferences.edit().putString("DATA2",new Gson().toJson(DATA2)).apply();
+        if (this.DATA2 != null && !this.DATA2.containsKey("rename")) this.DATA2.put("name", "B:");
+        preferences.edit().putString("Data2", Data2).apply();
+        preferences.edit().putString("DATA2", new Gson().toJson(DATA2)).apply();
     }
     public void setData3(String Data3,HashMap<String,String> DATA3){
         this.Data3 = Data3;
         this.DATA3 = DATA3;
-        if(this.DATA3 != null && !this.DATA3.containsKey("rename"))
-            this.DATA3.put("name","C:");
-        preferences.edit().putString("Data3",Data3).apply();
-        preferences.edit().putString("DATA3",new Gson().toJson(DATA3)).apply();
+        if (this.DATA3 != null && !this.DATA3.containsKey("rename")) this.DATA3.put("name", "C:");
+        preferences.edit().putString("Data3", Data3).apply();
+        preferences.edit().putString("DATA3", new Gson().toJson(DATA3)).apply();
     }
     public void setData4(String Data4,HashMap<String,String> DATA4){
         this.Data4 = Data4;
         this.DATA4 = DATA4;
-        if(this.DATA4 != null && !this.DATA4.containsKey("rename"))
-            this.DATA4.put("name","D:");
-        preferences.edit().putString("Data4",Data4).apply();
-        preferences.edit().putString("DATA4",new Gson().toJson(DATA4)).apply();
+        if (this.DATA4 != null && !this.DATA4.containsKey("rename")) this.DATA4.put("name", "D:");
+        preferences.edit().putString("Data4", Data4).apply();
+        preferences.edit().putString("DATA4", new Gson().toJson(DATA4)).apply();
     }
     public void setData5(String Data5,HashMap<String,String> DATA5){
         this.Data5 = Data5;
         this.DATA5 = DATA5;
-        if(this.DATA5 != null && !this.DATA5.containsKey("rename"))
-            this.DATA5.put("name","E:");
-        preferences.edit().putString("Data5",Data5).apply();
-        preferences.edit().putString("DATA5",new Gson().toJson(DATA5)).apply();
+        if (this.DATA5 != null && !this.DATA5.containsKey("rename")) this.DATA5.put("name", "E:");
+        preferences.edit().putString("Data5", Data5).apply();
+        preferences.edit().putString("DATA5", new Gson().toJson(DATA5)).apply();
     }
     public void setData6(String Data6,HashMap<String,String> DATA6){
         this.Data6 = Data6;
         this.DATA6 = DATA6;
-        if(this.DATA6 != null && !this.DATA6.containsKey("rename"))
-            this.DATA6.put("name","F:");
-        preferences.edit().putString("Data6",Data6).apply();
-        preferences.edit().putString("DATA6",new Gson().toJson(DATA6)).apply();
+        if (this.DATA6 != null && !this.DATA6.containsKey("rename")) this.DATA6.put("name", "F:");
+        preferences.edit().putString("Data6", Data6).apply();
+        preferences.edit().putString("DATA6", new Gson().toJson(DATA6)).apply();
     }
     public void setPsu(String Psu,HashMap<String,String> PSU) {
         this.Psu = Psu;
@@ -525,11 +519,14 @@ public class PcParametersSave {
             case "GDDR3":{power_coefficient = 1.6f*1.2f;break;}
             case "GDDR4":{power_coefficient = 1.7f*1.5f;break;}
             case "GDDR5":{power_coefficient = 1.8f*1.5f;break;}
+            case "GDDR6":{power_coefficient = 3.6f*2f;break;}
             default: throw new IllegalStateException("Unexpected value: " + GPU.get("Тип памяти"));
         }
         switch (GPU.get("Тип охлаждения")){
             case "Passive":{break; }
             case "Cooler":{ power_fan = 10;break; }
+            case "Cooler * 2":{power_fan = 20;break;}
+            case "Cooler * 3":{power_fan = 30;break;}
             default: throw new IllegalStateException("Unexpected value: " + GPU.get("Тип охлаждения"));
         }
         main = (frequency /power_coefficient)/5;
@@ -545,18 +542,19 @@ public class PcParametersSave {
         float power,power_fan = 0;
         float power_coefficient;
         switch (GPU.get("Тип памяти")){
-            case "GDDR":{power_coefficient = 1.68f;break;}
-            case "GDDR2":{power_coefficient = 1.8f;break;}
-            case "GDDR3":{power_coefficient = 1.92f;break;}
-            case "GDDR4":{power_coefficient = 2.55f;break;}
-            case "GDDR5":{power_coefficient = 2.7f;break;}
+            case "GDDR":{power_coefficient = 1.4f*1.2f;break;}
+            case "GDDR2":{power_coefficient = 1.5f*1.2f;break;}
+            case "GDDR3":{power_coefficient = 1.6f*1.2f;break;}
+            case "GDDR4":{power_coefficient = 1.7f*1.5f;break;}
+            case "GDDR5":{power_coefficient = 1.8f*1.5f;break;}
+            case "GDDR6":{power_coefficient = 3.6f*2f;break;}
             default: throw new IllegalStateException("Unexpected value: " + GPU.get("Тип памяти"));
         }
         switch (GPU.get("Тип охлаждения")){
             case "Passive":{break; }
             case "Cooler":{ power_fan = 10;break; }
-            case "Cooler*2":{ power_fan = 20;break; }
-            case "Cooler*3":{ power_fan = 30;break; }
+            case "Cooler * 2":{power_fan = 20;break;}
+            case "Cooler * 3":{power_fan = 30;break;}
             default: throw new IllegalStateException("Unexpected value: " + GPU.get("Тип охлаждения"));
         }
         main = (frequency /power_coefficient)/5;
@@ -590,6 +588,7 @@ public class PcParametersSave {
                 case "GDDR3":{power_coefficient = 1.92f;break;}
                 case "GDDR4":{power_coefficient = 2.55f;break;}
                 case "GDDR5":{power_coefficient = 2.7f;break;}
+                case "GDDR6":{power_coefficient = 3f;break;}
                 default:
                     throw new IllegalStateException("Unexpected value: " + GPU.get("Тип памяти"));
             }
@@ -603,11 +602,11 @@ public class PcParametersSave {
                     temperature_coefficient = 1.15f;
                     break;
                 }
-                case "Cooler*2": {
+                case "Cooler * 2": {
                     temperature_coefficient = 0.9f;
                     break;
                 }
-                case "Cooler*3": {
+                case "Cooler * 3": {
                     temperature_coefficient = 0.65f;
                     break;
                 }
