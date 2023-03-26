@@ -60,7 +60,9 @@ class SealingActivity : AppCompatActivity() {
         words = Gson().fromJson(AssetFile(this).getText("language/" + Settings(this).Language + ".json"), typeToken.type)
     }
     private fun setTextAndStyle(){
-        ui.moneyView.typeface = font
+        ui.text.typeface = font
+        ui.text.text = words?.get("You have nothing to sell") ?: "You have nothing to sell"
+        ui.moneyView.setTypeface(font,Typeface.BOLD)
         ui.back.typeface = font
         ui.back.text = words?.get("Back") ?: "Back"
         ui.moneyView.text = playerData.Money.toString()+"R"
@@ -106,9 +108,14 @@ class SealingActivity : AppCompatActivity() {
             strings.add(PcComponent.Disk)
             adapters.add(ShopAdapter(this, playerData.DiskSoftList.asList(), PcComponent.Disk))
         }
-        baseAdapter =
-            if(strings.isNotEmpty()) ShopAdapter(this, strings, "icon")
-            else ShopAdapter(this, arrayListOf(),"icon")
+        if(strings.isNotEmpty()) {
+            baseAdapter = ShopAdapter(this, strings, "icon")
+            ui.text.visibility = View.GONE
+        }
+        else {
+            baseAdapter = ShopAdapter(this, arrayListOf(), "icon")
+            ui.text.visibility = View.VISIBLE
+        }
     }
     private fun saleItem(pos: Int,pcComponent: PcComponent){
         when(pcComponent.Type){

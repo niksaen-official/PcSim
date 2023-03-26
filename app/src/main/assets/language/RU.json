@@ -358,5 +358,6 @@
   "The program is already in the startup list": "Программа уже находится в списке автозапуска",
   "HSoftStore": "HSoftStore",
   "Sale": "Продать",
-  "Cooler * 3": "Кулер * 3"
+  "Cooler * 3": "Кулер * 3",
+  "You have nothing to sell": "Вам нечего продавать"
 }

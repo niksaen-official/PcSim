@@ -24,7 +24,7 @@ import java.util.Objects;
  **/
 
 public class PcParametersSave {
-
+    private OSSettings osSettings;
     public boolean pcWork = false;
     public int ramCanals;
     public String Case,Mobo,Cpu,Cooler,Ram1,Ram2,Ram3,Ram4,Gpu1,Gpu2,Data1,Data2,Data3,Data4,Data5,Data6,Psu;
@@ -37,6 +37,7 @@ public class PcParametersSave {
 
     public PcParametersSave(Context context){
         preferences = context.getSharedPreferences("PcParametersSave",Context.MODE_PRIVATE);
+        osSettings = new OSSettings(context);
         getAllPcParameters();
     }
     void getAllPcParameters(){
@@ -176,6 +177,7 @@ public class PcParametersSave {
         this.Data1 = Data1;
         this.DATA1 = DATA1;
         if (this.DATA1 != null && !this.DATA1.containsKey("rename")) this.DATA1.put("name", "A:");
+        if (this.DATA1.get("Содержимое").contains("OS")) osSettings.clearAutoRunList();
         preferences.edit().putString("Data1", Data1).apply();
         preferences.edit().putString("DATA1", new Gson().toJson(DATA1)).apply();
     }
@@ -183,6 +185,7 @@ public class PcParametersSave {
         this.Data2 = Data2;
         this.DATA2 = DATA2;
         if (this.DATA2 != null && !this.DATA2.containsKey("rename")) this.DATA2.put("name", "B:");
+        if (this.DATA2.get("Содержимое").contains("OS")) osSettings.clearAutoRunList();
         preferences.edit().putString("Data2", Data2).apply();
         preferences.edit().putString("DATA2", new Gson().toJson(DATA2)).apply();
     }
@@ -190,6 +193,7 @@ public class PcParametersSave {
         this.Data3 = Data3;
         this.DATA3 = DATA3;
         if (this.DATA3 != null && !this.DATA3.containsKey("rename")) this.DATA3.put("name", "C:");
+        if (this.DATA3.get("Содержимое").contains("OS")) osSettings.clearAutoRunList();
         preferences.edit().putString("Data3", Data3).apply();
         preferences.edit().putString("DATA3", new Gson().toJson(DATA3)).apply();
     }
@@ -197,6 +201,7 @@ public class PcParametersSave {
         this.Data4 = Data4;
         this.DATA4 = DATA4;
         if (this.DATA4 != null && !this.DATA4.containsKey("rename")) this.DATA4.put("name", "D:");
+        if (this.DATA4.get("Содержимое").contains("OS")) osSettings.clearAutoRunList();
         preferences.edit().putString("Data4", Data4).apply();
         preferences.edit().putString("DATA4", new Gson().toJson(DATA4)).apply();
     }
@@ -204,6 +209,7 @@ public class PcParametersSave {
         this.Data5 = Data5;
         this.DATA5 = DATA5;
         if (this.DATA5 != null && !this.DATA5.containsKey("rename")) this.DATA5.put("name", "E:");
+        if (this.DATA6.get("Содержимое").contains("OS")) osSettings.clearAutoRunList();
         preferences.edit().putString("Data5", Data5).apply();
         preferences.edit().putString("DATA5", new Gson().toJson(DATA5)).apply();
     }
@@ -211,6 +217,7 @@ public class PcParametersSave {
         this.Data6 = Data6;
         this.DATA6 = DATA6;
         if (this.DATA6 != null && !this.DATA6.containsKey("rename")) this.DATA6.put("name", "F:");
+        if (this.DATA6.get("Содержимое").contains("OS")) osSettings.clearAutoRunList();
         preferences.edit().putString("Data6", Data6).apply();
         preferences.edit().putString("DATA6", new Gson().toJson(DATA6)).apply();
     }
