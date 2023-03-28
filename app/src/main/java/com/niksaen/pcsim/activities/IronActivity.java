@@ -224,6 +224,7 @@ public class IronActivity extends AppCompatActivity {
             };
         coolerOnItemClickListener = (parent, view, position, id) -> {
             if (moboInstall) {
+                coolerView.setVisibility(View.VISIBLE);
                 coolerParameters = new Gson().fromJson(assetFile.getText("pc_component/parameters/" + PcComponent.COOLER + "/" + coolerList.get(position) + ".json"), typeToken.getType());
                 coolerView.setImageDrawable(assetFile.getImage("pc_component/images/" + PcComponent.COOLER + "/" + coolerList.get(position) + ".png"));
                 coolerList.add(parametersSave.Cooler);
@@ -308,6 +309,198 @@ public class IronActivity extends AppCompatActivity {
         psuButton.setOnClickListener(v->{
             popupWindow = popupWindow(psuAdapter,psuOnItemClickListener);
             popupWindow.showAsDropDown(ramButton,-5,0);
+        });
+
+        driveView.get(0).setOnClickListener(view -> {
+            if(parametersSave.DATA1 != null){
+                dataList.add(parametersSave.Data1);
+                parametersSave.setData1(null,null);
+                driveView.get(0).setImageDrawable(null);
+                dataInstall =
+                        parametersSave.DATA1 != null ||
+                        parametersSave.DATA2 != null ||
+                        parametersSave.DATA3 != null ||
+                        parametersSave.DATA4 != null ||
+                        parametersSave.DATA5 != null ||
+                        parametersSave.DATA6 != null;
+            }
+        });
+        driveView.get(1).setOnClickListener(view -> {
+            if(parametersSave.DATA2 != null){
+                dataList.add(parametersSave.Data2);
+                parametersSave.setData2(null,null);
+                driveView.get(1).setImageDrawable(null);
+                dataInstall =
+                        parametersSave.DATA1 != null ||
+                                parametersSave.DATA2 != null ||
+                                parametersSave.DATA3 != null ||
+                                parametersSave.DATA4 != null ||
+                                parametersSave.DATA5 != null ||
+                                parametersSave.DATA6 != null;
+            }
+        });
+        driveView.get(2).setOnClickListener(view -> {
+            if(parametersSave.DATA3 != null){
+                dataList.add(parametersSave.Data3);
+                parametersSave.setData3(null,null);
+                driveView.get(2).setImageDrawable(null);
+                dataInstall =
+                        parametersSave.DATA1 != null ||
+                                parametersSave.DATA2 != null ||
+                                parametersSave.DATA3 != null ||
+                                parametersSave.DATA4 != null ||
+                                parametersSave.DATA5 != null ||
+                                parametersSave.DATA6 != null;
+            }
+        });
+        driveView.get(3).setOnClickListener(view -> {
+            if(parametersSave.DATA4 != null){
+                dataList.add(parametersSave.Data4);
+                parametersSave.setData4(null,null);
+                driveView.get(3).setImageDrawable(null);
+                dataInstall =
+                        parametersSave.DATA1 != null ||
+                                parametersSave.DATA2 != null ||
+                                parametersSave.DATA3 != null ||
+                                parametersSave.DATA4 != null ||
+                                parametersSave.DATA5 != null ||
+                                parametersSave.DATA6 != null;
+            }
+        });
+        driveView.get(4).setOnClickListener(view -> {
+            if(parametersSave.DATA5 != null){
+                dataList.add(parametersSave.Data5);
+                parametersSave.setData5(null,null);
+                driveView.get(4).setImageDrawable(null);
+                dataInstall =
+                        parametersSave.DATA1 != null ||
+                                parametersSave.DATA2 != null ||
+                                parametersSave.DATA3 != null ||
+                                parametersSave.DATA4 != null ||
+                                parametersSave.DATA5 != null ||
+                                parametersSave.DATA6 != null;
+            }
+        });
+        driveView.get(5).setOnClickListener(view -> {
+            if(parametersSave.DATA6 != null){
+                dataList.add(parametersSave.Data6);
+                parametersSave.setData6(null,null);
+                driveView.get(5).setImageDrawable(null);
+                dataInstall =
+                        parametersSave.DATA1 != null ||
+                                parametersSave.DATA2 != null ||
+                                parametersSave.DATA3 != null ||
+                                parametersSave.DATA4 != null ||
+                                parametersSave.DATA5 != null ||
+                                parametersSave.DATA6 != null;
+            }
+        });
+        ramView.get(0).setOnClickListener(view -> {
+            if(parametersSave.RAM1 != null){
+                ramList.add(parametersSave.Ram1);
+                parametersSave.setRam1(null,null);
+                ramView.get(0).setImageDrawable(null);
+                ramInstall =
+                        parametersSave.RAM1 != null ||
+                                parametersSave.RAM2 != null ||
+                                parametersSave.RAM3 != null ||
+                                parametersSave.RAM4 != null;
+            }
+        });
+        ramView.get(1).setOnClickListener(view -> {
+            if(parametersSave.RAM2 != null){
+                ramList.add(parametersSave.Ram2);
+                parametersSave.setRam2(null,null);
+                ramView.get(1).setImageDrawable(null);
+                ramInstall =
+                        parametersSave.RAM1 != null ||
+                                parametersSave.RAM2 != null ||
+                                parametersSave.RAM3 != null ||
+                                parametersSave.RAM4 != null;
+            }
+        });
+        ramView.get(2).setOnClickListener(view -> {
+            if(parametersSave.RAM3 != null){
+                ramList.add(parametersSave.Ram3);
+                parametersSave.setRam3(null,null);
+                ramView.get(2).setImageDrawable(null);
+                ramInstall =
+                        parametersSave.RAM1 != null ||
+                                parametersSave.RAM2 != null ||
+                                parametersSave.RAM3 != null ||
+                                parametersSave.RAM4 != null;
+            }
+        });
+        ramView.get(3).setOnClickListener(view -> {
+            if(parametersSave.RAM4 != null){
+                ramList.add(parametersSave.Ram1);
+                parametersSave.setRam4(null,null);
+                ramView.get(3).setImageDrawable(null);
+                ramInstall =
+                        parametersSave.RAM1 != null ||
+                                parametersSave.RAM2 != null ||
+                                parametersSave.RAM3 != null ||
+                                parametersSave.RAM4 != null;
+            }
+        });
+        gpuView.get(0).setOnClickListener(view -> {
+            if(parametersSave.GPU1 != null){
+                gpuList.add(parametersSave.Gpu1);
+                parametersSave.setGpu1(null,null);
+                gpuView.get(0).setImageDrawable(null);
+                gpuInstall = parametersSave.GPU1 != null || parametersSave.GPU2 != null;
+            }
+        });
+        gpuView.get(1).setOnClickListener(view -> {
+            if(parametersSave.GPU2 != null){
+                gpuList.add(parametersSave.Gpu2);
+                parametersSave.setGpu2(null,null);
+                gpuView.get(1).setImageDrawable(null);
+                gpuInstall = parametersSave.GPU1 != null || parametersSave.GPU2 != null;
+            }
+        });
+        moboView.setOnClickListener(view -> {
+            if(parametersSave.MOBO != null) {
+                moboList.add(parametersSave.Mobo);
+                parametersSave.setMobo(null, null);
+                moboView.setImageDrawable(null);
+                removeMobo();
+                moboInstall = false;
+            }
+        });
+        psuView.setOnClickListener(view -> {
+            if(parametersSave.PSU != null){
+                psuList.add(parametersSave.Psu);
+                parametersSave.setPsu(null,null);
+                psuView.setImageDrawable(null);
+                psuInstall = false;
+            }
+        });
+        caseView.setOnClickListener(view -> {
+            if(parametersSave.CASE != null){
+                caseList.add(parametersSave.Case);
+                parametersSave.setCase(null,null);
+                caseView.setBackground(null);
+                caseInstall = false;
+                removeAll();
+            }
+        });
+        coolerView.setOnClickListener(view -> {
+            if(parametersSave.COOLER != null){
+                coolerList.add(parametersSave.Cooler);
+                parametersSave.setCooler(null,null);
+                coolerView.setImageDrawable(null);
+                coolerView.setVisibility(View.GONE);
+                coolerInstall = false;
+            }
+        });
+        cpuView.setOnClickListener(view -> {
+            if(parametersSave.CPU != null){
+                cpuList.add(parametersSave.Cpu);
+                parametersSave.setCpu(null,null);
+                cpuView.setImageDrawable(null);
+                cpuInstall = false;
+            }
         });
     }
     //получение данных
@@ -432,19 +625,6 @@ public class IronActivity extends AppCompatActivity {
         psuInstall = false;
 
         moboView.setImageDrawable(null);
-        cpuView.setImageDrawable(null);
-        coolerView.setImageDrawable(null);
-        ramView.get(0).setImageDrawable(null);
-        ramView.get(1).setImageDrawable(null);
-        gpuView.get(0).setImageDrawable(null);
-
-        if(ramView.size()==4) {
-            ramView.get(2).setImageDrawable(null);
-            ramView.get(3).setImageDrawable(null);
-        }
-        if(gpuView.size()==2) {
-            gpuView.get(1).setImageDrawable(null);
-        }
         driveView.get(0).setImageDrawable(null);
         driveView.get(1).setImageDrawable(null);
         driveView.get(2).setImageDrawable(null);
@@ -502,8 +682,7 @@ public class IronActivity extends AppCompatActivity {
         return popupWindow;
     }
 
-    @Override
-    public void onBackPressed() {
+    void saveData(){
         playerData.PcCaseList = StringArrayWork.ArrayListToArray(caseList);
         playerData.MotherboardList = StringArrayWork.ArrayListToArray(moboList);
         playerData.CpuList = StringArrayWork.ArrayListToArray(cpuList);
@@ -513,10 +692,25 @@ public class IronActivity extends AppCompatActivity {
         playerData.StorageDeviceList = StringArrayWork.ArrayListToArray(dataList);
         playerData.PowerSupplyList = StringArrayWork.ArrayListToArray(psuList);
         playerData.setAllData();
-
+    }
+    @Override
+    public void onBackPressed() {
+        saveData();
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        saveData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveData();
     }
 
     public void selectSlot(){
@@ -531,18 +725,28 @@ public class IronActivity extends AppCompatActivity {
 
         //set slot count
         if(typeForInstall.equals("RAM")){
-            for(int i = 1;i<=Integer.parseInt(parametersSave.MOBO.get("Кол-во слотов"));i++){
-                slotList.add(words.get("Slot")+" "+i);
+            if(parametersSave.MOBO != null) {
+                for (int i = 1; i <= Integer.parseInt(parametersSave.MOBO.get("Кол-во слотов")); i++) {
+                    slotList.add(words.get("Slot") + " " + i);
+                }
             }
         }
         if(typeForInstall.equals("GPU")){
-            for(int i = 1;i<=Integer.parseInt(parametersSave.MOBO.get("Слотов PCI"));i++){
-                slotList.add(words.get("Slot")+" "+i);
+            if(parametersSave.MOBO != null) {
+                for (int i = 1; i <= Integer.parseInt(parametersSave.MOBO.get("Слотов PCI")); i++) {
+                    slotList.add(words.get("Slot") + " " + i);
+                }
             }
         }
         if(typeForInstall.equals("DATA")) {
-            for (int i = 1; i <= Integer.parseInt(parametersSave.MOBO.get("Портов SATA")); i++) {
-                slotList.add(words.get("Slot") + " " + i);
+            if(parametersSave.MOBO != null && parametersSave.CASE != null) {
+                for (int i = 1; i <= Integer.min(Integer.parseInt(parametersSave.CASE.get("DATA")), Integer.parseInt(parametersSave.MOBO.get("Портов SATA"))); i++) {
+                    slotList.add(words.get("Slot") + " " + i);
+                }
+            } else if (parametersSave.CASE != null) {
+                for (int i = 1; i <= Integer.parseInt(parametersSave.CASE.get("DATA")); i++) {
+                    slotList.add(words.get("Slot") + " " + i);
+                }
             }
         }
 
