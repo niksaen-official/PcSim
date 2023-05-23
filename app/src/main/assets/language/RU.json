@@ -359,5 +359,12 @@
   "HSoftStore": "HSoftStore",
   "Sale": "Продать",
   "Cooler * 3": "Кулер * 3",
-  "You have nothing to sell": "Вам нечего продавать"
+  "You have nothing to sell": "Вам нечего продавать",
+  "Antivirus": "Антивирус",
+  "List of detected threats": "Список обнаруженных угроз",
+  "Real time protection": "Защита в реальном времени",
+  "Find threats": "Найти угрозы",
+  "Confirm": "Подтверждение",
+  "Delete": "Удалить",
+  "Confirm deletion": "Подтвердите удаление"
 }

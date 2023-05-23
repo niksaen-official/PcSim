@@ -42,7 +42,13 @@ public class DriverInstallerExtended {
         };
         if(command.startsWith("install.")){
             command = command.replace("install.","");
-            int finalStoragePos = currentStoragePos;
+
+            int finalStoragePos;
+            if(cmd.storageSlot >-1){
+                finalStoragePos = cmd.storageSlot;
+            }else {
+                finalStoragePos = currentStoragePos;
+            }
             Timer timer = new Timer();
             TimerTask task;
             Runnable action;

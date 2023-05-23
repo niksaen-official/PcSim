@@ -34,21 +34,20 @@ public class CMD_Adapter extends ArrayAdapter<String> {
         textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"));
         textView.setTextSize(27);
         textView.setPadding(12,12,12,12);
-        if(strings.get(position).startsWith(CMD.ERROR)) {
-            textView.setTextColor(Color.RED);
-            textView.setText(strings.get(position).replace(CMD.ERROR,""));
-        }
-        else if(strings.get(position).startsWith(CMD.WARN)) {
-            textView.setTextColor(Color.YELLOW);
-            textView.setText(strings.get(position).replace(CMD.WARN,""));
-        }
-        else if(strings.get(position).startsWith(CMD.SUCCESS)) {
-            textView.setTextColor(Color.GREEN);
-            textView.setText(strings.get(position).replace(CMD.SUCCESS,""));
-        }
-        else{
-            textView.setTextColor(Color.WHITE);
-            textView.setText(strings.get(position));
+        if(strings.get(position) != null) {
+            if (strings.get(position).startsWith(CMD.ERROR)) {
+                textView.setTextColor(Color.RED);
+                textView.setText(strings.get(position).replace(CMD.ERROR, ""));
+            } else if (strings.get(position).startsWith(CMD.WARN)) {
+                textView.setTextColor(Color.YELLOW);
+                textView.setText(strings.get(position).replace(CMD.WARN, ""));
+            } else if (strings.get(position).startsWith(CMD.SUCCESS)) {
+                textView.setTextColor(Color.GREEN);
+                textView.setText(strings.get(position).replace(CMD.SUCCESS, ""));
+            } else {
+                textView.setTextColor(Color.WHITE);
+                textView.setText(strings.get(position));
+            }
         }
         textView.setBackgroundColor(Color.parseColor("#1B1B1B"));
         return textView;

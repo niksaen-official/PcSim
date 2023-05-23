@@ -150,6 +150,33 @@ public class Pc {
                     }
                 }
             }
+            else if (command.equals("content")){
+                if(cmd.storageSlot >-1) {
+                    int slot = cmd.storageSlot;
+                    HashMap<String, String> buff = StorageDeviceList[slot];
+                    if (buff != null) {
+                        cmd.success(activity.words.get("Storage device content:"));
+                        for (String str : buff.get("Содержимое").split(",")) {
+                            if (str.startsWith(DriverInstaller.DriversPrefix)) {
+                                str = str.replace(DriverInstaller.DriverForCPU, activity.words.get(DriverInstaller.DriverForCPU));
+                                str = str.replace(DriverInstaller.DriverForGPU, activity.words.get(DriverInstaller.DriverForGPU));
+                                str = str.replace(DriverInstaller.DriverForMotherboard, activity.words.get(DriverInstaller.DriverForMotherboard));
+                                str = str.replace(DriverInstaller.DriverForStorageDevices, activity.words.get(DriverInstaller.DriverForStorageDevices));
+                                str = str.replace(DriverInstaller.DriverForRAM, activity.words.get(DriverInstaller.DriverForRAM));
+                                str = str.replace(DriverInstaller.BASE_TYPE, activity.words.get(DriverInstaller.BASE_TYPE));
+                                str = str.replace(DriverInstaller.EXTENDED_TYPE, activity.words.get(DriverInstaller.EXTENDED_TYPE));
+                                cmd.output(str);
+                            } else if (str.startsWith("virus.")) {
+                                cmd.output(str);
+                            } else {
+                                cmd.output(activity.words.get(str));
+                            }
+                        }
+                    } else {
+                        cmd.error(activity.words.get("Drive not found"));
+                    }
+                }else cmd.error(activity.words.get("The command was entered incorrectly"));
+            }
             else if (command.startsWith("content:")) {
                 command = command.replace("content:", "");
                 int slot = Integer.parseInt(command);
@@ -191,6 +218,21 @@ public class Pc {
                     cmd.error(activity.words.get("Drive not found"));
                 }
             }
+            else if (command.startsWith("clear")) {
+                if(cmd.storageSlot >-1) {
+                    int finalStoragePos = cmd.storageSlot;
+                    if (StorageDeviceList[finalStoragePos] != null) {
+                        StorageDeviceList[finalStoragePos].put("Содержимое", "");
+                        activity.pcParametersSave.setData(StorageDeviceList[finalStoragePos].get("name"), StorageDeviceList[finalStoragePos]);
+                        if (StorageDeviceList[finalStoragePos].get("MainDisk") == "true") {
+                            activity.styleSave.resetAllStyle();
+                        }
+                        cmd.success(activity.words.get("Drive cleaned"));
+                    } else {
+                        cmd.error(activity.words.get("Drive not found"));
+                    }
+                }else cmd.error(activity.words.get("The command was entered incorrectly"));
+            }
             else if (command.startsWith("remove:")) {
                 String programRemove = command.replace("remove:", "");
                 if(StorageDeviceList[storagePos].get("Содержимое").contains(Installer.getProgramsId(activity).get(programRemove)+",")) {
@@ -200,14 +242,32 @@ public class Pc {
                                             .get("Содержимое")
                                             .replace(Installer.getProgramsId(activity).get(programRemove) + ",", ""));
                     cmd.success("Program removed from drive");
+                    activity.pcParametersSave.setData(StorageDeviceList[storagePos].get("name"),StorageDeviceList[storagePos]);
+                }else {
+                    cmd.error(activity.words.get("Program not found"));
+                }
+            }
+            else if (command.startsWith("remove_from_drive:")) {
+                String[] buff = command.replace("remove_from_drive:", "").split(",");
+                storagePos = Integer.parseInt(buff[0]);
+                String programRemove = buff[1];
+                if(StorageDeviceList[storagePos].get("Содержимое").contains(Installer.getProgramsId(activity).get(programRemove)+",")) {
+                    StorageDeviceList[storagePos]
+                            .put("Содержимое",
+                                    StorageDeviceList[storagePos]
+                                            .get("Содержимое")
+                                            .replace(Installer.getProgramsId(activity).get(programRemove) + ",", ""));
+                    activity.pcParametersSave.setData(StorageDeviceList[storagePos].get("name"),StorageDeviceList[storagePos]);
+                    cmd.success("Program removed from drive");
                 }else {
                     cmd.error(activity.words.get("Program not found"));
                 }
             }
             else if (command.startsWith("select_slot:")) {
-                storagePos = Integer.parseInt(command.replace("select_storage_slot:", ""));
+                storagePos = Integer.parseInt(command.replace("select_slot:", ""));
                 if (StorageDeviceList[storagePos] != null) {
                     cmd.success(activity.words.get("Drive selected"));
+                    cmd.storageSlot = storagePos;
                 } else {
                     cmd.error(activity.words.get("Drive not found"));
                 }

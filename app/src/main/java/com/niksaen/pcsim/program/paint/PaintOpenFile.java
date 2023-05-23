@@ -2,6 +2,7 @@ package com.niksaen.pcsim.program.paint;
 
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -30,7 +31,6 @@ public class PaintOpenFile extends Program {
     private  ListView listView;
 
     private void initView(){
-        titleTextView = mainWindow.findViewById(R.id.title);
         openButton = mainWindow.findViewById(R.id.button4);
         listView = mainWindow.findViewById(R.id.listView);
         pageDown = mainWindow.findViewById(R.id.pageDown);
@@ -59,6 +59,7 @@ public class PaintOpenFile extends Program {
     private String buffPathOpen = "";
     private View buff;
     public void initProgram(){
+        mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_for_open_file,null);
         initView();
         style();
         listView.setOnItemClickListener((parent, view, position, id) -> {

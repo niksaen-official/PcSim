@@ -18,6 +18,7 @@ import java.util.TimerTask;
 
 public class Installer {
     static String storagePos = "0";
+    static boolean close = false;
     public static void start(MainActivity activity, CMD cmd, String command){
         command = command.replace("installer.","");
         HashMap<String, HashMap<String,String>> storage = new HashMap<>();
@@ -35,7 +36,8 @@ public class Installer {
         if(activity.pcParametersSave.DATA5 != null) storage.put(activity.pcParametersSave.DATA5.get("name"),activity.pcParametersSave.DATA5);
         if(activity.pcParametersSave.DATA6 != null) storage.put(activity.pcParametersSave.DATA6.get("name"),activity.pcParametersSave.DATA6);
         if(command.startsWith("install:")){
-            cmd.output("Preparing to install ...");
+            cmd.output(activity.words.get("Preparing to install ..."));
+            if(cmd.storageSlot >-1) storagePos = String.valueOf(cmd.storageSlot);
             String programId = command.replace("install:","").trim();
             if(programId.startsWith("gstore.")){
                 cmd.error(activity.words.get("Download package not found"));
@@ -49,7 +51,10 @@ public class Installer {
                         cmd.success(activity.words.get("Enough space for installation"));
                         progress[0] += 2;
                     }
-                    else {cmd.error(activity.words.get("Not enough space for installation"));return;}
+                    else {
+                        cmd.error(activity.words.get("Not enough space for installation"));
+                        return;
+                    }
                     Timer timer = new Timer();
                     Timer timer1 = new Timer();
                     TimerTask unpacking = new TimerTask() {@Override public void run() {activity.runOnUiThread(() -> {
@@ -61,6 +66,9 @@ public class Installer {
                                     storage.get(storagePos).put("Содержимое", storage.get(storagePos).get(("Содержимое")) + program + ",");
                                     activity.pcParametersSave.setData(storage.get(storagePos).get("name"), storage.get(storagePos));
                                     cmd.success(activity.words.get("Installation completed"));
+                                    if(close){
+                                        cmd.logic("cmd.close");
+                                    }
                                     timer1.cancel();
                                 }
                             });}};
@@ -136,6 +144,16 @@ public class Installer {
                     cmd.success(activity.words.get("Drive selected"));
                 } else {
                     cmd.error(activity.words.get("Drive not found"));
+                }
+            }
+            else if (command.startsWith("close_after_install:")){
+                command = command.replace("close_after_install:","");
+                if(command.equals("true")){
+                    close = true;
+                }else if(command.equals("false")){
+                    close = false;
+                }else {
+                    cmd.error(activity.words.get("The command was entered incorrectly"));
                 }
             }
             else cmd.error(activity.words.get("The command was entered incorrectly"));

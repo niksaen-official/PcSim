@@ -47,6 +47,9 @@ public class InstallerFromDrive {
             command = command.replace("prepare.","");
             if (command.startsWith("get_disk")){
                 if(activity.DiskInDrive != null) {
+                    if(cmd.storageSlot >-1){
+                        storagePos = String.valueOf(cmd.storageSlot);
+                    }
                     cmd.success(activity.words.get("Disc selected"));
                     disk = activity.DiskInDrive;
                     if(disk.contains("OS Installer Simplified")){

@@ -17,6 +17,7 @@ import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.RAM_Overclocking;
 import com.niksaen.pcsim.program.TemperatureViewer;
 import com.niksaen.pcsim.program.ViewPowerSupplyLoad;
+import com.niksaen.pcsim.program.antivirus.Antivirus;
 import com.niksaen.pcsim.program.appDownloader.AppDownloader;
 import com.niksaen.pcsim.program.calculator.Calculator;
 import com.niksaen.pcsim.program.deviceManager.DeviceManager;
@@ -68,7 +69,7 @@ public class ProgramListAndData {
             "Calculator",
             "GStore"
     };
-    /*список платных программ*/
+    /**список платных программ*/
     public static String[] DontFreeAppList = {
             "Tic Tac Toe",
             "CPU Overclocking",
@@ -137,6 +138,7 @@ public class ProgramListAndData {
         programIcon.put("App manager",R.drawable.icon_default);
         programIcon.put("Warning",R.drawable.icon_warning);
         programIcon.put("Error",R.drawable.icon_error);
+        programIcon.put("Confirm",R.drawable.icon_default);
         programIcon.put("Calculator",R.drawable.icon_calculator);
         programIcon.put("Tic Tac Toe",R.drawable.icon_tictactoe);
         programIcon.put("GStore",R.drawable.icon_gamestore);
@@ -151,6 +153,7 @@ public class ProgramListAndData {
         programIcon.put("Snake",R.drawable.snake_icon);
         programIcon.put("Memory",R.drawable.memory_icon);
         programIcon.put("HSoftStore",R.drawable.icon_downloader);
+        programIcon.put("Antivirus",R.drawable.antivirus);
 
         //вес програм и игр
         programSize.put("Benchmark",2f);
@@ -192,8 +195,13 @@ public class ProgramListAndData {
         programSize.put("virus.rad",0.1f);
         programSize.put("virus.rtos",0.1f);
         programSize.put("virus.ltmp",0.1f);
+        programSize.put("virus.dwm",0.1f);
+        programSize.put("virus.dd",0.1f);
+        programSize.put("virus.dvc",0.1f);
+        programSize.put("virus.cadartc",0.1f);
         programSize.put("virus.rcs",0.1f);
         programSize.put("virus.toc30sas",0.1f);
+        programSize.put("Antivirus",2f);
     }
 
     /** классы программ*/
@@ -238,5 +246,6 @@ public class ProgramListAndData {
         programHashMap.put("virus.cadartc",new CADARTC(activity));
         programHashMap.put("virus.toc30sas",new TOC30SAS(activity));
         programHashMap.put("HSoftStore",new HSoftStore(activity));
+        programHashMap.put("Antivirus",new Antivirus(activity));
     }
 }

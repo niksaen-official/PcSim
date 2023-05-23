@@ -65,7 +65,7 @@ public class ToolbarAdapter  extends  RecyclerView.Adapter<ToolbarAdapter.ViewHo
         return activity.programArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public final ImageView app_icon;
         public final TextView app_name;
 

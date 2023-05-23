@@ -31,6 +31,7 @@ public class CMD extends Program {
     public static final String WINDOW = "WINDOW";
     public static final String AUTO = "AUTO";
     public static final String SEMI_AUTO_OS = "SEMI_AUTO_OS";
+    public static final String AUTO_BACKGROUND = "AUTO_BACKGROUND";
     String Type = OS;
     public void setType(String type) { Type = type; }
 
@@ -40,7 +41,7 @@ public class CMD extends Program {
 
     public String[] commandList = {};
     public String buffer;
-    public boolean isCompile = false;
+    public int storageSlot = -1;
     public CMD(MainActivity activity) {
         super(activity);
         Title = "CMD";
@@ -88,6 +89,19 @@ public class CMD extends Program {
                     logic(command);
                 }
                 break;
+            case AUTO_BACKGROUND:{
+                mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_cmd, null);
+                super.initProgram();
+                initView();
+                style();
+                enter.setClickable(false);
+                for (String command : commandList) {
+                    input.setText(command);
+                    logic();
+                }
+                super.Type = Program.BACKGROUND;
+                break;
+            }
             default:
                 mainWindow = LayoutInflater.from(activity).inflate(R.layout.os_console, null);
                 break;

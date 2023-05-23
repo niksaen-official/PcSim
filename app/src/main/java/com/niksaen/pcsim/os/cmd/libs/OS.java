@@ -28,12 +28,13 @@ public class OS {
                 }
             }
             else if(command.startsWith("autorun.")){
-                if(activity.programArrayList.get(0).Title.contains(NapiOS.TITLE) || activity.programArrayList.get(0).Title.contains(LiriOS.TITLE)) {
+                if(activity.programArrayList.get(0).Title.contains(NapiOS.TITLE)
+                        || activity.programArrayList.get(0).Title.contains(LiriOS.TITLE)) {
                     command = command.replace("autorun.", "");
                     if (command.startsWith("add:")) {
                         if (activity.programArrayList.get(0).Title.equals(NapiOS.TITLE)) {
                             NapiOS os = (NapiOS) activity.programArrayList.get(0);
-                            if(os.settings.addToAutoRun(command.replace("add:", "").trim())){
+                            if(os.settings.addToAutoRun(command.replace("add:", ""))){
                                 cmd.success(activity.words.get("Program added to autorun"));
                             }
                             else {
@@ -41,7 +42,7 @@ public class OS {
                             }
                         } else {
                             LiriOS os = (LiriOS) activity.programArrayList.get(0);
-                            if(os.settings.addToAutoRun(command.replace("add:", "").trim())){
+                            if(os.settings.addToAutoRun(command.replace("add:", ""))){
                                 cmd.success(activity.words.get("Program added to autorun"));
                             }
                             else {
@@ -57,7 +58,7 @@ public class OS {
                         } else {
                             LiriOS os = (LiriOS) activity.programArrayList.get(0);
                             os.settings.removeAutoRunList(command.replace("remove:", "").trim());
-                            cmd.success(activity.words.get("Program added to autorun"));
+                            cmd.success(activity.words.get("Program removed to autorun"));
                         }
                     }
                     else if (command.equals("clear")) {

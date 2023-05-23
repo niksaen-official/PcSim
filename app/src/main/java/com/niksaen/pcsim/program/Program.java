@@ -14,6 +14,7 @@ import com.niksaen.pcsim.classes.Others;
 import com.niksaen.pcsim.classes.PortableView;
 import com.niksaen.pcsim.os.MakOS;
 import com.niksaen.pcsim.os.cmd.CMD;
+import com.niksaen.pcsim.os.cmd.libs.Base;
 
 /*
 * Базовый класс для создания программ
@@ -91,12 +92,13 @@ public class Program {
 
         //настройка базовой части стиля программы
         titleTextView.setText(activity.words.get(Title));
-        titleTextView.setTypeface(Typeface.createFromAsset(activity.getAssets(), "fonts/pixelFont.ttf"), Typeface.BOLD);
+        titleTextView.setTypeface(activity.font, Typeface.BOLD);
         titleTextView.setTextColor(activity.styleSave.TitleColor);
         mainWindow.setBackgroundColor(activity.styleSave.ColorWindow);
         buttonClose.setBackgroundResource(activity.styleSave.CloseButtonImageRes);
         buttonFullscreenMode.setBackgroundResource(activity.styleSave.FullScreenMode1ImageRes);
         buttonRollUp.setBackgroundResource(activity.styleSave.RollUpButtonImageRes);
+        mainWindow.setOnClickListener(view -> {});
     }
 
     /** открытие программы*/

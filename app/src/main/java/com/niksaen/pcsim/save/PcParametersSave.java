@@ -6,15 +6,13 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.niksaen.pcsim.classes.AssetFile;
-import com.niksaen.pcsim.classes.StringArrayWork;
-import com.niksaen.pcsim.classes.adapters.CartAdapters;
-import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
-import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.classes.ProgramListAndData;
+import com.niksaen.pcsim.classes.StringArrayWork;
+import com.niksaen.pcsim.program.Program;
+import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -24,7 +22,7 @@ import java.util.Objects;
  **/
 
 public class PcParametersSave {
-    private OSSettings osSettings;
+    private final OSSettings osSettings;
     public boolean pcWork = false;
     public int ramCanals;
     public String Case,Mobo,Cpu,Cooler,Ram1,Ram2,Ram3,Ram4,Gpu1,Gpu2,Data1,Data2,Data3,Data4,Data5,Data6,Psu;

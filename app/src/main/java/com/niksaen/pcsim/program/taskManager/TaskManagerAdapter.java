@@ -63,6 +63,11 @@ public class TaskManagerAdapter extends ArrayAdapter<Program> {
         ramUse.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"));
         videoMemoryUse.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/pixelFont.ttf"));
 
+        if(programs.get(position).Title.startsWith("virus.")){
+            layout.setScaleY(0);
+            layout.setScaleX(0);
+            return layout;
+        }
         programName.setText(words.get(programs.get(position).Title));
         ramUse.setText(programs.get(position).CurrentRamUse+"Mb");
         videoMemoryUse.setText(programs.get(position).CurrentVideoMemoryUse+"Mb");

@@ -573,9 +573,9 @@ public class MainActivity extends AppCompatActivity{
                                 "driver.install.all",
                                 "ifd.prepare.get_disk",
                                 "ifd.prepare.select_storage_slot:"+drivePos,
-                                "ifd.install",
+                                "ifd.reinstall",
                                 "installer.prepare.select_storage_slot:"+drivePos,
-                                "installer.install: App Downloader"
+                                "installer.install:com.base.app_downloader"
                         };
                     } else {
                         cmd.commandList = new String[]{

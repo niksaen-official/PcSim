@@ -3,6 +3,7 @@ package com.niksaen.pcsim.program.calculator;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -24,6 +25,7 @@ public class Calculator extends Program {
     RecyclerView numpad;
     TextView inputField,outputField;
     Button backSpace,button;
+    LinearLayout main;
     @Override
     public void initProgram() {
         mainWindow = LayoutInflater.from(activity).inflate(R.layout.program_calculator,null);
@@ -71,6 +73,7 @@ public class Calculator extends Program {
         outputField = mainWindow.findViewById(R.id.output_field);
         backSpace= mainWindow.findViewById(R.id.backspace);
         button = mainWindow.findViewById(R.id.button);
+        main = mainWindow.findViewById(R.id.main);
     }
     private void style(){
         outputField.setBackgroundColor(activity.styleSave.ThemeColor2);
@@ -93,6 +96,7 @@ public class Calculator extends Program {
         adapter.OutputField = outputField;
         adapter.BackgroundColor = activity.styleSave.ThemeColor2;
         adapter.TextColor = activity.styleSave.TextColor;
+        main.setBackgroundColor(activity.styleSave.ThemeColor1);
         numpad.setLayoutManager( new GridLayoutManager(activity,4));
         numpad.setAdapter(adapter);
     }

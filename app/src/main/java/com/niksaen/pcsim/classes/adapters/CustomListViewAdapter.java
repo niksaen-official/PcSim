@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.niksaen.pcsim.program.antivirus.Antivirus;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -39,7 +41,6 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
     }
 
 
-
     @Override
     public int getCount() {
         return strings.length;
@@ -61,6 +62,7 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
         textView.setTextColor(TextColor);
         textView.setPadding(12,12,12,12);
         textView.setTextColor(TextColor);
+        textView.setTextSize(TextSize);
         textView.setBackgroundColor(BackgroundColor1);
         textView.setText(strings[position]);
         return textView;

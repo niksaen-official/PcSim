@@ -90,8 +90,8 @@ class HSoftSetupWindow(activity: MainActivity) : Program(activity) {
                         setupText += "${activity.words["Uploaded"]}: $downloadArchiveProgress%\n"
                     } else {
                         setupText = setupText.replace(
-                            "${activity.words["Uploaded"]}: ${downloadArchiveProgress - 1}%",
-                            "${activity.words["Uploaded"]}: $downloadArchiveProgress%"
+                            "${activity.words["Uploaded"]}: ${downloadArchiveProgress - 1}%\n",
+                            "${activity.words["Uploaded"]}: $downloadArchiveProgress%\n"
                         )
                     }
                     if (downloadArchiveProgress % 10 == 0) {

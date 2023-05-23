@@ -9,11 +9,17 @@
 
     <style name="buttonStyle1">
         <item name="android:textColor">#FFFFFF</item>
+        <item name="fontFamily">@font/pixel_font</item>
         <item name="android:textSize">27sp</item>
     </style>
     <style name="SeekBarMusic" parent="Widget.AppCompat.SeekBar">
         <item name="colorPrimary">#0D47A1</item>
         <item name="colorPrimaryDark">#0D47A1</item>
         <item name="colorAccent">#1A237E</item>
+    </style>
+    <style name="Program">
+        <item name="fontFamily">@font/pixel_font</item>
+        <item name="android:textSize">27sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

@@ -109,7 +109,7 @@ public class PaintSaveFile extends Program {
             }
         });
         pageDown.setOnClickListener(v -> {
-            if (buffPath2.contains("/storage/emulated/0/") && buffPath2 != "/storage/emulated/0/") {
+            if (buffPath2.contains("/storage/emulated/0/") && !buffPath2.equals("/storage/emulated/0/")) {
                 v.setVisibility(View.VISIBLE);
                 buffPath2 = buffPath2.substring(0, buffPath2.lastIndexOf("/"));
                 FileUtil.listDir(buffPath2, folders);

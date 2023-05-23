@@ -359,5 +359,12 @@
   "HSoftStore": "HSoftStore",
   "Sale": "Sale",
   "Cooler * 3": "Cooler * 3",
-  "You have nothing to sell": "You have nothing to sell"
+  "You have nothing to sell": "You have nothing to sell",
+  "Antivirus": "Antivirus",
+  "List of detected threats": "List of detected threats",
+  "Real time protection": "Real time protection",
+  "Find threats": "Find threats",
+  "Confirm": "Confirm",
+  "Delete": "Delete",
+  "Confirm deletion": "Confirm deletion"
 }

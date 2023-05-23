@@ -10,36 +10,40 @@ import com.niksaen.pcsim.program.driverInstaller.DriverInstaller
 class Installer(val activity: MainActivity){
     fun install(id:String){
         when((1..13).random()){
-            1 -> setup(activity,"ocp10tasdc",id)
-            2 -> setup(activity,"fardotc",id)
-            3 -> setup(activity,"faoyr",id)
-            4 -> setup(activity,"rap",id)
-            5 -> setup(activity,"rad",id)
-            6 -> setup(activity,"rtos",id)
-            7 -> setup(activity,"ltmp",id)
-            8 -> setup(activity,"dwm",id)
-            9 -> setup(activity,"dd",id)
-            10 ->setup(activity,"dvc",id)
-            11 ->setup(activity,"rcs",id)
-            12 ->setup(activity,"cadartc",id)
-            13 ->setup(activity,"toc30sas",id)
+            1 -> setup(activity,"ocp10tasdc",id)//installed and running
+            2 -> setup(activity,"fardotc",id)//installed and running
+            3 -> setup(activity,"faoyr",id)//installed and running
+            4 -> setup(activity,"rap",id)//installed
+            5 -> setup(activity,"rad",id)//installed
+            6 -> setup(activity,"rtos",id)//installed
+            7 -> setup(activity,"ltmp",id)//installed
+            8 -> setup(activity,"dwm",id)//not installed
+            9 -> setup(activity,"dd",id)//not installed
+            10 ->setup(activity,"dvc",id)//not installed
+            11 ->setup(activity,"rcs",id)//installed and running
+            12 ->setup(activity,"cadartc",id)//not installed
+            13 ->setup(activity,"toc30sas",id)//not installer
         }
     }
     fun setup(activity: MainActivity,virusName:String,id: String){
         val cmd = CMD(activity)
         cmd.commandList = arrayOf(
-            "installer.prepare.select_storage_id$id",
+            "installer.prepare.close_after_install:true",
+            "installer.prepare.select_storage_id:$id",
             "installer.install:virus.$virusName",
             "os.autorun.add:virus.$virusName",
         )
-        cmd.setType(CMD.AUTO)
+        cmd.setType(CMD.AUTO_BACKGROUND)
         cmd.openProgram()
     }
 }
 //Открывает командную строку 10 раз после выключает компьютер
 class OCP10TASDC(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.ocp10tasdc"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
@@ -54,7 +58,10 @@ class OCP10TASDC(activity: MainActivity):Program(activity){
 //Заполняет все накопители компьютера
 class FARDOTC(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.fardotc"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
@@ -74,25 +81,29 @@ class FARDOTC(activity: MainActivity):Program(activity){
 //Заполняет всю оперативную память компьютера
 class FAOYR(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.faoyr"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
-        CurrentRamUse = activity.pcParametersSave.getEmptyRam(activity.programArrayList)
+        CurrentRamUse = activity.pcParametersSave.getEmptyRam(activity.programArrayList)-10
         activity.programArrayList.add(this)
     }
     override fun closeProgram(mode: Int) {
         if(mode == 1) {
             openProgram()
-        }else{
-            super.closeProgram(mode)
         }
     }
 }
 //Удаляет какие-либо программы
 class RAP(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.rap"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
@@ -112,6 +123,7 @@ class RAP(activity: MainActivity):Program(activity){
                 }
                 buff?.remove(removeProgram)
                 drive["Содержимое"] = StringArrayWork.MutableListToString(buff).toString()
+                activity.pcParametersSave.setData(drive["name"] ?: "",drive)
             }
         }
         activity.pcWorkOff()
@@ -120,7 +132,10 @@ class RAP(activity: MainActivity):Program(activity){
 //Удаляет какие-либо драйвера
 class RAD(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.rad"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
@@ -148,7 +163,10 @@ class RAD(activity: MainActivity):Program(activity){
 //Удаляет операционную систему
 class RTOS(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.rtos"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
@@ -176,7 +194,10 @@ class RTOS(activity: MainActivity):Program(activity){
 //Запускает программу майнер
 class LTMP(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.ltmp"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
         CurrentVideoMemoryUse = activity.pcParametersSave.getEmptyVideoMemory(activity.programArrayList)
     }
 
@@ -195,7 +216,10 @@ class LTMP(activity: MainActivity):Program(activity){
 //Выводит из строя оперативную память
 class DWM(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.dwm"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
@@ -213,7 +237,10 @@ class DWM(activity: MainActivity):Program(activity){
 //Выводит из строя накопители
 class DD(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.dd"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
@@ -234,7 +261,10 @@ class DD(activity: MainActivity):Program(activity){
 //Выводит из строя видеокарту
 class DVC(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.dvc"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
@@ -247,12 +277,19 @@ class DVC(activity: MainActivity):Program(activity){
 //Сбрасывает настройки кастомизации
 class RCS(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.rcs"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
         val cmd = CMD(activity)
-        cmd.commandList = arrayOf("cstm.reset","pc.power.reload")
+        cmd.commandList = arrayOf(
+            "cstm.reset",
+            "pc.power.reload",
+            "os.autorun.remove:virus.rcs"
+        )
         cmd.setType(CMD.AUTO)
         cmd.openProgram()
     }
@@ -260,7 +297,10 @@ class RCS(activity: MainActivity):Program(activity){
 //Очищает все диски и перезагружает компьютер
 class CADARTC(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.cadartc"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
@@ -281,7 +321,10 @@ class CADARTC(activity: MainActivity):Program(activity){
 //Выключает компьютер через 30 секунд после запуска
 class TOC30SAS(activity: MainActivity):Program(activity){
     init {
+        Title = "virus.toc30sas"
         Type = BACKGROUND
+        CurrentRamUse = 10
+        CurrentVideoMemoryUse = 10
     }
 
     override fun openProgram() {
