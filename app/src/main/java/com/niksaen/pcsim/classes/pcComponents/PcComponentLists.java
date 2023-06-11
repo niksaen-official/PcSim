@@ -95,6 +95,11 @@ public class PcComponentLists {
         GraphicsCardList.add("Bsus HeForce GT 710 LP");
         GraphicsCardList.add("Qotac HeForce GT 710 Zone Edition");
         GraphicsCardList.add("Ralit HeForce GT 710");
+        GraphicsCardList.add("Bsus BMD Sadeon RX 560 AREZ");
+        GraphicsCardList.add("Bsus BMD Sadeon S7 240 OC LP");
+        GraphicsCardList.add("Bsus HeForce GT 1030 LP");
+        GraphicsCardList.add("NSI HeForce GTX 1050 OC");
+        GraphicsCardList.add("Ralit HeForce GTX 1050 Ti MONSTER");
         GraphicsCardList.add("CFA2 HeForce RTX 2080 Ti HOF");
     }
 
@@ -126,5 +131,6 @@ public class PcComponentLists {
         DiskList.add(LiriOS.TITLE+" Installer");
         DiskList.add(LiriOS.TITLE+" Installer Simplified");
         DiskList.add(MakOS.TITLE+" Installer");
+        DiskList.add("Antivirus Installer");
     }
 }

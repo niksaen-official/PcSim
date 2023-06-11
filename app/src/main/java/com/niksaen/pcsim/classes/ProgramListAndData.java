@@ -13,6 +13,7 @@ import com.niksaen.pcsim.program.Benchmark;
 import com.niksaen.pcsim.program.Browser;
 import com.niksaen.pcsim.program.CPU_Overclocking;
 import com.niksaen.pcsim.program.GPU_Overclocking;
+import com.niksaen.pcsim.program.InstallFD;
 import com.niksaen.pcsim.program.Program;
 import com.niksaen.pcsim.program.RAM_Overclocking;
 import com.niksaen.pcsim.program.TemperatureViewer;
@@ -67,7 +68,8 @@ public class ProgramListAndData {
             "App Downloader",
             "Disk manager",
             "Calculator",
-            "GStore"
+            "GStore",
+            "InstallFD"
     };
     /**список платных программ*/
     public static String[] DontFreeAppList = {
@@ -154,8 +156,10 @@ public class ProgramListAndData {
         programIcon.put("Memory",R.drawable.memory_icon);
         programIcon.put("HSoftStore",R.drawable.icon_downloader);
         programIcon.put("Antivirus",R.drawable.antivirus);
+        programIcon.put("InstallFD",R.drawable.icon_default);
 
         //вес програм и игр
+        programSize.put("InstallFD",0.75f);
         programSize.put("Benchmark",2f);
         programSize.put("HSoftStore",0.2f);
         programSize.put("Browser",0.5f);
@@ -169,7 +173,7 @@ public class ProgramListAndData {
         programSize.put("Music player",1.9f);
         programSize.put("Video player",1.6f);
         programSize.put("Notepad",1.1f);
-        programSize.put("Personalization",5f);
+        programSize.put("Personalization",1.5f);
         programSize.put("Paint",3.9f);
         programSize.put("Task Manager",0.23f);
         programSize.put("App Downloader",0.1f);
@@ -202,6 +206,7 @@ public class ProgramListAndData {
         programSize.put("virus.rcs",0.1f);
         programSize.put("virus.toc30sas",0.1f);
         programSize.put("Antivirus",2f);
+        programSize.put("Antivirus Installer",1f);
     }
 
     /** классы программ*/
@@ -247,5 +252,6 @@ public class ProgramListAndData {
         programHashMap.put("virus.toc30sas",new TOC30SAS(activity));
         programHashMap.put("HSoftStore",new HSoftStore(activity));
         programHashMap.put("Antivirus",new Antivirus(activity));
+        programHashMap.put("InstallFD",new InstallFD(activity));
     }
 }

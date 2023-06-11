@@ -298,7 +298,7 @@
   "Drivers for:": "Драйвера для:",
   "Select the type of drivers, the drive to install them and the accessories for which you want to install the drivers": "Выберите тип драйверов, накопитель для их установки и комплектующие для которых вы хотите установить драйвера",
   "Choose which drivers you want to install": "Выберите какие драйвера вы хотите установить",
-  "Installation": "Установка ",
+  "Installation": "Установка",
   "Driver installer:Description": "Программа для установки и обновления драйверов на ваш ПК без использования консоли",
   "You lose": "Вы проиграли",
   "You win": "Вы выиграли",
@@ -359,6 +359,7 @@
   "HSoftStore": "HSoftStore",
   "Sale": "Продать",
   "Cooler * 3": "Кулер * 3",
+  "Cooler * 2":"Кулер * 2",
   "You have nothing to sell": "Вам нечего продавать",
   "Antivirus": "Антивирус",
   "List of detected threats": "Список обнаруженных угроз",
@@ -366,5 +367,8 @@
   "Find threats": "Найти угрозы",
   "Confirm": "Подтверждение",
   "Delete": "Удалить",
-  "Confirm deletion": "Подтвердите удаление"
+  "Confirm deletion": "Подтвердите удаление",
+  "Automatic removal of threats": "Автоматическое удаление угроз",
+  "InstallFD": "InstallFD",
+  "Antivirus Installer": "Antivirus Installer"
 }

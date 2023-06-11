@@ -27,6 +27,13 @@ public class PlayerData {
     public PlayerData(Context context){
         preferences = context.getSharedPreferences("PlayerData",Context.MODE_PRIVATE);
         getAllData();
+        PcCaseList = Others.clearItemsThatContain(PcCaseList,"[Сломано]");
+        MotherboardList = Others.clearItemsThatContain(MotherboardList,"[Сломано]");
+        CpuList = Others.clearItemsThatContain(CpuList,"[Сломано]");
+        RamList = Others.clearItemsThatContain(RamList,"[Сломано]");
+        GraphicsCardList = Others.clearItemsThatContain(GraphicsCardList,"[Сломано]");
+        StorageDeviceList = Others.clearItemsThatContain(StorageDeviceList,"[Сломано]");
+        PowerSupplyList = Others.clearItemsThatContain(PowerSupplyList,"[Сломано]");
     }
     public void getAllData(){
         PcCaseList = StringArrayWork.clearEmpty(preferences.getString("PcCaseList","").split(","));

@@ -227,7 +227,7 @@ public class InstallerFromDrive {
         if(osName.equals(NapiOS.TITLE)){
             activity.styleSave.resetAllStyle();
         }else if(osName.equals(LiriOS.TITLE)){
-            activity.styleSave.BackgroundResource = R.drawable.background2;
+            activity.styleSave.BackgroundResource = R.drawable.background1;
         }
     }
 }

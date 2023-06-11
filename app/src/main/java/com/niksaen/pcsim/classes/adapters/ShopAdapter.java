@@ -76,6 +76,9 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             holder.text.setText(words.get(getItem(position)));
             holder.icon.setImageDrawable(new AssetFile(context).getImage("icons/shop/" + strings.get(position) + ".png"));
         }
+        if(strings.get(position).contains("[Сломано]")){
+            holder.itemView.setVisibility(View.GONE);
+        }
     }
     @Override
     public int getItemCount() {

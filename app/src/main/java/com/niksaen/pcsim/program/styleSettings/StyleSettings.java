@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.classes.StringArrayWork;
+import com.niksaen.pcsim.os.MakOS;
 import com.niksaen.pcsim.os.NapiOS;
 import com.niksaen.pcsim.program.Program;
 
@@ -346,7 +347,7 @@ public class StyleSettings extends Program {
                     }
                 }
             }
-            if(StringArrayWork.ArrayListToString(activity.apps).contains(NapiOS.TITLE+",")) {
+            if(StringArrayWork.ArrayListToString(activity.apps).contains(NapiOS.TITLE+",")||StringArrayWork.ArrayListToString(activity.apps).contains(MakOS.TITLE+",")) {
                 //window settings save
                 activity.styleSave.ColorWindow = windowBackColor.currentColor;
                 activity.styleSave.CloseButtonImageRes = windowButtonColorAdapter.currentCloseButtonImageRes;

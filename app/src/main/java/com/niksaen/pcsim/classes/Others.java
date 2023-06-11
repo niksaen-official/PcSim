@@ -51,4 +51,13 @@ public class Others {
         }
         return str;
     }
+    public static String[] clearItemsThatContain(String[] arr,String str){
+        ArrayList<String> res = new ArrayList<>();
+        for (String item : arr) {
+            if (!item.endsWith(str)) {
+                res.add(item);
+            }
+        }
+        return StringArrayWork.ArrayListToArray(res);
+    }
 }
