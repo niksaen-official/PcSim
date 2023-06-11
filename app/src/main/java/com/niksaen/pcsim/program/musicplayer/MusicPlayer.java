@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.ProgressBarStylisation;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.fileWorkLib.FileUtil;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
@@ -77,10 +78,7 @@ public class MusicPlayer extends Program {
         timeText.setTypeface(activity.font);
         timeText.setTextColor(activity.styleSave.TextColor);
 
-        seekBarTime.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
-        LayerDrawable progressBarBackground = (LayerDrawable) seekBarTime.getProgressDrawable();
-        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
-        seekBarTime.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
+        ProgressBarStylisation.setStyle(seekBarTime,activity);
 
         //настройка адаптеров и перевода
         String[] fileWork = new String[]{

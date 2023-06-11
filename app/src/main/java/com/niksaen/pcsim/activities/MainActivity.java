@@ -48,6 +48,7 @@ import com.niksaen.pcsim.save.StyleSave;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -386,7 +387,7 @@ public class MainActivity extends AppCompatActivity{
     }
     public void updateDesktop() {
         desktop.setLayoutManager(new GridLayoutManager(getBaseContext(), 6));
-        if(styleSave.getDesktopProgramList()!="") {
+        if(!Objects.equals(styleSave.getDesktopProgramList(), "")) {
             desktop.setAdapter(new DesktopAdapter(this, styleSave.getDesktopProgramList().split(",")));
         }
     }

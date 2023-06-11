@@ -1,16 +1,22 @@
 package com.niksaen.pcsim.program.styleSettings;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.ProgressBarStylisation;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.os.MakOS;
 import com.niksaen.pcsim.os.NapiOS;
@@ -43,11 +50,15 @@ public class StyleSettings extends Program {
     ConstraintLayout testBackground,testWindow;
     LinearLayout testContent;
     View testLaunch,testToolbar;
-    TextView testTitle,testText,testGreeting;
+    TextView appNameLaunch,appNameToolbar;
+    ImageView appIconLaunch,appIconToolbar;
+    TextView testTitle,testText,testGreeting,desktopText;
     Button testCloseButton,testFullscreenModeButton,testRollUpButton;
     Button testButton;
     SeekBar testSeekBar;
     ProgressBar testProgressBar;
+    LinearLayout switchGroup,switchGroup1;
+    Switch switch1,switch2,switch3,switch4,switch5;
 
     private void initView(){
         mainWindow = LayoutInflater.from(activity.getBaseContext()).inflate(R.layout.program_style_settings,null);
@@ -71,6 +82,19 @@ public class StyleSettings extends Program {
         testCloseButton = mainWindow.findViewById(R.id.testButton1);
         testFullscreenModeButton = mainWindow.findViewById(R.id.testButton2);
         testRollUpButton = mainWindow.findViewById(R.id.testButton3);
+
+        switchGroup = mainWindow.findViewById(R.id.switchGroup);
+        switchGroup1 = mainWindow.findViewById(R.id.switchGroup1);
+        switch1 = mainWindow.findViewById(R.id.switch1);
+        switch2 = mainWindow.findViewById(R.id.switch2);
+        switch3 = mainWindow.findViewById(R.id.switch3);
+        switch4 = mainWindow.findViewById(R.id.switch4);
+        switch5 = mainWindow.findViewById(R.id.switch5);
+        appIconLaunch = mainWindow.findViewById(R.id.app_icon_launch);
+        appIconToolbar = mainWindow.findViewById(R.id.app_icon_toolbar);
+        appNameLaunch = mainWindow.findViewById(R.id.app_name_launch);
+        appNameToolbar = mainWindow.findViewById(R.id.app_name_toolbar);
+        desktopText = mainWindow.findViewById(R.id.desktopText);
     }
 
     //adapter
@@ -79,11 +103,18 @@ public class StyleSettings extends Program {
     BackgroundResourceGradientAdapter backgroundResourceGradientAdapter;
     BackgroundResourceImageAdapter backgroundResourceImageAdapter;
     ColorAdapter windowBackColor,launchBackColor,toolbarBackColor;
-    ProgressBarColorAdapter progressBarColorAdapter;
+    ProgressBarColorAdapter progressBarColorAdapter,progressBarBgColorAdapter;
     ButtonColorAdapter windowButtonColorAdapter;
-    TextColorAdapter titleTextColorAdapter,textColorAdapter,buttonTextColorAdapter,greetingTextColorAdapter;
+    TextColorAdapter
+            titleTextColorAdapter,
+            textColorAdapter,
+            buttonTextColorAdapter,
+            greetingTextColorAdapter,
+            launchTextColorAdapter,
+            toolbarTextColorAdapter,
+            desktopTextColorAdapter;
     ThemeAdapter themeAdapter;
-    SeekBarColorAdapter seekBarColorAdapter,seekThumbColorAdapter;
+    SeekBarColorAdapter seekBarColorAdapter,seekThumbColorAdapter,seekBarColorBgAdapter;
     EditTextAdapter editTextAdapter;
 
     //layout manager
@@ -103,14 +134,20 @@ public class StyleSettings extends Program {
         buttonTextColorAdapter = new TextColorAdapter(activity.getBaseContext(), testButton, activity.styleSave);
         themeAdapter = new ThemeAdapter(activity.getBaseContext(), new View[]{testContent, testButton}, activity.styleSave);
         launchBackColor = new ColorAdapter(activity.getBaseContext(), testLaunch, activity.styleSave, 1);
+
         toolbarBackColor = new ColorAdapter(activity.getBaseContext(), testToolbar, activity.styleSave, 2);
         progressBarColorAdapter = new ProgressBarColorAdapter(activity.getBaseContext(), testProgressBar, activity.styleSave);
         seekBarColorAdapter = new SeekBarColorAdapter(activity.getBaseContext(), testSeekBar, activity.styleSave, 0);
+        progressBarBgColorAdapter = new ProgressBarColorAdapter(activity.getBaseContext(), testProgressBar, activity.styleSave,1);
+        seekBarColorBgAdapter = new SeekBarColorAdapter(activity.getBaseContext(), testSeekBar, activity.styleSave, 2);
         seekThumbColorAdapter = new SeekBarColorAdapter(activity.getBaseContext(), testSeekBar, activity.styleSave, 1);
         greetingTextColorAdapter = new TextColorAdapter(activity.getBaseContext(), testGreeting, activity.styleSave, 2);
         editTextAdapter = new EditTextAdapter(activity.getBaseContext(), activity.styleSave);
         gridLayoutManager = new GridLayoutManager(activity.getBaseContext(),10);
         linearLayoutManager = new LinearLayoutManager(activity.getBaseContext());
+        launchTextColorAdapter = new TextColorAdapter(activity.getBaseContext(), appNameLaunch, activity.styleSave, 4);
+        toolbarTextColorAdapter = new TextColorAdapter(activity.getBaseContext(), appNameToolbar, activity.styleSave, 3);
+        desktopTextColorAdapter = new TextColorAdapter(activity.getBaseContext(), desktopText, activity.styleSave, 5);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
     }
 
@@ -122,10 +159,26 @@ public class StyleSettings extends Program {
         testGreeting.setTypeface(activity.font,Typeface.BOLD);
         testText.setTypeface(activity.font,Typeface.BOLD);
         testTitle.setTypeface(activity.font,Typeface.BOLD);
+        switch1.setTypeface(activity.font);
+        switch2.setTypeface(activity.font);
+        switch3.setTypeface(activity.font);
+        switch4.setTypeface(activity.font);
+
+        switchGroup.setVisibility(View.GONE);
+        switchGroup1.setVisibility(View.GONE);
+        switch1.setTextColor(activity.styleSave.TextColor);
+        switch2.setTextColor(activity.styleSave.TextColor);
+        switch3.setTextColor(activity.styleSave.TextColor);
+        switch4.setTextColor(activity.styleSave.TextColor);
+        switch5.setTextColor(activity.styleSave.TextColor);
 
         //set text
         saveButton.setText(activity.words.get("Will apply"));
-
+        switch1.setText(activity.words.get("Show application icons"));
+        switch2.setText(activity.words.get("Show app names"));
+        switch3.setText(activity.words.get("Show application icons"));
+        switch4.setText(activity.words.get("Show app names"));
+        switch5.setText(activity.words.get("Show app names"));
         //set window button style
         testCloseButton.setBackgroundResource(activity.styleSave.CloseButtonImageRes);
         testRollUpButton.setBackgroundResource(activity.styleSave.RollUpButtonImageRes);
@@ -150,10 +203,11 @@ public class StyleSettings extends Program {
         testToolbar.setBackgroundColor(activity.styleSave.ToolbarColor);
         testGreeting.setText(activity.styleSave.Greeting);
         testGreeting.setTextColor(activity.styleSave.GreetingColor);
+        appNameToolbar.setTextColor(activity.styleSave.ToolbarTextColor);
+        appNameLaunch.setTextColor(activity.styleSave.StartMenuTextColor);
 
-        testProgressBar.setProgressDrawable(activity.getBaseContext().getDrawable(activity.styleSave.ProgressBarResource));
-        testSeekBar.setProgressDrawable(activity.getBaseContext().getDrawable(activity.styleSave.SeekBarProgressResource));
-        testSeekBar.setThumb(activity.getBaseContext().getDrawable(activity.styleSave.SeekBarThumbResource));
+        ProgressBarStylisation.setStyle(testProgressBar,activity);
+        ProgressBarStylisation.setStyle(testSeekBar,activity);
 
         //menu style
         menuAdapter.textColor = activity.styleSave.TextColor;
@@ -165,6 +219,53 @@ public class StyleSettings extends Program {
         //adapter style
         themeAdapter.BackgroundColor = activity.styleSave.ThemeColor1;
         windowButtonColorAdapter.backgroundColor = activity.styleSave.ThemeColor1;
+
+        switch1.setChecked(activity.styleSave.StartMenuAppIconVisible);
+        switch2.setChecked(activity.styleSave.StartMenuAppNameVisible);
+        switch3.setChecked(activity.styleSave.ToolbarAppIconVisible);
+        switch4.setChecked(activity.styleSave.ToolbarAppNameVisible);
+        switch5.setChecked(activity.styleSave.DesktopAppNameVisible);
+        if(activity.styleSave.DesktopAppNameVisible) desktopText.setVisibility(View.VISIBLE);
+        else desktopText.setVisibility(View.GONE);
+
+        launchAndToolbarPreviews();
+        switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(!switch2.isChecked() && !isChecked)
+                switch2.setChecked(!switch2.isChecked());
+            launchAndToolbarPreviews();
+        });
+        switch2.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(!switch1.isChecked() && !isChecked)
+                switch1.setChecked(!switch1.isChecked());
+            launchAndToolbarPreviews();
+        });
+        switch3.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(!switch4.isChecked() && !isChecked)
+                switch4.setChecked(!switch4.isChecked());
+            launchAndToolbarPreviews();
+        });
+        switch4.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(!switch3.isChecked() && !isChecked)
+                switch3.setChecked(!switch3.isChecked());
+            launchAndToolbarPreviews();
+        });
+        switch5.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            if(isChecked)desktopText.setVisibility(View.VISIBLE);
+            else desktopText.setVisibility(View.GONE);
+        }));
+
+        ColorStateList thumbStateList = ColorStateList.valueOf(activity.styleSave.TextColor);
+        ColorStateList trackStateList = ColorStateList.valueOf(activity.styleSave.ThemeColor3);
+        switch1.setThumbTintList(thumbStateList);
+        switch1.setTrackTintList(trackStateList);
+        switch2.setThumbTintList(thumbStateList);
+        switch2.setTrackTintList(trackStateList);
+        switch3.setThumbTintList(thumbStateList);
+        switch3.setTrackTintList(trackStateList);
+        switch4.setThumbTintList(thumbStateList);
+        switch4.setTrackTintList(trackStateList);
+        switch5.setThumbTintList(thumbStateList);
+        switch5.setTrackTintList(trackStateList);
     }
     public void initProgram(){
         initView();
@@ -174,6 +275,9 @@ public class StyleSettings extends Program {
         mainMenu.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             //settings background
             if (menuAdapter.getGroup(groupPosition).equals(activity.words.get("Background"))) {
+                switch5.setVisibility(View.GONE);
+                switchGroup.setVisibility(View.GONE);
+                switchGroup1.setVisibility(View.GONE);
                 SettingsGroup = "Background";
                 testWindow.setVisibility(View.GONE);
                 testLaunch.setVisibility(View.GONE);
@@ -201,6 +305,9 @@ public class StyleSettings extends Program {
             }
             //settings window
             else if (menuAdapter.getGroup(groupPosition).equals(activity.words.get("Window"))) {
+                switch5.setVisibility(View.GONE);
+                switchGroup.setVisibility(View.GONE);
+                switchGroup1.setVisibility(View.GONE);
                 testWindow.setVisibility(View.VISIBLE);
                 testGreeting.setVisibility(View.GONE);
                 if (menuAdapter.getChild(groupPosition, childPosition).equals(activity.words.get("Window Color"))) {
@@ -222,6 +329,9 @@ public class StyleSettings extends Program {
             }
             //settings theme
             else if (menuAdapter.getGroup(groupPosition).equals(activity.words.get("Colors"))) {
+                switch5.setVisibility(View.GONE);
+                switchGroup.setVisibility(View.GONE);
+                switchGroup1.setVisibility(View.GONE);
                 testGreeting.setVisibility(View.GONE);
                 testSeekBar.setVisibility(View.GONE);
                 testProgressBar.setVisibility(View.GONE);
@@ -247,30 +357,67 @@ public class StyleSettings extends Program {
             }
             //settings launch
             else if (menuAdapter.getGroup(groupPosition).equals(activity.words.get("Start"))) {
+                switch5.setVisibility(View.GONE);
                 testGreeting.setVisibility(View.GONE);
                 testWindow.setVisibility(View.GONE);
                 testLaunch.setVisibility(View.VISIBLE);
-                if (menuAdapter.getChild(groupPosition, childPosition).equals(activity.words.get("Color"))) {
+                if(menuAdapter.getChild(groupPosition,childPosition).equals(activity.words.get("Text Color"))){
+                    secondTitle.setVisibility(View.VISIBLE);
+                    secondTitle.setText(activity.words.get("Select text color"));
+                    secondMenu.setLayoutManager(gridLayoutManager);
+                    secondMenu.setAdapter(launchTextColorAdapter);
+                    switchGroup1.setVisibility(View.GONE);
+                    switchGroup.setVisibility(View.GONE);
+                }
+                else if (menuAdapter.getChild(groupPosition, childPosition).equals(activity.words.get("Color"))) {
                     secondTitle.setText(activity.words.get("Select start menu color"));
                     secondTitle.setVisibility(View.VISIBLE);
                     secondMenu.setLayoutManager(gridLayoutManager);
                     secondMenu.setAdapter(launchBackColor);
+                    switchGroup1.setVisibility(View.GONE);
+                    switchGroup.setVisibility(View.GONE);
+                }else if(menuAdapter.getChild(groupPosition,childPosition).equals(activity.words.get("Other"))){
+                    secondTitle.setText(activity.words.get("Advanced start menu settings"));
+                    secondTitle.setVisibility(View.VISIBLE);
+                    secondMenu.setAdapter(null);
+                    switchGroup.setVisibility(View.VISIBLE);
+                    switchGroup1.setVisibility(View.GONE);
                 }
             }
             //settings toolbar
             else if (menuAdapter.getGroup(groupPosition).equals(activity.words.get("Task bar"))) {
+                switch5.setVisibility(View.GONE);
                 testGreeting.setVisibility(View.GONE);
                 testWindow.setVisibility(View.GONE);
                 testLaunch.setVisibility(View.GONE);
-                if (menuAdapter.getChild(groupPosition, childPosition).equals(activity.words.get("Color"))) {
+                if(menuAdapter.getChild(groupPosition,childPosition).equals(activity.words.get("Text Color"))){
+                    secondTitle.setVisibility(View.VISIBLE);
+                    switchGroup1.setVisibility(View.GONE);
+                    switchGroup.setVisibility(View.GONE);
+                    secondTitle.setText(activity.words.get("Select text color"));
+                    secondMenu.setLayoutManager(gridLayoutManager);
+                    secondMenu.setAdapter(toolbarTextColorAdapter);
+                }
+                else if (menuAdapter.getChild(groupPosition, childPosition).equals(activity.words.get("Color"))) {
                     secondTitle.setVisibility(View.VISIBLE);
                     secondTitle.setText(activity.words.get("Select the color of the task bar"));
                     secondMenu.setLayoutManager(gridLayoutManager);
                     secondMenu.setAdapter(toolbarBackColor);
+                    switchGroup1.setVisibility(View.GONE);
+                    switchGroup.setVisibility(View.GONE);
+                }else if(menuAdapter.getChild(groupPosition,childPosition).equals(activity.words.get("Other"))){
+                    secondTitle.setText(activity.words.get("Additional taskbar settings"));
+                    secondTitle.setVisibility(View.VISIBLE);
+                    secondMenu.setAdapter(null);
+                    switchGroup1.setVisibility(View.VISIBLE);
+                    switchGroup.setVisibility(View.GONE);
                 }
             }
             //settings progress bar
             else if (menuAdapter.getGroup(groupPosition).equals(activity.words.get("ProgressBar"))) {
+                switch5.setVisibility(View.GONE);
+                switchGroup.setVisibility(View.GONE);
+                switchGroup1.setVisibility(View.GONE);
                 testGreeting.setVisibility(View.GONE);
                 testSeekBar.setVisibility(View.GONE);
                 testText.setVisibility(View.GONE);
@@ -282,10 +429,18 @@ public class StyleSettings extends Program {
                     secondTitle.setText(activity.words.get("Select indicator color"));
                     secondMenu.setLayoutManager(gridLayoutManager);
                     secondMenu.setAdapter(progressBarColorAdapter);
+                }else{
+                    secondTitle.setVisibility(View.VISIBLE);
+                    secondTitle.setText(activity.words.get("Select background color"));
+                    secondMenu.setLayoutManager(gridLayoutManager);
+                    secondMenu.setAdapter(progressBarBgColorAdapter);
                 }
             }
             //settings seekbar
             else if (menuAdapter.getGroup(groupPosition).equals(activity.words.get("SeekBar"))) {
+                switch5.setVisibility(View.GONE);
+                switchGroup.setVisibility(View.GONE);
+                switchGroup1.setVisibility(View.GONE);
                 testGreeting.setVisibility(View.GONE);
                 testLaunch.setVisibility(View.GONE);
                 testText.setVisibility(View.GONE);
@@ -303,10 +458,18 @@ public class StyleSettings extends Program {
                     secondTitle.setText(activity.words.get("Select the color of the SeekBar slider"));
                     secondMenu.setLayoutManager(gridLayoutManager);
                     secondMenu.setAdapter(seekThumbColorAdapter);
+                }else {
+                    secondTitle.setVisibility(View.VISIBLE);
+                    secondTitle.setText(activity.words.get("Select background color"));
+                    secondMenu.setLayoutManager(gridLayoutManager);
+                    secondMenu.setAdapter(seekBarColorBgAdapter);
                 }
             }
             //other settings
             else if (menuAdapter.getGroup(groupPosition).equals(activity.words.get("Greeting"))) {
+                switch5.setVisibility(View.GONE);
+                switchGroup.setVisibility(View.GONE);
+                switchGroup1.setVisibility(View.GONE);
                 testLaunch.setVisibility(View.GONE);
                 testWindow.setVisibility(View.GONE);
                 testGreeting.setVisibility(View.VISIBLE);
@@ -322,6 +485,24 @@ public class StyleSettings extends Program {
                     secondTitle.setText(activity.words.get("Enter welcome text"));
                     secondMenu.setLayoutManager(linearLayoutManager);
                     secondMenu.setAdapter(editTextAdapter);
+                }
+            }else if (menuAdapter.getGroup(groupPosition).equals(activity.words.get("Desktop"))) {
+                testGreeting.setVisibility(View.GONE);
+                testWindow.setVisibility(View.GONE);
+                testLaunch.setVisibility(View.GONE);
+                if(menuAdapter.getChild(groupPosition,childPosition).equals(activity.words.get("Text Color"))){
+                    switch5.setVisibility(View.GONE);
+                    secondTitle.setVisibility(View.VISIBLE);
+                    secondTitle.setText(activity.words.get("Select text color"));
+                    secondMenu.setLayoutManager(gridLayoutManager);
+                    secondMenu.setAdapter(desktopTextColorAdapter);
+                }else if(menuAdapter.getChild(groupPosition,childPosition).equals(activity.words.get("Other"))){
+                    secondTitle.setText(activity.words.get("Additional desktop settings"));
+                    secondTitle.setVisibility(View.VISIBLE);
+                    secondMenu.setAdapter(null);
+                    switch5.setVisibility(View.VISIBLE);
+                    switchGroup1.setVisibility(View.GONE);
+                    switchGroup.setVisibility(View.GONE);
                 }
             }
             return true;
@@ -347,7 +528,8 @@ public class StyleSettings extends Program {
                     }
                 }
             }
-            if(StringArrayWork.ArrayListToString(activity.apps).contains(NapiOS.TITLE+",")||StringArrayWork.ArrayListToString(activity.apps).contains(MakOS.TITLE+",")) {
+            if(StringArrayWork.ArrayListToString(activity.apps).contains(NapiOS.TITLE+",")||
+                    StringArrayWork.ArrayListToString(activity.apps).contains(MakOS.TITLE+",")) {
                 //window settings save
                 activity.styleSave.ColorWindow = windowBackColor.currentColor;
                 activity.styleSave.CloseButtonImageRes = windowButtonColorAdapter.currentCloseButtonImageRes;
@@ -370,31 +552,55 @@ public class StyleSettings extends Program {
 
                 //launch settings save
                 activity.styleSave.StartMenuColor = launchBackColor.currentColor;
+                activity.styleSave.StartMenuTextColor = launchTextColorAdapter.currentTextColor;
 
                 //toolbar settings save
                 activity.styleSave.ToolbarColor = toolbarBackColor.currentColor;
                 activity.toolbar.setBackgroundColor(toolbarBackColor.currentColor);
+                activity.styleSave.ToolbarTextColor = toolbarTextColorAdapter.currentTextColor;
 
                 //progressBar save
                 activity.styleSave.ProgressBarResource = progressBarColorAdapter.currentDrawableResource;
+                activity.styleSave.ProgressBarBgColor = progressBarBgColorAdapter.currentBgColor;
 
                 //seekBar settings save
                 activity.styleSave.SeekBarProgressResource = seekBarColorAdapter.currentDrawableResource;
                 activity.styleSave.SeekBarThumbResource = seekThumbColorAdapter.currentDrawableResource;
+                activity.styleSave.SeekBarBgColor = seekBarColorBgAdapter.currentBgColor;
 
                 //greeting settings save
                 activity.styleSave.Greeting = editTextAdapter.getCurrentText();
                 activity.styleSave.GreetingColor = greetingTextColorAdapter.currentTextColor;
 
+                activity.styleSave.StartMenuAppIconVisible = switch1.isChecked();
+                activity.styleSave.StartMenuAppNameVisible = switch2.isChecked();
+                activity.styleSave.ToolbarAppIconVisible = switch3.isChecked();
+                activity.styleSave.ToolbarAppNameVisible = switch4.isChecked();
+
+                activity.styleSave.DesktopAppNameVisible = switch5.isChecked();
+                activity.styleSave.DesktopTextColor = desktopTextColorAdapter.currentTextColor;
                 secondMenu.setAdapter(null);
                 secondTitle.setVisibility(View.GONE);
                 testWindow.setVisibility(View.GONE);
                 testLaunch.setVisibility(View.GONE);
                 testGreeting.setVisibility(View.GONE);
             }
+            activity.updateDesktop();
+            activity.updateToolbar();
+            activity.updateStartMenu();
             activity.styleSave.setStyle();
             style();
         });
         super.initProgram();
+    }
+    void launchAndToolbarPreviews(){
+        if(switch1.isChecked()) appIconLaunch.setVisibility(View.VISIBLE);
+        else appIconLaunch.setVisibility(View.GONE);
+        if(switch2.isChecked()) appNameLaunch.setVisibility(View.VISIBLE);
+        else appNameLaunch.setVisibility(View.GONE);
+        if(switch3.isChecked()) appIconToolbar.setVisibility(View.VISIBLE);
+        else appIconToolbar.setVisibility(View.GONE);
+        if(switch4.isChecked()) appNameToolbar.setVisibility(View.VISIBLE);
+        else appNameToolbar.setVisibility(View.GONE);
     }
 }

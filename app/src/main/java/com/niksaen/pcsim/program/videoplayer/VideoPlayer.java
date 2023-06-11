@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.ProgressBarStylisation;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
@@ -66,10 +67,7 @@ public class VideoPlayer extends Program implements SurfaceHolder.Callback {
         play_pause.setBackgroundResource(activity.styleSave.PlayButtonImage);
         timeText.setTypeface(activity.font);
         timeText.setTextColor(activity.styleSave.TextColor);
-        seekBarTime.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
-        LayerDrawable progressBarBackground = (LayerDrawable) seekBarTime.getProgressDrawable();
-        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
-        seekBarTime.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
+        ProgressBarStylisation.setStyle(seekBarTime,activity);
 
         videoView.setZ(-1);
         taskBar.setVisibility(View.GONE);

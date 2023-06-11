@@ -154,14 +154,14 @@ public class ProgramListAndData {
         programIcon.put("Minesweeper",R.drawable.minersweeper_icon);
         programIcon.put("Snake",R.drawable.snake_icon);
         programIcon.put("Memory",R.drawable.memory_icon);
-        programIcon.put("HSoftStore",R.drawable.icon_downloader);
+        programIcon.put("HSoftStore",R.drawable.icon_hsoftstore);
         programIcon.put("Antivirus",R.drawable.antivirus);
         programIcon.put("InstallFD",R.drawable.icon_default);
 
         //вес програм и игр
         programSize.put("InstallFD",0.75f);
         programSize.put("Benchmark",2f);
-        programSize.put("HSoftStore",0.2f);
+        programSize.put("HSoftStore",1f);
         programSize.put("Browser",0.5f);
         programSize.put("CPU Overclocking",1f);
         programSize.put("RAM Overclocking",1f);
@@ -207,6 +207,7 @@ public class ProgramListAndData {
         programSize.put("virus.toc30sas",0.1f);
         programSize.put("Antivirus",2f);
         programSize.put("Antivirus Installer",1f);
+        programSize.put("HSoftStore Installer", 0.5f);
     }
 
     /** классы программ*/

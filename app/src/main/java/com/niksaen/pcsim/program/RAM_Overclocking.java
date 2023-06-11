@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.ProgressBarStylisation;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.window.WarningWindow;
@@ -71,10 +72,7 @@ public class RAM_Overclocking extends Program {
         save.setBackgroundColor(activity.styleSave.ThemeColor2);
         save.setTextColor(activity.styleSave.TextButtonColor);
         save.setText(activity.words.get("Will apply"));
-        seekBar.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
-        seekBar.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
-        LayerDrawable progressBarBackground = (LayerDrawable) seekBar.getProgressDrawable();
-        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
+        ProgressBarStylisation.setStyle(seekBar,activity);
     }
 
     private int frequency;

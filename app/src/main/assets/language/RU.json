@@ -370,5 +370,12 @@
   "Confirm deletion": "Подтвердите удаление",
   "Automatic removal of threats": "Автоматическое удаление угроз",
   "InstallFD": "InstallFD",
-  "Antivirus Installer": "Antivirus Installer"
+  "Antivirus Installer": "Antivirus Installer",
+  "Enter greeting text": "Введите текст приветствия",
+  "Show application icons": "Отображать иконки приложений",
+  "Show app names": "Отображать названия приложений",
+  "Additional taskbar settings": "Дополнительные настройки\nпанели задач",
+  "Advanced start menu settings": "Дополнительные настройки\nменю пуск",
+  "Desktop": "Рабочий стол",
+  "Additional desktop settings": "Дополнительные настройки\nрабочего стола"
 }

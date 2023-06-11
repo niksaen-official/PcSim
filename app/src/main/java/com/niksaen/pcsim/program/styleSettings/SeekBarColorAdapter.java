@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.Color;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +44,7 @@ public class SeekBarColorAdapter extends RecyclerView.Adapter<SeekBarColorAdapte
     private final LayoutInflater layoutInflater;
     private final Context context;
     private final int Type;
+    private StyleSave styleSave;
 
     /** Type используется для определения того что надо изменить в seekBar
      * 0 - цвет прогресса
@@ -50,10 +54,11 @@ public class SeekBarColorAdapter extends RecyclerView.Adapter<SeekBarColorAdapte
         this.test = test;
         this.Type = Type;
         this.context = context;
+        this.styleSave = styleSave;
         if(Type == 0) {
             currentDrawableResource = styleSave.SeekBarProgressResource;
         }
-        else{
+        else if(Type == 1){
             currentDrawableResource = styleSave.SeekBarThumbResource;
             resourceDrawable = new int[]{
                     R.drawable.seek_thumb_color1,
@@ -92,19 +97,22 @@ public class SeekBarColorAdapter extends RecyclerView.Adapter<SeekBarColorAdapte
     }
 
     public int currentDrawableResource;
+    public int currentBgColor;
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.colorView.setBackgroundColor(Color.parseColor(colorId[i]));
-        viewHolder.colorView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentDrawableResource = resourceDrawable[viewHolder.getAdapterPosition()];
-                if(Type == 0) {
-                    test.setProgressDrawable(context.getDrawable(resourceDrawable[viewHolder.getAdapterPosition()]));
-                }
-                else{
-                    test.setThumb(context.getDrawable(resourceDrawable[viewHolder.getAdapterPosition()]));
-                }
+        viewHolder.colorView.setOnClickListener(v -> {
+            currentDrawableResource = resourceDrawable[viewHolder.getAdapterPosition()];
+            if(Type == 0) {
+                test.setProgressDrawable(context.getDrawable(resourceDrawable[viewHolder.getAdapterPosition()]));
+            }
+            else if(Type==2){
+                currentBgColor = Color.parseColor(colorId[i]);
+                LayerDrawable progressBarBackground = (LayerDrawable) test.getProgressDrawable();
+                progressBarBackground.getDrawable(0).setColorFilter(Color.parseColor(colorId[i]), PorterDuff.Mode.SRC_IN);
+            }
+            else{
+                test.setThumb(context.getDrawable(resourceDrawable[viewHolder.getAdapterPosition()]));
             }
         });
     }

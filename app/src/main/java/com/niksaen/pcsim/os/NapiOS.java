@@ -29,12 +29,8 @@ public class NapiOS extends Program {
     }
 
     @Override
-    public void initProgram() {
-        cmd = new CMD(activity);
-    }
-
-    @Override
     public void openProgram() {
+        cmd = new CMD(activity);
         cmd.setType(CMD.SEMI_AUTO_OS);
         activity.styleSave.getStyle();
         activity.greeting.setVisibility(View.VISIBLE);

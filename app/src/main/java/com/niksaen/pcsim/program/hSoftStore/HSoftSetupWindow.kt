@@ -1,7 +1,5 @@
 package com.niksaen.pcsim.program.hSoftStore
 
-import android.graphics.PorterDuff
-import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -9,10 +7,12 @@ import android.widget.TextView
 import com.niksaen.pcsim.R
 import com.niksaen.pcsim.activities.MainActivity
 import com.niksaen.pcsim.classes.ProgramListAndData
+import com.niksaen.pcsim.classes.ProgressBarStylisation
 import com.niksaen.pcsim.os.cmd.CMD
 import com.niksaen.pcsim.program.Program
-import com.niksaen.pcsim.viruses.*
-import java.util.*
+import com.niksaen.pcsim.viruses.Installer
+import java.util.Timer
+import java.util.TimerTask
 
 class HSoftSetupWindow(activity: MainActivity) : Program(activity) {
     private lateinit var programForSetup: String
@@ -43,9 +43,7 @@ class HSoftSetupWindow(activity: MainActivity) : Program(activity) {
 
     private fun style() {
         main!!.setBackgroundColor(activity.styleSave.ThemeColor1)
-        progressBar!!.progressDrawable = activity.getDrawable(activity.styleSave.SeekBarProgressResource)
-        val progressBarBackground = progressBar!!.progressDrawable as LayerDrawable
-        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN)
+        ProgressBarStylisation.setStyleHorizontal(progressBar, activity)
         setupStatus!!.setBackgroundColor(activity.styleSave.ThemeColor2)
         setupStatus!!.setTextColor(activity.styleSave.TextColor)
         setupStatus!!.typeface = activity.font

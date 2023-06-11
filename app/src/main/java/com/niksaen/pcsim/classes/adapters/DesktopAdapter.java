@@ -47,6 +47,12 @@ public class DesktopAdapter extends  RecyclerView.Adapter<DesktopAdapter.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull DesktopAdapter.ViewHolder holder, int position) {
+        holder.app_name.setTextColor(activity.styleSave.DesktopTextColor);
+        if(!activity.styleSave.DesktopAppNameVisible){
+            holder.app_name.setVisibility(View.GONE);
+        }else{
+            holder.app_name.setVisibility(View.VISIBLE);
+        }
         try {
             holder.app_icon.setImageResource(ProgramListAndData.programIcon.get(apps[position]));
             holder.app_name.setText(activity.words.get(apps[position]));

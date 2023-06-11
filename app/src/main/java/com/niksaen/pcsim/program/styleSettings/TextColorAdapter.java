@@ -30,9 +30,12 @@ public class TextColorAdapter extends RecyclerView.Adapter<TextColorAdapter.View
     private LayoutInflater layoutInflater;
 
     /**TypeView используется для получения установленного цвета
-     * 0-для получения цвета заголовка окна
-     * 1-для получения цвета текста
-     * 2 - для получения цвета приветствия
+     * 0 - для получения цвета заголовка окна
+     * 1 - для получения цвета текста
+     * 2 - для получения цвета текста приветствия
+     * 3 - для получения цвета текста меню пуск
+     * 4 - для получения цвета текста панели задач
+     * 5 - для получения цвета текста рабочего стола
      * */
     public TextColorAdapter(Context context, TextView testTextView, StyleSave styleSave, int TypeView){
         layoutInflater = LayoutInflater.from(context);
@@ -48,6 +51,18 @@ public class TextColorAdapter extends RecyclerView.Adapter<TextColorAdapter.View
             }
             case 2:{
                 currentTextColor = styleSave.GreetingColor;
+                break;
+            }
+            case 3:{
+                currentTextColor = styleSave.ToolbarTextColor;
+                break;
+            }
+            case 4:{
+                currentTextColor = styleSave.StartMenuTextColor;
+                break;
+            }
+            case 5:{
+                currentTextColor = styleSave.DesktopTextColor;
                 break;
             }
         }
@@ -69,16 +84,13 @@ public class TextColorAdapter extends RecyclerView.Adapter<TextColorAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.colorView.setBackgroundColor(Color.parseColor(colorId[i]));
-        viewHolder.colorView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentTextColor = Color.parseColor(colorId[i]);
-                if(testTextView != null){
-                    testTextView.setTextColor(currentTextColor);
-                }
-                else if(testButton != null){
-                    testButton.setTextColor(currentTextColor);
-                }
+        viewHolder.colorView.setOnClickListener(v -> {
+            currentTextColor = Color.parseColor(colorId[i]);
+            if(testTextView != null){
+                testTextView.setTextColor(currentTextColor);
+            }
+            else if(testButton != null){
+                testButton.setTextColor(currentTextColor);
             }
         });
     }

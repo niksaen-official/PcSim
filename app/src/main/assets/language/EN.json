@@ -370,5 +370,12 @@
   "Cooler * 2": "Cooler * 2",
   "Automatic removal of threats": "Automatic removal of threats",
   "Antivirus Installer": "Antivirus Installer",
-  "InstallFD": "InstallFD"
+  "InstallFD": "InstallFD",
+  "Enter greeting text": "Enter greeting text",
+  "Show application icons": "Show application icons",
+  "Show app names": "Show app names",
+  "Additional taskbar settings": "Additional taskbar\n settings",
+  "Advanced start menu settings": "Advanced start\n menu settings",
+  "Desktop": "Desktop",
+  "Additional desktop settings": "Additional desktop settings"
 }

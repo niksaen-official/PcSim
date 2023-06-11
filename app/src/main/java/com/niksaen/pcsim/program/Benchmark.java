@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.ProgressBarStylisation;
 import com.niksaen.pcsim.save.PcParametersSave;
 import com.niksaen.pcsim.save.StyleSave;
 
@@ -22,8 +23,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Benchmark extends Program{
-    MainActivity activity;
-
     TextView cpu_bench,ram_bench,gpu_bench,data_bench,all_bench;
     ConstraintLayout content;
     Button start_bench;
@@ -137,7 +136,7 @@ public class Benchmark extends Program{
         }
         return data_bench;
     }
-    private int[] bench = {0,0,0,0,0};
+    private final int[] bench = {0,0,0,0,0};
     private void bench(){
 
         timer = new Timer();
@@ -147,19 +146,19 @@ public class Benchmark extends Program{
                activity.runOnUiThread(() -> {
                    if(bench[4]<=getCpuBench()+getRamBench()+getGpuBench()+getDataBench()) {
                        if (bench[0] <= getCpuBench()) {
-                           cpu_bench.setText("CPU: " + bench[0]);
+                           cpu_bench.setText(activity.words.get("CPU")+":" + bench[0]);
                            bench[0]++;
                            bench[4]++;
                        } else if (bench[1] <= getRamBench()) {
-                           ram_bench.setText("RAM: " + bench[1]);
+                           ram_bench.setText(activity.words.get("RAM")+":" + bench[1]);
                            bench[1]++;
                            bench[4]++;
                        } else if (bench[2] <= getGpuBench()) {
-                           gpu_bench.setText("Graphics card: " + bench[2]);
+                           gpu_bench.setText(activity.words.get("Graphics card")+":" + bench[2]);
                            bench[2]++;
                            bench[4]++;
                        } else if (bench[3] <= getDataBench()) {
-                           data_bench.setText("Storage device: " + bench[3]);
+                           data_bench.setText(activity.words.get("Storage device")+":" + bench[3]);
                            bench[3]++;
                            bench[4]++;
                        }
@@ -169,7 +168,7 @@ public class Benchmark extends Program{
                 });
             }
         };
-        timer.scheduleAtFixedRate(timerTask,0,1);
+        timer.scheduleAtFixedRate(timerTask,0,10);
     }
     private void style(){
         cpu_bench = mainWindow.findViewById(R.id.cpu);
@@ -198,9 +197,7 @@ public class Benchmark extends Program{
         start_bench.setTextColor(styleSave.TextButtonColor);
 
         content.setBackgroundColor(styleSave.ThemeColor1);
-        progressBar.setProgressDrawable(activity.getDrawable(styleSave.ProgressBarResource));
-        LayerDrawable progressBarBackground = (LayerDrawable) progressBar.getProgressDrawable();
-        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
+        ProgressBarStylisation.setStyle(progressBar,activity);
         //translation
         start_bench.setText(activity.words.get("Start"));
     }

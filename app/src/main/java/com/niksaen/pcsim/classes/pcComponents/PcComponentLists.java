@@ -132,5 +132,6 @@ public class PcComponentLists {
         DiskList.add(LiriOS.TITLE+" Installer Simplified");
         DiskList.add(MakOS.TITLE+" Installer");
         DiskList.add("Antivirus Installer");
+        DiskList.add("HSoftStore Installer");
     }
 }

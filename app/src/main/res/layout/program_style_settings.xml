@@ -58,6 +58,19 @@
         android:background="#FFFFFF"
         android:orientation="vertical">
 
+        <Switch
+            android:translationZ="12dp"
+            android:visibility="gone"
+            android:id="@+id/switch5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pixel_font"
+            android:text="Switch"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@+id/secondMenu"
+            app:layout_constraintStart_toStartOf="@+id/secondMenu"
+            app:layout_constraintTop_toTopOf="@+id/secondMenu" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"
@@ -112,6 +125,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
+                android:gravity="center_vertical"
                 android:id="@+id/toolbar"
                 android:layout_width="0dp"
                 android:layout_height="15dp"
@@ -119,17 +133,51 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" >
+                <ImageView
+                    android:layout_marginStart="4dp"
+                    android:id="@+id/app_icon_toolbar"
+                    android:src="@drawable/icon_default"
+                    android:layout_width="11dp"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:layout_marginStart="4dp"
+                    android:id="@+id/app_name_toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pixel_font"
+                    android:text="Program"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <LinearLayout
+                android:paddingTop="4dp"
                 android:visibility="gone"
                 android:id="@+id/launch"
                 android:layout_width="70dp"
                 android:layout_height="100dp"
                 android:background="#D6D6D6"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/toolbar"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent">
+                <ImageView
+                    android:layout_marginStart="4dp"
+                    android:id="@+id/app_icon_launch"
+                    android:src="@drawable/icon_default"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"/>
+
+                <TextView
+                    android:layout_marginStart="4dp"
+                    android:gravity="center_vertical"
+                    android:id="@+id/app_name_launch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="11dp"
+                    android:fontFamily="@font/pixel_font"
+                    android:text="Program"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:visibility="gone"
@@ -237,6 +285,27 @@
                         android:progress="70" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/desktopIcon"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_benchmark" />
+
+            <TextView
+                android:id="@+id/desktopText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pixel_font"
+                android:text="Program"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="@+id/desktopIcon"
+                app:layout_constraintStart_toStartOf="@+id/desktopIcon"
+                app:layout_constraintTop_toBottomOf="@+id/desktopIcon" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -249,8 +318,10 @@
             android:columnCount="7"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/testBackground" />
+            app:layout_constraintTop_toBottomOf="@+id/testBackground"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:layout_marginTop="6dp"
@@ -262,6 +333,59 @@
             android:textSize="25sp"
             app:layout_constraintStart_toEndOf="@+id/testBackground"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+
+            android:visibility="gone"
+            android:id="@+id/switchGroup"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/secondMenu"
+            app:layout_constraintStart_toStartOf="@+id/secondMenu"
+            app:layout_constraintTop_toTopOf="@+id/secondMenu">
+
+            <Switch
+                android:textSize="24sp"
+                android:id="@+id/switch2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Switch" />
+
+            <Switch
+                android:textSize="24sp"
+                android:id="@+id/switch1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Switch" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/switchGroup1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/secondMenu"
+            app:layout_constraintStart_toStartOf="@+id/secondMenu"
+            app:layout_constraintTop_toTopOf="@+id/secondMenu">
+
+            <Switch
+                android:textSize="24sp"
+                android:id="@+id/switch3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Switch" />
+
+            <Switch
+                android:textSize="24sp"
+                android:id="@+id/switch4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Switch" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

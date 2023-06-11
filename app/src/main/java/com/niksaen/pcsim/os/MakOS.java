@@ -26,14 +26,8 @@ public class MakOS extends Program{
     }
 
     @Override
-    public void initProgram() {
-
-    }
-
-    @Override
     public void openProgram() {
         CMD cmd = new CMD(activity);
-
         cmd.setType(CMD.SEMI_AUTO_OS);
         activity.styleSave.getStyle();
         activity.greeting.setVisibility(View.VISIBLE);

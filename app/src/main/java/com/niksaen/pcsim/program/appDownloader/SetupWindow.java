@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.ProgressBarStylisation;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.Program;
@@ -54,9 +55,7 @@ public class SetupWindow extends Program {
     }
     private void style(){
         main.setBackgroundColor(activity.styleSave.ThemeColor1);
-        progressBar.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
-        LayerDrawable progressBarBackground = (LayerDrawable) progressBar.getProgressDrawable();
-        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
+        ProgressBarStylisation.setStyleHorizontal(progressBar,activity);
 
         setupStatus.setBackgroundColor(activity.styleSave.ThemeColor2);
         setupStatus.setTextColor(activity.styleSave.TextColor);

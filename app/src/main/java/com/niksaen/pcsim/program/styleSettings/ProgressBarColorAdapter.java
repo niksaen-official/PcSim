@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.Color;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,12 +42,23 @@ public class ProgressBarColorAdapter extends RecyclerView.Adapter<ProgressBarCol
     private ProgressBar test;
     private LayoutInflater layoutInflater;
     private Context context;
+    private StyleSave styleSave;
+    private int type=0;
 
     public ProgressBarColorAdapter(Context context, ProgressBar test, StyleSave styleSave){
         layoutInflater = LayoutInflater.from(context);
         this.test = test;
         this.context = context;
         currentDrawableResource = styleSave.ProgressBarResource;
+        this.styleSave = styleSave;
+    }
+    public ProgressBarColorAdapter(Context context, ProgressBar test, StyleSave styleSave,int type){
+        layoutInflater = LayoutInflater.from(context);
+        this.test = test;
+        this.context = context;
+        currentDrawableResource = styleSave.ProgressBarResource;
+        this.styleSave = styleSave;
+        this.type = type;
     }
 
     @NonNull
@@ -55,14 +69,18 @@ public class ProgressBarColorAdapter extends RecyclerView.Adapter<ProgressBarCol
     }
 
     public int currentDrawableResource;
+    public int currentBgColor;
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.colorView.setBackgroundColor(Color.parseColor(colorId[i]));
-        viewHolder.colorView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentDrawableResource = resourceDrawable[viewHolder.getAdapterPosition()];
+        viewHolder.colorView.setOnClickListener(v -> {
+            currentDrawableResource = resourceDrawable[viewHolder.getAdapterPosition()];
+            if(type == 0) {
                 test.setProgressDrawable(context.getDrawable(resourceDrawable[viewHolder.getAdapterPosition()]));
+            }else{
+                currentBgColor = Color.parseColor(colorId[i]);
+                LayerDrawable progressBarBackground = (LayerDrawable) test.getProgressDrawable();
+                progressBarBackground.getDrawable(0).setColorFilter(Color.parseColor(colorId[i]), PorterDuff.Mode.SRC_IN);
             }
         });
     }

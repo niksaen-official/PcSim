@@ -43,16 +43,18 @@ public class MenuAdapter extends BaseExpandableListAdapter {
                 words.get("Task bar"),
                 words.get("ProgressBar"),
                 words.get("SeekBar"),
-                words.get("Greeting")
+                words.get("Greeting"),
+                words.get("Desktop")
         };
         listChild.put(listGroup[0],new String[]{words.get("Color"), words.get("Gradient"), words.get("Wallpaper")});
         listChild.put(listGroup[1],new String[]{words.get("Window Color"),words.get("Button Color"),words.get("Title Color")});
         listChild.put(listGroup[2],new String[]{words.get("Theme"),words.get("Text Color"),words.get("Button text color")});
-        listChild.put(listGroup[3],new String[]{words.get("Color"),words.get("Other")});
-        listChild.put(listGroup[4],new String[]{words.get("Color"),words.get("Other")});
-        listChild.put(listGroup[5],new String[]{words.get("Color"),});
-        listChild.put(listGroup[6],new String[]{words.get("Color of progress"),words.get("Slider color")});
+        listChild.put(listGroup[3],new String[]{words.get("Color"),words.get("Text Color"),words.get("Other")});
+        listChild.put(listGroup[4],new String[]{words.get("Color"),words.get("Text Color"),words.get("Other")});
+        listChild.put(listGroup[5],new String[]{words.get("Color"),words.get("Background")});
+        listChild.put(listGroup[6],new String[]{words.get("Color of progress"),words.get("Slider color"),words.get("Background")});
         listChild.put(listGroup[7],new String[]{words.get("Greeting color"),words.get("Greeting text")});
+        listChild.put(listGroup[8],new String[]{words.get("Text Color"),words.get("Other")});
     }
 
     public int getGroupCount() {

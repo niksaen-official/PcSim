@@ -3,6 +3,7 @@ package com.niksaen.pcsim.save;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.program.styleSettings.ColorList;
@@ -50,8 +51,12 @@ public class StyleSave {
 
     /** not resource */ public int ToolbarColor;
     /** not resource */ public boolean ToolbarAppNameVisible;
+    /** not resource */ public int DesktopTextColor;
+    /** not resource */ public boolean DesktopAppNameVisible;
     /** not resource */ public  boolean ToolbarAppIconVisible;
     /** not resource */ public int ToolbarTextColor;
+    /** not resource */ public int ProgressBarBgColor;
+    /** not resource */ public int SeekBarBgColor;
 
     public void resetAllStyle(){
         preferences.edit().putInt("Background",R.color.color8).apply();
@@ -66,6 +71,8 @@ public class StyleSave {
         preferences.edit().putInt("ThemeColor1",Color.parseColor(ColorList.ThemeColorList1[15])).apply();
         preferences.edit().putInt("ThemeColor2",Color.parseColor(ColorList.ThemeColorList2[15])).apply();
         preferences.edit().putInt("ThemeColor3",Color.parseColor(ColorList.ThemeColorList3[15])).apply();
+        preferences.edit().putInt("ProgressBarBgColor",Color.parseColor(ColorList.ThemeColorList2[15])).apply();
+        preferences.edit().putInt("SeekBarBgColor",Color.parseColor(ColorList.ThemeColorList2[15])).apply();
         preferences.edit().putInt("StartMenuColor",Color.parseColor("#2C3488")).apply();
         preferences.edit().putInt("ToolbarColor",Color.parseColor("#131A5E")).apply();
         preferences.edit().putInt("ProgressBarResource", R.drawable.progress_bar_circle_color5).apply();
@@ -96,6 +103,8 @@ public class StyleSave {
         ThemeColor1 = preferences.getInt("ThemeColor1",Color.parseColor(ColorList.ThemeColorList1[15]));
         ThemeColor2 = preferences.getInt("ThemeColor2",Color.parseColor(ColorList.ThemeColorList2[15]));
         ThemeColor3 = preferences.getInt("ThemeColor3",Color.parseColor(ColorList.ThemeColorList3[15]));
+        ProgressBarBgColor = preferences.getInt("ProgressBarBgColor",Color.parseColor(ColorList.ThemeColorList2[15]));
+        SeekBarBgColor = preferences.getInt("SeekBarBgColor",Color.parseColor(ColorList.ThemeColorList2[15]));
         TextColor = preferences.getInt("TextColor",Color.parseColor("#000000"));
         TextButtonColor = preferences.getInt("TextButtonColor",Color.parseColor("#000000"));
         StartMenuColor = preferences.getInt("StartMenuColor",Color.parseColor("#2C3488"));
@@ -115,6 +124,8 @@ public class StyleSave {
         StartMenuTextColor = preferences.getInt("StartMenuTextColor",Color.parseColor("#FFFFFF"));
         StartMenuAppIconVisible = preferences.getBoolean("StartMenuAppIconVisible",true);
         StartMenuAppNameVisible = preferences.getBoolean("StartMenuAppNameVisible",true);
+        DesktopTextColor = preferences.getInt("DesktopTextColor",Color.parseColor("#FFFFFF"));
+        DesktopAppNameVisible = preferences.getBoolean("DesktopAppNameVisible",true);
     }
 
     public void setStyle(){
@@ -147,5 +158,9 @@ public class StyleSave {
         preferences.edit().putInt("StartMenuTextColor",StartMenuTextColor).apply();
         preferences.edit().putBoolean("StartMenuAppIconVisible",StartMenuAppIconVisible).apply();
         preferences.edit().putBoolean("StartMenuAppNameVisible",StartMenuAppNameVisible).apply();
+        preferences.edit().putInt("DesktopTextColor",DesktopTextColor).apply();
+        preferences.edit().putBoolean("DesktopAppNameVisible",DesktopAppNameVisible).apply();
+        preferences.edit().putInt("ProgressBarBgColor",ProgressBarBgColor).apply();
+        preferences.edit().putInt("SeekBarBgColor",SeekBarBgColor).apply();
     }
 }

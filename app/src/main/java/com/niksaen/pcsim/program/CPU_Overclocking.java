@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.ProgressBarStylisation;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.window.WarningWindow;
@@ -48,10 +49,7 @@ public class CPU_Overclocking extends Program {
         cpu_model.setTextColor(activity.styleSave.TextColor);
         frequency.setTextColor(activity.styleSave.TextColor);
         temperature.setTextColor(activity.styleSave.TextColor);
-        setFrequency.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
-        setFrequency.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
-        LayerDrawable progressBarBackground = (LayerDrawable) setFrequency.getProgressDrawable();
-        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
+        ProgressBarStylisation.setStyle(setFrequency,activity);
 
         cpu_model.setTypeface(activity.font,Typeface.BOLD);
         temperature.setTypeface(activity.font,Typeface.BOLD);

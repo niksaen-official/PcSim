@@ -20,9 +20,16 @@ class InstallFD(activity: MainActivity?) : Program(activity) {
         ValueVideoMemory[1] = 30
         Title = "InstallFD"
     }
+    fun style(){
+        ui.main.setBackgroundColor(activity.styleSave.ThemeColor1)
+        ui.installButton.setTextColor(activity.styleSave.TextButtonColor)
+        ui.installButton.setBackgroundColor(activity.styleSave.ThemeColor2)
+        ui.diskName.setTextColor(activity.styleSave.TextColor)
+    }
 
     override fun initProgram() {
         ui = ProgramInstallfdBinding.inflate(activity.layoutInflater)
+        style()
         ui.installButton.text = activity.words["Install"]
         val adapter = CustomListViewAdapter(activity, 0, getDiskList())
         adapter.BackgroundColor1 = activity.styleSave.ThemeColor1
@@ -30,12 +37,7 @@ class InstallFD(activity: MainActivity?) : Program(activity) {
         adapter.TextColor = activity.styleSave.TextColor
         ui.diskList.adapter = adapter
         ui.diskList.onItemSelectedListener = object : OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 idDisk = getDiskList()[position]
             }
 

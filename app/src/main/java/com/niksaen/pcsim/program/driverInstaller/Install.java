@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.niksaen.pcsim.R;
 import com.niksaen.pcsim.activities.MainActivity;
+import com.niksaen.pcsim.classes.ProgressBarStylisation;
 import com.niksaen.pcsim.program.Program;
 
 import java.util.HashMap;
@@ -50,10 +51,7 @@ public class Install extends Program {
         setupStep.setBackgroundColor(activity.styleSave.ThemeColor2);
         setupStep.setTextColor(activity.styleSave.TextColor);
         setupStep.setTypeface(activity.font);
-
-        progressBar.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
-        LayerDrawable progressBarBackground = (LayerDrawable) progressBar.getProgressDrawable();
-        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
+        ProgressBarStylisation.setStyle(progressBar,activity);
         progressBar.setMax(DriversForSetup.length-1);
     }
     private HashMap<String, HashMap<String,String>> diskHashMap;

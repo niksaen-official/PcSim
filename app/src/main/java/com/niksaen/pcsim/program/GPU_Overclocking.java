@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.niksaen.pcsim.activities.MainActivity;
 import com.niksaen.pcsim.R;
+import com.niksaen.pcsim.classes.ProgressBarStylisation;
 import com.niksaen.pcsim.classes.StringArrayWork;
 import com.niksaen.pcsim.program.driverInstaller.DriverInstaller;
 import com.niksaen.pcsim.program.window.WarningWindow;
@@ -62,10 +63,7 @@ public class GPU_Overclocking extends Program {
         save.setBackgroundColor(activity.styleSave.ThemeColor2);
         save.setText(activity.words.get("Will apply"));
         content.setBackgroundColor(activity.styleSave.ThemeColor1);
-        seekBar.setProgressDrawable(activity.getDrawable(activity.styleSave.SeekBarProgressResource));
-        seekBar.setThumb(activity.getDrawable(activity.styleSave.SeekBarThumbResource));
-        LayerDrawable progressBarBackground = (LayerDrawable) seekBar.getProgressDrawable();
-        progressBarBackground.getDrawable(0).setColorFilter(activity.styleSave.ThemeColor2, PorterDuff.Mode.SRC_IN);
+        ProgressBarStylisation.setStyle(seekBar,activity);
     }
 
     @Override

@@ -29,11 +29,6 @@ public class LiriOS extends Program {
     }
 
     @Override
-    public void initProgram() {
-
-    }
-
-    @Override
     public void openProgram() {
         cmd = new CMD(activity);
         cmd.setType(CMD.SEMI_AUTO_OS);
